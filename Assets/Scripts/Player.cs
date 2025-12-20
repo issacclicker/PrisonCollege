@@ -39,8 +39,12 @@ public class Player : MonoBehaviour
 
     public AudioPlayer audioPlayer;
 
+    public float chaosInterval = 5;
+    private float chaosRemained;
+
     void Start()
     {
+        chaosRemained = chaosInterval;
         FloodSystem.GetComponent<FloodController>().FullEvent.AddListener(OnFloodFull);
         controller = GetComponent<CharacterController>();
 
@@ -58,6 +62,13 @@ public class Player : MonoBehaviour
     {
         HandleMouseLook();
         HandleMovement();
+
+        chaosRemained -= Time.deltaTime;
+        if (chaosRemained <= 0)
+        {
+            ChaosSystem.chaos = Mathf.Max(ChaosSystem.chaos - 1, 0);
+            chaosRemained = chaosInterval;
+        }
     }
 
     void HandleMouseLook()

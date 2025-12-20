@@ -190,9 +190,33 @@ public class Student : MonoBehaviour
 
     IEnumerator RoutineDelay(float delay)
     {
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(delay * GetMultiplier());
         decideBehaviour();
     }
+
+
+    float GetMultiplier()
+    {
+        return Mathf.Pow(4f / 5f, ChaosSystem.chaos / 10f);
+    }
+
+
+    public State GetRandomMoveState()
+    {
+        float probA = 0.7f * Mathf.Pow(4f / 5f, ChaosSystem.chaos / 10f);
+        float delta = 0.7f - probA;
+        float probB = 0.2f + delta * (2f / 3f);
+        float probC = 0.1f + delta * (1f / 3f);
+
+        float r = UnityEngine.Random.value;
+        if (r < probA)
+        return State.Walk;
+        else if (r < probA + probB)
+            return State.Run;
+        else
+            return State.Naruto;
+    }
+
 
 
     private void decideBehaviour()
@@ -201,15 +225,13 @@ public class Student : MonoBehaviour
         //MoveAndAction(smokingSpots.GetRandom(), State.Walk);
         //MoveAndAction(smokingSpots.GetRandom(), State.Walk);
         //return;
-        MoveAndAction(doorSpot, State.Run);
-        return;
         if (randValue <= 90)
         {
-            MoveAndAction(doorSpot, State.Walk);
+            MoveAndAction(doorSpot);
         }
         else
         {
-            MoveAndAction(windowSpots.GetRandom(), State.Run);
+            MoveAndAction(windowSpots.GetRandom());
         }
         return;
         if (randValue <= 20)
@@ -388,6 +410,13 @@ public class Student : MonoBehaviour
         animator.SetTrigger("Die1");
         GetComponent<Collider>().enabled = false;
         spot = null;
+        if (spot)
+        {
+            if (!(spot is SmokeSpot || spot is DoorSpot || spot is WindowSpot))
+            {
+                ChaosSystem.chaos += 10;
+            }
+        }
         if (spot && spot.student)
         {
             spot.student = null;
@@ -531,6 +560,12 @@ public class Student : MonoBehaviour
         agent.enabled = false;
         GetComponent<CapsuleCollider>().isTrigger = true;
         Invoke("Escape", 2f);
+    }
+
+
+    public void MoveAndAction(Spot newSpot)
+    {
+        MoveAndAction(newSpot, GetRandomMoveState());
     }
 
 
