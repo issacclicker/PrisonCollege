@@ -123,11 +123,12 @@ public class Weapon : MonoBehaviour
             // 설정한 공격 각도의 절반(왼쪽/오른쪽 범위) 안에 들어오는지 확인
             if (angle <= attackAngle * 0.5f)
             {
+                ApplyDamage(hit);
                 // 5. 장애물 체크 (선택 사항: 벽 뒤에 있는 적까지 때리는 것을 방지)
-                if (HasLineOfSight(hit, targetPos))
-                {
-                    ApplyDamage(hit);
-                }
+                // if (HasLineOfSight(hit, targetPos))
+                // {
+                //     ApplyDamage(hit);
+                // }
             }
         }
     }
