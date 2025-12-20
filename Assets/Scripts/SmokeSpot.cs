@@ -25,6 +25,12 @@ public class SmokeSpot : Spot
             arrivalTime = 0;
         }
 
+        if (student == null && vfxPlaying)
+        {
+            vfxPlaying=false;
+            StopVFX();
+        }
+
         if(!vfxPlaying&&arrivalTime>=5)
         {
             PlayVFX();
