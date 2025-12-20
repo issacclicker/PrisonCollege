@@ -421,6 +421,7 @@ public class Student : MonoBehaviour
         {
             spot.student = null;
         }
+        onArrived = null;
         StopAllCoroutines();
         CancelInvoke();
         Invoke("Respwan", 3);
