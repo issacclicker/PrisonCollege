@@ -4595,7 +4595,7 @@ MonoBehaviour:
   isArrived: 0
   student: {fileID: 0}
   smokePrefab: {fileID: 4213012572408952412, guid: 7de8e47da1eab78469e58310533ed618, type: 3}
-  offset: {x: 0, y: 0, z: 0}
+  offset: {x: 0, y: 2, z: 0}
   arrivalTime: 0
 --- !u!1001 &110532474
 PrefabInstance:
@@ -10438,7 +10438,7 @@ MonoBehaviour:
   isArrived: 0
   student: {fileID: 0}
   smokePrefab: {fileID: 4213012572408952412, guid: 7de8e47da1eab78469e58310533ed618, type: 3}
-  offset: {x: 0, y: 0, z: 0}
+  offset: {x: 0, y: 2, z: 0}
   arrivalTime: 0
 --- !u!1 &270718770
 GameObject:
@@ -30965,7 +30965,7 @@ MonoBehaviour:
   isArrived: 0
   student: {fileID: 0}
   smokePrefab: {fileID: 4213012572408952412, guid: 7de8e47da1eab78469e58310533ed618, type: 3}
-  offset: {x: 0, y: 0, z: 0}
+  offset: {x: 0, y: 2, z: 0}
   arrivalTime: 0
 --- !u!1001 &856435333
 PrefabInstance:
@@ -77618,7 +77618,7 @@ MonoBehaviour:
   isArrived: 0
   student: {fileID: 0}
   smokePrefab: {fileID: 4213012572408952412, guid: 7de8e47da1eab78469e58310533ed618, type: 3}
-  offset: {x: 0, y: 0, z: 0}
+  offset: {x: 0, y: 2, z: 0}
   arrivalTime: 0
 --- !u!1 &2006853771
 GameObject:
