@@ -29,7 +29,7 @@ public class UpgradeDoors : MonoBehaviour, IInteractable
         set => throw new System.NotImplementedException(); 
     }
 
-    private bool isLight = true;
+    public bool isLight = true;
 
     UnityEvent UseChangeEvent { get; set; } = new UnityEvent();
 

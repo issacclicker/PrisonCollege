@@ -56,6 +56,10 @@ public class Student : MonoBehaviour
         {
             newState = State.Swim;
         }
+        else if (Player.Instance.LightSwitch.isLight == false)
+        {
+            newState = State.Crouch;
+        }
         currentState = newState;
         if (currentState == State.Run)
         {
@@ -123,9 +127,11 @@ public class Student : MonoBehaviour
 
     private void OnLightSwitchOff()
     {
+        if (currentState == State.Stop)
+            return;
         if (spot is DoorSpot || spot is WindowSpot)
         {
-            CrouchTo(targetPosition);
+            SetCurrentState(State.Crouch);
         }
     }
 

@@ -7,6 +7,7 @@ public class SceneLoad : MonoBehaviour
 {
     float time = 0;
     public void LoadScene(string name){
+        ChaosSystem.chaos = 0;
         StartCoroutine(LoadingAsync(name));
     }
 
