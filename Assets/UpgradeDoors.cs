@@ -13,7 +13,7 @@ public class UpgradeDoors : MonoBehaviour, IInteractable
 
     private int health = 100;
     
-    public bool isUpgraded;
+    public bool isUpgraded = true;
 
     public string AnimName { get {
             if (Specifics == specifics.doors)
@@ -29,14 +29,28 @@ public class UpgradeDoors : MonoBehaviour, IInteractable
         set => throw new System.NotImplementedException(); 
     }
 
+    private bool isLight = true;
+
     UnityEvent UseChangeEvent { get; set; } = new UnityEvent();
 
     void Start()
     {
         if(Specifics == specifics.doors || Specifics == specifics.window)
         {
-        gameObject.GetComponent<MeshRenderer>().enabled=false;       
-        isUpgraded = false;
+            if (Extension.Check(0.5f))
+            {
+                gameObject.GetComponent<MeshRenderer>().enabled=false; 
+                isUpgraded = false;
+                gameObject.layer = 6;
+                UseChangeEvent?.Invoke();
+            }
+            else
+            {
+                DoUpgrade();
+            }
+            //DoCrash();
+        // gameObject.GetComponent<MeshRenderer>().enabled=false;       
+        // isUpgraded = false;
         }
         else if(Specifics == specifics.electricShield)
         {
@@ -76,6 +90,7 @@ public class UpgradeDoors : MonoBehaviour, IInteractable
 
     void DoFixLight()
     {
+        isLight = true;
         GameObject EnvCtrl = GameObject.FindWithTag("EnvCtrl");
         EnvCtrl.GetComponent<EnvironmentEventController>().EndRedLight();
         gameObject.layer = 0;
@@ -84,6 +99,9 @@ public class UpgradeDoors : MonoBehaviour, IInteractable
 
     public void OffLight()
     {
+        if (isLight == false)
+            return;
+        isLight = false;
         LightOffEvent?.Invoke();
         GameObject EnvCtrl = GameObject.FindWithTag("EnvCtrl");
         EnvCtrl.GetComponent<EnvironmentEventController>().startRedLight();

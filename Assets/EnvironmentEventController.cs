@@ -66,7 +66,7 @@ public class EnvironmentEventController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            startFlood();
+            //startFlood();
         }
     }
 

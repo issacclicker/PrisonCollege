@@ -225,6 +225,8 @@ public class Student : MonoBehaviour
         //MoveAndAction(smokingSpots.GetRandom(), State.Walk);
         //MoveAndAction(smokingSpots.GetRandom(), State.Walk);
         //return;
+        MoveAndAction(doorSpot, State.Walk);
+        return;
         if (randValue <= 90)
         {
             MoveAndAction(doorSpot);
@@ -407,9 +409,11 @@ public class Student : MonoBehaviour
         // Stop();
         // SetCurrentState(State.Walk);
         Stop();
+        onArrived = null;
+        StopAllCoroutines();
+        CancelInvoke();
         animator.SetTrigger("Die1");
         GetComponent<Collider>().enabled = false;
-        spot = null;
         if (spot)
         {
             if (!(spot is SmokeSpot || spot is DoorSpot || spot is WindowSpot))
@@ -421,9 +425,7 @@ public class Student : MonoBehaviour
         {
             spot.student = null;
         }
-        onArrived = null;
-        StopAllCoroutines();
-        CancelInvoke();
+        spot = null;
         Invoke("Respwan", 3);
     }
 
@@ -588,7 +590,7 @@ public class Student : MonoBehaviour
         ExecuteMove(newState, newSpot.transform.position);
         onArrived = () => {
             spot.isArrived = true;
-            if (newSpot.GetAnimName().Equals("Type") && Extension.Check(0.1f))
+            if (newSpot.GetAnimName().Equals("Type") && Extension.Check(0.05f))
             {
                 Invoke("SyetemHack", 2f);
             }
@@ -627,6 +629,11 @@ public class Student : MonoBehaviour
 
     private void Escape()
     {
+        if (spot && spot.student)
+        {
+            spot.student = null;
+        }
+        spot = null;
         Destroy(gameObject);
     }
 

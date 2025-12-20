@@ -14669,7 +14669,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!195 &389582652
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -16980,7 +16980,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!195 &447859947
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -66464,7 +66464,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!195 &1755131783
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -72188,7 +72188,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!195 &1881030809
 NavMeshAgent:
   m_ObjectHideFlags: 0
