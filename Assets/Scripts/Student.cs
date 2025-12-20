@@ -394,9 +394,11 @@ public class Student : MonoBehaviour
     private int health = 100;
 
     public AudioSource[] audioHit;
+    public AudioSource[] audioHurtVoice;
     public void TakeDamage(int damage)
     {
         audioHit[UnityEngine.Random.Range(0,audioHit.Length)].Play();
+        audioHurtVoice[UnityEngine.Random.Range(0,audioHurtVoice.Length)].Play();
         health -= damage;
         Debug.Log(health);
         if (health <= 0)
