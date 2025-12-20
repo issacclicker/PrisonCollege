@@ -55,7 +55,7 @@ public class Player : MonoBehaviour
     private void OnFloodFull(bool isFull)
     {
         Debug.Log("OnFloodFull : " + isFull);
-        speedRate = isFull ? 0.5f : 1;
+        speedRate = isFull ? 0.3f : 1;
     }
 
     void Update()
