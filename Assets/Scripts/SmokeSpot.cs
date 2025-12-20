@@ -31,7 +31,7 @@ public class SmokeSpot : Spot
             vfxPlaying=true;
         }
 
-        if (arrivalTime >= 7)
+        if (arrivalTime >= 10)
         {
             GameObject EnvCtrl = GameObject.FindWithTag("EnvCtrl");
             EnvCtrl.GetComponent<EnvironmentEventController>().startFlood();
