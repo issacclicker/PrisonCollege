@@ -623,12 +623,26 @@ public class Student : MonoBehaviour
         };
     }
 
+    public GameObject hackingVFX;
+
     private void SyetemHack()
     {
+        GameObject temp = Instantiate(hackingVFX);
+        temp.transform.position = new Vector3(hackingVFX.transform.position.x, hackingVFX.transform.position.y+2f, hackingVFX.transform.position.z);
+        temp.GetComponent<ParticleSystem>().Play();
+
+        IEnumerator EndHackVFXRoutine()
+        {
+            yield return new WaitForSeconds(1f);
+            temp.GetComponent<ParticleSystem>().Stop();
+            Destroy(temp);
+        }
+        StartCoroutine(EndHackVFXRoutine());
         Player.Instance.LightSwitch.OffLight();
     }
 
 
+    public GameSystem gameSystem;
     private void Escape()
     {
         if (spot && spot.student)
@@ -636,6 +650,7 @@ public class Student : MonoBehaviour
             spot.student = null;
         }
         spot = null;
+        gameSystem.UpdateEscapeCounter();
         Destroy(gameObject);
     }
 

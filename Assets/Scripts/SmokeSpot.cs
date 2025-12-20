@@ -25,10 +25,18 @@ public class SmokeSpot : Spot
             arrivalTime = 0;
         }
 
-        if (arrivalTime >= 5)
+        if(!vfxPlaying&&arrivalTime>=5)
+        {
+            PlayVFX();
+            vfxPlaying=true;
+        }
+
+        if (arrivalTime >= 7)
         {
             GameObject EnvCtrl = GameObject.FindWithTag("EnvCtrl");
             EnvCtrl.GetComponent<EnvironmentEventController>().startFlood();
+            vfxPlaying=false;
+            StopVFX();
         }
     }
 
