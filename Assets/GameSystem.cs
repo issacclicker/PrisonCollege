@@ -61,10 +61,22 @@ public class GameSystem : MonoBehaviour
     public void GameOver()
     {
         gameOverText.SetActive(true);
+        goBackToTitle();
     }
 
     public void GameWin()
     {
         gameWinText.SetActive(true);
+        goBackToTitle();
+    }
+
+    void goBackToTitle()
+    {
+        IEnumerator delayRoutine()
+        {
+            yield return new WaitForSeconds(3F);
+            gameObject.GetComponent<SceneLoad>().LoadScene("StartScene");
+        }
+        StartCoroutine(delayRoutine());
     }
 }
