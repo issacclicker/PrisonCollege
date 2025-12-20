@@ -650,6 +650,7 @@ public class Student : MonoBehaviour
             spot.student = null;
         }
         spot = null;
+        ChaosSystem.chaos += 30;
         gameSystem.UpdateEscapeCounter();
         Destroy(gameObject);
     }
