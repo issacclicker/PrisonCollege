@@ -221,48 +221,50 @@ public class Student : MonoBehaviour
 
     private void decideBehaviour()
     {
-        int randValue = UnityEngine.Random.Range(1, 100 + 1);
-        //MoveAndAction(smokingSpots.GetRandom(), State.Walk);
-        //MoveAndAction(smokingSpots.GetRandom(), State.Walk);
-        //return;
-        MoveAndAction(doorSpot, State.Walk);
-        return;
-        if (randValue <= 90)
-        {
-            MoveAndAction(doorSpot);
-        }
-        else
-        {
-            MoveAndAction(windowSpots.GetRandom());
-        }
-        return;
+        //UnityEngine.Random.InitState((int)System.DateTime.Now.Ticks);
+        float randValue = UnityEngine.Random.Range(0f, 1f) * 100;
+        //int randValue = UnityEngine.Random.Range(1, 100 + 1);
+
+        // MoveAndAction(doorSpot, State.Walk);
+        // return;
+        
+        // if (randValue <= 90)
+        // {
+        //     MoveAndAction(doorSpot);
+        // }
+        // else
+        // {
+        //     MoveAndAction(windowSpots.GetRandom());
+        // }
+        // return;
+
         if (randValue <= 20)
         {
-            MoveAndAction(chairSpot, State.Walk);
+            MoveAndAction(chairSpot);
         }
         else if (randValue <= 40)
         {
-            MoveAndAction(windowSpots.GetRandom(), State.Walk);
+            MoveAndAction(windowSpots.GetRandom());
         }
         else if (randValue <= 60)
         {
-            MoveAndAction(doorSpot, State.Walk);
+            MoveAndAction(doorSpot);
         }
         else if (randValue <= 70)
         {
-            MoveAndAction(standingSpots.GetRandom(), State.Run);
+            MoveAndAction(standingSpots.GetRandom());
         }
         else if (randValue <= 80)
         {
-            MoveAndAction(dancingSpots.GetRandom(), State.Walk);
+            MoveAndAction(dancingSpots.GetRandom());
         }
         else if (randValue <= 90)
         {
-            MoveAndAction(prayingSpots.GetRandom(), State.Walk);
+            MoveAndAction(prayingSpots.GetRandom());
         }
         else
         {
-            MoveAndAction(smokingSpots.GetRandom(), State.Walk);
+            MoveAndAction(smokingSpots.GetRandom());
         }
 
         //MoveAndAction(chairSpot, State.Walk, "Type");

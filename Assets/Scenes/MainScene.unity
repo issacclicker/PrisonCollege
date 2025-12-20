@@ -4570,13 +4570,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 109873110}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: -0.60876137, z: 0, w: 0.7933534}
   m_LocalPosition: {x: 4.657, y: 0, z: 17.123}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 290972174}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -75, z: 0}
 --- !u!114 &109873112
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10413,13 +10413,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 270470885}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: 0.7710185, z: -0, w: 0.6368128}
   m_LocalPosition: {x: -6.617, y: 0, z: 17.123}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 290972174}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 100.891, z: 0}
 --- !u!114 &270470887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14669,7 +14669,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &389582652
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -14731,6 +14731,11 @@ MonoBehaviour:
   waitingTime: 12
   windowSpots:
   - {fileID: 712842676}
+  - {fileID: 547719817}
+  - {fileID: 1849827208}
+  - {fileID: 2122566589}
+  - {fileID: 772835476}
+  - {fileID: 1495458154}
   doorSpot: {fileID: 405097806}
   chairSpot: {fileID: 1166039896}
   standingSpots:
@@ -16980,7 +16985,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &447859947
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -17042,6 +17047,11 @@ MonoBehaviour:
   waitingTime: 12
   windowSpots:
   - {fileID: 712842676}
+  - {fileID: 547719817}
+  - {fileID: 1849827208}
+  - {fileID: 2122566589}
+  - {fileID: 772835476}
+  - {fileID: 1495458154}
   doorSpot: {fileID: 405097806}
   chairSpot: {fileID: 1955542731}
   standingSpots:
@@ -31033,7 +31043,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animName: 
   isRootTrans: 0
-  hasTurn: 1
+  hasTurn: 0
   isArrived: 0
   student: {fileID: 0}
   smokePrefab: {fileID: 4213012572408952412, guid: 7de8e47da1eab78469e58310533ed618, type: 3}
@@ -41200,6 +41210,11 @@ MonoBehaviour:
   waitingTime: 12
   windowSpots:
   - {fileID: 712842676}
+  - {fileID: 547719817}
+  - {fileID: 1849827208}
+  - {fileID: 2122566589}
+  - {fileID: 772835476}
+  - {fileID: 1495458154}
   doorSpot: {fileID: 405097806}
   chairSpot: {fileID: 620312902}
   standingSpots:
@@ -66464,7 +66479,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &1755131783
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -66526,6 +66541,11 @@ MonoBehaviour:
   waitingTime: 12
   windowSpots:
   - {fileID: 712842676}
+  - {fileID: 547719817}
+  - {fileID: 1849827208}
+  - {fileID: 2122566589}
+  - {fileID: 772835476}
+  - {fileID: 1495458154}
   doorSpot: {fileID: 405097806}
   chairSpot: {fileID: 1279099091}
   standingSpots:
@@ -72188,7 +72208,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!195 &1881030809
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -72250,6 +72270,11 @@ MonoBehaviour:
   waitingTime: 12
   windowSpots:
   - {fileID: 712842676}
+  - {fileID: 547719817}
+  - {fileID: 1849827208}
+  - {fileID: 2122566589}
+  - {fileID: 772835476}
+  - {fileID: 1495458154}
   doorSpot: {fileID: 405097806}
   chairSpot: {fileID: 1443101013}
   standingSpots:
@@ -77532,7 +77557,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animName: 
   isRootTrans: 0
-  hasTurn: 1
+  hasTurn: 0
   isArrived: 0
   student: {fileID: 0}
   smokePrefab: {fileID: 4213012572408952412, guid: 7de8e47da1eab78469e58310533ed618, type: 3}

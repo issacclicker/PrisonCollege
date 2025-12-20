@@ -9,7 +9,7 @@ public class Spot : MonoBehaviour
 {
     [SerializeField] private string animName;
     [SerializeField] private bool isRootTrans;
-    [SerializeField] private bool hasTurn = true;
+    [SerializeField] protected bool hasTurn = true;
     public bool isArrived = false;
 
     //public AudioClip audioClip;

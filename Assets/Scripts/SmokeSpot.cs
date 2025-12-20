@@ -144,6 +144,6 @@ public class SmokeSpot : Spot
 
     public override bool HasToTurn()
     {
-        return false;
+        return hasTurn;
     }
 }
