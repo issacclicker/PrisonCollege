@@ -191,13 +191,17 @@ public class Student : MonoBehaviour
     public void StartBehaviourRoutine()
     {
         //waitingTime 만큼 기다렸다가 행동 시작
-        float delay = UnityEngine.Random.Range(waitingTime - 1, waitingTime + 1);
+        float delay = UnityEngine.Random.Range(waitingTime - 1, waitingTime + 1) * GetMultiplier();
+        if (spot && (spot is DoorSpot || spot is WindowSpot))
+            delay = 6;
+        else if (spot && (spot is SmokeSpot))
+            delay = 10.5f;
         StartCoroutine(RoutineDelay(delay));
     }
 
     IEnumerator RoutineDelay(float delay)
     {
-        yield return new WaitForSeconds(delay * GetMultiplier());
+        yield return new WaitForSeconds(delay);
         decideBehaviour();
     }
 
