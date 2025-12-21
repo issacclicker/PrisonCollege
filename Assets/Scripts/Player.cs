@@ -44,6 +44,7 @@ public class Player : MonoBehaviour
 
     public GameObject warningPrefab;
     public Canvas canvas;
+    public AudioSource warningSource;
 
     void Start()
     {

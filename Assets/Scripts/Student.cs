@@ -439,6 +439,7 @@ public class Student : MonoBehaviour
                     Player.Instance.canvas.transform,
                     false   // ★ 중요
                 ).GetComponent<Warning>();
+                Player.Instance.warningSource.PlayOneShot(Player.Instance.warningSource.clip);
                 warning.Play(string.Format("무고한 대학원생 폭행!! : 혼란 + {0}", 10));
             }
         }
@@ -675,6 +676,7 @@ public class Student : MonoBehaviour
             Player.Instance.canvas.transform,
             false   // ★ 중요
         ).GetComponent<Warning>();
+        Player.Instance.warningSource.PlayOneShot(Player.Instance.warningSource.clip);
         warning.Play(string.Format("대학원생 탈출!! : 혼란 + {0}", 30));
         gameSystem.UpdateEscapeCounter();
         Destroy(gameObject);

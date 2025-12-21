@@ -103,7 +103,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   duration: 3
-  moveDown: 100
+  moveDown: 150
   textBox: {fileID: 196879199905859362}
 --- !u!1 &6178118053225683483
 GameObject:
