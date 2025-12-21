@@ -172,7 +172,7 @@ public class UpgradeDoors : MonoBehaviour, IInteractable
         {
             // 시간(Time.time)에 따라 0.5 ~ 1.0 사이를 부드럽게 왔다갔다 함
             // 0.75f는 중간값, 0.25f는 진폭, 5f는 속도입니다.
-            float alpha = 0.75f + Mathf.Sin(Time.time * 5f) * 0.25f;
+            float alpha = 0.6f + Mathf.Sin(Time.time * 5f) * 0.4f;
             
             color.a = alpha;
             popupImg.color = color;
