@@ -11,25 +11,27 @@ public class HUDController : MonoBehaviour
     public Image img;
 
     public TextMeshProUGUI complexityScore;
+    private Color fillColor;
 
     bool canErase;
 
     void Start()
     {
-        img.color = new Vector4(255,255,255,0);
+        fillColor = img.color;
+        img.color = fillColor;
     }
 
     
     public void UpdateInterctingUI(float t)
     {
-        img.color = new Vector4(255,255,255,255);
+        img.color = fillColor;
         img.fillAmount = t;
         
     }
 
     void Update()
     {
-        complexityScore.text = "혼잡도 점수 : " + ChaosSystem.chaos;
+        complexityScore.text = "혼란 : " + ChaosSystem.chaos;
     }
 
 }
