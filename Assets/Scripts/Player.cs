@@ -42,6 +42,9 @@ public class Player : MonoBehaviour
     public float chaosInterval = 5;
     private float chaosRemained;
 
+    public GameObject warningPrefab;
+    public Canvas canvas;
+
     void Start()
     {
         chaosRemained = chaosInterval;

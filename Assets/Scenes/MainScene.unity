@@ -56723,6 +56723,10 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 4147572108747605547, guid: 19933b39f7b97a544879e6b1add3c805, type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 7490942960132589720}
+    - target: {fileID: 4147572108747605547, guid: 19933b39f7b97a544879e6b1add3c805, type: 3}
       propertyPath: FloodSystem
       value: 
       objectReference: {fileID: 1706615914}
@@ -56734,6 +56738,10 @@ PrefabInstance:
       propertyPath: audioPlayer
       value: 
       objectReference: {fileID: 1521076335}
+    - target: {fileID: 4147572108747605547, guid: 19933b39f7b97a544879e6b1add3c805, type: 3}
+      propertyPath: warningPrefab
+      value: 
+      objectReference: {fileID: 5245034766915233331, guid: 7bcc025f70d99924dac3592062e668f1, type: 3}
     - target: {fileID: 4147572108747605547, guid: 19933b39f7b97a544879e6b1add3c805, type: 3}
       propertyPath: mouseSensitivity
       value: 250

@@ -434,6 +434,12 @@ public class Student : MonoBehaviour
             if (!(spot is SmokeSpot || spot is DoorSpot || spot is WindowSpot))
             {
                 ChaosSystem.chaos += 10;
+                Warning warning = Instantiate(
+                    Player.Instance.warningPrefab,
+                    Player.Instance.canvas.transform,
+                    false   // ★ 중요
+                ).GetComponent<Warning>();
+                warning.Play(string.Format("무고한 대학원생 폭행!! : 혼란 + {0}", 10));
             }
         }
         if (spot && spot.student)
@@ -664,6 +670,12 @@ public class Student : MonoBehaviour
         }
         spot = null;
         ChaosSystem.chaos += 30;
+        Warning warning = Instantiate(
+            Player.Instance.warningPrefab,
+            Player.Instance.canvas.transform,
+            false   // ★ 중요
+        ).GetComponent<Warning>();
+        warning.Play(string.Format("대학원생 탈출!! : 혼란 + {0}", 30));
         gameSystem.UpdateEscapeCounter();
         Destroy(gameObject);
     }
