@@ -426,6 +426,7 @@ public class Student : MonoBehaviour
         onArrived = null;
         StopAllCoroutines();
         CancelInvoke();
+        animator.applyRootMotion = true;
         animator.SetTrigger("Die1");
         GetComponent<Collider>().enabled = false;
         if (spot)
