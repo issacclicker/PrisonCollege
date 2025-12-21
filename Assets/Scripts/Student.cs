@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using System;
-using UnityEditor.PackageManager.UI;
-using Unity.VisualScripting;
 
 
 public enum State
@@ -616,7 +614,7 @@ public class Student : MonoBehaviour
         ExecuteMove(newState, newSpot.transform.position);
         onArrived = () => {
             spot.isArrived = true;
-            if (newSpot.GetAnimName().Equals("Type") && Extension.Check(0.5f))
+            if (newSpot.GetAnimName().Equals("Type") && Extension.Check(0.05f))
             {
                 Invoke("SyetemHack", 2f);
             }

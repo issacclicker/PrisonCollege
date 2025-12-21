@@ -26,6 +26,15 @@ public class UpgradeController : MonoBehaviour
         CheckLookTarget();
         HandleSound();
 
+        if(targetSpecific >= 0 || targetSpecific <= 2)
+        {
+            HUDcontroller.UpdateINterctingTip(targetSpecific);
+        }
+        else            
+        {
+            HUDcontroller.UpdateINterctingTip(-1);
+        }
+
         if (isLookingAtInteractable)
         {
             if (Input.GetKey(interactKey))
@@ -72,6 +81,7 @@ public class UpgradeController : MonoBehaviour
         {
             isLookingAtInteractable = false;
             currentTarget = null;
+            targetSpecific = -1;
         }
     }
 
