@@ -616,7 +616,7 @@ public class Student : MonoBehaviour
         ExecuteMove(newState, newSpot.transform.position);
         onArrived = () => {
             spot.isArrived = true;
-            if (newSpot.GetAnimName().Equals("Type") && Extension.Check(0.05f))
+            if (newSpot.GetAnimName().Equals("Type") && Extension.Check(0.5f))
             {
                 Invoke("SyetemHack", 2f);
             }

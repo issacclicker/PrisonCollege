@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.UI;
 public class UpgradeDoors : MonoBehaviour, IInteractable
 {
     public enum specifics{doors, window, electricShield};
@@ -54,6 +55,9 @@ public class UpgradeDoors : MonoBehaviour, IInteractable
         }
         else if(Specifics == specifics.electricShield)
         {
+            hackPopup.SetActive(false);
+            // WarnSystemHack = StartCoroutine(SystemHackWarning());
+            // StopCoroutine(WarnSystemHack);
             // DoFixLight();
         }
     }
@@ -94,6 +98,10 @@ public class UpgradeDoors : MonoBehaviour, IInteractable
         GameObject EnvCtrl = GameObject.FindWithTag("EnvCtrl");
         EnvCtrl.GetComponent<EnvironmentEventController>().EndRedLight();
         gameObject.layer = 0;
+
+        hackPopup.SetActive(false);
+        if (WarnSystemHack != null)
+            StopCoroutine(WarnSystemHack);
     }
 
 
@@ -105,6 +113,9 @@ public class UpgradeDoors : MonoBehaviour, IInteractable
         LightOffEvent?.Invoke();
         GameObject EnvCtrl = GameObject.FindWithTag("EnvCtrl");
         EnvCtrl.GetComponent<EnvironmentEventController>().startRedLight();
+
+        hackPopup.SetActive(true);
+        WarnSystemHack = StartCoroutine(SystemHackWarning());
     }
 
     public void Use()
@@ -147,12 +158,37 @@ public class UpgradeDoors : MonoBehaviour, IInteractable
         doorObject.transform.rotation = Quaternion.Euler(0, 0f, 0);
     }
 
+    public Coroutine WarnSystemHack;
+    public GameObject hackPopup;
+
+
+    IEnumerator SystemHackWarning()
+    {
+        hackPopup.SetActive(true);
+        Image popupImg = hackPopup.GetComponent<Image>();
+        Color color = popupImg.color;
+
+        while(!isLight) // 전원이 켜져 있는 동안 무한 반복
+        {
+            // 시간(Time.time)에 따라 0.5 ~ 1.0 사이를 부드럽게 왔다갔다 함
+            // 0.75f는 중간값, 0.25f는 진폭, 5f는 속도입니다.
+            float alpha = 0.75f + Mathf.Sin(Time.time * 5f) * 0.25f;
+            
+            color.a = alpha;
+            popupImg.color = color;
+
+            yield return null; // 매 프레임마다 갱신 (부드러움의 핵심)
+        }
+
+        hackPopup.SetActive(false); // 루프가 끝나면 팝업 끄기
+    }
+
 
     void Update()
     {
-        if (Specifics == specifics.electricShield && Input.GetKeyDown(KeyCode.Space))
-        {
-            //OffLight();
-        }
+        // if (Specifics == specifics.electricShield && is)
+        // {
+        //     //OffLight();
+        // }
     }
 }
