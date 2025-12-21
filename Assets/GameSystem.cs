@@ -23,6 +23,7 @@ public class GameSystem : MonoBehaviour
         gameWinText.SetActive(false);
         currentTime = startTime;
         escapedGraduateStudentCounter = 0;
+        escapedGraduateStudentCounterText.text = "탈출한 대학원생 : " + escapedGraduateStudentCounter + "/3";
     }
 
     void Update()
@@ -53,7 +54,8 @@ public class GameSystem : MonoBehaviour
     public void UpdateEscapeCounter()
     {
         escapedGraduateStudentCounter++;
-        escapedGraduateStudentCounterText.text = "탈출한 대학원생 수 : " + escapedGraduateStudentCounter;
+        // escapedGraduateStudentCounterText.text = string.Format("탈출한 대학원생 수 : {0}/3", escapedGraduateStudentCounter);
+        escapedGraduateStudentCounterText.text = "탈출한 대학원생 : " + escapedGraduateStudentCounter + "/3";
         if(escapedGraduateStudentCounter>=3) GameOver(); 
     }
 
