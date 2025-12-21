@@ -232,9 +232,12 @@ public class Student : MonoBehaviour
         float randValue = UnityEngine.Random.Range(0f, 1f) * 100;
         //int randValue = UnityEngine.Random.Range(1, 100 + 1);
 
-        // MoveAndAction(smokingSpots.GetRandom(), State.Walk);
+        //담배 디버깅
+        // MoveAndAction(smokingSpots.GetRandom(), State.Walk); 
         // return;
-        
+        //
+
+
         // if (randValue <= 90)
         // {
         //     MoveAndAction(doorSpot);
