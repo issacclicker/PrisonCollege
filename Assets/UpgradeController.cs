@@ -99,7 +99,7 @@ public class UpgradeController : MonoBehaviour
 
     void PlayHoldSound()
     {
-        if (!isHoldingSoundPlaying)
+        if (!isHoldingSoundPlaying && targetSpecific >= 0)
         {
             holdSound[targetSpecific].Play();
             isHoldingSoundPlaying = true;
@@ -110,7 +110,8 @@ public class UpgradeController : MonoBehaviour
     {
         if (isHoldingSoundPlaying)
         {
-            holdSound[targetSpecific].Stop();
+            foreach(AudioSource x in holdSound)
+            x.Stop();
             isHoldingSoundPlaying = false;
         }
     }

@@ -24584,9 +24584,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6488207570149361417, guid: 85613a3a0f37dab48bc7c0408ab0ca41, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1869776589}
-    - targetCorrespondingSourceObject: {fileID: 6488207570149361417, guid: 85613a3a0f37dab48bc7c0408ab0ca41, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1869776588}
   m_SourcePrefab: {fileID: 100100000, guid: 85613a3a0f37dab48bc7c0408ab0ca41, type: 3}
 --- !u!4 &1869776586 stripped
 Transform:
@@ -24598,25 +24595,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6488207570149361417, guid: 85613a3a0f37dab48bc7c0408ab0ca41, type: 3}
   m_PrefabInstance: {fileID: 1869776585}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1869776588
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1869776587}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e042a0b309e22dc4cbf93de0628f7a7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Specifics: 2
-  doorObject: {fileID: 0}
-  LightOffEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  isUpgraded: 0
-  isLight: 1
 --- !u!65 &1869776589
 BoxCollider:
   m_ObjectHideFlags: 0
