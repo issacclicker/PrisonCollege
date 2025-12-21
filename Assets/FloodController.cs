@@ -24,6 +24,8 @@ public class FloodController : MonoBehaviour
     //경보 소리
     public AudioSource fireAlarmSound;
 
+    public GameObject[] alarmLights;
+
 
     public UnityEvent<bool> FullEvent = new UnityEvent<bool>();
     public bool isFull = false;
@@ -34,11 +36,25 @@ public class FloodController : MonoBehaviour
 
 
 
+    // void Start()
+    // {
+    //     foreach (GameObject alarmLight in alarmLights)
+    //     {
+    //         alarmLight.SetActive(false);
+    //     }
+    // }
+
+
+
     public void startFlood()
     {
         StartCoroutine(FloodStartRoutine());
         floodSound.Play();
         fireAlarmSound.Play();
+        foreach (GameObject alarmLight in alarmLights)
+        {
+            alarmLight.SetActive(true);
+        }
     }
 
 
@@ -61,6 +77,10 @@ public class FloodController : MonoBehaviour
         
         floodSound.Stop();
         fireAlarmSound.Stop();
+        foreach (GameObject alarmLight in alarmLights)
+        {
+            alarmLight.SetActive(false);
+        }
         // 1 → 0 감소
         timer = 0f;
         while (timer < floodFadeTime)
