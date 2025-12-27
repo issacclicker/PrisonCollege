@@ -472,6 +472,26 @@ public class PlayOnceAnim : BT_Node
 
 
 
+public class SetAnimBool : BT_Node
+{
+    private string _paramName;
+    private bool _value;
+
+    public SetAnimBool(string paramName, bool value)
+    {
+        _paramName = paramName;
+        _value = value;
+    }
+
+    public override NodeState Evaluate()
+    {
+        _bb.Anim.SetBool(_paramName, _value);
+        return NodeState.Success;
+    }
+}
+
+
+
 [System.Serializable]
 public class Blackboard
 {

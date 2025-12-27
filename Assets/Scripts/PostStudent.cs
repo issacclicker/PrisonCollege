@@ -21,9 +21,10 @@ public class PostStudent : MonoBehaviour
     [SerializeField] private float _changeInterval = 2.0f; // 2초 간격
     [SerializeField] private Transform _targetDestination; // 이동 목표 지점
 
-    [SerializeField] private BehaveSpot chairSpot; // 가중치 스팟 데이터 SO
-    [SerializeField] private SpotGroup restSpots; // 가중치 스팟 데이터 SO
-
+    [SerializeField] private BehaveSpot chairSpot;
+    [SerializeField] private SpotGroup restSpots;
+    [SerializeField] private SpotGroup microwaveSpots;
+    [SerializeField] private SpotGroup prowlSpots;
 
     private void Awake()
     {
@@ -36,13 +37,59 @@ public class PostStudent : MonoBehaviour
         _root.SetBlackboard(_blackboard);
     }
 
+
+    private BT_Node ConstructWorkSequence()
+    {
+        // 1. 개별 액션 시퀀스 정의
+        Sequence angrySeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Angry", "Angry", 1) });
+        Sequence clapSeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Clap", "Clap", 1) });
+        Sequence frustrateSeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Frustrated", "Frustrated", 1) });
+
+        // 2. 아무것도 안 하고 타이핑만 계속할 상태 (대기 노드)
+        Sequence justTyping = new Sequence(new List<BT_Node> { new Delay(() => 0.1f) });
+
+        // 3. 확률 선택기 구성 (가중치 부여)
+        RandomSelector chanceActionSelector = new RandomSelector(
+            new List<BT_Node> { angrySeq, clapSeq, frustrateSeq, justTyping },
+            new List<System.Func<int>> {
+                () => 10, // 욕(분노) 10%
+                () => 10, // 박수 10%
+                () => 10, // 좌절 10%
+                () => 1  // 그냥 계속 타이핑 70%
+            }
+        );
+
+        // 4. 메인 워크 시퀀스에 조립
+        Sequence workSequence = new Sequence(new List<BT_Node>
+        {
+            new SetBehaveSpot(chairSpot),
+            new SetRandomSpeed(GetRandomSpeed),
+            new MoveToTarget(),
+            new RotateToTarget(),
+            new SetAnimBool("Sitting", true),
+            new SetAnimBool("Typing", true),
+            new Delay(() => 3f),
+            chanceActionSelector,
+            new Delay(() => 6f),
+            new SetAnimBool("Sitting", false),
+            new SetAnimBool("Typing", false),
+        });
+        return workSequence;
+    }
+
     private BT_Node ConstructBehaviorTree()
     {
         // 동작 설계: 
         // 1. 랜덤 지점으로 이동
         // 2. 도착하면 3초간 주변 구경(Loop)
         // 3. 50% 확률로 기지개 켜기(Once), 50% 확률로 그냥 대기
-
+        Sequence prowlSequence = new Sequence(new List<BT_Node>
+        {
+            new SetRandomBehaveSpot(prowlSpots),
+            new SetRandomSpeed(GetRandomSpeed),
+            new MoveToTarget()
+            //new PlayLoopAnim("LookAround", 5)
+        });
         Sequence restSequence = new Sequence(new List<BT_Node>
         {
             new SetRandomBehaveSpot(restSpots),
@@ -51,18 +98,28 @@ public class PostStudent : MonoBehaviour
             new PlayOnceAnim("LookAround", "LookAround")
             //new PlayLoopAnim("LookAround", 5)
         });
-        Sequence workSequence = new Sequence(new List<BT_Node>
+        //Sequence workSequence = new Sequence(new List<BT_Node>
+        //{
+        //    new SetBehaveSpot(chairSpot),
+        //    new SetRandomSpeed(GetRandomSpeed),
+        //    new MoveToTarget(),
+        //    new RotateToTarget(),
+        //    new PlayLoopAnim("Typing", 5)
+        //});
+        Sequence microwaveSequence = new Sequence(new List<BT_Node>
         {
-            new SetBehaveSpot(chairSpot),
+            new SetRandomBehaveSpot(microwaveSpots),
             new SetRandomSpeed(GetRandomSpeed),
+            new SetAnimBool("Carrying", true),
             new MoveToTarget(),
+            new SetAnimBool("Carrying", false),
             new RotateToTarget(),
-            new PlayLoopAnim("Typing", 5)
+            new PlayOnceAnim("PushButton", "PushButton")
         });
 
         RandomSelector randomJobSelector = new RandomSelector(
-            new List<BT_Node> { restSequence, workSequence },
-            new List<System.Func<int>> { () => 50, () => 50 }
+            new List<BT_Node> { prowlSequence, restSequence, ConstructWorkSequence(), microwaveSequence },
+            new List<System.Func<int>> { () => 0, () => 0, () => 50, () => 0 }
         );
 
         // 4. 전체 루트를 반복(Selector 또는 Sequence) 하도록 설정
