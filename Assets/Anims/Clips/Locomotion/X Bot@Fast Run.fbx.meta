@@ -37,7 +37,11 @@ ModelImporter:
       firstFrame: 0
       lastFrame: 31
       wrapMode: 0
+<<<<<<< Updated upstream
       orientationOffsetY: -3.6
+=======
+      orientationOffsetY: 0
+>>>>>>> Stashed changes
       level: 0
       cycleOffset: 0
       loop: 0

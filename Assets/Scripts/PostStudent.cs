@@ -74,4 +74,8 @@ public class PostStudent : MonoBehaviour
         _agent.speed = speed;
         Debug.Log($"현재 상태: {stateName} (속도: {speed})");
     }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes

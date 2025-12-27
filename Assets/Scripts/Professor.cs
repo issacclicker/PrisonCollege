@@ -1,4 +1,8 @@
+<<<<<<< Updated upstream
 using System.Collections;
+=======
+ï»¿using System.Collections;
+>>>>>>> Stashed changes
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -60,7 +64,11 @@ public class Professor : MonoBehaviour
         float x = Input.GetAxis("Horizontal");
         float z = Input.GetAxis("Vertical");
 
+<<<<<<< Updated upstream
         // Shift ÀÔ·Â °¨Áö
+=======
+        // Shift ë‹¬ë¦¬ê¸°
+>>>>>>> Stashed changes
         bool isSprinting = Input.GetKey(KeyCode.LeftShift);
 
         float currentSpeed = isSprinting
@@ -70,11 +78,19 @@ public class Professor : MonoBehaviour
         Vector3 move = transform.right * x + transform.forward * z;
         _controller.Move(move * currentSpeed * Time.deltaTime * _speedRate);
 
+<<<<<<< Updated upstream
         // Áß·Â Ã³¸®
+=======
+        // ì¤‘ë ¥
+>>>>>>> Stashed changes
         if (_controller.isGrounded && _velocity.y < 0)
             _velocity.y = -2f;
 
         _velocity.y += _gravity * Time.deltaTime;
         _controller.Move(_velocity * Time.deltaTime);
     }
+<<<<<<< Updated upstream
 }
+=======
+}
+>>>>>>> Stashed changes
