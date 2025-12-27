@@ -725,7 +725,7 @@ public class Student : MonoBehaviour
 
 
 
-public static class Extensions
+public static class ListExtensions
 {
     /// <summary>
     /// Transform 배열에서 랜덤 원소 하나 반환
