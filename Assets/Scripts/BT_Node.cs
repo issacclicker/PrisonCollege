@@ -194,6 +194,47 @@ public class RandomSelector : CompositeNode
 
 
 
+public class PrioritySelector : CompositeNode
+{
+    private int _lastRunningIndex = -1;
+
+    public PrioritySelector(List<BT_Node> children) : base(children) { }
+
+    public override NodeState Evaluate()
+    {
+        for (int i = 0; i < children.Count; i++)
+        {
+            NodeState state = children[i].Evaluate();
+
+            // 이번 프레임에 성공(Success)하거나 실행(Running) 중인 노드를 찾음
+            if (state != NodeState.Failure)
+            {
+                // [중단 로직] 이전에 실행하던 노드가 있고, 그 노드보다 현재 노드의 우선순위가 높다면(인덱스가 작다면)
+                if (_lastRunningIndex != -1 && _lastRunningIndex > i)
+                {
+                    children[_lastRunningIndex].Reset();
+                }
+
+                // 현재 실행 중인 인덱스 기록 (Running일 때만 유지, Success/Failure면 초기화)
+                _lastRunningIndex = (state == NodeState.Running) ? i : -1;
+                return state;
+            }
+        }
+
+        // 모든 자식이 Failure를 반환한 경우
+        _lastRunningIndex = -1;
+        return NodeState.Failure;
+    }
+
+    public override void Reset()
+    {
+        base.Reset(); // 모든 자식 노드를 재귀적으로 Reset
+        _lastRunningIndex = -1;
+    }
+}
+
+
+
 public class SetRandomBehaveSpot : BT_Node
 {
     private SpotGroup _behaveSpots;

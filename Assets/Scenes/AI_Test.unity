@@ -902,7 +902,7 @@ MonoBehaviour:
   _moveSpeed: 5
   _gravity: -9.81
   _sprintMultiplier: 1.7
-  _mouseSensitivity: 2
+  _mouseSensitivity: 5
   _cameraTransform: {fileID: 367767481}
   _maxLookAngle: 80
 --- !u!1 &1566338695
@@ -5430,10 +5430,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 886212a0a9179e44caad35c77a21f739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _idleSpeed: 0
-  _walkSpeed: 1.45
-  _runSpeed: 5.48
-  _sprintSpeed: 6.76
   _changeInterval: 2
   _targetDestination: {fileID: 1678789917}
   chairSpot: {fileID: 1393121278}
