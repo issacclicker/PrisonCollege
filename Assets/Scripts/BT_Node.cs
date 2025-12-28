@@ -10,9 +10,9 @@ using static Global;
 
 public enum NodeState
 {
-    Running, // ½ÇÇà Áß (¿¹: ¸ñÀûÁö·Î ÀÌµ¿ Áß)
-    Success, // ¼º°ø (¿¹: ¸ñÀûÁö µµÂø, Á¶°Ç ¸¸Á·)
-    Failure  // ½ÇÆĞ (¿¹: °æ·Î ¾øÀ½, Á¶°Ç ºÒ¸¸Á·)
+    Running, // ì‹¤í–‰ ì¤‘ (ì˜ˆ: ëª©ì ì§€ë¡œ ì´ë™ ì¤‘)
+    Success, // ì„±ê³µ (ì˜ˆ: ëª©ì ì§€ ë„ì°©, ì¡°ê±´ ë§Œì¡±)
+    Failure  // ì‹¤íŒ¨ (ì˜ˆ: ê²½ë¡œ ì—†ìŒ, ì¡°ê±´ ë¶ˆë§Œì¡±)
 }
 
 
@@ -20,7 +20,7 @@ public enum NodeState
 [System.Serializable]
 public abstract class BT_Node
 {
-    protected Blackboard _bb; // ¸ğµç ÀÚ½Ä ³ëµå¿¡¼­ Á¢±Ù °¡´É
+    protected Blackboard _bb; // ëª¨ë“  ìì‹ ë…¸ë“œì—ì„œ ì ‘ê·¼ ê°€ëŠ¥
     public virtual void SetBlackboard(Blackboard blackboard) => _bb = blackboard;
     public virtual void Reset() { }
     public abstract NodeState Evaluate();
@@ -37,7 +37,7 @@ public abstract class CompositeNode : BT_Node
         this.children = children;
     }
 
-    // ºÎ¸ğ ³ëµå¿¡ ºí·¢º¸µå°¡ ÁÖÀÔµÉ ¶§ ÀÚ½Äµé¿¡°Ôµµ ÀüÆÄ (Àç±Í)
+    // ë¶€ëª¨ ë…¸ë“œì— ë¸”ë™ë³´ë“œê°€ ì£¼ì…ë  ë•Œ ìì‹ë“¤ì—ê²Œë„ ì „íŒŒ (ì¬ê·€)
     public override void SetBlackboard(Blackboard blackboard)
     {
         base.SetBlackboard(blackboard);
@@ -72,13 +72,13 @@ public class Sequence : CompositeNode
                 _currentIndex++;
                 if (_currentIndex >= children.Count)
                 {
-                    Reset(); // ÀüÃ¼ ¿Ï·á ½Ã ¸®¼Â
+                    Reset(); // ì „ì²´ ì™„ë£Œ ì‹œ ë¦¬ì…‹
                     return NodeState.Success;
                 }
-                return NodeState.Running; // ´ÙÀ½ ÀÚ½ÄÀ» À§ÇØ °è¼Ó ÁøÇà
+                return NodeState.Running; // ë‹¤ìŒ ìì‹ì„ ìœ„í•´ ê³„ì† ì§„í–‰
 
             case NodeState.Failure:
-                Reset(); // Áß°£ ½ÇÆĞ ½Ã ¸®¼Â
+                Reset(); // ì¤‘ê°„ ì‹¤íŒ¨ ì‹œ ë¦¬ì…‹
                 return NodeState.Failure;
 
             case NodeState.Running:
@@ -90,8 +90,8 @@ public class Sequence : CompositeNode
 
     public override void Reset()
     {
-        base.Reset(); // ¸ğµç ÀÚ½Ä ¸®¼Â
-        _currentIndex = 0; // ³» ÀÎµ¦½º ÃÊ±âÈ­
+        base.Reset(); // ëª¨ë“  ìì‹ ë¦¬ì…‹
+        _currentIndex = 0; // ë‚´ ì¸ë±ìŠ¤ ì´ˆê¸°í™”
     }
 }
 
@@ -99,7 +99,7 @@ public class Sequence : CompositeNode
 
 public class Selector : CompositeNode
 {
-    private BT_Node _lastRunningNode; // Áö³­ Æ½¿¡ ½ÇÇà ÁßÀÌ´ø ÀÚ½Ä ÀúÀå
+    private BT_Node _lastRunningNode; // ì§€ë‚œ í‹±ì— ì‹¤í–‰ ì¤‘ì´ë˜ ìì‹ ì €ì¥
     public Selector(List<BT_Node> children) : base(children) { }
 
     public override NodeState Evaluate()
@@ -115,11 +115,11 @@ public class Selector : CompositeNode
             {
                 currentRunningNode = (result == NodeState.Running) ? child : null;
                 finalResult = result;
-                break; // ÇÏ³ª¶óµµ ¼º°ø/ÁøÇà ÁßÀÌ¸é Áß´Ü
+                break; // í•˜ë‚˜ë¼ë„ ì„±ê³µ/ì§„í–‰ ì¤‘ì´ë©´ ì¤‘ë‹¨
             }
         }
 
-        // [ÇÙ½É] ½ÇÇà ÁßÀÎ ³ëµå°¡ ¹Ù²î¾ú´Ù¸é(Interrupt) ÀÌÀü ³ëµå ¸®¼Â
+        // [í•µì‹¬] ì‹¤í–‰ ì¤‘ì¸ ë…¸ë“œê°€ ë°”ë€Œì—ˆë‹¤ë©´(Interrupt) ì´ì „ ë…¸ë“œ ë¦¬ì…‹
         if (_lastRunningNode != null && _lastRunningNode != currentRunningNode)
         {
             _lastRunningNode.Reset();
@@ -141,7 +141,7 @@ public class Selector : CompositeNode
 public class RandomSelector : CompositeNode
 {
     private List<System.Func<int>> _weights;
-    private BT_Node _selectedChild; // ÇöÀç ¼±ÅÃµÇ¾î ½ÇÇà ÁßÀÎ ÀÚ½Ä
+    private BT_Node _selectedChild; // í˜„ì¬ ì„ íƒë˜ì–´ ì‹¤í–‰ ì¤‘ì¸ ìì‹
 
     public RandomSelector(List<BT_Node> children, List<System.Func<int>> weights) : base(children)
     {
@@ -152,7 +152,7 @@ public class RandomSelector : CompositeNode
     {
         if (children.Count == 0) return NodeState.Failure;
 
-        // 1. ¼±ÅÃµÈ ÀÚ½ÄÀÌ ¾ø´Ù¸é »õ·Î »Ì±â
+        // 1. ì„ íƒëœ ìì‹ì´ ì—†ë‹¤ë©´ ìƒˆë¡œ ë½‘ê¸°
         if (_selectedChild == null)
         {
             int totalWeight = 0;
@@ -173,10 +173,10 @@ public class RandomSelector : CompositeNode
             }
         }
 
-        // 2. ¼±ÅÃµÈ ÀÚ½Ä ½ÇÇà
+        // 2. ì„ íƒëœ ìì‹ ì‹¤í–‰
         var result = _selectedChild.Evaluate();
 
-        // 3. ½ÇÇàÀÌ ³¡³µ´Ù¸é ÂüÁ¶ Á¦°Å (´ÙÀ½¹ø¿¡ »õ·Î »Ìµµ·Ï)
+        // 3. ì‹¤í–‰ì´ ëë‚¬ë‹¤ë©´ ì°¸ì¡° ì œê±° (ë‹¤ìŒë²ˆì— ìƒˆë¡œ ë½‘ë„ë¡)
         if (result != NodeState.Running)
         {
             Reset();
@@ -205,14 +205,14 @@ public class SetRandomBehaveSpot : BT_Node
 
     public override NodeState Evaluate()
     {
-        // ÇöÀç À§Ä¡ ÁÖº¯ ·£´ı ÁÂÇ¥ °è»ê
+        // í˜„ì¬ ìœ„ì¹˜ ì£¼ë³€ ëœë¤ ì¢Œí‘œ ê³„ì‚°
         BehaveSpot randomPoint = _behaveSpots.GetRandomSpotByWeight();
 
         NavMeshHit hit;
         if (NavMesh.SamplePosition(randomPoint.transform.position, out hit, NAVMESH_SAMPLE_RANGE, 1))
         {
             _bb.targetSpot = randomPoint;
-            _bb.targetPosition = hit.position; // ºí·¢º¸µå¿¡ ¸ñÀûÁö ÀúÀå
+            _bb.targetPosition = hit.position; // ë¸”ë™ë³´ë“œì— ëª©ì ì§€ ì €ì¥
             return NodeState.Success;
         }
         return NodeState.Failure;
@@ -236,7 +236,7 @@ public class SetBehaveSpot : BT_Node
         if (NavMesh.SamplePosition(_behaveSpot.transform.position, out hit, NAVMESH_SAMPLE_RANGE, 1))
         {
             _bb.targetSpot = _behaveSpot;
-            _bb.targetPosition = hit.position; // ºí·¢º¸µå¿¡ ¸ñÀûÁö ÀúÀå
+            _bb.targetPosition = hit.position; // ë¸”ë™ë³´ë“œì— ëª©ì ì§€ ì €ì¥
             return NodeState.Success;
         }
         return NodeState.Failure;
@@ -250,9 +250,9 @@ public class MoveToTarget : BT_Node
     public override NodeState Evaluate()
     {
         _bb.Agent.SetDestination(_bb.targetSpot.transform.position);
-        Debug.Log($"¸ñÀûÁö: {_bb.targetSpot.name}, ³²Àº °Å¸®: {_bb.Agent.remainingDistance}");
+        Debug.Log($"ëª©ì ì§€: {_bb.targetSpot.name}, ë‚¨ì€ ê±°ë¦¬: {_bb.Agent.remainingDistance}");
 
-        // ¸ñÀûÁö¿¡ °ÅÀÇ µµÂøÇß´ÂÁö È®ÀÎ
+        // ëª©ì ì§€ì— ê±°ì˜ ë„ì°©í–ˆëŠ”ì§€ í™•ì¸
         if (!_bb.Agent.pathPending && _bb.Agent.remainingDistance <= _bb.Agent.stoppingDistance)
         {
             _bb.Anim.SetFloat("MoveSpeed", 0);
@@ -261,17 +261,17 @@ public class MoveToTarget : BT_Node
 
         float currentSpeed = _bb.Agent.velocity.magnitude;
         _bb.Anim.SetFloat("MoveSpeed", currentSpeed);
-        return NodeState.Running; // ¾ÆÁ÷ °¡´Â Áß
+        return NodeState.Running; // ì•„ì§ ê°€ëŠ” ì¤‘
     }
 }
 
 
 
-//³ªÁß¿¡ ÀÏÁ¤ ÁÖ±â °¡µ¿½Ã Time.deltaTime º¸Á¤ ÇÊ¿ä
+//ë‚˜ì¤‘ì— ì¼ì • ì£¼ê¸° ê°€ë™ì‹œ Time.deltaTime ë³´ì • í•„ìš”
 public class RotateToTarget : BT_Node
 {
     private float _rotationSpeed = STUDENT_ROTQTE_SPEED;
-    private float _threshold = 0.999f; // ¾à 1µµ ÀÌ³»·Î Á¤·ÄµÇ¸é ¿Ï·á
+    private float _threshold = 0.999f; // ì•½ 1ë„ ì´ë‚´ë¡œ ì •ë ¬ë˜ë©´ ì™„ë£Œ
 
 
 
@@ -279,20 +279,20 @@ public class RotateToTarget : BT_Node
     {
         if (_bb.targetSpot == null) return NodeState.Failure;
 
-        // 1. ¸ñÇ¥ È¸Àü°ª °è»ê
+        // 1. ëª©í‘œ íšŒì „ê°’ ê³„ì‚°
         Quaternion targetRot = _bb.targetSpot.transform.rotation;
 
-        // 2. ÇöÀç °¢µµ¿Í ¸ñÇ¥ °¢µµÀÇ Â÷ÀÌ(³»Àû) È®ÀÎ
+        // 2. í˜„ì¬ ê°ë„ì™€ ëª©í‘œ ê°ë„ì˜ ì°¨ì´(ë‚´ì ) í™•ì¸
         float dot = Vector3.Dot(_bb.Avatar.forward, _bb.targetSpot.transform.forward);
 
-        // 3. ÀÌ¹Ì Á¤·ÄµÇ¾î ÀÖ´Ù¸é ¼º°ø ¹İÈ¯
+        // 3. ì´ë¯¸ ì •ë ¬ë˜ì–´ ìˆë‹¤ë©´ ì„±ê³µ ë°˜í™˜
         if (dot >= _threshold)
         {
-            _bb.Avatar.rotation = targetRot; // ¿ÀÂ÷ º¸Á¤
+            _bb.Avatar.rotation = targetRot; // ì˜¤ì°¨ ë³´ì •
             return NodeState.Success;
         }
 
-        // 4. ºÎ¸ğ(Owner)¸¦ ºÎµå·´°Ô È¸Àü
+        // 4. ë¶€ëª¨(Owner)ë¥¼ ë¶€ë“œëŸ½ê²Œ íšŒì „
         _bb.Avatar.rotation = Quaternion.Slerp(
             _bb.Avatar.rotation,
             targetRot,
@@ -305,14 +305,14 @@ public class RotateToTarget : BT_Node
 
 
 
-// Áß°£¿¡ Interrupt ¹ß»ı½Ã, Timer ÃÊ±âÈ­ ·ÎÁ÷ ÇÊ¿ä
+// ì¤‘ê°„ì— Interrupt ë°œìƒì‹œ, Timer ì´ˆê¸°í™” ë¡œì§ í•„ìš”
 public class Delay : BT_Node
 {
-    private Func<float> _getWaitFunc; // ´ë±â ½Ã°£À» °¡Á®¿Ã ÇÔ¼ö
+    private Func<float> _getWaitFunc; // ëŒ€ê¸° ì‹œê°„ì„ ê°€ì ¸ì˜¬ í•¨ìˆ˜
     private float _timer = 0f;
-    private float _currentWaitTime = -1f; // ÀÌ¹ø Â÷·Ê¿¡ ±â´Ù·Á¾ß ÇÒ ½Ã°£
+    private float _currentWaitTime = -1f; // ì´ë²ˆ ì°¨ë¡€ì— ê¸°ë‹¤ë ¤ì•¼ í•  ì‹œê°„
 
-    // »ı¼ºÀÚ¿¡¼­ ÇÔ¼ö¸¦ ÁÖÀÔ¹ŞÀ½
+    // ìƒì„±ìì—ì„œ í•¨ìˆ˜ë¥¼ ì£¼ì…ë°›ìŒ
     public Delay(Func<float> getWaitFunc)
     {
         _getWaitFunc = getWaitFunc;
@@ -321,30 +321,30 @@ public class Delay : BT_Node
     public override void Reset()
     {
         _timer = 0f;
-        _currentWaitTime = -1f; // ÃÊ±âÈ­ÇÏ¿© ´ÙÀ½ ÁøÀÔ ½Ã »õ·Î ½Ã°£À» °è»êÇÏ°Ô ÇÔ
+        _currentWaitTime = -1f; // ì´ˆê¸°í™”í•˜ì—¬ ë‹¤ìŒ ì§„ì… ì‹œ ìƒˆë¡œ ì‹œê°„ì„ ê³„ì‚°í•˜ê²Œ í•¨
 
-        // ´ë±â Áß´Ü ½Ã ¾Ö´Ï¸ŞÀÌ¼Ç ÃÊ±âÈ­ (¼±ÅÃ »çÇ×)
+        // ëŒ€ê¸° ì¤‘ë‹¨ ì‹œ ì• ë‹ˆë©”ì´ì…˜ ì´ˆê¸°í™” (ì„ íƒ ì‚¬í•­)
         // if (_bb.Anim != null) _bb.Anim.SetFloat("Speed", 0f);
     }
 
     public override NodeState Evaluate()
     {
-        // 1. Ã³À½ ÁøÀÔÇßÀ» ¶§¸¸ ´ë±â ½Ã°£À» ÇÔ¼ö·ÎºÎÅÍ ¹Ş¾Æ¿È
+        // 1. ì²˜ìŒ ì§„ì…í–ˆì„ ë•Œë§Œ ëŒ€ê¸° ì‹œê°„ì„ í•¨ìˆ˜ë¡œë¶€í„° ë°›ì•„ì˜´
         if (_currentWaitTime < 0f)
         {
             _currentWaitTime = _getWaitFunc != null ? _getWaitFunc() : 0f;
 
-            // ´ë±â ½ÃÀÛ ½Ã ÀÌµ¿ ¾Ö´Ï¸ŞÀÌ¼Ç ¸ØÃã
+            // ëŒ€ê¸° ì‹œì‘ ì‹œ ì´ë™ ì• ë‹ˆë©”ì´ì…˜ ë©ˆì¶¤
             // if (_bb.Anim != null) _bb.Anim.SetFloat("Speed", 0f);
         }
 
-        // 2. Å¸ÀÌ¸Ó ÁøÇà
+        // 2. íƒ€ì´ë¨¸ ì§„í–‰
         _timer += Time.deltaTime;
 
-        // 3. ¸ñÇ¥ ½Ã°£¿¡ µµ´ŞÇß´ÂÁö È®ÀÎ
+        // 3. ëª©í‘œ ì‹œê°„ì— ë„ë‹¬í–ˆëŠ”ì§€ í™•ì¸
         if (_timer >= _currentWaitTime)
         {
-            Reset(); // ¼º°øÇßÀ¸¹Ç·Î ´ÙÀ½À» À§ÇØ ¸®¼Â
+            Reset(); // ì„±ê³µí–ˆìœ¼ë¯€ë¡œ ë‹¤ìŒì„ ìœ„í•´ ë¦¬ì…‹
             return NodeState.Success;
         }
 
@@ -375,12 +375,33 @@ public class SetRandomSpeed : BT_Node
 
 
 
+public class SetSpeed : BT_Node
+{
+    private Func<float> _getSpeedFunc;
+
+    public SetSpeed(Func<float> getSpeedFunc)
+    {
+        _getSpeedFunc = getSpeedFunc;
+    }
+
+    public override NodeState Evaluate()
+    {
+        if (_getSpeedFunc == null) return NodeState.Failure;
+
+        float speed = _getSpeedFunc();
+        _bb.Agent.speed = speed;
+        return NodeState.Success;
+    }
+}
+
+
+
 public class PlayLoopAnim : BT_Node
 {
     private string _boolName;
     private float _duration;
     private float _timer = 0f;
-    private int _layer; // ·¹ÀÌ¾î Á¤º¸ Ãß°¡
+    private int _layer; // ë ˆì´ì–´ ì •ë³´ ì¶”ê°€
 
     public PlayLoopAnim(string boolName, float duration, int layer = 0)
     {
@@ -404,7 +425,7 @@ public class PlayLoopAnim : BT_Node
 
         _timer += Time.deltaTime;
 
-        // ³ªÁß¿¡ ÇÊ¿äÇÏ´Ù¸é ¿©±â¼­ _layer¸¦ »ç¿ëÇØ Æ¯Á¤ »óÅÂÀÎÁö È®ÀÎÇÒ ¼ö ÀÖ½À´Ï´Ù.
+        // ë‚˜ì¤‘ì— í•„ìš”í•˜ë‹¤ë©´ ì—¬ê¸°ì„œ _layerë¥¼ ì‚¬ìš©í•´ íŠ¹ì • ìƒíƒœì¸ì§€ í™•ì¸í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.
         // var stateInfo = bb.Anim.GetCurrentAnimatorStateInfo(_layer);
 
         if (_timer >= _duration)
@@ -422,7 +443,7 @@ public class PlayLoopAnim : BT_Node
 public class PlayOnceAnim : BT_Node
 {
     private string _triggerName;
-    private string _stateName;   // ¾Ö´Ï¸ŞÀÌÅÍ¿¡ ¼³Á¤µÈ ½ºÅ×ÀÌÆ® ÀÌ¸§
+    private string _stateName;   // ì• ë‹ˆë©”ì´í„°ì— ì„¤ì •ëœ ìŠ¤í…Œì´íŠ¸ ì´ë¦„
     private int _layer;
     private bool _triggered = false;
 
@@ -442,7 +463,7 @@ public class PlayOnceAnim : BT_Node
     {
         var stateInfo = _bb.Anim.GetCurrentAnimatorStateInfo(_layer);
 
-        // 1. Æ®¸®°Å ½ÇÇà
+        // 1. íŠ¸ë¦¬ê±° ì‹¤í–‰
         if (!_triggered)
         {
             _bb.Anim.SetTrigger(_triggerName);
@@ -450,8 +471,8 @@ public class PlayOnceAnim : BT_Node
             return NodeState.Running;
         }
 
-        // 2. ¾Ö´Ï¸ŞÀÌ¼ÇÀÌ ¸ñÇ¥ ½ºÅ×ÀÌÆ®¿¡ ÀÖ°í, ÇÑ ¹ÙÄû ´Ù µ¹¾Ò´ÂÁö È®ÀÎ
-        // IsNameÀº ½ºÅ×ÀÌÆ® ÀÌ¸§ È¤Àº "Base Layer.StateName" ÇüÅÂ¿©¾ß ÇÒ ¼ö ÀÖ½À´Ï´Ù.
+        // 2. ì• ë‹ˆë©”ì´ì…˜ì´ ëª©í‘œ ìŠ¤í…Œì´íŠ¸ì— ìˆê³ , í•œ ë°”í€´ ë‹¤ ëŒì•˜ëŠ”ì§€ í™•ì¸
+        // IsNameì€ ìŠ¤í…Œì´íŠ¸ ì´ë¦„ í˜¹ì€ "Base Layer.StateName" í˜•íƒœì—¬ì•¼ í•  ìˆ˜ ìˆìŠµë‹ˆë‹¤.
         if (stateInfo.IsName(_stateName))
         {
             if (stateInfo.normalizedTime >= 0.99f)
@@ -462,7 +483,7 @@ public class PlayOnceAnim : BT_Node
         }
         else if (_triggered && !_bb.Anim.IsInTransition(_layer))
         {
-            // Æ®¸®°Å´Â ´ç°å´Âµ¥ ¾ÆÁ÷ ½ºÅ×ÀÌÆ® ÁøÀÔµµ ¾È Çß°í Æ®·£Áö¼Ç Áßµµ ¾Æ´Ï¶ó¸é ´ë±â
+            // íŠ¸ë¦¬ê±°ëŠ” ë‹¹ê²¼ëŠ”ë° ì•„ì§ ìŠ¤í…Œì´íŠ¸ ì§„ì…ë„ ì•ˆ í–ˆê³  íŠ¸ëœì§€ì…˜ ì¤‘ë„ ì•„ë‹ˆë¼ë©´ ëŒ€ê¸°
             return NodeState.Running;
         }
 

@@ -2,31 +2,31 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Linq;
 
-// ÀÌ ¾îÆ®¸®ºäÆ®¸¦ ÀûÀ¸¸é À¯´ÏÆ¼ ¸Ş´º(¸¶¿ì½º ¿ìÅ¬¸¯)¿¡ »ı¼º Ç×¸ñÀÌ ³ªÅ¸³³´Ï´Ù.
+// ì´ ì–´íŠ¸ë¦¬ë·°íŠ¸ë¥¼ ì ìœ¼ë©´ ìœ ë‹ˆí‹° ë©”ë‰´(ë§ˆìš°ìŠ¤ ìš°í´ë¦­)ì— ìƒì„± í•­ëª©ì´ ë‚˜íƒ€ë‚©ë‹ˆë‹¤.
 [CreateAssetMenu(fileName = "SpotList", menuName = "AI/SpotList", order = 1)]
 public class SpotListData : ScriptableObject
 {
     public List<SpotEntry> Spots;
 
     /// <summary>
-    /// °¡ÁßÄ¡ È®·ü¿¡ µû¶ó ·£´ıÇÏ°Ô BehaveSpotÀ» ¹İÈ¯ÇÕ´Ï´Ù.
+    /// ê°€ì¤‘ì¹˜ í™•ë¥ ì— ë”°ë¼ ëœë¤í•˜ê²Œ BehaveSpotì„ ë°˜í™˜í•©ë‹ˆë‹¤.
     /// </summary>
     public BehaveSpot GetRandomSpotByWeight()
     {
         if (Spots == null || Spots.Count == 0) return null;
 
-        // 1. ¸ğµç °¡ÁßÄ¡ÀÇ ÃÑÇÕÀ» ±¸ÇÔ
+        // 1. ëª¨ë“  ê°€ì¤‘ì¹˜ì˜ ì´í•©ì„ êµ¬í•¨
         float totalWeight = 0;
         foreach (var entry in Spots)
         {
             totalWeight += entry.weight;
         }
 
-        // 2. 0ºÎÅÍ ÃÑÇÕ »çÀÌÀÇ ·£´ı °ª »ı¼º
+        // 2. 0ë¶€í„° ì´í•© ì‚¬ì´ì˜ ëœë¤ ê°’ ìƒì„±
         float pivot = Random.Range(0, totalWeight);
         float currentWeight = 0;
 
-        // 3. ¾î¶² ±¸°£¿¡ ·£´ı °ªÀÌ ¼ÓÇÏ´ÂÁö È®ÀÎ
+        // 3. ì–´ë–¤ êµ¬ê°„ì— ëœë¤ ê°’ì´ ì†í•˜ëŠ”ì§€ í™•ì¸
         foreach (var entry in Spots)
         {
             currentWeight += entry.weight;
@@ -36,7 +36,7 @@ public class SpotListData : ScriptableObject
             }
         }
 
-        // ¸¸¾à ¼Ò¼öÁ¡ °è»ê ¿ÀÂ÷ µîÀ¸·Î ¸ø Ã£À¸¸é ¸¶Áö¸· Ç×¸ñ ¹İÈ¯
+        // ë§Œì•½ ì†Œìˆ˜ì  ê³„ì‚° ì˜¤ì°¨ ë“±ìœ¼ë¡œ ëª» ì°¾ìœ¼ë©´ ë§ˆì§€ë§‰ í•­ëª© ë°˜í™˜
         return Spots[Spots.Count - 1].behaveSpot;
     }
 }

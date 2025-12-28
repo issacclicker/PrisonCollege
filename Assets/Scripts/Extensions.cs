@@ -5,13 +5,13 @@ using UnityEngine;
 public static class Extensions
 {
     /// <summary>
-    /// ¸®½ºÆ®¿¡¼­ ¹«ÀÛÀ§ ¿ø¼Ò ÇÏ³ª¸¦ ¹İÈ¯ÇÕ´Ï´Ù.
+    /// ë¦¬ìŠ¤íŠ¸ì—ì„œ ë¬´ì‘ìœ„ ì›ì†Œ í•˜ë‚˜ë¥¼ ë°˜í™˜í•©ë‹ˆë‹¤.
     /// </summary>
     public static T GetRandom<T>(this List<T> list)
     {
         if (list == null || list.Count == 0)
         {
-            Debug.LogWarning("¸®½ºÆ®°¡ ºñ¾îÀÖ¾î ¹«ÀÛÀ§ ¿ø¼Ò¸¦ »ÌÀ» ¼ö ¾ø½À´Ï´Ù.");
+            Debug.LogWarning("ë¦¬ìŠ¤íŠ¸ê°€ ë¹„ì–´ìˆì–´ ë¬´ì‘ìœ„ ì›ì†Œë¥¼ ë½‘ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
             return default;
         }
 
@@ -20,7 +20,7 @@ public static class Extensions
     }
 
     /// <summary>
-    /// ¸®½ºÆ®¸¦ ¹«ÀÛÀ§·Î ¼¯½À´Ï´Ù (Fisher-Yates Shuffle).
+    /// ë¦¬ìŠ¤íŠ¸ë¥¼ ë¬´ì‘ìœ„ë¡œ ì„ìŠµë‹ˆë‹¤ (Fisher-Yates Shuffle).
     /// </summary>
     public static void Shuffle<T>(this List<T> list)
     {

@@ -6,20 +6,24 @@ using UnityEngine.AI;
 
 public class PostStudent : MonoBehaviour
 {
+    private static float _idleSpeed = 0;
+    private static float _walkSpeed = 1.44f;
+    private static float _jogSpeed = 2.43f;
+    private static float _slowRunSpeed = 3.49f;
+    private static float _mediumRunSpeed = 4.17f;
+    private static float _fastRunSpeed = 5.47f;
+    private static float _sprintSpeed = 6.75f;
+
+    private RandomSelector _speedSelector;
+
     private NavMeshAgent _agent;
     private Animator _anim;
     private BT_Node _root;
     private Blackboard _blackboard = new Blackboard();
 
-    [Header("ÀÌµ¿ ¼Óµµ ¼³Á¤ (Threshold ±â¹İ)")]
-    [SerializeField] private float _idleSpeed = 0f;
-    [SerializeField] private float _walkSpeed = 1.5f;
-    [SerializeField] private float _runSpeed = 7.0f;
-    [SerializeField] private float _sprintSpeed = 10.0f;
-
-    [Header("¼³Á¤")]
-    [SerializeField] private float _changeInterval = 2.0f; // 2ÃÊ °£°İ
-    [SerializeField] private Transform _targetDestination; // ÀÌµ¿ ¸ñÇ¥ ÁöÁ¡
+    [Header("ì„¤ì •")]
+    [SerializeField] private float _changeInterval = 2.0f; // 2ì´ˆ ê°„ê²©
+    [SerializeField] private Transform _targetDestination; // ì´ë™ ëª©í‘œ ì§€ì 
 
     [SerializeField] private BehaveSpot chairSpot;
     [SerializeField] private SpotGroup restSpots;
@@ -33,37 +37,63 @@ public class PostStudent : MonoBehaviour
         _agent.acceleration = 30f;
 
         _blackboard.Setup(_agent, _anim, transform);
+        _speedSelector = ConstructSpeedSelector();
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
     }
 
 
+
+    private RandomSelector ConstructSpeedSelector()
+    {
+        RandomSelector speedSelector = new RandomSelector(
+            new List<BT_Node> {
+                new SetSpeed(() => _walkSpeed),
+                new SetSpeed(() => _jogSpeed),
+                new SetSpeed(() => _slowRunSpeed),
+                new SetSpeed(() => _mediumRunSpeed),
+                new SetSpeed(() => _fastRunSpeed),
+                new SetSpeed(() => _sprintSpeed),
+            },
+            new List<System.Func<int>> { 
+                () => 40, // Walk í™•ë¥  40%
+                () => 25, // Jog í™•ë¥  25%
+                () => 15, // SlowRun 15%
+                () => 10, // MedRun 10%
+                () => 7,  // FastRun 7%
+                () => 3   // Sprint 3%
+            }
+        );
+        return speedSelector;
+    }
+
+
     private BT_Node ConstructWorkSequence()
     {
-        // 1. °³º° ¾×¼Ç ½ÃÄö½º Á¤ÀÇ
+        // 1. ê°œë³„ ì•¡ì…˜ ì‹œí€€ìŠ¤ ì •ì˜
         Sequence angrySeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Angry", "Angry", 1) });
         Sequence clapSeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Clap", "Clap", 1) });
         Sequence frustrateSeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Frustrated", "Frustrated", 1) });
 
-        // 2. ¾Æ¹«°Íµµ ¾È ÇÏ°í Å¸ÀÌÇÎ¸¸ °è¼ÓÇÒ »óÅÂ (´ë±â ³ëµå)
+        // 2. ì•„ë¬´ê²ƒë„ ì•ˆ í•˜ê³  íƒ€ì´í•‘ë§Œ ê³„ì†í•  ìƒíƒœ (ëŒ€ê¸° ë…¸ë“œ)
         Sequence justTyping = new Sequence(new List<BT_Node> { new Delay(() => 0.1f) });
 
-        // 3. È®·ü ¼±ÅÃ±â ±¸¼º (°¡ÁßÄ¡ ºÎ¿©)
+        // 3. í™•ë¥  ì„ íƒê¸° êµ¬ì„± (ê°€ì¤‘ì¹˜ ë¶€ì—¬)
         RandomSelector chanceActionSelector = new RandomSelector(
             new List<BT_Node> { angrySeq, clapSeq, frustrateSeq, justTyping },
             new List<System.Func<int>> {
-                () => 10, // ¿å(ºĞ³ë) 10%
-                () => 10, // ¹Ú¼ö 10%
-                () => 10, // ÁÂÀı 10%
-                () => 1  // ±×³É °è¼Ó Å¸ÀÌÇÎ 70%
+                () => 10, // ìš•(ë¶„ë…¸) 10%
+                () => 10, // ë°•ìˆ˜ 10%
+                () => 10, // ì¢Œì ˆ 10%
+                () => 1  // ê·¸ëƒ¥ ê³„ì† íƒ€ì´í•‘ 70%
             }
         );
 
-        // 4. ¸ŞÀÎ ¿öÅ© ½ÃÄö½º¿¡ Á¶¸³
+        // 4. ë©”ì¸ ì›Œí¬ ì‹œí€€ìŠ¤ì— ì¡°ë¦½
         Sequence workSequence = new Sequence(new List<BT_Node>
         {
             new SetBehaveSpot(chairSpot),
-            new SetRandomSpeed(GetRandomSpeed),
+            _speedSelector,
             new MoveToTarget(),
             new RotateToTarget(),
             new SetAnimBool("Sitting", true),
@@ -79,21 +109,21 @@ public class PostStudent : MonoBehaviour
 
     private BT_Node ConstructBehaviorTree()
     {
-        // µ¿ÀÛ ¼³°è: 
-        // 1. ·£´ı ÁöÁ¡À¸·Î ÀÌµ¿
-        // 2. µµÂøÇÏ¸é 3ÃÊ°£ ÁÖº¯ ±¸°æ(Loop)
-        // 3. 50% È®·ü·Î ±âÁö°³ ÄÑ±â(Once), 50% È®·ü·Î ±×³É ´ë±â
+        // ë™ì‘ ì„¤ê³„: 
+        // 1. ëœë¤ ì§€ì ìœ¼ë¡œ ì´ë™
+        // 2. ë„ì°©í•˜ë©´ 3ì´ˆê°„ ì£¼ë³€ êµ¬ê²½(Loop)
+        // 3. 50% í™•ë¥ ë¡œ ê¸°ì§€ê°œ ì¼œê¸°(Once), 50% í™•ë¥ ë¡œ ê·¸ëƒ¥ ëŒ€ê¸°
         Sequence prowlSequence = new Sequence(new List<BT_Node>
         {
             new SetRandomBehaveSpot(prowlSpots),
-            new SetRandomSpeed(GetRandomSpeed),
+            _speedSelector,
             new MoveToTarget()
             //new PlayLoopAnim("LookAround", 5)
         });
         Sequence restSequence = new Sequence(new List<BT_Node>
         {
             new SetRandomBehaveSpot(restSpots),
-            new SetRandomSpeed(GetRandomSpeed),
+            _speedSelector,
             new MoveToTarget(),
             new PlayOnceAnim("LookAround", "LookAround")
             //new PlayLoopAnim("LookAround", 5)
@@ -109,7 +139,7 @@ public class PostStudent : MonoBehaviour
         Sequence microwaveSequence = new Sequence(new List<BT_Node>
         {
             new SetRandomBehaveSpot(microwaveSpots),
-            new SetRandomSpeed(GetRandomSpeed),
+            _speedSelector,
             new SetAnimBool("Carrying", true),
             new MoveToTarget(),
             new SetAnimBool("Carrying", false),
@@ -119,11 +149,10 @@ public class PostStudent : MonoBehaviour
 
         RandomSelector randomJobSelector = new RandomSelector(
             new List<BT_Node> { prowlSequence, restSequence, ConstructWorkSequence(), microwaveSequence },
-            new List<System.Func<int>> { () => 0, () => 0, () => 50, () => 0 }
+            new List<System.Func<int>> { () => 50, () => 50, () => 50, () => 50 }
         );
 
-        // 4. ÀüÃ¼ ·çÆ®¸¦ ¹İº¹(Selector ¶Ç´Â Sequence) ÇÏµµ·Ï ¼³Á¤
-        return randomJobSelector;
+        // 4. ì „ì²´ ë£¨íŠ¸ë¥¼ ë°˜ë³µ(Selector ë˜ëŠ” Sequence) í•˜ë„ë¡ ì„¤ì •
         return new Selector(new List<BT_Node> { randomJobSelector });
     }
 
@@ -139,7 +168,7 @@ public class PostStudent : MonoBehaviour
     //    _agent = GetComponent<NavMeshAgent>();
     //    _anim = GetComponent<Animator>();
 
-    //    // °¡¼Óµµ¸¦ ³ô¿©¾ß ¼Óµµ º¯È­°¡ Áï°¢ÀûÀ¸·Î º¸ÀÔ´Ï´Ù.
+    //    // ê°€ì†ë„ë¥¼ ë†’ì—¬ì•¼ ì†ë„ ë³€í™”ê°€ ì¦‰ê°ì ìœ¼ë¡œ ë³´ì…ë‹ˆë‹¤.
     //    _agent.acceleration = 30f;
     //}
 
@@ -154,8 +183,8 @@ public class PostStudent : MonoBehaviour
 
     private void Update()
     {
-        // ÇöÀç ¿¡ÀÌÀüÆ®ÀÇ ½ÇÁ¦ ¼Óµµ¸¦ ¾Ö´Ï¸ŞÀÌÅÍ¿¡ Àü´Ş (º¸Æø ¸ÂÃß±â)
-        // Magnitude¸¦ »ç¿ëÇÏ¸é ¹æÇâ°ú »ó°ü¾øÀÌ ½ÇÁ¦ ÀÌµ¿ ¼Óµµ°¡ Àü´ŞµË´Ï´Ù.
+        // í˜„ì¬ ì—ì´ì „íŠ¸ì˜ ì‹¤ì œ ì†ë„ë¥¼ ì• ë‹ˆë©”ì´í„°ì— ì „ë‹¬ (ë³´í­ ë§ì¶”ê¸°)
+        // Magnitudeë¥¼ ì‚¬ìš©í•˜ë©´ ë°©í–¥ê³¼ ìƒê´€ì—†ì´ ì‹¤ì œ ì´ë™ ì†ë„ê°€ ì „ë‹¬ë©ë‹ˆë‹¤.
         //_anim.SetFloat("MoveSpeed", _agent.velocity.magnitude, 0.1f, Time.deltaTime);
         if (_root != null)
         {
@@ -167,31 +196,31 @@ public class PostStudent : MonoBehaviour
     {
         while (true)
         {
-            // 1´Ü°è: Á¤Áö
-            UpdateState("Á¤Áö", _idleSpeed);
-            yield return new WaitForSeconds(_changeInterval);
+            // 1ë‹¨ê³„: ì •ì§€
+            // UpdateState("ì •ì§€", _idleSpeed);
+            // yield return new WaitForSeconds(_changeInterval);
 
-            // 2´Ü°è: °È±â
-            UpdateState("°È±â", _walkSpeed);
-            yield return new WaitForSeconds(_changeInterval);
+            // 2ë‹¨ê³„: ê±·ê¸°
+            // UpdateState("ê±·ê¸°", _walkSpeed);
+            // yield return new WaitForSeconds(_changeInterval);
 
-            // 3´Ü°è: Á¶±ë
-            //UpdateState("Á¶±ë", _jogSpeed);
+            // 3ë‹¨ê³„: ì¡°ê¹…
+            //UpdateState("ì¡°ê¹…", _jogSpeed);
             //yield return new WaitForSeconds(_changeInterval);
 
-            // 4´Ü°è: ¶Ù±â
-            UpdateState("¶Ù±â", _runSpeed);
-            yield return new WaitForSeconds(_changeInterval);
+            // 4ë‹¨ê³„: ë›°ê¸°
+            // UpdateState("ë›°ê¸°", _runSpeed);
+            // yield return new WaitForSeconds(_changeInterval);
 
-            // 5´Ü°è: Àü·ÂÁúÁÖ
-            UpdateState("Àü·ÂÁúÁÖ", _sprintSpeed);
-            yield return new WaitForSeconds(_changeInterval);
+            // 5ë‹¨ê³„: ì „ë ¥ì§ˆì£¼
+            // UpdateState("ì „ë ¥ì§ˆì£¼", _sprintSpeed);
+            // yield return new WaitForSeconds(_changeInterval);
         }
     }
 
     private void UpdateState(string stateName, float speed)
     {
         _agent.speed = speed;
-        Debug.Log($"ÇöÀç »óÅÂ: {stateName} (¼Óµµ: {speed})");
+        Debug.Log($"í˜„ì¬ ìƒíƒœ: {stateName} (ì†ë„: {speed})");
     }
 }
