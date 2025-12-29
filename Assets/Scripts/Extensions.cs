@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public static class Extensions
 {
@@ -31,5 +32,12 @@ public static class Extensions
             list[i] = list[randomIndex];
             list[randomIndex] = temp;
         }
+    }
+
+
+    public static void SetSampleDestination(this NavMeshAgent agent, Vector3 targetPos, float range)
+    {
+        Vector3 samplePos = Utils.SampleNavMesh(targetPos, range);
+        agent.SetDestination(samplePos);
     }
 }

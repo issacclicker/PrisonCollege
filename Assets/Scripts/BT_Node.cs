@@ -252,8 +252,8 @@ public class SetRandomBehaveSpot : BT_Node
         NavMeshHit hit;
         if (NavMesh.SamplePosition(randomPoint.transform.position, out hit, NAVMESH_SAMPLE_RANGE, 1))
         {
-            _bb.targetSpot = randomPoint;
-            _bb.targetPosition = hit.position; // 블랙보드에 목적지 저장
+            _bb.destSpot = randomPoint;
+            _bb.destPosition = hit.position; // 블랙보드에 목적지 저장
             return NodeState.Success;
         }
         return NodeState.Failure;
@@ -276,8 +276,8 @@ public class SetBehaveSpot : BT_Node
         NavMeshHit hit;
         if (NavMesh.SamplePosition(_behaveSpot.transform.position, out hit, NAVMESH_SAMPLE_RANGE, 1))
         {
-            _bb.targetSpot = _behaveSpot;
-            _bb.targetPosition = hit.position; // 블랙보드에 목적지 저장
+            _bb.destSpot = _behaveSpot;
+            _bb.destPosition = hit.position; // 블랙보드에 목적지 저장
             return NodeState.Success;
         }
         return NodeState.Failure;
@@ -290,8 +290,8 @@ public class MoveToTarget : BT_Node
 {
     public override NodeState Evaluate()
     {
-        _bb.Agent.SetDestination(_bb.targetSpot.transform.position);
-        Debug.Log($"목적지: {_bb.targetSpot.name}, 남은 거리: {_bb.Agent.remainingDistance}");
+        _bb.Agent.SetDestination(_bb.destSpot.transform.position);
+        Debug.Log($"목적지: {_bb.destSpot.name}, 남은 거리: {_bb.Agent.remainingDistance}");
 
         // 목적지에 거의 도착했는지 확인
         if (!_bb.Agent.pathPending && _bb.Agent.remainingDistance <= _bb.Agent.stoppingDistance)
@@ -318,13 +318,13 @@ public class RotateToTarget : BT_Node
 
     public override NodeState Evaluate()
     {
-        if (_bb.targetSpot == null) return NodeState.Failure;
+        if (_bb.destSpot == null) return NodeState.Failure;
 
         // 1. 목표 회전값 계산
-        Quaternion targetRot = _bb.targetSpot.transform.rotation;
+        Quaternion targetRot = _bb.destSpot.transform.rotation;
 
         // 2. 현재 각도와 목표 각도의 차이(내적) 확인
-        float dot = Vector3.Dot(_bb.Avatar.forward, _bb.targetSpot.transform.forward);
+        float dot = Vector3.Dot(_bb.Avatar.forward, _bb.destSpot.transform.forward);
 
         // 3. 이미 정렬되어 있다면 성공 반환
         if (dot >= _threshold)
@@ -554,6 +554,207 @@ public class SetAnimBool : BT_Node
 
 
 
+public class SetAttackTarget : BT_Node
+{
+    private GameObject _targetObject;
+    private IDamageable _targetDamageable;
+
+    public SetAttackTarget(GameObject target)
+    {
+        _targetObject = target;
+    }
+
+    public override NodeState Evaluate()
+    {
+        if (_targetObject == null)
+        {
+            Debug.LogWarning("SetAttackTarget: Target GameObject is null.");
+            return NodeState.Failure;
+        }
+
+        // 1. 타겟으로부터 IDamageable 인터페이스 추출
+        _targetDamageable = _targetObject.GetComponent<IDamageable>();
+
+        // 2. 공격 가능한 대상인지 검사 (인터페이스 존재 여부 및 생존 여부)
+        if (_targetDamageable != null && !_targetDamageable.IsDead)
+        {
+            // 3. 블랙보드에 타겟 정보 저장 (이후 Chase, Attack 노드에서 사용)
+            _bb.targetObject = _targetObject;
+            _bb.targetDamageable = _targetDamageable;
+            
+            return NodeState.Success;
+        }
+
+        // 공격 불가능한 대상인 경우
+        return NodeState.Failure;
+    }
+}
+
+
+
+public class ProbabilisticDodge : BT_Node
+{
+    private float _chance;
+    private int _lastProcessedAttackID = -1;
+
+    public ProbabilisticDodge(float chance) => _chance = chance;
+
+    public override NodeState Evaluate()
+    {
+        if (_bb.targetObject == null) return NodeState.Failure;
+
+        var targetAttackable = _bb.targetObject.GetComponent<IAttackable>();
+        if (targetAttackable == null || !targetAttackable.IsAttacking) 
+        {
+            _lastProcessedAttackID = -1;
+            return NodeState.Failure;
+        }
+
+        // 새로운 공격 세션인 경우에만 확률 계산
+        if (targetAttackable.CurrentAttackID != _lastProcessedAttackID)
+        {
+            _lastProcessedAttackID = targetAttackable.CurrentAttackID;
+            if (UnityEngine.Random.value < _chance)
+            {
+                _bb.Anim.SetTrigger("tDodge");
+                return NodeState.Success;
+            }
+        }
+        return NodeState.Failure;
+    }
+}
+
+
+
+public class DefenseAttack : BT_Node
+{
+    private int _lastProcessedAttackID = -1;
+    private RandomSelector _randomSelector;
+
+    public DefenseAttack()
+    {
+        // 30% 회피, 40% 가드, 30% 멍때리기(피격)
+        _randomSelector = new RandomSelector(new List<BT_Node> {
+            new PlayOnceAnim("Dodge", "Dodge"), 
+            new PlayOnceAnim("Guard", "Guard"),
+            new SuccessNode() 
+        }, new List<System.Func<int>> { () => 30, () => 40, () => 30 });
+    }
+
+    public override void SetBlackboard(Blackboard blackboard)
+    {
+        base.SetBlackboard(blackboard);
+        _randomSelector.SetBlackboard(blackboard);
+    }
+
+    public override NodeState Evaluate()
+    {
+        var target = _bb.targetObject.GetComponent<IAttackable>();
+        
+        if (target != null && target.IsAttacking)
+        {
+            if (target.CurrentAttackID == _lastProcessedAttackID)
+            {
+                return NodeState.Failure; 
+            }
+            _lastProcessedAttackID = target.CurrentAttackID;
+            return _randomSelector.Evaluate();
+        }
+
+        _lastProcessedAttackID = -1;
+        return NodeState.Failure;
+    }
+
+
+    public override void Reset()
+    {
+        _randomSelector?.Reset();
+        _lastProcessedAttackID = -1;
+    }
+}
+
+
+
+public class CombatApproach : BT_Node
+{
+    public override NodeState Evaluate()
+    {
+        float dist = Vector3.Distance(_bb.Avatar.position, _bb.targetDamageable.Position);
+        float attackRange = 1.5f;
+
+        if (dist <= attackRange) return NodeState.Success; // 사거리 진입
+
+        // 5m 기준으로 상태 변화
+        if (dist > 5.0f)
+        {
+            _bb.Agent.speed = 6.75f; // Sprint Speed
+            _bb.Anim.SetBool("Boxing", false);
+        }
+        else
+        {
+            _bb.Agent.speed = 2.43f; // Jog/Boxing Speed
+            _bb.Anim.SetBool("Boxing", true);
+        }
+
+    
+        _bb.Agent.SetSampleDestination(_bb.targetDamageable.Position, 2);
+        return NodeState.Running;
+    }
+
+    public override void Reset()
+    {
+        _bb.Anim.SetBool("Boxing", false);
+        _bb.Agent.ResetPath();
+    }
+}
+
+
+
+public class MeleeAttack : BT_Node
+{
+    private string[] _attackTriggers = { "tJab", "tHook", "tUppercut" };
+
+    public override NodeState Evaluate()
+    {
+        // 이미 공격 애니메이션 재생 중이면 대기
+        if (_bb.Anim.GetCurrentAnimatorStateInfo(1).IsTag("Attack"))
+            return NodeState.Running;
+
+        // 랜덤 공격 선택 및 실행
+        string selected = _attackTriggers[UnityEngine.Random.Range(0, _attackTriggers.Length)];
+        _bb.Anim.SetTrigger(selected);
+        
+        return NodeState.Success;
+    }
+}
+
+
+
+public class ConditionNode : BT_Node
+{
+    private System.Func<bool> _condition;
+
+    // 생성 시 판단 로직을 함수로 전달받음
+    public ConditionNode(System.Func<bool> condition)
+    {
+        _condition = condition;
+    }
+
+    public override NodeState Evaluate()
+    {
+        // 조건이 참이면 Success, 거짓이면 Failure 반환
+        return _condition() ? NodeState.Success : NodeState.Failure;
+    }
+}
+
+
+
+public class SuccessNode : BT_Node {
+    public override NodeState Evaluate() => NodeState.Success;
+}
+
+
+
 [System.Serializable]
 public class Blackboard
 {
@@ -568,18 +769,17 @@ public class Blackboard
         Avatar = transform;
     }
 
-
-
-    public readonly NavMeshAgent agent;
-    public Vector3 targetPosition;
-    public BehaveSpot targetSpot;
+    public Vector3 destPosition;
+    public BehaveSpot destSpot;
     public BehaveSpot mySeatSpot;
     public bool isBehaving;
     public AIState currentState;
+    public IDamageable targetDamageable;
+    public GameObject targetObject;
 
     public bool IsSeating()
     {
-        return isBehaving && (targetSpot == mySeatSpot);
+        return isBehaving && (destSpot == mySeatSpot);
     }
 }
 
