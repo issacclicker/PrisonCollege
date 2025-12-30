@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Professor : MonoBehaviour
+public class Professor : MonoBehaviour, IDamageable
 {
     [Header("Movement")]
     [SerializeField] private float _moveSpeed = 5f;
@@ -21,7 +21,11 @@ public class Professor : MonoBehaviour
     private float _xRotation = 0f;
     private float _speedRate = 1;
 
+    public bool IsDead => false;
 
+    public bool IsInvincible => throw new System.NotImplementedException();
+
+    public Vector3 Position => transform.position;
 
     private void Start()
     {
@@ -76,5 +80,10 @@ public class Professor : MonoBehaviour
 
         _velocity.y += _gravity * Time.deltaTime;
         _controller.Move(_velocity * Time.deltaTime);
+    }
+
+    public void TakeDamage(float amount, Vector3 hitPoint, GameObject attacker)
+    {
+        throw new System.NotImplementedException();
     }
 }

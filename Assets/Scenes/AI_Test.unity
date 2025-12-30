@@ -789,7 +789,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.3
+  m_Radius: 0.1
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
@@ -5436,6 +5436,7 @@ MonoBehaviour:
   restSpots: {fileID: 639635853}
   microwaveSpots: {fileID: 1662744208}
   prowlSpots: {fileID: 1662744208}
+  player: {fileID: 1503311134}
 --- !u!1 &3639686440422013794
 GameObject:
   m_ObjectHideFlags: 0

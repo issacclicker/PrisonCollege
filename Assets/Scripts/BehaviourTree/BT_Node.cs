@@ -28,208 +28,89 @@ public abstract class BT_Node
 
 
 
-public abstract class CompositeNode : BT_Node
+public class ConditionDecorator : BT_Node
 {
-    protected List<BT_Node> children = new List<BT_Node>();
+    private readonly Func<bool> _condition; // 체크할 조건식
+    private readonly BT_Node _child;         // 실행할 자식 노드
 
-    public CompositeNode(List<BT_Node> children)
+    public ConditionDecorator(Func<bool> condition, BT_Node child)
     {
-        this.children = children;
+        _condition = condition;
+        _child = child;
     }
 
-    // 부모 노드에 블랙보드가 주입될 때 자식들에게도 전파 (재귀)
     public override void SetBlackboard(Blackboard blackboard)
     {
         base.SetBlackboard(blackboard);
-        foreach (var child in children)
-        {
-            child.SetBlackboard(blackboard);
-        }
+        _child?.SetBlackboard(blackboard);
     }
-
-    public override void Reset()
-    {
-        foreach (var child in children) child.Reset();
-    }
-}
-
-
-
-public class Sequence : CompositeNode
-{
-    private int _currentIndex = 0;
-    public Sequence(List<BT_Node> children) : base(children) { }
 
     public override NodeState Evaluate()
     {
-        if (_currentIndex >= children.Count) return NodeState.Success;
+        if (_condition == null || _child == null) return NodeState.Failure;
 
-        var result = children[_currentIndex].Evaluate();
-
-        switch (result)
+        // 1. 조건을 체크한다.
+        if (_condition.Invoke())
         {
-            case NodeState.Success:
-                _currentIndex++;
-                if (_currentIndex >= children.Count)
-                {
-                    Reset(); // 전체 완료 시 리셋
-                    return NodeState.Success;
-                }
-                return NodeState.Running; // 다음 자식을 위해 계속 진행
-
-            case NodeState.Failure:
-                Reset(); // 중간 실패 시 리셋
-                return NodeState.Failure;
-
-            case NodeState.Running:
-                return NodeState.Running;
+            // 2. 조건이 맞으면 자식을 실행하고 그 결과를 그대로 부모에게 보고한다.
+            return _child.Evaluate();
         }
 
+        // 3. 조건이 틀리면 자식을 리셋하고 실패를 보고한다.
+        _child.Reset();
         return NodeState.Failure;
     }
 
     public override void Reset()
     {
-        base.Reset(); // 모든 자식 리셋
-        _currentIndex = 0; // 내 인덱스 초기화
+        _child?.Reset();
     }
 }
 
 
 
-public class Selector : CompositeNode
+public class ActionNode : BT_Node
 {
-    private BT_Node _lastRunningNode; // 지난 틱에 실행 중이던 자식 저장
-    public Selector(List<BT_Node> children) : base(children) { }
+    // NodeState를 반환하는 함수 대리자
+    private readonly Func<NodeState> _action;
+
+    public ActionNode(Func<NodeState> action)
+    {
+        _action = action;
+    }
 
     public override NodeState Evaluate()
     {
-        BT_Node currentRunningNode = null;
-        NodeState finalResult = NodeState.Failure;
+        if (_action == null) return NodeState.Failure;
 
-        foreach (var child in children)
-        {
-            var result = child.Evaluate();
-
-            if (result != NodeState.Failure)
-            {
-                currentRunningNode = (result == NodeState.Running) ? child : null;
-                finalResult = result;
-                break; // 하나라도 성공/진행 중이면 중단
-            }
-        }
-
-        // [핵심] 실행 중인 노드가 바뀌었다면(Interrupt) 이전 노드 리셋
-        if (_lastRunningNode != null && _lastRunningNode != currentRunningNode)
-        {
-            _lastRunningNode.Reset();
-        }
-
-        _lastRunningNode = currentRunningNode;
-        return finalResult;
-    }
-
-    public override void Reset()
-    {
-        base.Reset();
-        _lastRunningNode = null;
+        // 주입된 로직을 실행하고 그 결과를 부모에게 보고
+        return _action.Invoke();
     }
 }
 
 
 
-public class RandomSelector : CompositeNode
+public class StopNode : BT_Node
 {
-    private List<System.Func<int>> _weights;
-    private BT_Node _selectedChild; // 현재 선택되어 실행 중인 자식
-
-    public RandomSelector(List<BT_Node> children, List<System.Func<int>> weights) : base(children)
-    {
-        _weights = weights;
-    }
+    private readonly int _speedHash = Animator.StringToHash("MoveSpeed");
 
     public override NodeState Evaluate()
     {
-        if (children.Count == 0) return NodeState.Failure;
-
-        // 1. 선택된 자식이 없다면 새로 뽑기
-        if (_selectedChild == null)
+        if (_bb.Agent != null && _bb.Agent.isOnNavMesh)
         {
-            int totalWeight = 0;
-            foreach (var w in _weights) totalWeight += Mathf.Max(0, w());
-            if (totalWeight <= 0) return NodeState.Failure;
+            // 1. 물리적 속도 즉시 제거
+            _bb.Agent.velocity = Vector3.zero;
+            
+            // 2. NavMeshAgent의 경로 계산 중지 및 정지
+            _bb.Agent.isStopped = true; 
+            _bb.Agent.ResetPath();
 
-            int roll = UnityEngine.Random.Range(0, totalWeight);
-            int cursor = 0;
-
-            for (int i = 0; i < children.Count; i++)
-            {
-                cursor += _weights[i]();
-                if (roll < cursor)
-                {
-                    _selectedChild = children[i];
-                    break;
-                }
-            }
+            // 3. 애니메이션 파라미터 즉시 0으로 설정 (DampTime 제거)
+            _bb.Anim.SetFloat(_speedHash, 0f);
         }
 
-        // 2. 선택된 자식 실행
-        var result = _selectedChild.Evaluate();
-
-        // 3. 실행이 끝났다면 참조 제거 (다음번에 새로 뽑도록)
-        if (result != NodeState.Running)
-        {
-            Reset();
-        }
-
-        return result;
-    }
-
-    public override void Reset()
-    {
-        _selectedChild?.Reset();
-        _selectedChild = null;
-    }
-}
-
-
-
-public class PrioritySelector : CompositeNode
-{
-    private int _lastRunningIndex = -1;
-
-    public PrioritySelector(List<BT_Node> children) : base(children) { }
-
-    public override NodeState Evaluate()
-    {
-        for (int i = 0; i < children.Count; i++)
-        {
-            NodeState state = children[i].Evaluate();
-
-            // 이번 프레임에 성공(Success)하거나 실행(Running) 중인 노드를 찾음
-            if (state != NodeState.Failure)
-            {
-                // [중단 로직] 이전에 실행하던 노드가 있고, 그 노드보다 현재 노드의 우선순위가 높다면(인덱스가 작다면)
-                if (_lastRunningIndex != -1 && _lastRunningIndex > i)
-                {
-                    children[_lastRunningIndex].Reset();
-                }
-
-                // 현재 실행 중인 인덱스 기록 (Running일 때만 유지, Success/Failure면 초기화)
-                _lastRunningIndex = (state == NodeState.Running) ? i : -1;
-                return state;
-            }
-        }
-
-        // 모든 자식이 Failure를 반환한 경우
-        _lastRunningIndex = -1;
-        return NodeState.Failure;
-    }
-
-    public override void Reset()
-    {
-        base.Reset(); // 모든 자식 노드를 재귀적으로 Reset
-        _lastRunningIndex = -1;
+        // 즉시 중지이므로 바로 Success 반환
+        return NodeState.Success;
     }
 }
 
@@ -286,12 +167,34 @@ public class SetBehaveSpot : BT_Node
 
 
 
-public class MoveToTarget : BT_Node
+public class MoveToSpot : BT_Node
 {
     public override NodeState Evaluate()
     {
         _bb.Agent.SetDestination(_bb.destSpot.transform.position);
-        Debug.Log($"목적지: {_bb.destSpot.name}, 남은 거리: {_bb.Agent.remainingDistance}");
+        //Debug.Log($"목적지: {_bb.destSpot.name}, 남은 거리: {_bb.Agent.remainingDistance}");
+
+        // 목적지에 거의 도착했는지 확인
+        if (!_bb.Agent.pathPending && _bb.Agent.remainingDistance <= _bb.Agent.stoppingDistance)
+        {
+            _bb.Anim.SetFloat("MoveSpeed", 0);
+            return NodeState.Success;
+        }
+
+        float currentSpeed = _bb.Agent.velocity.magnitude;
+        _bb.Anim.SetFloat("MoveSpeed", currentSpeed);
+        return NodeState.Running; // 아직 가는 중
+    }
+}
+
+
+
+public class MoveToTarget : BT_Node
+{
+    public override NodeState Evaluate()
+    {
+        _bb.Agent.SetSampleDestination(_bb.targetDamageable.Position, 2);
+        //Debug.Log($"목적지: {_bb.targetObject.name}, 남은 거리: {_bb.Agent.remainingDistance}");
 
         // 목적지에 거의 도착했는지 확인
         if (!_bb.Agent.pathPending && _bb.Agent.remainingDistance <= _bb.Agent.stoppingDistance)
@@ -309,7 +212,7 @@ public class MoveToTarget : BT_Node
 
 
 //나중에 일정 주기 가동시 Time.deltaTime 보정 필요
-public class RotateToTarget : BT_Node
+public class RotateToSpot : BT_Node
 {
     private float _rotationSpeed = STUDENT_ROTQTE_SPEED;
     private float _threshold = 0.999f; // 약 1도 이내로 정렬되면 완료
@@ -340,6 +243,35 @@ public class RotateToTarget : BT_Node
             Time.deltaTime * _rotationSpeed
         );
 
+        return NodeState.Running;
+    }
+}
+
+
+
+public class RotateToTarget : BT_Node
+{
+    private const float ROTATION_SPEED = 10f; // 회전 속도
+    private const float FINISH_ANGLE = 5.0f;  // 이 각도 이내로 들어오면 완료
+
+    public override NodeState Evaluate()
+    {
+        if (_bb.targetDamageable == null) return NodeState.Failure;
+
+        Vector3 targetDir = _bb.targetDamageable.Position - _bb.Avatar.transform.position;
+        targetDir.y = 0;
+
+        if (targetDir.sqrMagnitude > 0.001f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(targetDir);
+            _bb.Avatar.transform.rotation = Quaternion.Slerp(
+                _bb.Avatar.transform.rotation, 
+                targetRotation, 
+                Time.deltaTime * 10f // 회전 속도
+            );
+        }
+
+        // ParallelNode 안에서 계속 돌아야 하므로 항상 Running 반환
         return NodeState.Running;
     }
 }
@@ -432,6 +364,46 @@ public class SetSpeed : BT_Node
         float speed = _getSpeedFunc();
         _bb.Agent.speed = speed;
         return NodeState.Success;
+    }
+}
+
+
+
+public class Accelerate : BT_Node
+{
+    private Func<float> _getSpeedFunc;
+    private float _acceleration = 5f; // 초당 속도 변화량 (가속도)
+    private readonly int _speedHash = Animator.StringToHash("MoveSpeed");
+
+    public Accelerate(Func<float> getSpeedFunc, float acceleration = 5f)
+    {
+        _getSpeedFunc = getSpeedFunc;
+        _acceleration = acceleration;
+    }
+
+    public override NodeState Evaluate()
+    {
+        if (_getSpeedFunc == null) return NodeState.Failure;
+
+        float targetSpeed = _getSpeedFunc();
+        
+        // 1. 현재 에이전트의 속도값 가져오기
+        float currentSpeed = _bb.Agent.speed;
+
+        // 2. 목표 속도를 향해 부드럽게 보간 (MoveTowards는 목표치에 정확히 안착함)
+        float nextSpeed = Mathf.MoveTowards(currentSpeed, targetSpeed, _acceleration * Time.deltaTime);
+
+        // 3. 에이전트와 애니메이터에 동시에 적용
+        _bb.Agent.speed = nextSpeed;
+        _bb.Anim.SetFloat(_speedHash, nextSpeed);
+
+        // 4. 목표 속도에 충분히 도달했으면 Success, 아니면 계속 가감속 중이므로 Running
+        if (Mathf.Approximately(nextSpeed, targetSpeed))
+        {
+            return NodeState.Success;
+        }
+
+        return NodeState.Running;
     }
 }
 
@@ -626,85 +598,35 @@ public class ProbabilisticDodge : BT_Node
 
 
 
-public class DefenseAttack : BT_Node
+public class LerpLayerWeight : BT_Node
 {
-    private int _lastProcessedAttackID = -1;
-    private RandomSelector _randomSelector;
+    private int _layerIndex;
+    private float _targetWeight;
+    private float _lerpSpeed;
 
-    public DefenseAttack()
+    public LerpLayerWeight(int layerIndex, float targetWeight, float lerpSpeed = 5f)
     {
-        // 30% 회피, 40% 가드, 30% 멍때리기(피격)
-        _randomSelector = new RandomSelector(new List<BT_Node> {
-            new PlayOnceAnim("Dodge", "Dodge"), 
-            new PlayOnceAnim("Guard", "Guard"),
-            new SuccessNode() 
-        }, new List<System.Func<int>> { () => 30, () => 40, () => 30 });
-    }
-
-    public override void SetBlackboard(Blackboard blackboard)
-    {
-        base.SetBlackboard(blackboard);
-        _randomSelector.SetBlackboard(blackboard);
+        _layerIndex = layerIndex;
+        _targetWeight = targetWeight;
+        _lerpSpeed = lerpSpeed;
     }
 
     public override NodeState Evaluate()
     {
-        var target = _bb.targetObject.GetComponent<IAttackable>();
+        float currentWeight = _bb.Anim.GetLayerWeight(_layerIndex);
         
-        if (target != null && target.IsAttacking)
+        // 목표값과 현재값의 차이가 아주 작으면 완료(Success)
+        if (Mathf.Abs(currentWeight - _targetWeight) < 0.01f)
         {
-            if (target.CurrentAttackID == _lastProcessedAttackID)
-            {
-                return NodeState.Failure; 
-            }
-            _lastProcessedAttackID = target.CurrentAttackID;
-            return _randomSelector.Evaluate();
+            _bb.Anim.SetLayerWeight(_layerIndex, _targetWeight);
+            return NodeState.Success;
         }
 
-        _lastProcessedAttackID = -1;
-        return NodeState.Failure;
-    }
-
-
-    public override void Reset()
-    {
-        _randomSelector?.Reset();
-        _lastProcessedAttackID = -1;
-    }
-}
-
-
-
-public class CombatApproach : BT_Node
-{
-    public override NodeState Evaluate()
-    {
-        float dist = Vector3.Distance(_bb.Avatar.position, _bb.targetDamageable.Position);
-        float attackRange = 1.5f;
-
-        if (dist <= attackRange) return NodeState.Success; // 사거리 진입
-
-        // 5m 기준으로 상태 변화
-        if (dist > 5.0f)
-        {
-            _bb.Agent.speed = 6.75f; // Sprint Speed
-            _bb.Anim.SetBool("Boxing", false);
-        }
-        else
-        {
-            _bb.Agent.speed = 2.43f; // Jog/Boxing Speed
-            _bb.Anim.SetBool("Boxing", true);
-        }
-
-    
-        _bb.Agent.SetSampleDestination(_bb.targetDamageable.Position, 2);
+        // 점진적 보간
+        float nextWeight = Mathf.Lerp(currentWeight, _targetWeight, Time.deltaTime * _lerpSpeed);
+        _bb.Anim.SetLayerWeight(_layerIndex, nextWeight);
+        
         return NodeState.Running;
-    }
-
-    public override void Reset()
-    {
-        _bb.Anim.SetBool("Boxing", false);
-        _bb.Agent.ResetPath();
     }
 }
 
@@ -749,8 +671,44 @@ public class ConditionNode : BT_Node
 
 
 
-public class SuccessNode : BT_Node {
+public class DoSuccess : BT_Node {
     public override NodeState Evaluate() => NodeState.Success;
+}
+
+
+
+public class PrintDebug : BT_Node
+{
+    private string _message;
+    private Color _logColor;
+
+    // 메시지와 로그 색상을 지정할 수 있는 생성자
+    public PrintDebug(string message, string color = "white")
+    {
+        _message = message;
+        _logColor = GetColor(color);
+    }
+
+    public override NodeState Evaluate()
+    {
+        // 리치 텍스트를 이용해 콘솔에서 눈에 띄게 출력
+        string colorHex = ColorUtility.ToHtmlStringRGB(_logColor);
+        Debug.Log($"<color=#{colorHex}>[BT_Debug]: {_message}</color>");
+        
+        return NodeState.Success;
+    }
+
+    private Color GetColor(string color)
+    {
+        return color.ToLower() switch
+        {
+            "red" => Color.red,
+            "green" => Color.green,
+            "blue" => Color.blue,
+            "yellow" => Color.yellow,
+            _ => Color.white
+        };
+    }
 }
 
 

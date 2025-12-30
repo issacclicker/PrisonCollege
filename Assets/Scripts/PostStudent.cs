@@ -30,6 +30,8 @@ public class PostStudent : MonoBehaviour
     [SerializeField] private SpotGroup microwaveSpots;
     [SerializeField] private SpotGroup prowlSpots;
 
+    [SerializeField] private GameObject player;
+
     private void Awake()
     {
         _agent = GetComponent<NavMeshAgent>();
@@ -68,6 +70,19 @@ public class PostStudent : MonoBehaviour
     }
 
 
+
+    private BT_Node ConstructCombatSequence()
+    {
+        Sequence combatSequence = new Sequence(new List<BT_Node>
+        {
+            new SetAttackTarget(player),
+            new CombatApproachPattern()
+        });
+
+        return combatSequence;
+    }
+
+
     private BT_Node ConstructWorkSequence()
     {
         // 1. 개별 액션 시퀀스 정의
@@ -94,8 +109,8 @@ public class PostStudent : MonoBehaviour
         {
             new SetBehaveSpot(chairSpot),
             _speedSelector,
-            new MoveToTarget(),
-            new RotateToTarget(),
+            new MoveToSpot(),
+            new RotateToSpot(),
             new SetAnimBool("Sitting", true),
             new SetAnimBool("Typing", true),
             new Delay(() => 3f),
@@ -117,14 +132,14 @@ public class PostStudent : MonoBehaviour
         {
             new SetRandomBehaveSpot(prowlSpots),
             _speedSelector,
-            new MoveToTarget()
+            new MoveToSpot()
             //new PlayLoopAnim("LookAround", 5)
         });
         Sequence restSequence = new Sequence(new List<BT_Node>
         {
             new SetRandomBehaveSpot(restSpots),
             _speedSelector,
-            new MoveToTarget(),
+            new MoveToSpot(),
             new PlayOnceAnim("LookAround", "LookAround")
             //new PlayLoopAnim("LookAround", 5)
         });
@@ -141,9 +156,9 @@ public class PostStudent : MonoBehaviour
             new SetRandomBehaveSpot(microwaveSpots),
             _speedSelector,
             new SetAnimBool("Carrying", true),
-            new MoveToTarget(),
+            new MoveToSpot(),
             new SetAnimBool("Carrying", false),
-            new RotateToTarget(),
+            new RotateToSpot(),
             new PlayOnceAnim("PushButton", "PushButton")
         });
 
@@ -152,6 +167,7 @@ public class PostStudent : MonoBehaviour
             new List<System.Func<int>> { () => 50, () => 50, () => 50, () => 50 }
         );
 
+        return ConstructCombatSequence();
         // 4. 전체 루트를 반복(Selector 또는 Sequence) 하도록 설정
         return new Selector(new List<BT_Node> { randomJobSelector });
     }
