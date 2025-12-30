@@ -71,20 +71,23 @@ public class ConditionDecorator : BT_Node
 
 public class ActionNode : BT_Node
 {
-    // NodeState를 반환하는 함수 대리자
-    private readonly Func<NodeState> _action;
+    private readonly Action _action;
+    private readonly NodeState _resultState;
 
-    public ActionNode(Func<NodeState> action)
+    // 실행할 함수와, 종료 후 보고할 상태를 인자로 받음
+    public ActionNode(Action action, NodeState resultState = NodeState.Success)
     {
         _action = action;
+        _resultState = resultState;
     }
 
     public override NodeState Evaluate()
     {
-        if (_action == null) return NodeState.Failure;
+        // 1. 주입된 함수 실행 (null 체크 포함)
+        _action?.Invoke();
 
-        // 주입된 로직을 실행하고 그 결과를 부모에게 보고
-        return _action.Invoke();
+        // 2. 지정된 노드 상태 반환
+        return _resultState;
     }
 }
 
@@ -100,7 +103,7 @@ public class StopNode : BT_Node
         {
             // 1. 물리적 속도 즉시 제거
             _bb.Agent.velocity = Vector3.zero;
-            
+            _bb.Agent.speed = 0;
             // 2. NavMeshAgent의 경로 계산 중지 및 정지
             _bb.Agent.isStopped = true; 
             _bb.Agent.ResetPath();
@@ -501,6 +504,24 @@ public class PlayOnceAnim : BT_Node
         }
 
         return NodeState.Running;
+    }
+}
+
+
+
+public class SetAnimRootMotion : BT_Node
+{
+    private bool _useRootMotion;
+
+    public SetAnimRootMotion(bool useRootMotion)
+    {
+        _useRootMotion = useRootMotion;
+    }
+
+    public override NodeState Evaluate()
+    {
+        _bb.Anim.applyRootMotion = _useRootMotion;
+        return NodeState.Success;
     }
 }
 

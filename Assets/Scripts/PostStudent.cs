@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Animations;
 
 public class PostStudent : MonoBehaviour
 {
@@ -166,6 +167,34 @@ public class PostStudent : MonoBehaviour
             new List<BT_Node> { prowlSequence, restSequence, ConstructWorkSequence(), microwaveSequence },
             new List<System.Func<int>> { () => 50, () => 50, () => 50, () => 50 }
         );
+
+        BT_Node combatSubTree = new Sequence(new List<BT_Node>
+        {
+            new SetAttackTarget(player),
+            // 1. 적에게 접근 (사거리 안에 들어올 때까지 Running, 들어오면 Success)
+            new ParallelNode(new List<BT_Node>
+            {
+                new CombatApproachPattern(),
+                new RotateToTarget(),
+            }),
+            //new CombatApproachPattern(),
+
+            // new ParallelNode(new List<BT_Node>
+            // {
+            //     new Sequence(new List<BT_Node>
+            //     {
+            //         new StopNode(),
+            //         new LerpLayerWeight(Global.COMBAT_LAYER_INDEX, 1f, 16f),
+            //     }),
+            //     new MeleeAttackPattern(),
+            // }),
+            
+            // 2. 사거리 안에서 무작위 공격 수행 (애니메이션 끝날 때까지 Running)
+            //new MeleeAttackPattern(),
+            
+            // 3. 공격 후 잠깐의 틈 (AI가 너무 숨 가쁘게 공격하지 않도록)
+        });
+        return combatSubTree;
 
         return ConstructCombatSequence();
         // 4. 전체 루트를 반복(Selector 또는 Sequence) 하도록 설정
