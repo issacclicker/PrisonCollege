@@ -77,6 +77,7 @@ public class DefenseAttackPattern : PatternNode
 public class CombatApproachPattern : PatternNode
 {
     private const float SPRINT_THRESHOLD = 3.0f;
+    private const float APPROACH_RANGE = 1.4f;
     private const float ATTACK_RANGE = 1.6f;
     private bool _isAttacking = false;
 
@@ -88,6 +89,7 @@ public class CombatApproachPattern : PatternNode
             new ConditionDecorator(() => GetDistance() >= ATTACK_RANGE && !_isAttacking,
                 new Sequence(new List<BT_Node>
                 {
+                    new SetAnimRootMotion(false),
                     new SetSpeed(() => 6.75f),
                     new ParallelNode(new List<BT_Node>
                     {
@@ -104,6 +106,7 @@ public class CombatApproachPattern : PatternNode
                 // --- [공격 단계] ---
                 new ActionNode(() => _bb.Anim.SetLayerWeight(COMBAT_LAYER_INDEX, 1), NodeState.Success),
                 new StopNode(),
+                new SetAnimRootMotion(true),
                 new ActionNode(() => _isAttacking = true, NodeState.Success), // 플래그 ON
                 
                 new MeleeAttackPattern(), // 실제 주먹 휘두르는 동안
@@ -113,7 +116,8 @@ public class CombatApproachPattern : PatternNode
                 // --- [후딜레이 단계] ---
                 // 이제 _isAttacking이 false이므로, 
                 // 딜레이 도중 플레이어가 멀어지면 상위 Selector가 1번(추격)으로 즉시 갈아탑니다.
-                new Delay(() => 1.5f)
+                new Delay(() => 1.5f),
+                new SetAnimRootMotion(false),
             })
         });
     }
@@ -156,7 +160,7 @@ public class MeleeAttackPattern : PatternNode
         _patternRoot = new Sequence(new List<BT_Node>
         {
             new PrintDebug("MeleeAttackPattern Start"),
-            new SetAnimRootMotion(true),
+            //new SetAnimRootMotion(true),
             new RandomSelector(
                 new List<BT_Node> { 
                     new PlayOnceAnim("Elbow1", "Elbow1", COMBAT_LAYER_INDEX), 
@@ -169,7 +173,7 @@ public class MeleeAttackPattern : PatternNode
                     () => 10  // 어퍼컷은 가끔
                 }
             ),
-            new SetAnimRootMotion(false),
+            //new SetAnimRootMotion(false),
             new PrintDebug("MeleeAttackPattern End"),
         });
     }

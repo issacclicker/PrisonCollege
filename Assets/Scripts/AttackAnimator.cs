@@ -55,7 +55,7 @@ public class AttackAnimator : MonoBehaviour
         swingSeq.Join(_weaponHandle.DOLocalRotate(new Vector3(-20f, 60f, 0f), 0.2f).SetEase(Ease.OutQuad));
 
         // 2. 휘두르기 (전체의 약 15% - 매우 빠르게)
-        swingSeq.Append(_weaponHandle.DOLocalMove(new Vector3(-0.6f, -0.1f, 0.3f), 0.15f).SetEase(Ease.InExpo));
+        swingSeq.Append(_weaponHandle.DOLocalMove(new Vector3(-0.5f, -0f, -0.3f), 0.15f).SetEase(Ease.InExpo));
         swingSeq.Join(_weaponHandle.DOLocalRotate(new Vector3(10f, -90f, -40f), 0.15f).SetEase(Ease.InExpo));
 
         // 타격 판정 (공격 시작 후 약 35% 시점)
