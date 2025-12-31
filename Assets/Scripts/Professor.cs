@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Professor : MonoBehaviour, IDamageable
+public class Professor : MonoBehaviour, IDamageable, IAttackable
 {
     [Header("Movement")]
     [SerializeField] private float _moveSpeed = 5f;
@@ -23,12 +23,19 @@ public class Professor : MonoBehaviour, IDamageable
 
     public bool IsDead => false;
 
-    public bool IsInvincible => throw new System.NotImplementedException();
+    public bool IsInvincible => false;
 
     public Vector3 Position => transform.position;
 
+    public bool IsAttacking => throw new System.NotImplementedException();
+
+    public int CurrentAttackID => throw new System.NotImplementedException();
+    private AttackAnimator attackAnimator;
+
     private void Start()
     {
+        attackAnimator = GetComponent<AttackAnimator>();
+        return;
         _controller = GetComponent<CharacterController>();
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -39,51 +46,28 @@ public class Professor : MonoBehaviour, IDamageable
 
     private void Update()
     {
-        HandleMouseLook();
-        HandleMovement();
+        if (Input.GetMouseButtonDown(0) && CanAttack())
+        {
+            attackAnimator.PlayMeleeSwing(Attack);
+        }
     }
 
 
 
-    private void HandleMouseLook()
+    private bool CanAttack()
     {
-        float mouseX = Input.GetAxis("Mouse X") * _mouseSensitivity;
-        float mouseY = Input.GetAxis("Mouse Y") * _mouseSensitivity;
-
-        _xRotation -= mouseY;
-        _xRotation = Mathf.Clamp(_xRotation, -_maxLookAngle, _maxLookAngle);
-
-        _cameraTransform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
-        transform.Rotate(Vector3.up * mouseX);
+        return !attackAnimator.IsSwinging;
     }
 
 
-
-    private void HandleMovement()
-    {
-        float x = Input.GetAxis("Horizontal");
-        float z = Input.GetAxis("Vertical");
-
-        // Shift ÀÔ·Â °¨Áö
-        bool isSprinting = Input.GetKey(KeyCode.LeftShift);
-
-        float currentSpeed = isSprinting
-            ? _moveSpeed * _sprintMultiplier
-            : _moveSpeed;
-
-        Vector3 move = transform.right * x + transform.forward * z;
-        _controller.Move(move * currentSpeed * Time.deltaTime * _speedRate);
-
-        // Áß·Â Ã³¸®
-        if (_controller.isGrounded && _velocity.y < 0)
-            _velocity.y = -2f;
-
-        _velocity.y += _gravity * Time.deltaTime;
-        _controller.Move(_velocity * Time.deltaTime);
-    }
 
     public void TakeDamage(float amount, Vector3 hitPoint, GameObject attacker)
     {
         throw new System.NotImplementedException();
+    }
+
+    public void Attack()
+    {
+        
     }
 }
