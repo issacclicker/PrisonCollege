@@ -136,6 +136,10 @@ PrefabInstance:
       value: SM_Sledgehammer
       objectReference: {fileID: 0}
     - target: {fileID: 1229692716274712375, guid: c1261337aad64ef4db60b9b168b33feb, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 1229692716274712375, guid: c1261337aad64ef4db60b9b168b33feb, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -1416,7 +1420,7 @@ Transform:
   m_GameObject: {fileID: 1842964069}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.07, y: -0.1, z: 0.02}
+  m_LocalPosition: {x: 0.06, y: -0.09, z: 0.02}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7328,7 +7332,7 @@ MonoBehaviour:
   holdToZoom: 1
   zoomKey: 324
   zoomFOV: 30
-  zoomStepTime: 5
+  zoomStepTime: 10
   playerCanMove: 1
   walkSpeed: 2
   maxVelocityChange: 10
