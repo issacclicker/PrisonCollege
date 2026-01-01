@@ -8,6 +8,7 @@ TagManager:
   - FxTemporaire
   - Student
   - GameSystem
+  - Prop
   layers:
   - Default
   - TransparentFX
