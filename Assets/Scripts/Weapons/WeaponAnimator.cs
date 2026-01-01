@@ -29,7 +29,7 @@ public class WeaponAnimator : MonoBehaviour
     protected bool _isPlayAttackAnim;
     public bool IsPlayAttackAnim => _isPlayAttackAnim;
 
-    void Awake()
+    protected virtual void Awake()
     {
         _weaponController = GetComponentInParent<WeaponController>();
         _originPos = transform.localPosition;

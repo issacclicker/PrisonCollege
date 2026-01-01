@@ -218,8 +218,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 392010162}
-  - component: {fileID: 392010164}
   - component: {fileID: 392010163}
+  - component: {fileID: 392010164}
   m_Layer: 10
   m_Name: Book_Root
   m_TagString: Untagged
@@ -265,7 +265,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 392010161}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c028127066a38e4c8822122ff5c0082, type: 3}
+  m_Script: {fileID: 11500000, guid: 3730a31c3af051e43b720cab1ad979e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _idleBobAmount: 0.003
@@ -275,6 +275,12 @@ MonoBehaviour:
   _swayAmount: 0.01
   _smoothAmount: 6
   _attackDuration: 1
+  _throwablePrefab: {fileID: 1095381659082510, guid: 42757e87945a07744b6e86f7ee354945, type: 3}
+  _throwableModel: {fileID: 1491493511}
+  _throwPoint: {fileID: 0}
+  _throwForce: 200
+  _throwOffset: {x: 0.05, y: -0.25, z: 0}
+  _flipSpeed: 100
 --- !u!1 &470836295
 GameObject:
   m_ObjectHideFlags: 0
@@ -825,8 +831,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1046194456}
-  - component: {fileID: 1046194458}
   - component: {fileID: 1046194457}
+  - component: {fileID: 1046194458}
   m_Layer: 10
   m_Name: AMK_Root
   m_TagString: Untagged
@@ -872,7 +878,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1046194455}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c028127066a38e4c8822122ff5c0082, type: 3}
+  m_Script: {fileID: 11500000, guid: f55dc8ca7a7b88d4aa1df049453a4ea5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _idleBobAmount: 0.003
@@ -881,7 +887,10 @@ MonoBehaviour:
   _walkBobSpeed: 10
   _swayAmount: 0.01
   _smoothAmount: 6
-  _attackDuration: 1
+  _attackDuration: 0.15
+  _kickBackZ: 0.07
+  _kickUpX: 3
+  _randomMaxYaw: 1
 --- !u!1 &1086783065
 GameObject:
   m_ObjectHideFlags: 0
@@ -2345,7 +2354,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &550752758368816638
 Transform:
   m_ObjectHideFlags: 0
@@ -7685,7 +7694,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4459864851346212170}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b34033065f28f6a43942bd011015e621, type: 3}
   m_Name: 
@@ -7699,7 +7708,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4459864851346212170}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ebfc879eb68ae9a469d99c23ef15f52b, type: 3}
   m_Name: 
