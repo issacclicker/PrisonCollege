@@ -53,8 +53,8 @@ public class WeaponAnimator : MonoBehaviour
 
         if (_isWalking)
         {
-            targetSpeed = _isSprinting ? _walkBobSpeed * 1.5f : _walkBobSpeed;
-            targetAmount = _isSprinting ? _walkBobAmount * 1.8f : _walkBobAmount;
+            targetSpeed = _isSprinting ? _walkBobSpeed * 2.5f : _walkBobSpeed;
+            targetAmount = _isSprinting ? _walkBobAmount * 5f : _walkBobAmount;
         }
 
         // 2. 타이머 누적

@@ -281,6 +281,8 @@ MonoBehaviour:
   _throwForce: 200
   _throwOffset: {x: 0.05, y: -0.25, z: 0}
   _flipSpeed: 100
+  _spreadAmount: 0.5
+  _torqueRandomness: 0.2
 --- !u!1 &470836295
 GameObject:
   m_ObjectHideFlags: 0
@@ -881,9 +883,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f55dc8ca7a7b88d4aa1df049453a4ea5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _idleBobAmount: 0.003
+  _idleBobAmount: 0.001
   _idleBobSpeed: 2
-  _walkBobAmount: 0.01
+  _walkBobAmount: 0.003
   _walkBobSpeed: 10
   _swayAmount: 0.01
   _smoothAmount: 6
@@ -7541,7 +7543,7 @@ MonoBehaviour:
   crouchKey: 306
   crouchHeight: 0.75
   speedReduction: 0.5
-  enableHeadBob: 0
+  enableHeadBob: 1
   joint: {fileID: 4459864850183919964}
   bobSpeed: 10
   bobAmount: {x: 0, y: 0.03, z: 0.1}

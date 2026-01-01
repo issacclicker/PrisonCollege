@@ -13,6 +13,8 @@ public class ThrowAnimator : WeaponAnimator
     [SerializeField] private float _throwForce = 15f;     // 던지는 힘
     [SerializeField] private Vector3 _throwOffset = new Vector3(0.5f, -0.2f, 1.0f);
     [SerializeField] private float _flipSpeed = 20f; // 위아래 회전 속도 (높을수록 빠름)
+    [Range(0f, 1f)] public float _spreadAmount = 0.02f; // 탄퍼짐 정도
+    [Range(0f, 1f)] public float _torqueRandomness = 0.5f; // 회전 불규칙도
 
     private Vector3 _initialScale;
     private Quaternion _initialRotation;
@@ -93,25 +95,22 @@ public class ThrowAnimator : WeaponAnimator
         Camera playerCamera = Camera.main;
         if (_throwablePrefab == null || playerCamera == null) return;
 
-        // 1. 카메라 좌표계 방향 데이터 (절대 기준)
+        // 1. 카메라 방향 데이터
         Vector3 camPos = playerCamera.transform.position;
         Vector3 camForward = playerCamera.transform.forward;
         Vector3 camRight = playerCamera.transform.right;
         Vector3 camUp = playerCamera.transform.up;
         Quaternion camRot = playerCamera.transform.rotation;
 
-        // 2. [핵심] 생성 위치를 카메라 중심으로 계산
-        // _throwPoint의 위치를 쓰지 않고 카메라 위치에서 오프셋만큼 이동시킵니다.
-        // 이렇게 해야 카메라가 어디를 보든 항상 시야 내 같은 지점에서 물체가 나타납니다.
+        // 2. 생성 위치 계산 (카메라 중심 오프셋)
         Vector3 spawnPos = camPos
                            + (camRight * _throwOffset.x)
                            + (camUp * _throwOffset.y)
                            + (camForward * _throwOffset.z);
 
-        // 3. 생성 회전값 (카메라 회전 * 모델의 로컬 회전)
+        // 3. 생성 회전 (손 각도 유지)
         Quaternion finalRot = camRot * _throwableModel.localRotation;
 
-        // 4. 생성 및 스케일 복사
         GameObject projectile = Instantiate(_throwablePrefab, spawnPos, finalRot);
         projectile.transform.localScale = _throwableModel.localScale;
 
@@ -123,11 +122,25 @@ public class ThrowAnimator : WeaponAnimator
             rb.velocity = Vector3.zero;
             rb.maxAngularVelocity = 1000f;
 
-            // 5. 발사 (카메라 정면 방향)
-            rb.AddForce(camForward * _throwForce, ForceMode.Impulse);
+            // 4. [무작위성 추가] 발사 방향에 살짝 오차 주기
+            // camForward 방향에 아주 미세하게 위/아래/옆 랜덤 벡터를 섞습니다.
+            Vector3 randomSpread = (camUp * Random.Range(-_spreadAmount, _spreadAmount))
+                                 + (camRight * Random.Range(-_spreadAmount, _spreadAmount));
+            Vector3 finalThrowDir = (camForward + randomSpread).normalized;
 
-            // 6. 덤블링 회전
-            rb.angularVelocity = camRight * _flipSpeed;
+            rb.AddForce(finalThrowDir * _throwForce, ForceMode.Impulse);
+
+            // 5. [무작위성 추가] 회전 방향을 삐딱하게 만들기
+            // 정직한 덤블링 회전(camRight)에 약간의 상하좌우 비틀기를 섞습니다.
+            Vector3 randomTorque = new Vector3(
+                Random.Range(-_torqueRandomness, _torqueRandomness),
+                Random.Range(-_torqueRandomness, _torqueRandomness),
+                Random.Range(-_torqueRandomness, _torqueRandomness)
+            );
+
+            // 기본 회전축(Right)에 랜덤 비틀기 추가
+            Vector3 mixedAngularVelocity = (camRight + randomTorque) * _flipSpeed;
+            rb.angularVelocity = mixedAngularVelocity;
         }
 
         // 충돌 무시
