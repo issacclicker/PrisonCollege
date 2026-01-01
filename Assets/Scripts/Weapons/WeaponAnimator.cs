@@ -1,5 +1,6 @@
 using UnityEngine;
 using DG.Tweening;
+using DOTweenSeq = DG.Tweening.Sequence;
 
 public class WeaponAnimator : MonoBehaviour
 {
@@ -14,25 +15,32 @@ public class WeaponAnimator : MonoBehaviour
     [Header("--- Mouse Sway ---")]
     [SerializeField] private float _swayAmount = 0.02f;
     [SerializeField] private float _smoothAmount = 6f;
+    [Header("--- Attack ---")]
+    [SerializeField] protected float _attackDuration = 1f;
 
-    private Vector3 _originPos;
+    protected Vector3 _originPos;
+    protected Vector3 _originRot;
     private Vector3 _currentBobOffset; // Bobbing 계산값 저장용
     private float _bobTimer;
 
     private WeaponController _weaponController;
     private bool _isWalking;
     private bool _isSprinting;
+    protected bool _isPlayAttackAnim;
+    public bool IsPlayAttackAnim => _isPlayAttackAnim;
 
     void Awake()
     {
         _weaponController = GetComponentInParent<WeaponController>();
         _originPos = transform.localPosition;
+        _originRot = transform.localEulerAngles;
     }
 
     void LateUpdate()
     {
         _isWalking = _weaponController.FirstPersonController.IsWalking;
         _isSprinting = _weaponController.FirstPersonController.IsSprinting;
+        if (_isPlayAttackAnim) return;
         UpdateBobbing();
         UpdateMouseSway();
     }
@@ -104,9 +112,34 @@ public class WeaponAnimator : MonoBehaviour
     {
         transform.DOLocalMove(_originPos + new Vector3(0, -0.5f, 0), duration)
             .SetEase(Ease.InQuad)
-            .OnComplete(() => {
+            .OnComplete(() => 
+            {
                 gameObject.SetActive(false);
                 onComplete?.Invoke();
-            });
+            }
+        );
+    }
+
+
+    public void StartAttack()
+    {
+        if (_isPlayAttackAnim) return; // 중복 실행 방지
+        _isPlayAttackAnim = true;
+
+        DOTweenSeq attackAnimSeq = DOTween.Sequence();
+        AddAttackFrames(attackAnimSeq);
+        float defaultDuration = attackAnimSeq.Duration(); // 현재 시퀀스의 기본 시간 합계 (1.0f)
+        attackAnimSeq.timeScale = defaultDuration / _attackDuration;
+        attackAnimSeq.OnComplete(() => 
+        {
+            _isPlayAttackAnim = false;
+        });
+    }
+
+
+    protected virtual void AddAttackFrames(DOTweenSeq attackAnimSeq) 
+    {
+        attackAnimSeq.Append(transform.DOLocalMoveZ(_originPos.z + 0.1f, 0.1f));
+        attackAnimSeq.Append(transform.DOLocalMoveZ(_originPos.z, 0.1f));
     }
 }
