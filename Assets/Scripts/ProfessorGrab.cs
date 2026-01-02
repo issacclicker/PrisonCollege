@@ -53,10 +53,13 @@ public class ProfessorGrab : MonoBehaviour
     //// 함수 본문
     
     RaycastHit hit; //집는 물체
-    const float MAX_DISTANCE = 5f; //집을 수 있는 거리
-    const float HOLD_DISTANCE = 2f; //집고 있는 거리
 
-    const float HOLD_SMOOTH = 13f; // 집는 물건이 따라오는 속도
+    [Tooltip("집을 수 있는 거리")] [SerializeField]private float maxDistance = 5f; //집을 수 있는 거리
+    [Tooltip("집고 있는 거리")] [SerializeField]private float holdDistance = 2f; //집고 있는 거리
+
+    [Tooltip("집는 물건이 따라오는 속도")] [SerializeField]private float holdSmooth = 13f; // 집는 물건이 따라오는 속도
+
+    [Tooltip("물건을 던지는 힘")] [SerializeField]private float throwForce = 10f;
 
     private bool allowsGrab; //물건을 집을 수 있는지 여부
     private bool isGrapping; //물건을 집는 중인지 여부
@@ -80,11 +83,11 @@ public class ProfessorGrab : MonoBehaviour
             // 카메라 기준으로 Raycast
             Transform cam = Camera.main.transform;
 
-            Debug.DrawRay(cam.position, cam.forward * MAX_DISTANCE, Color.blue, 0.3f);
+            Debug.DrawRay(cam.position, cam.forward * maxDistance, Color.blue, 0.3f);
 
             allowsGrab = false;
 
-            if (Physics.Raycast(cam.position, cam.forward, out hit, MAX_DISTANCE))
+            if (Physics.Raycast(cam.position, cam.forward, out hit, maxDistance))
             {
                 Debug.Log($"Hit object: {hit.collider.gameObject.name}");
                 if(hit.collider.gameObject.tag == "Prop") // 집으려는 물건이 Prop인 경우
@@ -109,15 +112,19 @@ public class ProfessorGrab : MonoBehaviour
         {
             Rigidbody targetR = hit.collider.gameObject.GetComponent<Rigidbody>(); // 집은 물건
 
-            Vector3 targetPos = playerCamera.transform.position + playerCamera.transform.forward * HOLD_DISTANCE;
+            Vector3 targetPos = playerCamera.transform.position + playerCamera.transform.forward * holdDistance;
             // Debug.Log(hit.collider.gameObject.name);
             targetR.useGravity = false;
-            targetR.MovePosition(Vector3.Lerp(targetR.position, targetPos, Time.deltaTime * HOLD_SMOOTH));
+            targetR.MovePosition(Vector3.Lerp(targetR.position, targetPos, Time.deltaTime * holdSmooth));
+            
+            //클릭 해 던짐
             if(Input.GetKey(KeyCode.Mouse0))
             {
                 isGrapping = false;
                 allowsGrab = true;
                 targetR.useGravity = true;
+
+                targetR.AddForce(playerCamera.transform.forward * throwForce, ForceMode.VelocityChange);
             }
         }
 
