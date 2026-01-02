@@ -6160,7 +6160,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 550198852003525997}
-  m_Enabled: 0
+  m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 4350b309aa35d8241b5a918441629bdc, type: 3}
   m_Controller: {fileID: 9100000, guid: d3b7cedd584ec1b41b8064c0219c28ca, type: 2}
   m_CullingMode: 0
@@ -6226,7 +6226,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 550198852003525997}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 886212a0a9179e44caad35c77a21f739, type: 3}
   m_Name: 
@@ -6263,6 +6263,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a6268c7a5336c240b16b5e243e0265b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DeathEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &3639686440422013794
 GameObject:
   m_ObjectHideFlags: 0

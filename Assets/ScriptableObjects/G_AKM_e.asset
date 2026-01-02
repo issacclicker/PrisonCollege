@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: 0
   value: 100
+  hitImpulse: 10
   dodgeProb: 0
   effectVisualPrefab: {fileID: 0}
