@@ -21,4 +21,31 @@ public static class Utils
 
         return targetPos; // 근처에 NavMesh가 없으면 원래 위치 반환
     }
+
+
+    /// <summary>
+    /// SphereCast의 hit 정보를 분석하여 안전한 충돌 지점을 반환합니다.
+    /// (시작점이 겹쳐 hit.point가 0일 경우 ClosestPoint로 보정)
+    /// </summary>
+    public static Vector3 GetContactPoint(this RaycastHit hit, Vector3 origin)
+    {
+        return hit.point == Vector3.zero ? hit.collider.ClosestPoint(origin) : hit.point;
+    }
+
+    /// <summary>
+    /// SphereCast의 hit 정보를 분석하여 안전한 법선 벡터를 반환합니다.
+    /// (법선이 0일 경우 쏜 방향의 반대 방향으로 보정)
+    /// </summary>
+    public static Vector3 GetNormal(this RaycastHit hit, Vector3 direction)
+    {
+        return hit.normal == Vector3.zero ? -direction : hit.normal;
+    }
+
+    /// <summary>
+    /// 해당 게임 오브젝트가 특정 레이어 마스크에 포함되는지 확인합니다.
+    /// </summary>
+    public static bool IsInLayerMask(this GameObject obj, LayerMask mask)
+    {
+        return ((1 << obj.layer) & mask) != 0;
+    }
 }

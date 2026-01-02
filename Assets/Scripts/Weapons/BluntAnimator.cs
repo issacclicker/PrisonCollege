@@ -1,12 +1,13 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DG.Tweening;
+using static UnityEngine.UI.GridLayoutGroup;
 using DOTweenSeq = DG.Tweening.Sequence;
 
 public class BluntAnimator : WeaponAnimator
 {
-    protected override void AddAttackFrames(DOTweenSeq attackAnimSeq)
+    protected override void AddAttackFrames(DOTweenSeq attackAnimSeq, System.Action attackExecution, float attackDuration)
     {
         attackAnimSeq.Append(transform.DOLocalMove(_originPos + new Vector3(0.2f, 0.2f, -0.4f), 0.2f).SetEase(Ease.OutQuad));
         attackAnimSeq.Join(transform.DOLocalRotate(_originRot + new Vector3(-20f, 60f, 0f), 0.2f).SetEase(Ease.OutQuad));
@@ -16,7 +17,7 @@ public class BluntAnimator : WeaponAnimator
         attackAnimSeq.Join(transform.DOLocalRotate(_originRot + new Vector3(10f, -90f, -40f), 0.15f).SetEase(Ease.InExpo));
 
         // 타격 판정 (공격 시작 후 약 35% 시점)
-        //attackAnimSeq.AppendCallback(() => attackAction.Invoke());
+        attackAnimSeq.AppendCallback(() => attackExecution.Invoke());
 
         // 3. 복귀 (전체의 약 65%)
         attackAnimSeq.Append(transform.DOLocalMove(_originPos, 0.65f).SetEase(Ease.OutBack));

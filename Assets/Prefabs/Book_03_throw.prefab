@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 23978955609009040}
   - component: {fileID: 65217758454242546}
   - component: {fileID: -3807874009959474876}
+  - component: {fileID: -8628867387403715778}
   m_Layer: 0
   m_Name: Book_03_throw
   m_TagString: Untagged
@@ -135,3 +136,16 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
+--- !u!114 &-8628867387403715778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1095381659082510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 27b331948bbdd214c9b67a3d55ba5218, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _effectData: {fileID: 11400000, guid: c83512a2731e2c54f8026edd87a89c58, type: 2}

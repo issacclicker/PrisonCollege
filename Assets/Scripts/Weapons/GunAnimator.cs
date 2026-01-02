@@ -10,12 +10,12 @@ public class GunAnimator : WeaponAnimator
     [SerializeField] private float _kickBackZ = 0.2f;
     [SerializeField] private float _kickUpX = 5f;
     [SerializeField] private float _randomMaxYaw = 1f;
-    protected override void AddAttackFrames(DOTweenSeq attackAnimSeq)
+    protected override void AddAttackFrames(DOTweenSeq attackAnimSeq, System.Action attackExecution, float attackDuration)
     {
         // 1. 시간 배분 (공격 지속 시간을 쪼갭니다)
         // 반동은 매우 빠르게(전체 시간의 15%), 나머지는 복귀에 할당
-        float recoilTime = _attackDuration * 0.15f;
-        float returnTime = _attackDuration * 0.85f;
+        float recoilTime = attackDuration * 0.15f;
+        float returnTime = attackDuration * 0.85f;
 
         // 2. 반동 수치 설정 (인스펙터 변수가 있다면 그것을 사용하세요)
         float randomYaw = Random.Range(-_randomMaxYaw, _randomMaxYaw); // 좌우 무작위 흔들림
@@ -25,8 +25,7 @@ public class GunAnimator : WeaponAnimator
         attackAnimSeq.Append(transform.DOLocalMoveZ(-_kickBackZ, recoilTime).SetEase(Ease.OutExpo));
         attackAnimSeq.Join(transform.DOLocalRotate(new Vector3(-_kickUpX, randomYaw, 0), recoilTime).SetEase(Ease.OutExpo));
 
-        // [Callback] 발사 시점
-        //attackAnimSeq.AppendCallback(() => Shoot());
+        attackAnimSeq.AppendCallback(() => attackExecution.Invoke());
 
         // [Step 2] 복귀 (Recovery)
         // 남은 시간 동안 원래 위치(zero)로 부드럽게 돌아옵니다.

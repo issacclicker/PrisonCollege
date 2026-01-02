@@ -20,7 +20,7 @@ public class Professor : MonoBehaviour, IDamageable, IAttackable
     private void Start()
     {
         attackAnimator = GetComponent<AttackAnimator>();
-        _weaponController.EquipWeapon(0);
+        _weaponController.EquipWeapon(0, gameObject);
     }
 
 

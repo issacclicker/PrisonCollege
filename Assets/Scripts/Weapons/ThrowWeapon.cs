@@ -1,79 +1,25 @@
-using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using DOTweenSeq = DG.Tweening.Sequence;
 
-public class ThrowAnimator : WeaponAnimator
+public class ThrowWeapon : WeaponBase
 {
-    [Header("--- Throw Settings ---")]
+    [Header("--- Throw ---")]
     [SerializeField] private GameObject _throwablePrefab; // 던질 물체 프리팹
     [SerializeField] private Transform _throwableModel; // 던질 물체 프리팹
-    [SerializeField] private Transform _throwPoint;       // 물체가 생성될 위치 (무기 근처)
     [SerializeField] private float _throwForce = 15f;     // 던지는 힘
     [SerializeField] private Vector3 _throwOffset = new Vector3(0.5f, -0.2f, 1.0f);
     [SerializeField] private float _flipSpeed = 20f; // 위아래 회전 속도 (높을수록 빠름)
     [Range(0f, 1f)] public float _spreadAmount = 0.02f; // 탄퍼짐 정도
     [Range(0f, 1f)] public float _torqueRandomness = 0.5f; // 회전 불규칙도
 
-    private Vector3 _initialScale;
-    private Quaternion _initialRotation;
-    private Vector3 _initialPosition;
 
 
-    protected override void Awake()
+    protected override void ExecuteAttack()
     {
-        base.Awake();
-        _initialScale = _throwableModel.localScale;
-        _initialRotation = _throwableModel.localRotation;
-        _initialPosition = _throwableModel.localPosition;
+        ThrowProjectile();
     }
 
-
-    protected override void AddAttackFrames(DOTweenSeq attackAnimSeq, System.Action attackExecution, float attackDuration)
-    {
-        // [핵심 1] 시퀀스 시작 즉시 모델을 켭니다. 
-        // 이전 공격이 도중에 끊겨서 꺼진 채로 남아있을 경우를 대비합니다.
-        attackAnimSeq.AppendCallback(() => _throwableModel.gameObject.SetActive(true));
-
-        float recoilTime = attackDuration * 0.2f;
-        float returnTime = attackDuration * 0.7f; // 시간 합계를 맞추기 위해 약간 줄임
-        float throwActionTime = 0.1f;              // 던지는 뻗기 동작 시간
-
-        // 1. 준비 동작 (뒤로 당기기)
-        attackAnimSeq.Append(transform.DOLocalMove(new Vector3(0.1f, -0.1f, -0.2f), recoilTime).SetEase(Ease.OutQuad));
-        attackAnimSeq.Join(transform.DOLocalRotate(new Vector3(-20f, 10f, 0f), recoilTime).SetEase(Ease.OutQuad));
-
-        // 2. 던지는 시점 (발사 및 모델 숨기기)
-        attackAnimSeq.AppendCallback(() => {
-            _throwableModel.gameObject.SetActive(false);
-            //ThrowProjectile();
-            attackExecution.Invoke();
-        });
-
-        // 3. 던지는 동작 (팔 뻗기)
-        attackAnimSeq.Append(transform.DOLocalMove(new Vector3(0f, 0f, 0.2f), throwActionTime).SetEase(Ease.OutCubic));
-
-        // [핵심 2] 복귀 시작 직전에 모델을 다시 활성화!
-        // OnComplete는 시퀀스가 끝까지 재생되어야만 실행되지만, 
-        // AppendCallback은 시퀀스 흐름상 해당 타이밍에 무조건 실행됩니다.
-        attackAnimSeq.AppendCallback(() => {
-            _throwableModel.gameObject.SetActive(true);
-
-            // [시작 상태] 크기는 0, 위치는 약간 아래에서 시작
-            _throwableModel.localScale = Vector3.zero;
-            _throwableModel.localPosition = _initialPosition + new Vector3(0, -0.1f, 0);
-
-            // [애니메이션] 기억해둔 '초기값'으로 복구
-            _throwableModel.DOScale(_initialScale, returnTime).SetEase(Ease.OutBack);
-            _throwableModel.DOLocalMove(_initialPosition, returnTime).SetEase(Ease.OutCubic);
-            _throwableModel.DOLocalRotateQuaternion(_initialRotation, returnTime).SetEase(Ease.OutCubic);
-        });
-
-        // 4. 복귀 동작 (원래 위치로)
-        attackAnimSeq.Append(transform.DOLocalMove(Vector3.zero, returnTime).SetEase(Ease.OutCubic));
-        attackAnimSeq.Join(transform.DOLocalRotate(Vector3.zero, returnTime).SetEase(Ease.OutCubic));
-    }
 
 
 
@@ -101,7 +47,8 @@ public class ThrowAnimator : WeaponAnimator
         GameObject projectileObj = Instantiate(_throwablePrefab, spawnPos, finalRot);
         projectileObj.transform.localScale = _throwableModel.localScale;
         Projectile projectile = projectileObj.GetComponent<Projectile>();
-        projectile.Owner = _weaponController.Owner;
+        projectile.EffectData = _weaponData.effect;
+        projectile.Owner = _owner;
 
         Rigidbody rb = projectileObj.GetComponent<Rigidbody>();
         if (rb == null) rb = projectileObj.AddComponent<Rigidbody>();

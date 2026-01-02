@@ -26,15 +26,19 @@ public class PostStudent : MonoBehaviour
     [SerializeField] private float _changeInterval = 2.0f; // 2초 간격
     [SerializeField] private Transform _targetDestination; // 이동 목표 지점
 
-    [SerializeField] private BehaveSpot chairSpot;
-    [SerializeField] private SpotGroup restSpots;
-    [SerializeField] private SpotGroup microwaveSpots;
-    [SerializeField] private SpotGroup prowlSpots;
+    [SerializeField] private BehaveSpot _chairSpot;
+    [SerializeField] private SpotGroup _restSpots;
+    [SerializeField] private SpotGroup _microwaveSpots;
+    [SerializeField] private SpotGroup _prowlSpots;
 
-    [SerializeField] private GameObject player;
+    [SerializeField] private GameObject _player;
+
+    private HitReceiver _hitReceiver;
+
 
     private void Awake()
     {
+        _hitReceiver = GetComponent<HitReceiver>();
         _agent = GetComponent<NavMeshAgent>();
         _anim = GetComponent<Animator>();
         _agent.acceleration = 30f;
@@ -43,6 +47,22 @@ public class PostStudent : MonoBehaviour
         _speedSelector = ConstructSpeedSelector();
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
+    }
+
+
+    private void Update()
+    {
+        // 현재 에이전트의 실제 속도를 애니메이터에 전달 (보폭 맞추기)
+        // Magnitude를 사용하면 방향과 상관없이 실제 이동 속도가 전달됩니다.
+        //_anim.SetFloat("MoveSpeed", _agent.velocity.magnitude, 0.1f, Time.deltaTime);
+        //if (_hitReceiver.IsDead)
+        //{
+        //    Debug.Log("Die!!");
+        //}
+        if (_root != null)
+        {
+            _root.Evaluate();
+        }
     }
 
 
@@ -76,7 +96,7 @@ public class PostStudent : MonoBehaviour
     {
         Sequence combatSequence = new Sequence(new List<BT_Node>
         {
-            new SetAttackTarget(player),
+            new SetAttackTarget(_player),
             new CombatApproachPattern()
         });
 
@@ -108,7 +128,7 @@ public class PostStudent : MonoBehaviour
         // 4. 메인 워크 시퀀스에 조립
         Sequence workSequence = new Sequence(new List<BT_Node>
         {
-            new SetBehaveSpot(chairSpot),
+            new SetBehaveSpot(_chairSpot),
             _speedSelector,
             new MoveToSpot(),
             new RotateToSpot(),
@@ -131,14 +151,14 @@ public class PostStudent : MonoBehaviour
         // 3. 50% 확률로 기지개 켜기(Once), 50% 확률로 그냥 대기
         Sequence prowlSequence = new Sequence(new List<BT_Node>
         {
-            new SetRandomBehaveSpot(prowlSpots),
+            new SetRandomBehaveSpot(_prowlSpots),
             _speedSelector,
             new MoveToSpot()
             //new PlayLoopAnim("LookAround", 5)
         });
         Sequence restSequence = new Sequence(new List<BT_Node>
         {
-            new SetRandomBehaveSpot(restSpots),
+            new SetRandomBehaveSpot(_restSpots),
             _speedSelector,
             new MoveToSpot(),
             new PlayOnceAnim("LookAround", "LookAround")
@@ -154,7 +174,7 @@ public class PostStudent : MonoBehaviour
         //});
         Sequence microwaveSequence = new Sequence(new List<BT_Node>
         {
-            new SetRandomBehaveSpot(microwaveSpots),
+            new SetRandomBehaveSpot(_microwaveSpots),
             _speedSelector,
             new SetAnimBool("Carrying", true),
             new MoveToSpot(),
@@ -170,7 +190,7 @@ public class PostStudent : MonoBehaviour
 
         BT_Node combatSubTree = new Sequence(new List<BT_Node>
         {
-            new SetAttackTarget(player),
+            new SetAttackTarget(_player),
             // 1. 적에게 접근 (사거리 안에 들어올 때까지 Running, 들어오면 Success)
             new ParallelNode(new List<BT_Node>
             {
@@ -225,17 +245,6 @@ public class PostStudent : MonoBehaviour
     //        StartCoroutine(MovementRoutine());
     //    }
     //}
-
-    private void Update()
-    {
-        // 현재 에이전트의 실제 속도를 애니메이터에 전달 (보폭 맞추기)
-        // Magnitude를 사용하면 방향과 상관없이 실제 이동 속도가 전달됩니다.
-        //_anim.SetFloat("MoveSpeed", _agent.velocity.magnitude, 0.1f, Time.deltaTime);
-        if (_root != null)
-        {
-            _root.Evaluate();
-        }
-    }
 
     private IEnumerator MovementRoutine()
     {

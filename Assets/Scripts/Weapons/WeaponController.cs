@@ -8,7 +8,7 @@ public class WeaponController : MonoBehaviour
     public FirstPersonController FirstPersonController => _firstPersonController;
 
     [Header("무기 목록 (번호순)")]
-    [SerializeField] private Weapon[] _weapons; 
+    [SerializeField] private WeaponBase[] _weapons; 
     private int _currentIdx = 0;
 
     [Header("스왑 속도")]
@@ -16,8 +16,9 @@ public class WeaponController : MonoBehaviour
 
     private bool _isSwapping = false;
 
-    public Weapon CurrentWeapon => _weapons[_currentIdx];
+    public WeaponBase CurrentWeapon => _weapons[_currentIdx];
     public int WeaponCount => _weapons.Length;
+    public GameObject Owner { private set; get; } 
 
     // void Start()
     // {
@@ -33,9 +34,10 @@ public class WeaponController : MonoBehaviour
     // {
     //     HandleInput();
     // }
-    public void EquipWeapon(int startingIndex)
+    public void EquipWeapon(int startingIndex, GameObject owner)
     {
         // 시작 시 모든 무기 비활성화 후 1번 무기만 활성화
+        Owner = owner;
         for (int i = 0; i < _weapons.Length; i++)
         {
             _weapons[i].gameObject.SetActive(false);

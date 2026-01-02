@@ -16,14 +16,14 @@ public class WeaponAnimator : MonoBehaviour
     [SerializeField] private float _swayAmount = 0.02f;
     [SerializeField] private float _smoothAmount = 6f;
     [Header("--- Attack ---")]
-    [SerializeField] protected float _attackDuration = 1f;
+    //[SerializeField] protected float _attackDuration = 1f;
 
     protected Vector3 _originPos;
     protected Vector3 _originRot;
     private Vector3 _currentBobOffset; // Bobbing 계산값 저장용
     private float _bobTimer;
 
-    private WeaponController _weaponController;
+    protected WeaponController _weaponController;
     private bool _isWalking;
     private bool _isSprinting;
     protected bool _isPlayAttackAnim;
@@ -121,15 +121,15 @@ public class WeaponAnimator : MonoBehaviour
     }
 
 
-    public void StartAttack()
+    public void StartAttack(System.Action attackExecution, float attackDuration)
     {
         if (_isPlayAttackAnim) return; // 중복 실행 방지
         _isPlayAttackAnim = true;
 
         DOTweenSeq attackAnimSeq = DOTween.Sequence();
-        AddAttackFrames(attackAnimSeq);
+        AddAttackFrames(attackAnimSeq, attackExecution, attackDuration);
         float defaultDuration = attackAnimSeq.Duration(); // 현재 시퀀스의 기본 시간 합계 (1.0f)
-        attackAnimSeq.timeScale = defaultDuration / _attackDuration;
+        attackAnimSeq.timeScale = defaultDuration / attackDuration;
         attackAnimSeq.OnComplete(() => 
         {
             _isPlayAttackAnim = false;
@@ -137,7 +137,7 @@ public class WeaponAnimator : MonoBehaviour
     }
 
 
-    protected virtual void AddAttackFrames(DOTweenSeq attackAnimSeq) 
+    protected virtual void AddAttackFrames(DOTweenSeq attackAnimSeq, System.Action attackExecution, float attackDuration) 
     {
         attackAnimSeq.Append(transform.DOLocalMoveZ(_originPos.z + 0.1f, 0.1f));
         attackAnimSeq.Append(transform.DOLocalMoveZ(_originPos.z, 0.1f));

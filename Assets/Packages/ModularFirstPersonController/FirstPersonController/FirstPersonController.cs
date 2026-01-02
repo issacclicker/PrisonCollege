@@ -158,6 +158,7 @@ public class FirstPersonController : MonoBehaviour
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
+        return;
 
         if(crosshair)
         {
@@ -320,7 +321,8 @@ public class FirstPersonController : MonoBehaviour
             if(useSprintBar && !unlimitedSprint)
             {
                 float sprintRemainingPercent = sprintRemaining / sprintDuration;
-                sprintBar.transform.localScale = new Vector3(sprintRemainingPercent, 1f, 1f);
+                sprintBar.fillAmount = sprintRemainingPercent;
+                //sprintBar.transform.localScale = new Vector3(sprintRemainingPercent, 1f, 1f);
             }
         }
 
@@ -490,14 +492,14 @@ public class FirstPersonController : MonoBehaviour
 
                 if (isCrouched) Crouch();
 
-                if (hideBarWhenFull && !unlimitedSprint)
-                    sprintBarCG.alpha += 5 * Time.deltaTime;
+                //if (hideBarWhenFull && !unlimitedSprint)
+                //    sprintBarCG.alpha += 5 * Time.deltaTime;
             }
             else
             {
                 isSprinting = false;
-                if (hideBarWhenFull && sprintRemaining == sprintDuration)
-                    sprintBarCG.alpha -= 3 * Time.deltaTime;
+                //if (hideBarWhenFull && sprintRemaining == sprintDuration)
+                //    sprintBarCG.alpha -= 3 * Time.deltaTime;
             }
 
             // 2. 목표 속도 및 이동량 계산
