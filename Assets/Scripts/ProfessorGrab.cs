@@ -126,6 +126,7 @@ public class ProfessorGrab : MonoBehaviour
 
                 targetR.AddForce(playerCamera.transform.forward * throwForce, ForceMode.VelocityChange);
             }
+
         }
 
         // 디버그용
