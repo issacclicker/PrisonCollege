@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DamageReceiver : EffectReceiver
 {
-    private Stat _health;
+    private Health _health;
     public override Stat EffectedStat => _health;
     public override bool CanEffect => _health != null && !_health.IsDepleted;
 
@@ -12,7 +12,7 @@ public class DamageReceiver : EffectReceiver
 
     private void Awake()
     {
-        _health = GetComponent<Stat>();
+        _health = GetComponent<Health>();
     }
 
 

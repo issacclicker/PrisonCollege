@@ -21,8 +21,13 @@ public class ExitGate : MonoBehaviour
 
         _interaction.ProgressCompleteEvent.AddListener(PlaceBarricade);
         _damageReceiver.DepletedEvent.AddListener(_ => BreakBarricade());
+    }
 
-        BreakBarricade();
+
+
+    private void Start()
+    {
+        PlaceBarricade();
     }
 
 
