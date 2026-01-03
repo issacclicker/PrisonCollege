@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Animations;
@@ -55,6 +56,8 @@ public class PostStudent : MonoBehaviour
 
         _damageReceiver.StatDownEvent?.AddListener(OnDamaged);
         _damageReceiver.DepletedEvent?.AddListener(OnDie);
+
+        SetRagdoll(false);
     }
 
 
@@ -333,16 +336,24 @@ public class PostStudent : MonoBehaviour
         _anim.enabled = false;
         _characterCollider.enabled = false;
 
-        // 래그돌 부위들을 찾아 물리 적용
+        SetRagdoll(true);
+        ApplyRagdollImpact(hitInfo.hitPoint, hitInfo.hitRotation, hitInfo.impulse);
+    }
+
+
+
+    private void SetRagdoll(bool isActive)
+    {
+        _anim.enabled = !isActive;
+
         foreach (var rb in GetComponentsInChildren<Rigidbody>())
         {
-            rb.isKinematic = false;
-            rb.velocity = Vector3.zero; // 튀는 현상 방지용 초기화
+            rb.isKinematic = !isActive;
+            if (isActive) rb.velocity = Vector3.zero;
 
-            // 팁: killer의 위치로부터 반대 방향으로 아주 살짝 힘을 주면 더 자연스럽습니다.
-            if (hitInfo.attacker != null)
+            if (rb.TryGetComponent(out Collider col))
             {
-                ApplyRagdollImpact(hitInfo.hitPoint, hitInfo.hitRotation, hitInfo.impulse);
+                col.isTrigger = !isActive;
             }
         }
     }

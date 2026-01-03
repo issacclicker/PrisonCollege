@@ -5,8 +5,8 @@ using UnityEngine;
 public class DamageReceiver : EffectReceiver
 {
     private Stat _health;
-    public override bool CanEffect => _health != null && !_health.IsDepleted;
     public override Stat EffectedStat => _health;
+    public override bool CanEffect => _health != null && !_health.IsDepleted;
 
 
 

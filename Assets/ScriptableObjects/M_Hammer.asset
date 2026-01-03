@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animLength: 2.5
   staminaCost: 2
-  hitImpulse: 50
+  hitImpulse: 500
   dodgeProb: 0
   effect: {fileID: 11400000, guid: 481ceed07dad93547b745ac35d45c989, type: 2}

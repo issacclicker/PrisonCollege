@@ -35,14 +35,6 @@ public class MeleeWeapon : WeaponBase
                 break;
             }
 
-            //if (hit.collider.TryGetComponent(out IHittable target))
-            //{
-            //    // 2. 유틸리티 함수: 안전한 위치 및 회전값 계산
-            //    Vector3 contactPoint = hit.GetContactPoint(origin);
-            //    Vector3 normal = hit.GetNormal(direction);
-            //    HitInfo hitInfo = new HitInfo(contactPoint, Quaternion.LookRotation(normal), _owner, _weaponData.effect.hitImpulse);
-            //    target.TakeHit(_weaponData.effect, contactPoint, Quaternion.LookRotation(normal), _owner);
-            //}
             if (hit.collider.TryGetComponent(out DamageReceiver receiver))
             {
                 // 2. 유틸리티 함수: 안전한 위치 및 회전값 계산

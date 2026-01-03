@@ -550,7 +550,7 @@ public class SetAnimBool : BT_Node
 public class SetAttackTarget : BT_Node
 {
     private GameObject _targetObject;
-    private IDamageable _targetDamageable;
+    private DamageReceiver _targetDamageable;
 
     public SetAttackTarget(GameObject target)
     {
@@ -566,15 +566,15 @@ public class SetAttackTarget : BT_Node
         }
 
         // 1. 타겟으로부터 IDamageable 인터페이스 추출
-        _targetDamageable = _targetObject.GetComponent<IDamageable>();
+        _targetDamageable = _targetObject.GetComponent<DamageReceiver>();
 
         // 2. 공격 가능한 대상인지 검사 (인터페이스 존재 여부 및 생존 여부)
-        if (_targetDamageable != null && !_targetDamageable.IsDead)
+        if (_targetDamageable != null && _targetDamageable.CanEffect)
         {
             // 3. 블랙보드에 타겟 정보 저장 (이후 Chase, Attack 노드에서 사용)
             _bb.targetObject = _targetObject;
             _bb.targetDamageable = _targetDamageable;
-            
+
             return NodeState.Success;
         }
 
@@ -753,7 +753,7 @@ public class Blackboard
     public BehaveSpot mySeatSpot;
     public bool isBehaving;
     public AIState currentState;
-    public IDamageable targetDamageable;
+    public DamageReceiver targetDamageable;
     public GameObject targetObject;
 
     public bool IsSeating()

@@ -9,11 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0ebb49a6d408a7b40b5b06bdc2bf4d8a, type: 3}
-  m_Name: T_Book
+  m_Script: {fileID: 11500000, guid: 6049502b3a92ed94caebd61fba21f0ec, type: 3}
+  m_Name: Student_d
   m_EditorClassIdentifier: 
-  animLength: 1
-  staminaCost: 0.3
-  hitImpulse: 200
-  dodgeProb: 0
-  effect: {fileID: 11400000, guid: 369e0737fc5e8214c8cccc6e8101e582, type: 2}
+  value: 20
+  effectVisualPrefab: {fileID: 0}
