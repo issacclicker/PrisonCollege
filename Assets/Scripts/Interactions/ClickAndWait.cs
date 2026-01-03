@@ -44,7 +44,7 @@ public class ClickAndWait : MonoBehaviour, IPlayerInteractable
 
         if (!state)
         {
-            _progress.Reset();
+            _progress.Initialize(true);
         }
     }
 
@@ -59,7 +59,7 @@ public class ClickAndWait : MonoBehaviour, IPlayerInteractable
     public void OnInteractCancel()
     {
         _isInteracting = false;
-        _progress.Reset();
+        _progress.Initialize(true);
         ProgressCancelEvent?.Invoke();
     }
 }

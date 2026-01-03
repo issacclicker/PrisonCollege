@@ -18,6 +18,20 @@ public abstract class EffectReceiver : MonoBehaviour, IEffectable
 
 
 
+    public void SetStatFull()
+    {
+        EffectedStat.Initialize();
+    }
+
+
+
+    public void SetStatEmpty()
+    {
+        EffectedStat.Initialize(true);
+    }
+
+
+
     protected virtual float DecreaseStat(HitInfo hitInfo, float amount)
     {
         float previousStat = EffectedStat.Current;

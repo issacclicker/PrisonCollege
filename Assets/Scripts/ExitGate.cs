@@ -20,6 +20,9 @@ public class ExitGate : MonoBehaviour
         _interaction = GetComponent<ClickAndWait>();
 
         _interaction.ProgressCompleteEvent.AddListener(PlaceBarricade);
+        _damageReceiver.DepletedEvent.AddListener(_ => BreakBarricade());
+
+        BreakBarricade();
     }
 
 
@@ -27,7 +30,8 @@ public class ExitGate : MonoBehaviour
     protected virtual void PlaceBarricade()
     {
         _interaction.SetInteractable(false);
-        _barricadePlaced = Instantiate(_barricadePrefab, _barricadeParent.position, _barricadeParent.rotation, _barricadeParent);
+        _barricadePlaced = Instantiate(_barricadePrefab, _barricadeParent);
+        _damageReceiver.SetStatFull();
     }
 
 
@@ -37,5 +41,6 @@ public class ExitGate : MonoBehaviour
         _interaction.SetInteractable(true);
         Destroy(_barricadePlaced);
         _barricadePlaced = null;
+        _damageReceiver.SetStatEmpty();
     }
 }

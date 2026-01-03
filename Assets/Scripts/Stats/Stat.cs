@@ -19,13 +19,13 @@ public class Stat : MonoBehaviour
     public UnityEvent DepletedEvent = new UnityEvent();
     public UnityEvent MaxReachEvent = new UnityEvent();
 
-    protected virtual void Awake() => Reset();
+    protected virtual void Awake() => Initialize();
 
 
 
-    public virtual void Reset()
+    public virtual void Initialize(bool issetToZero = false)
     {
-        _currentStat = _maxStat;
+        _currentStat = issetToZero ? 0 : _maxStat;
     }
 
 

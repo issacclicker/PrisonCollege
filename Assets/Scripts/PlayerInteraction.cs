@@ -92,7 +92,7 @@ public class PlayerInteraction : MonoBehaviour
         // 인자: 시작점, 반지름, 방향, 결과, 거리, 레이어마스크
         if (Physics.SphereCast(origin, _interactRadius, direction, out RaycastHit hit, _interactRange, _interactableLayer))
         {
-            IPlayerInteractable interactable = hit.collider.GetComponent<IPlayerInteractable>();
+            IPlayerInteractable interactable = hit.collider.GetComponentInParent<IPlayerInteractable>();
 
             if (interactable != null && interactable.CanInteract)
             {
