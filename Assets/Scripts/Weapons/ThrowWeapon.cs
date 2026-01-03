@@ -47,7 +47,7 @@ public class ThrowWeapon : WeaponBase
         GameObject projectileObj = Instantiate(_throwablePrefab, spawnPos, finalRot);
         projectileObj.transform.localScale = _throwableModel.localScale;
         Projectile projectile = projectileObj.GetComponent<Projectile>();
-        projectile.EffectData = _weaponData.effect;
+        projectile.WeaponData = _weaponData;
         projectile.Owner = _owner;
 
         Rigidbody rb = projectileObj.GetComponent<Rigidbody>();

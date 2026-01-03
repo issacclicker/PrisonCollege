@@ -75,40 +75,45 @@ public class Sequence : CompositeNode
 
 public class Selector : CompositeNode
 {
-    private BT_Node _lastRunningNode; // 지난 틱에 실행 중이던 자식 저장
+    private int _currentIndex = 0; // 현재 실행 중인 자식의 위치를 기억
+
     public Selector(List<BT_Node> children) : base(children) { }
 
     public override NodeState Evaluate()
     {
-        BT_Node currentRunningNode = null;
-        NodeState finalResult = NodeState.Failure;
-
-        foreach (var child in children)
+        // 기억하고 있는 인덱스부터 검사 시작
+        while (_currentIndex < children.Count)
         {
-            var result = child.Evaluate();
+            var result = children[_currentIndex].Evaluate();
 
-            if (result != NodeState.Failure)
+            switch (result)
             {
-                currentRunningNode = (result == NodeState.Running) ? child : null;
-                finalResult = result;
-                break; // 하나라도 성공/진행 중이면 중단
+                case NodeState.Success:
+                    // 하나라도 성공하면 셀렉터 전체가 성공
+                    Reset();
+                    return NodeState.Success;
+
+                case NodeState.Failure:
+                    // 실패하면 다음 자식으로 넘어가서 검사 (루프 계속)
+                    _currentIndex++;
+                    continue;
+
+                case NodeState.Running:
+                    // 진행 중이면 현재 인덱스를 유지하고 리턴
+                    // 다음 틱(Tick)에 이 인덱스부터 다시 Evaluate 실행
+                    return NodeState.Running;
             }
         }
 
-        // [핵심] 실행 중인 노드가 바뀌었다면(Interrupt) 이전 노드 리셋
-        if (_lastRunningNode != null && _lastRunningNode != currentRunningNode)
-        {
-            _lastRunningNode.Reset();
-        }
-
-        _lastRunningNode = currentRunningNode;
-        return finalResult;
+        // 모든 자식을 검사했는데 전부 Failure라면 전체 실패
+        Reset();
+        return NodeState.Failure;
     }
 
     public override void Reset()
     {
-        base.Reset();
-        _lastRunningNode = null;
+        base.Reset(); // 모든 자식 재귀적 리셋
+        _currentIndex = 0; // 인덱스 초기화
     }
 }
 

@@ -40,3 +40,24 @@ public class WeaponBase : MonoBehaviour
 
     protected virtual void ExecuteAttack() { }
 }
+
+
+
+
+[System.Serializable] // 인스펙터나 이벤트에서 확인하기 위해 추가
+public struct HitInfo
+{
+    public Vector3 hitPoint;
+    public Quaternion hitRotation;
+    public GameObject attacker;
+    public float impulse; // 아까 사용하던 충격량도 포함하면 좋습니다.
+
+    // 생성자를 만들어두면 사용할 때 편합니다.
+    public HitInfo(Vector3 point, Quaternion rotation, GameObject attacker, float impulse = 0f)
+    {
+        this.hitPoint = point;
+        this.hitRotation = rotation;
+        this.attacker = attacker;
+        this.impulse = impulse;
+    }
+}

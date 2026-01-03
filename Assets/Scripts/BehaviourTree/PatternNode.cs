@@ -83,7 +83,7 @@ public class CombatApproachPattern : PatternNode
 
     public CombatApproachPattern()
     {
-        _patternRoot = new Selector(new List<BT_Node>
+        _patternRoot = new ReactiveSelector(new List<BT_Node>
         {
             // 1. 전력질주 구간 (5m 이상)
             new ConditionDecorator(() => GetDistance() >= ATTACK_RANGE && !_isAttacking,

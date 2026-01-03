@@ -1,9 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Experimental.GraphView;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Animations;
+using static Global;
 
 public class PostStudent : MonoBehaviour
 {
@@ -21,6 +24,7 @@ public class PostStudent : MonoBehaviour
     private Animator _anim;
     private BT_Node _root;
     private Blackboard _blackboard = new Blackboard();
+    private CapsuleCollider _characterCollider;
 
     [Header("설정")]
     [SerializeField] private float _changeInterval = 2.0f; // 2초 간격
@@ -33,21 +37,29 @@ public class PostStudent : MonoBehaviour
 
     [SerializeField] private GameObject _player;
 
-    private HitReceiver _hitReceiver;
+    //private bool _isDamaged = false;
+    private DamageReceiver _damageReceiver;
 
 
     private void Awake()
     {
-        _hitReceiver = GetComponent<HitReceiver>();
+        _damageReceiver = GetComponent<DamageReceiver>();
         _agent = GetComponent<NavMeshAgent>();
         _anim = GetComponent<Animator>();
+        _characterCollider = GetComponent<CapsuleCollider>();
         _agent.acceleration = 30f;
 
         _blackboard.Setup(_agent, _anim, transform);
         _speedSelector = ConstructSpeedSelector();
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
+
+        _damageReceiver.StatDownEvent?.AddListener(OnDamaged);
+        _damageReceiver.DepletedEvent?.AddListener(OnDie);
+
+        SetRagdoll(false);
     }
+
 
 
     private void Update()
@@ -214,9 +226,25 @@ public class PostStudent : MonoBehaviour
             
             // 3. 공격 후 잠깐의 틈 (AI가 너무 숨 가쁘게 공격하지 않도록)
         });
-        return combatSubTree;
 
-        return ConstructCombatSequence();
+        return combatSubTree;
+        //return new ReactiveSelector(new List<BT_Node>
+        //{
+        //    new ConditionDecorator(() => _isDamaged,
+        //        new Sequence(new List<BT_Node>
+        //        {
+        //            new ActionNode(() => _anim.SetLayerWeight(COMBAT_LAYER_INDEX, 0), NodeState.Success),
+        //            new SetAnimRootMotion(true),
+        //            new PlayOnceAnim("Reaction", "Reaction", 3),
+        //            new SetAnimRootMotion(false),
+        //            new ActionNode(() => _anim.SetLayerWeight(COMBAT_LAYER_INDEX, 1), NodeState.Success),
+        //            new ActionNode(() => _isDamaged = false, NodeState.Success),
+        //        })
+        //    ),
+        //    combatSubTree,
+        //});
+
+        //return ConstructCombatSequence();
         // 4. 전체 루트를 반복(Selector 또는 Sequence) 하도록 설정
         return new Selector(new List<BT_Node> { randomJobSelector });
     }
@@ -276,5 +304,110 @@ public class PostStudent : MonoBehaviour
     {
         _agent.speed = speed;
         Debug.Log($"현재 상태: {stateName} (속도: {speed})");
+    }
+
+
+
+    private void OnDodge(HitInfo hitInfo)
+    {
+        Debug.Log("Dodge!!!");
+    }
+
+
+
+    private void OnDamaged(Vector3 hitPoint, Quaternion hitRotation, float impulse, GameObject killer)
+    {
+        
+    }
+
+
+
+    private void OnDamaged(HitInfo hitInfo, float hitAmount)
+    {
+
+    }
+
+
+
+    private void OnDie(HitInfo hitInfo)
+    {
+        _root = null;
+        _agent.speed = 0;
+        _anim.enabled = false;
+        _characterCollider.enabled = false;
+
+        SetRagdoll(true);
+        ApplyRagdollImpact(hitInfo.hitPoint, hitInfo.hitRotation, hitInfo.impulse);
+    }
+
+
+
+    private void SetRagdoll(bool isActive)
+    {
+        _anim.enabled = !isActive;
+
+        foreach (var rb in GetComponentsInChildren<Rigidbody>())
+        {
+            rb.isKinematic = !isActive;
+            if (isActive) rb.velocity = Vector3.zero;
+
+            if (rb.TryGetComponent(out Collider col))
+            {
+                col.isTrigger = !isActive;
+            }
+        }
+    }
+
+
+
+    private void OnDie(Vector3 hitPoint, Quaternion hitRotation, float impulse, GameObject killer)
+    {
+        _root = null;
+        _agent.speed = 0;
+        _anim.enabled = false;
+        _characterCollider.enabled = false;
+
+        // 래그돌 부위들을 찾아 물리 적용
+        foreach (var rb in GetComponentsInChildren<Rigidbody>())
+        {
+            rb.isKinematic = false;
+            rb.velocity = Vector3.zero; // 튀는 현상 방지용 초기화
+
+            // 팁: killer의 위치로부터 반대 방향으로 아주 살짝 힘을 주면 더 자연스럽습니다.
+            if (killer != null)
+            {
+                ApplyRagdollImpact(hitPoint, hitRotation, impulse);
+            }
+        }
+    }
+
+
+
+    private void ApplyRagdollImpact(Vector3 hitPoint, Quaternion hitRotation, float impulse)
+    {
+        Rigidbody closestRb = null;
+        float closestDistance = float.MaxValue;
+
+        // 1. 모든 래그돌 리지드바디 중 피격 지점과 가장 가까운 부위를 찾습니다.
+        Rigidbody[] rbs = GetComponentsInChildren<Rigidbody>();
+        foreach (var rb in rbs)
+        {
+            float dist = Vector3.Distance(rb.position, hitPoint);
+            if (dist < closestDistance)
+            {
+                closestDistance = dist;
+                closestRb = rb;
+            }
+        }
+
+        // 2. 해당 부위에 물리 충격을 가합니다.
+        if (closestRb != null)
+        {
+            // hitRotation의 forward 방향으로 힘을 전달
+            Vector3 forceDir = hitRotation * Vector3.back;
+
+            // AddForceAtPosition을 쓰면 피격 지점 기준으로 회전력까지 발생해서 더 사실적입니다.
+            closestRb.AddForceAtPosition(forceDir * impulse, hitPoint, ForceMode.Impulse);
+        }
     }
 }

@@ -2,13 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Professor : MonoBehaviour, IDamageable, IAttackable
+public class Professor : MonoBehaviour, IAttackable
 {
-    public bool IsDead => false;
-
-    public bool IsInvincible => false;
-
-    public Vector3 Position => transform.position;
 
     public bool IsAttacking => throw new System.NotImplementedException();
 
