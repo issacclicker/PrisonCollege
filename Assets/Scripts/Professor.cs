@@ -15,11 +15,13 @@ public class Professor : MonoBehaviour, IAttackable
     [SerializeField] private float _staminaRegenRate = 5f;
 
     private FirstPersonController _controller;
+    private PlayerInteraction _playerInteraction;
     private Stamina _stamina;
 
     private void Awake()
     {
         _controller = GetComponent<FirstPersonController>();
+        _playerInteraction = GetComponent<PlayerInteraction>();
         _stamina = GetComponent<Stamina>();
     }
 
@@ -75,6 +77,7 @@ public class Professor : MonoBehaviour, IAttackable
             if (_weaponController.TryAttack())
             {
                 _stamina.Decrease(currentWeaponStaminaCost);
+                _playerInteraction.CancelActiveInteraction();
             }
         }
     }
