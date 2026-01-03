@@ -38,11 +38,13 @@ public class PostStudent : MonoBehaviour
 
     private HitReceiver _hitReceiver;
     //private bool _isDamaged = false;
+    private DamageReceiver _damageReceiver;
 
 
     private void Awake()
     {
         _hitReceiver = GetComponent<HitReceiver>();
+        _damageReceiver = GetComponent<DamageReceiver>();
         _agent = GetComponent<NavMeshAgent>();
         _anim = GetComponent<Animator>();
         _characterCollider = GetComponent<CapsuleCollider>();
@@ -55,6 +57,8 @@ public class PostStudent : MonoBehaviour
 
         _hitReceiver.DeathEvent.AddListener(OnDie);
         _hitReceiver.DamagedEvent.AddListener(OnDamaged);
+        _damageReceiver.StatDownEvent?.AddListener(OnDamaged);
+        _damageReceiver.DepletedEvent?.AddListener(OnDie);
     }
 
 
@@ -305,9 +309,46 @@ public class PostStudent : MonoBehaviour
 
 
 
+    private void OnDodge(HitInfo hitInfo)
+    {
+        Debug.Log("Dodge!!!");
+    }
+
+
+
     private void OnDamaged(Vector3 hitPoint, Quaternion hitRotation, float impulse, GameObject killer)
     {
         
+    }
+
+
+
+    private void OnDamaged(HitInfo hitInfo, float hitAmount)
+    {
+
+    }
+
+
+
+    private void OnDie(HitInfo hitInfo)
+    {
+        _root = null;
+        _agent.speed = 0;
+        _anim.enabled = false;
+        _characterCollider.enabled = false;
+
+        // 래그돌 부위들을 찾아 물리 적용
+        foreach (var rb in GetComponentsInChildren<Rigidbody>())
+        {
+            rb.isKinematic = false;
+            rb.velocity = Vector3.zero; // 튀는 현상 방지용 초기화
+
+            // 팁: killer의 위치로부터 반대 방향으로 아주 살짝 힘을 주면 더 자연스럽습니다.
+            if (hitInfo.attacker != null)
+            {
+                ApplyRagdollImpact(hitInfo.hitPoint, hitInfo.hitRotation, hitInfo.impulse);
+            }
+        }
     }
 
 

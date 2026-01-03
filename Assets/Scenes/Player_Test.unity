@@ -2372,6 +2372,7 @@ GameObject:
   - component: {fileID: 3638309149840794940}
   - component: {fileID: 3638309149840794942}
   - component: {fileID: 3638309149840794941}
+  - component: {fileID: 3638309149840794943}
   m_Layer: 6
   m_Name: Student
   m_TagString: Untagged
@@ -6250,7 +6251,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbc7ffc1838b5b2488388bd7a41458c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxHealth: 100
+  _maxStat: 100
+  IncreaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DecreaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DepleteEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3638309149840794942
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6263,7 +6273,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a6268c7a5336c240b16b5e243e0265b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DamagedEvent:
+    m_PersistentCalls:
+      m_Calls: []
   DeathEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &3638309149840794943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550198852003525997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4661984bce66cd3469ca62a93d69154e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  StatUpEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  StatDownEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DepletedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  MaxReachEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &3639686440422013794
