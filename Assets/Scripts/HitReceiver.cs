@@ -15,6 +15,7 @@ public class HitReceiver : MonoBehaviour, IHittable
     public float CurrentHealth => _health != null ? _health.Current : 0;
     public float MaxHealth => _health != null ? _health.Max : 0;
     public bool IsDead => _health != null && _health.IsZero;
+    public UnityEvent<Vector3, Quaternion, float, GameObject> DamagedEvent = new UnityEvent<Vector3, Quaternion, float, GameObject>();
     public UnityEvent<Vector3, Quaternion, float, GameObject> DeathEvent = new UnityEvent<Vector3, Quaternion, float, GameObject>();
 
 
@@ -39,6 +40,7 @@ public class HitReceiver : MonoBehaviour, IHittable
         {
             case EffectType.Damage:
                 _health?.Decrease(data.value);
+                DamagedEvent?.Invoke(hitPoint, hitRotation, data.hitImpulse, attacker);
                 if (IsDead)
                 {
                     DeathEvent?.Invoke(hitPoint, hitRotation, data.hitImpulse, attacker);

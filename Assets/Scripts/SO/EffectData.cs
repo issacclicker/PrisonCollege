@@ -10,4 +10,7 @@ public class EffectData : ScriptableObject
     public float hitImpulse;
     [Range(0f, 1f)] public float dodgeProb;
     public GameObject effectVisualPrefab; // 피격 시 생성될 이펙트 (선택 사항)
+
+
+    public virtual void ApplyEffect(GameObject target, GameObject causer) { }
 }

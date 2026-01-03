@@ -5,6 +5,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Animations;
+using static Global;
 
 public class PostStudent : MonoBehaviour
 {
@@ -36,6 +37,7 @@ public class PostStudent : MonoBehaviour
     [SerializeField] private GameObject _player;
 
     private HitReceiver _hitReceiver;
+    //private bool _isDamaged = false;
 
 
     private void Awake()
@@ -52,6 +54,7 @@ public class PostStudent : MonoBehaviour
         _root.SetBlackboard(_blackboard);
 
         _hitReceiver.DeathEvent.AddListener(OnDie);
+        _hitReceiver.DamagedEvent.AddListener(OnDamaged);
     }
 
 
@@ -220,9 +223,25 @@ public class PostStudent : MonoBehaviour
             
             // 3. 공격 후 잠깐의 틈 (AI가 너무 숨 가쁘게 공격하지 않도록)
         });
-        return combatSubTree;
 
-        return ConstructCombatSequence();
+        return combatSubTree;
+        //return new ReactiveSelector(new List<BT_Node>
+        //{
+        //    new ConditionDecorator(() => _isDamaged,
+        //        new Sequence(new List<BT_Node>
+        //        {
+        //            new ActionNode(() => _anim.SetLayerWeight(COMBAT_LAYER_INDEX, 0), NodeState.Success),
+        //            new SetAnimRootMotion(true),
+        //            new PlayOnceAnim("Reaction", "Reaction", 3),
+        //            new SetAnimRootMotion(false),
+        //            new ActionNode(() => _anim.SetLayerWeight(COMBAT_LAYER_INDEX, 1), NodeState.Success),
+        //            new ActionNode(() => _isDamaged = false, NodeState.Success),
+        //        })
+        //    ),
+        //    combatSubTree,
+        //});
+
+        //return ConstructCombatSequence();
         // 4. 전체 루트를 반복(Selector 또는 Sequence) 하도록 설정
         return new Selector(new List<BT_Node> { randomJobSelector });
     }
@@ -286,9 +305,17 @@ public class PostStudent : MonoBehaviour
 
 
 
+    private void OnDamaged(Vector3 hitPoint, Quaternion hitRotation, float impulse, GameObject killer)
+    {
+        
+    }
+
+
+
     private void OnDie(Vector3 hitPoint, Quaternion hitRotation, float impulse, GameObject killer)
     {
         _root = null;
+        _agent.speed = 0;
         _anim.enabled = false;
         _characterCollider.enabled = false;
 
