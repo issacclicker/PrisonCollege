@@ -36,14 +36,12 @@ public class PostStudent : MonoBehaviour
 
     [SerializeField] private GameObject _player;
 
-    private HitReceiver _hitReceiver;
     //private bool _isDamaged = false;
     private DamageReceiver _damageReceiver;
 
 
     private void Awake()
     {
-        _hitReceiver = GetComponent<HitReceiver>();
         _damageReceiver = GetComponent<DamageReceiver>();
         _agent = GetComponent<NavMeshAgent>();
         _anim = GetComponent<Animator>();
@@ -55,8 +53,6 @@ public class PostStudent : MonoBehaviour
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
 
-        _hitReceiver.DeathEvent.AddListener(OnDie);
-        _hitReceiver.DamagedEvent.AddListener(OnDamaged);
         _damageReceiver.StatDownEvent?.AddListener(OnDamaged);
         _damageReceiver.DepletedEvent?.AddListener(OnDie);
     }

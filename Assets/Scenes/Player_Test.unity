@@ -2370,7 +2370,6 @@ GameObject:
   - component: {fileID: 3638309149840794938}
   - component: {fileID: 3638309149840794939}
   - component: {fileID: 3638309149840794940}
-  - component: {fileID: 3638309149840794942}
   - component: {fileID: 3638309149840794941}
   - component: {fileID: 3638309149840794943}
   m_Layer: 6
@@ -6259,24 +6258,6 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   DepleteEvent:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &3638309149840794942
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 550198852003525997}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a6268c7a5336c240b16b5e243e0265b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  DamagedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  DeathEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!114 &3638309149840794943
