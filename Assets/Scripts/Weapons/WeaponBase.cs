@@ -11,6 +11,7 @@ public class WeaponBase : MonoBehaviour
     protected GameObject _owner;
     private WeaponAnimator _animator;
     public bool IsPlayingAttackAnim => _animator.IsPlayAttackAnim;
+    public float StaminaCost => _weaponData.staminaCost;
 
 
     private void Awake()

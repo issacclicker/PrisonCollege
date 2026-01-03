@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: T_Book
   m_EditorClassIdentifier: 
   animLength: 1
-  staminaCost: 0.3
+  staminaCost: 5
   hitImpulse: 200
   dodgeProb: 0
   effect: {fileID: 11400000, guid: 369e0737fc5e8214c8cccc6e8101e582, type: 2}
