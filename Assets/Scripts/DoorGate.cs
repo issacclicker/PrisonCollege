@@ -10,7 +10,7 @@ public class DoorGate : ExitGate
     [SerializeField] private float _openAngle = 90f;   // 열릴 때의 각도
     [SerializeField] private float _closeAngle = 0f;    // 닫힐 때의 각도 (보통 0)
     [SerializeField] private float _duration = 1.0f;    // 회전 시간
-    [SerializeField] private float _closeInterval = 0.5f;
+    [SerializeField] private float _closeDelay = 0.5f;
 
     private Tween doorTween;
 
@@ -49,7 +49,7 @@ public class DoorGate : ExitGate
     private void ResetCloseTimer()
     {
         CancelInvoke("Close");
-        Invoke("Close", _closeInterval);
+        Invoke("Close", _closeDelay);
     }
 
     public override void Close()

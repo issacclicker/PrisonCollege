@@ -5,6 +5,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static Global;
 
 
@@ -305,7 +306,7 @@ public class TryEscapePattern : PatternNode
             //new SetSpeed(() => PostStudent._walkSpeed),
             new MoveToSpot(),
             new RotateToSpot(),
-            new ReactiveSelector(new List<BT_Node>
+            new Selector(new List<BT_Node>
             {
                  new ConditionDecorator(() =>
                 {
@@ -323,7 +324,36 @@ public class TryEscapePattern : PatternNode
                             exitGate.OpenGate();
                         }, NodeState.Success),
                         new SetAnimRootMotion(true),
-                        new SetAnimBool("EscapeRunning", true),
+                        //new SetAnimBool("EscapeRunning", true),
+                        new PlayOnceAnim("EscapeJump", "EscapeJump"),
+                        new ActionNode(() =>
+                        {
+                            Transform hipTransform = _bb.Avatar.transform.Find("Root/Hips");
+                            _bb.Anim.enabled = false;
+                            _bb.Agent.enabled = false;
+                            foreach (var rb in _bb.Avatar.GetComponentsInChildren<Rigidbody>())
+                            {
+                                rb.isKinematic = false;
+                                rb.velocity = Vector3.zero;
+                                rb.AddForce(Vector3.down * 12f, ForceMode.VelocityChange);
+                                rb.AddForce((Vector3.down + _bb.Avatar.forward).normalized * 2f, ForceMode.VelocityChange);
+
+                                if (rb.TryGetComponent(out Collider col))
+                                {
+                                    col.isTrigger = false;
+                                }
+
+                                if (rb.transform == hipTransform)
+                                {
+                                    // Vector3.down 방향으로 강한 힘을 줌
+                                    // ForceMode.Impulse는 순간적인 충격을 줄 때 사용합니다.
+                                    //rb.AddForce(Vector3.down * 100f, ForceMode.Impulse); 
+            
+                                    // 만약 창밖으로 튕겨 나가는 느낌을 주려면 forward 힘도 섞어주세요.
+                                    //b.AddForce((Vector3.down + _bb.Avatar.forward).normalized * 20f, ForceMode.Impulse);
+                                }
+                            }
+                        }),
                         new ActionNode(null, NodeState.Running),
                     })
                 ),

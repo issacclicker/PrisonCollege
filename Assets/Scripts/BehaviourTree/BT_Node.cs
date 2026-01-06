@@ -492,7 +492,7 @@ public class PlayOnceAnim : BT_Node
         // IsName은 스테이트 이름 혹은 "Base Layer.StateName" 형태여야 할 수 있습니다.
         if (stateInfo.IsName(_stateName))
         {
-            if (stateInfo.normalizedTime >= 0.99f)
+            if (stateInfo.normalizedTime >= 0.95f)
             {
                 Reset();
                 return NodeState.Success;
