@@ -174,7 +174,8 @@ public class MoveToSpot : BT_Node
 {
     public override NodeState Evaluate()
     {
-        _bb.Agent.SetDestination(_bb.destSpot.transform.position);
+        //Debug.Log(_bb.destSpot);
+        _bb.Agent.SetSampleDestination(_bb.destSpot.transform.position, 1);
         //Debug.Log($"목적지: {_bb.destSpot.name}, 남은 거리: {_bb.Agent.remainingDistance}");
 
         // 목적지에 거의 도착했는지 확인
@@ -330,24 +331,24 @@ public class Delay : BT_Node
 
 
 
-public class SetRandomSpeed : BT_Node
-{
-    private Func<float> _getSpeedFunc;
+//public class SetRandomSpeed : BT_Node
+//{
+//    private Func<float> _getSpeedFunc;
 
-    public SetRandomSpeed(Func<float> getSpeedFunc)
-    {
-        _getSpeedFunc = getSpeedFunc;
-    }
+//    public SetRandomSpeed(Func<float> getSpeedFunc)
+//    {
+//        _getSpeedFunc = getSpeedFunc;
+//    }
 
-    public override NodeState Evaluate()
-    {
-        if (_getSpeedFunc == null) return NodeState.Failure;
+//    public override NodeState Evaluate()
+//    {
+//        if (_getSpeedFunc == null) return NodeState.Failure;
 
-        float speed = _getSpeedFunc();
-        _bb.Agent.speed = speed;
-        return NodeState.Success;
-    }
-}
+//        float speed = _getSpeedFunc();
+//        _bb.Agent.speed = speed;
+//        return NodeState.Success;
+//    }
+//}
 
 
 
@@ -734,34 +735,145 @@ public class PrintDebug : BT_Node
 
 
 
-[System.Serializable]
-public class Blackboard
+public class SetRandomBehavior : BT_Node
 {
-    public NavMeshAgent Agent { get; private set; }
-    public Animator Anim { get; private set; }
-    public Transform Avatar { get; private set; }
-
-    public void Setup(NavMeshAgent agent, Animator animator, Transform transform)
+    public override NodeState Evaluate()
     {
-        Agent = agent;
-        Anim = animator;
-        Avatar = transform;
-    }
+        // 1. 블랙보드에서 필요한 데이터 참조 (캐싱되어 있다고 가정)
+        var weightSet = _bb.BehaviorWeightSet;
 
-    public Vector3 destPosition;
-    public BehaveSpot destSpot;
-    public BehaveSpot mySeatSpot;
-    public bool isBehaving;
-    public AIState currentState;
-    public DamageReceiver targetDamageable;
-    public GameObject targetObject;
+        if (weightSet == null)
+        {
+            Debug.LogError("블랙보드에 BehaviorWeightSet이 설정되지 않았습니다.");
+            return NodeState.Failure;
+        }
 
-    public bool IsSeating()
-    {
-        return isBehaving && (destSpot == mySeatSpot);
+        BehaviorType pickedType = weightSet.GetRandomValue();
+
+        if (pickedType == BehaviorType.None)
+        {
+            return NodeState.Failure;
+        }
+        _bb.destBehavior = pickedType;
+        Debug.Log($"[BT] 행동 결정됨: {pickedType}");
+
+        return NodeState.Success;
     }
 }
 
 
 
-public enum AIState { Idle, Working, Fighting }
+public class FindDestSpot : BT_Node
+{
+    private float _sampleRange = 2.0f; // 스팟 주변에서 NavMesh를 검색할 반경
+
+    public override NodeState Evaluate()
+    {
+        BehaviorType targetType = _bb.destBehavior;
+        BehaveSpot spot = _bb.StageSpots.GetRandomSpotByType(targetType);
+
+        if (spot != null && spot.IsUsable)
+        {
+            Vector3 rawPosition = spot.transform.position;
+            if (NavMesh.SamplePosition(rawPosition, out NavMeshHit hit, _sampleRange, NavMesh.AllAreas))
+            {
+                _bb.destSpot = spot;
+                _bb.destPosition = hit.position;
+                Debug.Log($"FindDestSpot : {spot}");
+                return NodeState.Success;
+            }
+            else
+            {
+                Debug.LogWarning($"[FindDestSpot] {spot.name} 주변에서 유효한 NavMesh를 찾을 수 없습니다.");
+                return NodeState.Failure;
+            }
+        }
+
+        return NodeState.Failure;
+    }
+}
+
+
+
+public class EnumSwitchSelector<TEnum> : BT_Node where TEnum : Enum
+{
+    private readonly Dictionary<TEnum, BT_Node> _subTrees;
+    private readonly BT_Node _defaultNode;
+
+    // 블랙보드에서 어떤 열거형 값을 가져올지 결정하는 델리게이트
+    private readonly Func<Blackboard, TEnum> _valueSelector;
+
+    public EnumSwitchSelector(
+        Func<Blackboard, TEnum> valueSelector,
+        Dictionary<TEnum, BT_Node> subTrees,
+        BT_Node defaultNode = null)
+    {
+        _valueSelector = valueSelector;
+        _subTrees = subTrees;
+        _defaultNode = defaultNode;
+    }
+
+    public override void SetBlackboard(Blackboard blackboard)
+    {
+        base.SetBlackboard(blackboard);
+        foreach (var node in _subTrees.Values)
+        {
+            node.SetBlackboard(blackboard);
+        }
+        _defaultNode?.SetBlackboard(blackboard);
+    }
+
+    public override NodeState Evaluate()
+    {
+        TEnum currentValue = _valueSelector(_bb);
+
+        if (_subTrees.TryGetValue(currentValue, out BT_Node node))
+        {
+            return node.Evaluate();
+        }
+
+        if (_defaultNode != null)
+        {
+            return _defaultNode.Evaluate();
+        }
+
+        return NodeState.Failure;
+    }
+
+    public override void Reset()
+    {
+        base.Reset();
+        foreach (var node in _subTrees.Values) node.Reset();
+        _defaultNode?.Reset();
+    }
+}
+
+
+
+public class StopAndDisableAgentUpdate : BT_Node
+{
+    public override NodeState Evaluate()
+    {
+        if (_bb.Agent != null)
+        {
+            _bb.Agent.isStopped = true;       // 물리적 정지 명령
+            _bb.Agent.velocity = Vector3.zero; // 남은 관성 제거
+            _bb.Agent.updatePosition = false; // ★ 에이전트가 트랜스폼을 건드리지 못하게 함
+            _bb.Agent.updateRotation = false; // 필요 시 회전도 고정
+        }
+        return NodeState.Success;
+    }
+}
+
+
+
+public class EnableAgentUpdate : BT_Node
+{
+    public override NodeState Evaluate()
+    {
+        _bb.Agent.updatePosition = true;
+        _bb.Agent.updateRotation = true;
+        _bb.Agent.isStopped = false;
+        return NodeState.Success;
+    }
+}

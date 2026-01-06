@@ -11,19 +11,19 @@ using static Global;
 public class PostStudent : MonoBehaviour
 {
     private static float _idleSpeed = 0;
-    private static float _walkSpeed = 1.44f;
-    private static float _jogSpeed = 2.43f;
-    private static float _slowRunSpeed = 3.49f;
-    private static float _mediumRunSpeed = 4.17f;
-    private static float _fastRunSpeed = 5.47f;
-    private static float _sprintSpeed = 6.75f;
+    public static float _walkSpeed = 1.44f;
+    public static float _jogSpeed = 2.43f;
+    public static float _slowRunSpeed = 3.49f;
+    public static float _mediumRunSpeed = 4.17f;
+    public static float _fastRunSpeed = 5.47f;
+    public static float _sprintSpeed = 6.75f;
 
     private RandomSelector _speedSelector;
 
     private NavMeshAgent _agent;
     private Animator _anim;
     private BT_Node _root;
-    private Blackboard _blackboard = new Blackboard();
+    private Blackboard _blackboard;
     private CapsuleCollider _characterCollider;
 
     [Header("설정")]
@@ -37,6 +37,9 @@ public class PostStudent : MonoBehaviour
 
     [SerializeField] private GameObject _player;
 
+    [SerializeField] private BehaviorWeightSet _behaviorWeightSet;
+    [SerializeField] private StageSpots _stageSpots;
+
     //private bool _isDamaged = false;
     private DamageReceiver _damageReceiver;
 
@@ -47,9 +50,10 @@ public class PostStudent : MonoBehaviour
         _agent = GetComponent<NavMeshAgent>();
         _anim = GetComponent<Animator>();
         _characterCollider = GetComponent<CapsuleCollider>();
-        _agent.acceleration = 30f;
+        _agent.acceleration = 100f;
 
-        _blackboard.Setup(_agent, _anim, transform);
+        _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots);
+        //_blackboard.Setup(_agent, _anim, transform);
         _speedSelector = ConstructSpeedSelector();
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
@@ -140,7 +144,7 @@ public class PostStudent : MonoBehaviour
         // 4. 메인 워크 시퀀스에 조립
         Sequence workSequence = new Sequence(new List<BT_Node>
         {
-            new SetBehaveSpot(_chairSpot),
+            //new SetBehaveSpot(_chairSpot),
             _speedSelector,
             new MoveToSpot(),
             new RotateToSpot(),
@@ -163,14 +167,14 @@ public class PostStudent : MonoBehaviour
         // 3. 50% 확률로 기지개 켜기(Once), 50% 확률로 그냥 대기
         Sequence prowlSequence = new Sequence(new List<BT_Node>
         {
-            new SetRandomBehaveSpot(_prowlSpots),
+            //new SetRandomBehaveSpot(_prowlSpots),
             _speedSelector,
             new MoveToSpot()
             //new PlayLoopAnim("LookAround", 5)
         });
         Sequence restSequence = new Sequence(new List<BT_Node>
         {
-            new SetRandomBehaveSpot(_restSpots),
+            //new SetRandomBehaveSpot(_restSpots),
             _speedSelector,
             new MoveToSpot(),
             new PlayOnceAnim("LookAround", "LookAround")
@@ -186,7 +190,7 @@ public class PostStudent : MonoBehaviour
         //});
         Sequence microwaveSequence = new Sequence(new List<BT_Node>
         {
-            new SetRandomBehaveSpot(_microwaveSpots),
+            //new SetRandomBehaveSpot(_microwaveSpots),
             _speedSelector,
             new SetAnimBool("Carrying", true),
             new MoveToSpot(),
@@ -227,7 +231,7 @@ public class PostStudent : MonoBehaviour
             // 3. 공격 후 잠깐의 틈 (AI가 너무 숨 가쁘게 공격하지 않도록)
         });
 
-        return combatSubTree;
+        //return combatSubTree;
         //return new ReactiveSelector(new List<BT_Node>
         //{
         //    new ConditionDecorator(() => _isDamaged,
@@ -246,7 +250,28 @@ public class PostStudent : MonoBehaviour
 
         //return ConstructCombatSequence();
         // 4. 전체 루트를 반복(Selector 또는 Sequence) 하도록 설정
-        return new Selector(new List<BT_Node> { randomJobSelector });
+
+        //return new Selector(new List<BT_Node> { randomJobSelector });
+
+        var behaviorNodes = new Dictionary<BehaviorType, BT_Node>
+        {
+            { BehaviorType.Sit, ConstructWorkSequence() },
+            { BehaviorType.UseMicrowave, microwaveSequence },
+            { BehaviorType.Escape, new TryEscapePattern() },
+        };
+
+        Sequence jopBehavior = new Sequence(new List<BT_Node>
+        {
+            new SetRandomBehavior(),
+            new FindSpotPattern(),
+            new EnumSwitchSelector<BehaviorType>(
+                bb => _blackboard.destBehavior,
+                behaviorNodes,
+                prowlSequence
+            ),
+        });
+
+        return jopBehavior;
     }
 
 
