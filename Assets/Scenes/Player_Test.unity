@@ -339,7 +339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _behaviorTypes: 8
-  _exitGate: {fileID: 8393390669886378020}
+  _exitGate: {fileID: 8393390669886378025}
 --- !u!1 &183102489
 GameObject:
   m_ObjectHideFlags: 0
@@ -4978,7 +4978,7 @@ Animator:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 405387155402176415}
-  m_Enabled: 1
+  m_Enabled: 0
   m_Avatar: {fileID: 0}
   m_Controller: {fileID: 9100000, guid: 099e6cc38da8ff74bb68d0bf29e24642, type: 2}
   m_CullingMode: 0
@@ -13592,9 +13592,9 @@ GameObject:
   - component: {fileID: 5262328784512763461}
   - component: {fileID: 8393390669886378022}
   - component: {fileID: 8393390669886378021}
-  - component: {fileID: 8393390669886378020}
   - component: {fileID: 8393390669886378024}
   - component: {fileID: 8393390669886378023}
+  - component: {fileID: 8393390669886378025}
   m_Layer: 13
   m_Name: DoorExit
   m_TagString: Untagged
@@ -14376,20 +14376,6 @@ Transform:
   - {fileID: 183102490}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8393390669886378020
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7813458723616291323}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 549e63aed786af44b9f7d45cbf5c9cf3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _barricadeParent: {fileID: 183102490}
-  _barricadePrefab: {fileID: 6917073365472557711, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
 --- !u!114 &8393390669886378021
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14486,6 +14472,26 @@ MonoBehaviour:
   MaxReachEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &8393390669886378025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7813458723616291323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1502b96b2746e9b48aee03160a06c257, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _barricadeParent: {fileID: 183102490}
+  _barricadePrefab: {fileID: 6917073365472557711, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
+  _doorPanel: {fileID: 405387155402176415}
+  _isOpened: 0
+  _openAngle: -90
+  _closeAngle: 0
+  _duration: 0.1
+  _closeInterval: 0.3
 --- !u!1 &8399255897879073182
 GameObject:
   m_ObjectHideFlags: 0

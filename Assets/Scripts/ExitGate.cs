@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.ShaderKeywordFilter;
@@ -7,6 +8,7 @@ public class ExitGate : MonoBehaviour
 {
     [SerializeField] private Transform _barricadeParent;
     [SerializeField] private GameObject _barricadePrefab;
+    [SerializeField] private bool _isbarricadeEnabled;
 
     protected DamageReceiver _damageReceiver;
     protected ClickAndWait _interaction;
@@ -28,7 +30,10 @@ public class ExitGate : MonoBehaviour
 
     private void Start()
     {
-        PlaceBarricade();
+        if (_isbarricadeEnabled)
+            PlaceBarricade();
+        else
+            BreakBarricade();
     }
 
 
@@ -49,4 +54,8 @@ public class ExitGate : MonoBehaviour
         _barricadePlaced = null;
         _damageReceiver.SetStatEmpty();
     }
+
+    public virtual void Open() { }
+
+    public virtual void Close() { }
 }

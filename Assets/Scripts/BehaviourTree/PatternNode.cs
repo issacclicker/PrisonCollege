@@ -305,7 +305,7 @@ public class TryEscapePattern : PatternNode
             //new SetSpeed(() => PostStudent._walkSpeed),
             new MoveToSpot(),
             new RotateToSpot(),
-            new Selector(new List<BT_Node>
+            new ReactiveSelector(new List<BT_Node>
             {
                  new ConditionDecorator(() =>
                 {
@@ -314,9 +314,17 @@ public class TryEscapePattern : PatternNode
                 },
                     new Sequence(new List<BT_Node>
                     {
-                        new SetAnimRootMotion(false),
-                        new StopNode(),
                         new PrintDebug("Escape success!"),
+                        new StopAndDisableAgentUpdate(),
+                        new FadeLayerByIndex(0, 0.2f),
+                        new ActionNode(() =>
+                        {
+                            ExitSpot exitGate = _bb.destSpot as ExitSpot;
+                            exitGate.OpenGate();
+                        }, NodeState.Success),
+                        new SetAnimRootMotion(true),
+                        new SetAnimBool("EscapeRunning", true),
+                        new ActionNode(null, NodeState.Running),
                     })
                 ),
                 new Sequence(new List<BT_Node>
@@ -329,7 +337,7 @@ public class TryEscapePattern : PatternNode
 
                     new ExitAttackPattern(), // 실제 주먹 휘두르는 동안
                 
-                    //new Delay(() => 1.5f),
+                    //new Delay(() => Time.deltaTime),
                     new SetAnimRootMotion(false),
 
                     new EnableAgentUpdate(),

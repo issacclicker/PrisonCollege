@@ -877,3 +877,96 @@ public class EnableAgentUpdate : BT_Node
         return NodeState.Success;
     }
 }
+
+
+
+public class ActivateLayerByIndex : BT_Node
+{
+    private readonly int _targetLayerIdx;
+
+    /// <param name="layerIdx">활성화할 레이어 인덱스. 0이나 -1을 넣으면 모든 오버라이드 레이어를 끕니다.</param>
+    public ActivateLayerByIndex(int layerIdx)
+    {
+        _targetLayerIdx = layerIdx;
+    }
+
+    public override NodeState Evaluate()
+    {
+        if (_bb.Anim == null) return NodeState.Failure;
+
+        int layerCount = _bb.Anim.layerCount;
+
+        // 0번(Base Layer)은 보통 1순위이므로 건드리지 않고, 1번부터 루프를 돕니다.
+        for (int i = 1; i < layerCount; i++)
+        {
+            float weight = (i == _targetLayerIdx) ? 1f : 0f;
+            _bb.Anim.SetLayerWeight(i, weight);
+        }
+
+        return NodeState.Success;
+    }
+}
+
+
+
+public class FadeLayerByIndex : BT_Node
+{
+    private readonly int _targetLayerIdx;
+    private readonly float _duration;
+    private float _elapsedTime;
+    private float[] _startWeights; // 시작 시점의 가중치 저장
+
+    public FadeLayerByIndex(int targetLayerIdx, float duration = 0.5f)
+    {
+        _targetLayerIdx = targetLayerIdx;
+        _duration = duration;
+    }
+
+    public override void Reset()
+    {
+        base.Reset();
+        _elapsedTime = 0f;
+        _startWeights = null;
+    }
+
+    public override NodeState Evaluate()
+    {
+        if (_bb.Anim == null) return NodeState.Failure;
+
+        int layerCount = _bb.Anim.layerCount;
+
+        // 1. 초기화: 시작 가중치 기록
+        if (_startWeights == null)
+        {
+            _startWeights = new float[layerCount];
+            for (int i = 1; i < layerCount; i++)
+            {
+                _startWeights[i] = _bb.Anim.GetLayerWeight(i);
+            }
+            _elapsedTime = 0f;
+        }
+
+        // 2. 시간 진행
+        _elapsedTime += Time.deltaTime;
+        float normalizedTime = Mathf.Clamp01(_elapsedTime / _duration);
+
+        // 3. 모든 오버라이드 레이어 보간 실행
+        for (int i = 1; i < layerCount; i++)
+        {
+            // 상/하반신 레이어(예: 1, 2번)를 제외하고 싶다면 i를 더 큰 숫자부터 시작하세요.
+            float targetWeight = (i == _targetLayerIdx) ? 1f : 0f;
+            float currentWeight = Mathf.Lerp(_startWeights[i], targetWeight, normalizedTime);
+
+            _bb.Anim.SetLayerWeight(i, currentWeight);
+        }
+
+        // 4. 완료 판정
+        if (normalizedTime >= 1f)
+        {
+            Reset(); // 다음 실행을 위해 리셋
+            return NodeState.Success;
+        }
+
+        return NodeState.Running;
+    }
+}
