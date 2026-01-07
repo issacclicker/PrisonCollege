@@ -258,6 +258,7 @@ public class PostStudent : MonoBehaviour
             { BehaviorType.Sit, ConstructWorkSequence() },
             { BehaviorType.UseMicrowave, microwaveSequence },
             { BehaviorType.Escape, new TryEscapePattern() },
+            { BehaviorType.RushThrough, new RushThroughPattern() },
         };
 
         Sequence jopBehavior = new Sequence(new List<BT_Node>

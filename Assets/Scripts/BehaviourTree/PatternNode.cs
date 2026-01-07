@@ -280,7 +280,108 @@ public class FindSpotPattern : PatternNode
 
 
 
+public class DoorEscapePatter : PatternNode
+{
+    public DoorEscapePatter() 
+    {
+        _patternRoot = new Sequence(new List<BT_Node>
+        {
+            new SetAnimRootMotion(true),
+            new SetAnimBool("EscapeRunning", true),
+            new PlayOnceAnim("EscapeJump", "EscapeJump"),
+        });
+    }
+}
 
+
+
+public class WindowEscapePattern : PatternNode
+{
+    public WindowEscapePattern()
+    {
+        _patternRoot = new Sequence(new List<BT_Node>
+        {
+            new SetAnimRootMotion(true),
+            //new SetAnimBool("EscapeRunning", true),
+            new PlayOnceAnim("EscapeJump", "EscapeJump"),
+            new ActionNode(() =>
+            {
+                Transform hipTransform = _bb.Avatar.transform.Find("Root/Hips");
+                _bb.Anim.enabled = false;
+                _bb.Agent.enabled = false;
+                foreach (var rb in _bb.Avatar.GetComponentsInChildren<Rigidbody>())
+                {
+                    rb.isKinematic = false;
+                    rb.velocity = Vector3.zero;
+                    rb.AddForce(Vector3.down * 12f, ForceMode.VelocityChange);
+                    rb.AddForce((Vector3.down + _bb.Avatar.forward).normalized * 2f, ForceMode.VelocityChange);
+            
+                    if (rb.TryGetComponent(out Collider col))
+                    {
+                        col.isTrigger = false;
+                    }
+                }
+            }),
+        });
+    }
+}
+
+
+
+public class VentEscapePattern : PatternNode
+{
+    public VentEscapePattern()
+    {
+        _patternRoot = new Sequence(new List<BT_Node>
+        {
+        });
+    }
+}
+
+
+
+public class EscapeTypeSelectPattern : PatternNode
+{
+    public EscapeTypeSelectPattern()
+    {
+        _patternRoot = new Selector(new List<BT_Node>
+        {
+            new ConditionDecorator(() => (_bb.destSpot as ExitSpot).GateType == ExitGateType.Door, new DoorEscapePatter()),
+            new ConditionDecorator(() => (_bb.destSpot as ExitSpot).GateType == ExitGateType.Window, new WindowEscapePattern()),
+            new ConditionDecorator(() => (_bb.destSpot as ExitSpot).GateType == ExitGateType.Vent, new VentEscapePattern()),
+        });
+    }
+}
+
+
+
+public class RushThroughPattern : PatternNode
+{
+    public RushThroughPattern()
+    {
+        _patternRoot = new Sequence(new List<BT_Node>
+        {
+            new PrintDebug("RushThroughPattern"),
+            new SetRandomSpeedPattern(),
+            //new SetSpeed(() => PostStudent._walkSpeed),
+            new MoveToSpot(),
+            new RotateToSpot(),
+            new StopAndDisableAgentUpdate(),
+            new SetAnimRootMotion(true),
+            new SetAnimBool("Rush", true),
+            //new Delay(() => 0.2f),
+            new ActionNode(() => {
+                var attacker = _bb.Avatar.GetComponent<OverlapAttacker>();
+                attacker.StartAttack();
+            }, NodeState.Success),
+            new ActionNode(null, NodeState.Running),
+        });
+    }
+}
+
+
+
+//버그 : 차단막 파괴되었는데도 한번 더 때리는 경우있음, 그리고 탈출대기중인거 강화할때 버그 (둘다 랜덤)
 public class TryEscapePattern : PatternNode
 {
     public TryEscapePattern()
@@ -288,19 +389,6 @@ public class TryEscapePattern : PatternNode
         // 내부 로직 설계: Selector를 통해 조건별 분기
         _patternRoot = new Sequence(new List<BT_Node>
         {
-            //new ConditionDecorator(() =>
-            //{
-            //    return Vector3.Distance(_bb.destPosition, _bb.Avatar.position) > 1f;
-            //},
-            //    new Sequence(new List<BT_Node>
-            //    {
-            //        new PrintDebug("TryEscapePattern"),
-            //        new SetRandomSpeedPattern(),
-            //        //new SetSpeed(() => PostStudent._walkSpeed),
-            //        new MoveToSpot(),
-            //        new RotateToSpot(),
-            //    })
-            //),
             new PrintDebug("TryEscapePattern"),
             new SetRandomSpeedPattern(),
             //new SetSpeed(() => PostStudent._walkSpeed),
@@ -323,37 +411,8 @@ public class TryEscapePattern : PatternNode
                             ExitSpot exitGate = _bb.destSpot as ExitSpot;
                             exitGate.OpenGate();
                         }, NodeState.Success),
-                        new SetAnimRootMotion(true),
-                        //new SetAnimBool("EscapeRunning", true),
-                        new PlayOnceAnim("EscapeJump", "EscapeJump"),
-                        new ActionNode(() =>
-                        {
-                            Transform hipTransform = _bb.Avatar.transform.Find("Root/Hips");
-                            _bb.Anim.enabled = false;
-                            _bb.Agent.enabled = false;
-                            foreach (var rb in _bb.Avatar.GetComponentsInChildren<Rigidbody>())
-                            {
-                                rb.isKinematic = false;
-                                rb.velocity = Vector3.zero;
-                                rb.AddForce(Vector3.down * 12f, ForceMode.VelocityChange);
-                                rb.AddForce((Vector3.down + _bb.Avatar.forward).normalized * 2f, ForceMode.VelocityChange);
-
-                                if (rb.TryGetComponent(out Collider col))
-                                {
-                                    col.isTrigger = false;
-                                }
-
-                                if (rb.transform == hipTransform)
-                                {
-                                    // Vector3.down 방향으로 강한 힘을 줌
-                                    // ForceMode.Impulse는 순간적인 충격을 줄 때 사용합니다.
-                                    //rb.AddForce(Vector3.down * 100f, ForceMode.Impulse); 
-            
-                                    // 만약 창밖으로 튕겨 나가는 느낌을 주려면 forward 힘도 섞어주세요.
-                                    //b.AddForce((Vector3.down + _bb.Avatar.forward).normalized * 20f, ForceMode.Impulse);
-                                }
-                            }
-                        }),
+                        new EscapeTypeSelectPattern(),
+                        // exitGate의 세부타입별로 다른 PatternNode 실행하기
                         new ActionNode(null, NodeState.Running),
                     })
                 ),

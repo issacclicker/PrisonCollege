@@ -14,6 +14,8 @@ public class DoorGate : ExitGate
 
     private Tween doorTween;
 
+    public override ExitGateType GateType => ExitGateType.Door;
+
     private void RotateDoor(bool open)
     {
         // 진행 중인 트윈이 있다면 즉시 중단하고 해당 지점에서 새로 시작

@@ -4,15 +4,15 @@ using UnityEngine;
 
 public class BehaveSpot : MonoBehaviour
 {
-    [SerializeField] private BehaviorType _behaviorTypes;
-    public BehaviorType BehaviorTypes => _behaviorTypes;
+    [SerializeField] protected BehaviorType _behaviorTypes;
+    public virtual BehaviorType BehaviorTypes => _behaviorTypes;
     public virtual bool IsUsable => true;
 
 
     public bool HasBehavior(BehaviorType type)
     {
         // 비트 연산으로 포함 여부 확인
-        return (_behaviorTypes & type) != 0;
+        return (BehaviorTypes & type) != 0;
     }
 
 
@@ -31,4 +31,5 @@ public enum BehaviorType
     LookAround = 1 << 1,
     UseMicrowave = 1 << 2,
     Escape = 1 << 3,
+    RushThrough = 1 << 4,
 }

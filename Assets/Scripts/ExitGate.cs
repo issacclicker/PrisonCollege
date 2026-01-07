@@ -14,6 +14,7 @@ public class ExitGate : MonoBehaviour
     protected ClickAndWait _interaction;
     protected GameObject _barricadePlaced;
     public bool IsBarricadePlaced => _barricadePlaced != null;
+    public virtual ExitGateType GateType => ExitGateType.None;
 
 
 

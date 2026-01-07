@@ -16,6 +16,8 @@ public class WindowGate : ExitGate
     private GameObject _currentWindowInstance;
     private Tween _moveTween;
 
+    public override ExitGateType GateType => ExitGateType.Window;
+
     public override void Open()
     {
         // 이미 열려있거나 파괴 중이면 중단
