@@ -45,11 +45,12 @@ public class WeaponController : MonoBehaviour
         Equip(startingIndex);
     }
 
-    public void TryAttack()
+    public bool TryAttack()
     {
-        if (_isSwapping || CurrentWeapon.IsPlayingAttackAnim) return;
+        if (_isSwapping || CurrentWeapon.IsPlayingAttackAnim) return false;
         
         CurrentWeapon.PlayAttackAnim(); // 공격 명령
+        return true;
     }
 
 

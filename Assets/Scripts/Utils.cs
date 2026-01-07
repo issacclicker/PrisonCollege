@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -48,4 +49,33 @@ public static class Utils
     {
         return ((1 << obj.layer) & mask) != 0;
     }
+
+
+
+    // List<T>에 대한 확장 메서드 정의
+    //public static T GetRandom<T>(this List<T> items) where T : IWeightedEntry
+    //{
+    //    // 기존 로직과 동일
+    //    if (items == null || items.Count == 0) return default;
+
+    //    float totalWeight = 0;
+    //    foreach (var item in items)
+    //    {
+    //        totalWeight += item.Chance;
+    //    }
+
+    //    float pivot = Random.Range(0f, totalWeight);
+
+    //    float cumulative = 0f;
+    //    foreach (var item in items)
+    //    {
+    //        cumulative += item.Chance;
+    //        if (pivot <= cumulative)
+    //        {
+    //            return item;
+    //        }
+    //    }
+
+    //    return items[items.Count - 1];
+    //}
 }

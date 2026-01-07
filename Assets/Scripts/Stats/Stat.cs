@@ -5,8 +5,8 @@ using UnityEngine.Events;
 
 public class Stat : MonoBehaviour
 {
-    [SerializeField] private float _maxStat = 100f;
-    private float _currentStat;
+    [SerializeField] protected float _maxStat = 100f;
+    protected float _currentStat;
 
     public float Current => _currentStat;
     public float Max => _maxStat;
@@ -16,9 +16,17 @@ public class Stat : MonoBehaviour
 
     public UnityEvent<float> IncreaseEvent = new UnityEvent<float>();
     public UnityEvent<float> DecreaseEvent = new UnityEvent<float>();
-    public UnityEvent DepleteEvent = new UnityEvent();
+    public UnityEvent DepletedEvent = new UnityEvent();
+    public UnityEvent MaxReachEvent = new UnityEvent();
 
-    protected virtual void Awake() => _currentStat = _maxStat;
+    protected virtual void Awake() => Initialize();
+
+
+
+    public virtual void Initialize(bool issetToZero = false)
+    {
+        _currentStat = issetToZero ? 0 : _maxStat;
+    }
 
 
 
@@ -27,16 +35,30 @@ public class Stat : MonoBehaviour
         if (IsDepleted) return;
         _currentStat = Mathf.Max(0, _currentStat - amount);
         DecreaseEvent?.Invoke(amount);
+        if (IsDepleted)
+        {
+            Depleted();
+        }
     }
 
     public void Increase(float amount)
     {
+        if (IsMax) return;
         _currentStat = Mathf.Min(_maxStat, _currentStat + amount);
         IncreaseEvent?.Invoke(amount);
+        if (IsMax)
+        {
+            MaxReached();
+        }
     }
 
     private void Depleted()
     {
-        DepleteEvent?.Invoke();
+        DepletedEvent?.Invoke();
+    }
+
+    private void MaxReached()
+    {
+        MaxReachEvent?.Invoke();
     }
 }

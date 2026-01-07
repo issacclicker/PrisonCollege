@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class Professor : MonoBehaviour, IAttackable
@@ -8,13 +9,25 @@ public class Professor : MonoBehaviour, IAttackable
     public bool IsAttacking => throw new System.NotImplementedException();
 
     public int CurrentAttackID => throw new System.NotImplementedException();
-    private AttackAnimator attackAnimator;
     [SerializeField] private WeaponController _weaponController;
     [SerializeField] private bool _isSwapWheelnvert = false; // true면 방향이 반대가 됨
+    [SerializeField] private float _sprintStaminaDrain = 20f;
+    [SerializeField] private float _staminaRegenRate = 5f;
+
+    private FirstPersonController _controller;
+    private PlayerInteraction _playerInteraction;
+    private Stamina _stamina;
+
+    private void Awake()
+    {
+        _controller = GetComponent<FirstPersonController>();
+        _playerInteraction = GetComponent<PlayerInteraction>();
+        _stamina = GetComponent<Stamina>();
+    }
+
 
     private void Start()
     {
-        attackAnimator = GetComponent<AttackAnimator>();
         _weaponController.EquipWeapon(0, gameObject);
     }
 
@@ -26,8 +39,27 @@ public class Professor : MonoBehaviour, IAttackable
         // {
         //     attackAnimator.PlayMeleeSwing(Attack);
         // }
+        HandleSprintStamina();
         HandleWeaponAttack();
         HandleWeaponSwap();
+    }
+
+
+
+    private void HandleSprintStamina()
+    {
+        if (_controller && _controller.IsSprinting)
+        {
+            _stamina.Decrease(_sprintStaminaDrain *  Time.deltaTime);
+        }
+        else
+        {
+            _stamina.Increase(_staminaRegenRate * Time.deltaTime);
+        }
+        //else if (_weaponController.CurrentWeapon.IsPlayingAttackAnim == false)
+        //{
+        //    _stamina.Increase(_staminaRegenRate * Time.deltaTime);
+        //}
     }
 
 
@@ -36,7 +68,17 @@ public class Professor : MonoBehaviour, IAttackable
     {
         if (Input.GetMouseButtonDown(0))
         {
-            _weaponController.TryAttack();
+            float currentWeaponStaminaCost = _weaponController.CurrentWeapon.StaminaCost;
+            if (_stamina.Current < currentWeaponStaminaCost)
+            {
+                Debug.Log("스테미나가 부족합니다!");
+                return;
+            }
+            if (_weaponController.TryAttack())
+            {
+                _stamina.Decrease(currentWeaponStaminaCost);
+                _playerInteraction.CancelActiveInteraction();
+            }
         }
     }
 
@@ -63,13 +105,6 @@ public class Professor : MonoBehaviour, IAttackable
             bool finalNext = isScrollDown ^ _isSwapWheelnvert;
             _weaponController.ChangeWeaponByWheel(finalNext);
         }
-    }
-
-
-
-    private bool CanAttack()
-    {
-        return !attackAnimator.IsSwinging;
     }
 
 

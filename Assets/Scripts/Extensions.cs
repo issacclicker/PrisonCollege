@@ -8,7 +8,7 @@ public static class Extensions
     /// <summary>
     /// 리스트에서 무작위 원소 하나를 반환합니다.
     /// </summary>
-    public static T GetRandom<T>(this List<T> list)
+    public static T GetRandomElem<T>(this List<T> list)
     {
         if (list == null || list.Count == 0)
         {

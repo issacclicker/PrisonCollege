@@ -9,6 +9,7 @@ public class StatBar : MonoBehaviour
 {
     [SerializeField] private Stat _targetStat;
     [SerializeField] private Image _fillImage;
+    [SerializeField] private Gradient _colorGradient;
 
 
 
@@ -23,6 +24,8 @@ public class StatBar : MonoBehaviour
 
     private void OnStatChanged(float amount)
     {
-        _fillImage.fillAmount = _targetStat.Ratio;
+        float ratio = Mathf.Clamp01(_targetStat.Ratio);
+        _fillImage.fillAmount = ratio;
+        _fillImage.color = _colorGradient.Evaluate(ratio);
     }
 }

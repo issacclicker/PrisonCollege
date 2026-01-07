@@ -1,8 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices.WindowsRuntime;
+using Unity.Collections.LowLevel.Unsafe;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static Global;
 
 
@@ -192,5 +195,268 @@ public class MeleeAttackPattern : PatternNode
         }
 
         return state;
+    }
+}
+
+
+
+public class RandomSpotSelectPattern : PatternNode
+{
+    public RandomSpotSelectPattern()
+    {
+        _patternRoot = new Sequence(new List<BT_Node>
+        {
+            new RandomSelector(
+                new List<BT_Node> {
+                    //new ActionNode(() => _bb.destSpot= _behaveSpots.GetRandomSpotByWeight(), NodeState.Success)
+                    new PlayOnceAnim("Elbow1", "Elbow1", COMBAT_LAYER_INDEX),
+                    new PlayOnceAnim("Punch6", "Punch6", COMBAT_LAYER_INDEX),
+                    new PlayOnceAnim("Kick3", "Kick3", COMBAT_LAYER_INDEX)
+                },
+                new List<System.Func<int>> {
+                    () => 50, // 잽은 자주
+                    () => 10, // 훅은 보통
+                    () => 10  // 어퍼컷은 가끔
+                }
+            ),
+            //new SetAnimRootMotion(false),
+            new PrintDebug("MeleeAttackPattern End"),
+        });
+    }
+}
+
+
+
+
+public class FindSpotPattern : PatternNode
+{
+    private const int MAX_RETRY = 3;
+    private int _currentRetryCount = 0;
+
+    public FindSpotPattern()
+    {
+        _patternRoot = new Selector(new List<BT_Node>
+        {
+            new FindDestSpot(), 
+            new Sequence(new List<BT_Node>
+            {
+                new Delay(() => 1.0f),       // 1초 대기
+                new ActionNode(() => 
+                {
+                    _currentRetryCount++;
+                    Debug.Log($"[AI] 자리가 없어 재시도 중... ({_currentRetryCount}/{MAX_RETRY})");
+                }, NodeState.Failure)
+            })
+        });
+    }
+
+    public override NodeState Evaluate()
+    {
+        if (_currentRetryCount >= MAX_RETRY)
+        {
+            Debug.Log("[AI] 모든 재시도 실패. 행동을 포기합니다.");
+            Reset(); // 카운트 초기화
+            return NodeState.Failure; // 전체 패턴 실패 -> 상위에서 다른 BehaviorType 결정 유도
+        }
+
+        // 2. 내부 트리 실행 (FindDestSpot 시도 -> 실패 시 Wait)
+        NodeState state = _patternRoot.Evaluate();
+
+        // 3. 만약 내부에서 스팟 찾기에 성공(Success)했다면 카운트 초기화
+        if (state == NodeState.Success)
+        {
+            _currentRetryCount = 0;
+        }
+
+        return state; // Running(대기 중) 또는 Success(찾음) 반환
+    }
+
+    public override void Reset()
+    {
+        base.Reset();
+        _currentRetryCount = 0;
+    }
+}
+
+
+
+
+public class TryEscapePattern : PatternNode
+{
+    public TryEscapePattern()
+    {
+        // 내부 로직 설계: Selector를 통해 조건별 분기
+        _patternRoot = new Sequence(new List<BT_Node>
+        {
+            //new ConditionDecorator(() =>
+            //{
+            //    return Vector3.Distance(_bb.destPosition, _bb.Avatar.position) > 1f;
+            //},
+            //    new Sequence(new List<BT_Node>
+            //    {
+            //        new PrintDebug("TryEscapePattern"),
+            //        new SetRandomSpeedPattern(),
+            //        //new SetSpeed(() => PostStudent._walkSpeed),
+            //        new MoveToSpot(),
+            //        new RotateToSpot(),
+            //    })
+            //),
+            new PrintDebug("TryEscapePattern"),
+            new SetRandomSpeedPattern(),
+            //new SetSpeed(() => PostStudent._walkSpeed),
+            new MoveToSpot(),
+            new RotateToSpot(),
+            new Selector(new List<BT_Node>
+            {
+                 new ConditionDecorator(() =>
+                {
+                    ExitSpot exitSpot = _bb.destSpot as ExitSpot;
+                    return exitSpot != null && exitSpot.CanExit;
+                },
+                    new Sequence(new List<BT_Node>
+                    {
+                        new PrintDebug("Escape success!"),
+                        new StopAndDisableAgentUpdate(),
+                        new FadeLayerByIndex(0, 0.2f),
+                        new ActionNode(() =>
+                        {
+                            ExitSpot exitGate = _bb.destSpot as ExitSpot;
+                            exitGate.OpenGate();
+                        }, NodeState.Success),
+                        new SetAnimRootMotion(true),
+                        //new SetAnimBool("EscapeRunning", true),
+                        new PlayOnceAnim("EscapeJump", "EscapeJump"),
+                        new ActionNode(() =>
+                        {
+                            Transform hipTransform = _bb.Avatar.transform.Find("Root/Hips");
+                            _bb.Anim.enabled = false;
+                            _bb.Agent.enabled = false;
+                            foreach (var rb in _bb.Avatar.GetComponentsInChildren<Rigidbody>())
+                            {
+                                rb.isKinematic = false;
+                                rb.velocity = Vector3.zero;
+                                rb.AddForce(Vector3.down * 12f, ForceMode.VelocityChange);
+                                rb.AddForce((Vector3.down + _bb.Avatar.forward).normalized * 2f, ForceMode.VelocityChange);
+
+                                if (rb.TryGetComponent(out Collider col))
+                                {
+                                    col.isTrigger = false;
+                                }
+
+                                if (rb.transform == hipTransform)
+                                {
+                                    // Vector3.down 방향으로 강한 힘을 줌
+                                    // ForceMode.Impulse는 순간적인 충격을 줄 때 사용합니다.
+                                    //rb.AddForce(Vector3.down * 100f, ForceMode.Impulse); 
+            
+                                    // 만약 창밖으로 튕겨 나가는 느낌을 주려면 forward 힘도 섞어주세요.
+                                    //b.AddForce((Vector3.down + _bb.Avatar.forward).normalized * 20f, ForceMode.Impulse);
+                                }
+                            }
+                        }),
+                        new ActionNode(null, NodeState.Running),
+                    })
+                ),
+                new Sequence(new List<BT_Node>
+                {
+                    // --- [공격 단계] ---
+                    new LerpLayerWeight(STRIKE_LAYER_INDEX, 1, 10),
+                    //new ActionNode(() => _bb.Anim.SetLayerWeight(STRIKE_LAYER_INDEX, 1), NodeState.Success),
+                    new StopAndDisableAgentUpdate(),
+                    new SetAnimRootMotion(true),
+
+                    new ExitAttackPattern(), // 실제 주먹 휘두르는 동안
+                
+                    //new Delay(() => Time.deltaTime),
+                    new SetAnimRootMotion(false),
+
+                    new EnableAgentUpdate(),
+                })
+            }),
+        });
+    }
+
+    public override NodeState Evaluate()
+    {
+        // 1. 방어 코드: destSpot이 없거나 ExitSpot이 아니면 패턴 실패
+        if (_bb.destSpot == null || !(_bb.destSpot is ExitSpot))
+        {
+            Debug.LogError("[TryEscapePattern] 목적지가 ExitSpot이 아닙니다.");
+            return NodeState.Failure;
+        }
+
+        // 2. 내부 트리(Selector) 실행
+        return _patternRoot.Evaluate();
+    }
+}
+
+
+
+public class ExitAttackPattern : PatternNode
+{
+    private static readonly string[] _animNames = { };
+    private static readonly int[] _animProbs = { };
+
+    public ExitAttackPattern()
+    {
+        _patternRoot = new Sequence(new List<BT_Node>
+        {
+            new PrintDebug("ExitAttackPattern Start"),
+            //new SetAnimRootMotion(true),
+            new RandomSelector(
+                new List<BT_Node> {
+                    new PlayOnceAnim("Punch1_z", "Punch1_z", STRIKE_LAYER_INDEX),
+                    new PlayOnceAnim("Punch2_z", "Punch2_z", STRIKE_LAYER_INDEX),
+                    new PlayOnceAnim("Punch3_z", "Punch3_z", STRIKE_LAYER_INDEX),
+                    new PlayOnceAnim("Kick1_z", "Kick1_z", STRIKE_LAYER_INDEX),
+                },
+                new List<System.Func<int>> {
+                    () => 10,
+                    () => 0,
+                    () => 10,
+                    () => 10,
+                }
+            ),
+            //new SetAnimRootMotion(false),
+            new PrintDebug("ExitAttackPattern End"),
+        });
+    }
+
+    public override NodeState Evaluate()
+    {
+        NodeState state = base.Evaluate();
+        if (state == NodeState.Success)
+        {
+            Reset();
+        }
+
+        return state;
+    }
+}
+
+
+
+public class SetRandomSpeedPattern : PatternNode
+{
+    public SetRandomSpeedPattern()
+    {
+        _patternRoot = new RandomSelector(
+            new List<BT_Node> {
+                new SetSpeed(() => PostStudent._walkSpeed),
+                new SetSpeed(() => PostStudent._jogSpeed),
+                new SetSpeed(() => PostStudent._slowRunSpeed),
+                new SetSpeed(() => PostStudent._mediumRunSpeed),
+                new SetSpeed(() => PostStudent._fastRunSpeed),
+                new SetSpeed(() => PostStudent._sprintSpeed),
+            },
+            new List<System.Func<int>> {
+                () => 40, // Walk 확률 40%
+                () => 25, // Jog 확률 25%
+                () => 15, // SlowRun 15%
+                () => 10, // MedRun 10%
+                () => 7,  // FastRun 7%
+                () => 3   // Sprint 3%
+            }
+        );
     }
 }

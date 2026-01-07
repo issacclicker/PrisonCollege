@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: M_Bat
   m_EditorClassIdentifier: 
   animLength: 1.5
-  staminaCost: 1
+  staminaCost: 10
   hitImpulse: 300
   dodgeProb: 0
   effect: {fileID: 11400000, guid: 2c4bea52df78f964aa28401f63eb7a51, type: 2}
