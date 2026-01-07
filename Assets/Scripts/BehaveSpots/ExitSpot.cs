@@ -8,6 +8,7 @@ public class ExitSpot : SingleStudentSpot
 
     public bool CanExit => !_exitGate.IsBarricadePlaced;
     public ExitGateType GateType => _exitGate.GateType;
+    public Vector3 GatePosition => _exitGate.transform.position;
 
 
 
