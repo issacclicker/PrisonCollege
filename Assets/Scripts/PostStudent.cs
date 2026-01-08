@@ -268,8 +268,8 @@ public class PostStudent : MonoBehaviour
             new SetRandomBehavior(),
             new FindSpotPattern(),
             new ResetAnimParameters(),
-            new LerpLayerWeight(COMBAT_LAYER_INDEX, 0),
-            new LerpLayerWeight(STRIKE_LAYER_INDEX, 0),
+            new LerpLayerWeight(COMBAT_LAYER_INDEX, 0, 3),
+            new LerpLayerWeight(STRIKE_LAYER_INDEX, 0, 3),
             new EnumSwitchSelector<BehaviorType>(
                 bb => _blackboard.destBehavior,
                 behaviorNodes,

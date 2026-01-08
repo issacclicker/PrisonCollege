@@ -5,6 +5,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.Collections.LowLevel.Unsafe;
 using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UIElements;
 using static Global;
 using static UnityEditor.Experimental.GraphView.GraphView;
@@ -136,7 +137,7 @@ public class CombatApproachPattern : PatternNode
                 // --- [후딜레이 단계] ---
                 // 이제 _isAttacking이 false이므로, 
                 // 딜레이 도중 플레이어가 멀어지면 상위 Selector가 1번(추격)으로 즉시 갈아탑니다.
-                new Delay(() => UnityEngine.Random.Range(0, 2f)),
+                new Delay(() => UnityEngine.Random.Range(0f, 1f)),
                 new SetAnimRootMotion(false),
             })
         });
@@ -463,7 +464,7 @@ public class AttackReactivePattern : PatternNode
     {
         _patternRoot = new ReactiveSelector(new List<BT_Node>
         {
-            new ConditionDecorator(() => _bb.targetDamageable != null && _bb.targetDamageable.CanEffect, new CombatPattern()),
+            new ConditionDecorator(() => _bb.targetDamageable != null, new CombatPattern()),
             normalRoutine
         });
     }

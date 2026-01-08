@@ -613,15 +613,58 @@ public class SetAttackTarget : BT_Node
 
 
 
+//public class OverrideAttackTarget : BT_Node
+//{
+//    private Func<GameObject> _getTargetFunc;
+//    private DamageReceiver _targetDamageable;
+
+//    /// <summary>
+//    /// 타겟을 반환하는 함수를 인자로 받습니다.
+//    /// 예: () => _bb.coopData.target
+//    /// </summary>
+//    public OverrideAttackTarget(Func<GameObject> getTargetFunc)
+//    {
+//        _getTargetFunc = getTargetFunc;
+//    }
+
+//    public override NodeState Evaluate()
+//    {
+//        // 1. 함수를 실행하여 현재 타겟을 가져옴
+//        GameObject currentTarget = _getTargetFunc?.Invoke();
+
+//        if (currentTarget == null)
+//        {
+//            // 타겟이 없다면 블랙보드 정보도 비워주고 실패 반환
+//            _bb.targetObject = null;
+//            _bb.targetDamageable = null;
+//            return NodeState.Failure;
+//        }
+
+//        // 2. 공격 가능한 대상인지 확인 (DamageReceiver 추출)
+//        _targetDamageable = currentTarget.GetComponent<DamageReceiver>();
+
+//        if (_targetDamageable != null && _targetDamageable.CanEffect)
+//        {
+//            // 3. 블랙보드에 실시간 타겟 정보 주입
+//            _bb.targetObject = currentTarget;
+//            _bb.targetDamageable = _targetDamageable;
+
+//            // Debug.Log($"[BT] 타겟 오버라이드 완료: {currentTarget.name}");
+//            return NodeState.Success;
+//        }
+
+//        // 공격 불가능한 상태(이미 사망 등)라면 실패
+//        return NodeState.Failure;
+//    }
+//}
+
+
+
 public class OverrideAttackTarget : BT_Node
 {
     private Func<GameObject> _getTargetFunc;
-    private DamageReceiver _targetDamageable;
+    private DamageReceiver _currentTargetDR;
 
-    /// <summary>
-    /// 타겟을 반환하는 함수를 인자로 받습니다.
-    /// 예: () => _bb.coopData.target
-    /// </summary>
     public OverrideAttackTarget(Func<GameObject> getTargetFunc)
     {
         _getTargetFunc = getTargetFunc;
@@ -629,32 +672,69 @@ public class OverrideAttackTarget : BT_Node
 
     public override NodeState Evaluate()
     {
-        // 1. 함수를 실행하여 현재 타겟을 가져옴
-        GameObject currentTarget = _getTargetFunc?.Invoke();
+        GameObject newTarget = _getTargetFunc?.Invoke();
 
-        if (currentTarget == null)
+        // 1. 타겟이 바뀌었거나 null이 된 경우 기존 이벤트 해제
+        if (_bb.targetObject != newTarget)
         {
-            // 타겟이 없다면 블랙보드 정보도 비워주고 실패 반환
-            _bb.targetObject = null;
-            _bb.targetDamageable = null;
+            UnsubscribeCurrent();
+        }
+
+        if (newTarget == null)
+        {
+            ClearTarget();
             return NodeState.Failure;
         }
 
-        // 2. 공격 가능한 대상인지 확인 (DamageReceiver 추출)
-        _targetDamageable = currentTarget.GetComponent<DamageReceiver>();
-
-        if (_targetDamageable != null && _targetDamageable.CanEffect)
+        // 2. 새로운 타겟 설정 및 이벤트 구독
+        if (_bb.targetObject == null)
         {
-            // 3. 블랙보드에 실시간 타겟 정보 주입
-            _bb.targetObject = currentTarget;
-            _bb.targetDamageable = _targetDamageable;
+            var dr = newTarget.GetComponent<DamageReceiver>();
+            if (dr != null && dr.CanEffect)
+            {
+                _bb.targetObject = newTarget;
+                _bb.targetDamageable = dr;
+                _currentTargetDR = dr;
 
-            // Debug.Log($"[BT] 타겟 오버라이드 완료: {currentTarget.name}");
-            return NodeState.Success;
+                // 타겟이 파괴(사망)되면 실행될 로직 등록
+                dr.DepletedEvent.AddListener(_ => OnTargetDepleted());
+            }
+            else
+            {
+                return NodeState.Failure;
+            }
         }
 
-        // 공격 불가능한 상태(이미 사망 등)라면 실패
-        return NodeState.Failure;
+        return NodeState.Success;
+    }
+
+    private void OnTargetDepleted()
+    {
+        Debug.Log($"[BT] 타겟 {(_bb.targetObject != null ? _bb.targetObject.name : "Unknown")} 처치 완료. 참조를 제거합니다.");
+        ClearTarget();
+    }
+
+    private void ClearTarget()
+    {
+        UnsubscribeCurrent();
+        _bb.targetObject = null;
+        _bb.targetDamageable = null;
+    }
+
+    private void UnsubscribeCurrent()
+    {
+        if (_currentTargetDR != null)
+        {
+            _currentTargetDR.DepletedEvent.RemoveListener(_ => OnTargetDepleted());
+            _currentTargetDR = null;
+        }
+    }
+
+    // 노드가 리셋될 때 안전하게 구독 해제
+    public override void Reset()
+    {
+        UnsubscribeCurrent();
+        base.Reset();
     }
 }
 
