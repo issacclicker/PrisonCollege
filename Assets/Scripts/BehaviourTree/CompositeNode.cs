@@ -358,3 +358,58 @@ public class ParallelNode : CompositeNode
         }
     }
 }
+
+
+
+public class ParallelOR : CompositeNode
+{
+    public ParallelOR(List<BT_Node> children) : base(children) { }
+
+    public override NodeState Evaluate()
+    {
+        bool anyRunning = false;
+        bool anySuccess = false;
+        int failureCount = 0;
+
+        foreach (var child in children)
+        {
+            switch (child.Evaluate())
+            {
+                case NodeState.Success:
+                    // 정책: 하나라도 성공하면 성공으로 간주 (즉시 반환하거나 플래그 설정)
+                    anySuccess = true;
+                    continue;
+                case NodeState.Failure:
+                    failureCount++;
+                    continue;
+                case NodeState.Running:
+                    anyRunning = true;
+                    continue;
+            }
+        }
+
+        // 1. 모든 자식이 Failure라면 전체 Failure
+        if (failureCount == children.Count)
+        {
+            return NodeState.Failure;
+        }
+
+        // 2. 하나라도 성공했다면 Success (Running보다 우선순위가 높을 때)
+        if (anySuccess)
+        {
+            return NodeState.Success;
+        }
+
+        // 3. 실패하지 않았고 성공도 아직 없다면 (즉, 누군가는 Running 중)
+        return anyRunning ? NodeState.Running : NodeState.Failure;
+    }
+
+    public override void Reset()
+    {
+        base.Reset();
+        foreach (var child in children)
+        {
+            child.Reset();
+        }
+    }
+}

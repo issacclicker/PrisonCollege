@@ -104,6 +104,15 @@ public class CombatApproachPattern : PatternNode
     {
         _patternRoot = new ReactiveSelector(new List<BT_Node>
         {
+            new ConditionDecorator(() => _bb.isStunned,
+                new Sequence(new List<BT_Node>
+                {
+                    new SetAnimRootMotion(true),
+                    new WaitUntilCondition(() => !_bb.isDamaged),
+                    new Delay(() => UnityEngine.Random.Range(0f, 1f)),
+                    new ActionNode(() => _bb.isStunned = false, NodeState.Success),
+                })
+            ),
             // 1. 전력질주 구간 (5m 이상)
             new ConditionDecorator(() => GetDistance() >= ATTACK_RANGE && !_isAttacking,
                 new Sequence(new List<BT_Node>
@@ -115,7 +124,8 @@ public class CombatApproachPattern : PatternNode
                         new LerpLayerWeight(COMBAT_LAYER_INDEX, 0f, 10f),
                         new MoveToTarget(),
                         //new RotateToTarget()
-                    })
+                    }),
+                    new SetAnimRootMotion(false),
                 })
             ),
 
@@ -124,10 +134,11 @@ public class CombatApproachPattern : PatternNode
             {
                 // --- [공격 단계] ---
                 //new ActionNode(() => _bb.Anim.SetLayerWeight(COMBAT_LAYER_INDEX, 1), NodeState.Success),
+                new SetAnimRootMotion(true),
                 new LerpLayerWeight(STRIKE_LAYER_INDEX, 0f, 10f),
                 new LerpLayerWeight(COMBAT_LAYER_INDEX, 1f, 10f),
                 new StopNode(),
-                new SetAnimRootMotion(true),
+                new Delay(() => UnityEngine.Random.Range(1f, 2f)),
                 new ActionNode(() => _isAttacking = true, NodeState.Success), // 플래그 ON
 
                 new MeleeAttackPattern(), // 실제 주먹 휘두르는 동안
@@ -400,9 +411,9 @@ public class RushThroughPattern : PatternNode
             new StopAndDisableAgentUpdate(),
             new SetAnimRootMotion(true),
             new SetAnimBool("Rush", true),
-            //new Delay(() => 0.2f),
+            new Delay(() => 1.1f),
             new ActionNode(() => {
-                var attacker = _bb.Avatar.GetComponent<OverlapAttacker>();
+                var attacker = _bb.Avatar.GetComponentInChildren<OverlapAttacker>();
                 attacker.StartAttack();
             }, NodeState.Success),
             new ActionNode(null, NodeState.Running),
@@ -420,6 +431,7 @@ public class CoopPattern : PatternNode
         _patternRoot = new Sequence(new List<BT_Node>
         {
             new OverrideBehaveSpot(() => _bb.coopData.spot, () => _bb.coopData.type),
+            new SetAnimRootMotion(false),
             new ResetAnimParameters(),
             new MoveToSpot(),
             new RotateToSpot(),
@@ -465,6 +477,39 @@ public class AttackReactivePattern : PatternNode
         _patternRoot = new ReactiveSelector(new List<BT_Node>
         {
             new ConditionDecorator(() => _bb.targetDamageable != null, new CombatPattern()),
+            normalRoutine
+        });
+    }
+}
+
+
+
+public class TakeHitPattern : PatternNode
+{
+    public TakeHitPattern()
+    {
+        _patternRoot = new Sequence(new List<BT_Node>
+        {
+            new RandomSelector(new List<BT_Node>
+            {
+                new PlayOnceAnim("OnHit", "OnHit", 5),
+                //new PlayOnceAnim("OnHit2", "OnHit2", 5),
+                //new PlayOnceAnim("OnHit3", "OnHit3", 5),
+            }),
+            new ActionNode(() => _bb.isDamaged = false, NodeState.Success),
+        });
+    }
+}
+
+
+
+public class TakeHitReactivePattern : PatternNode
+{
+    public TakeHitReactivePattern(BT_Node normalRoutine)
+    {
+        _patternRoot = new ParallelOR(new List<BT_Node>
+        {
+            new ConditionDecorator(() => _bb.isDamaged, new TakeHitPattern()),
             normalRoutine
         });
     }

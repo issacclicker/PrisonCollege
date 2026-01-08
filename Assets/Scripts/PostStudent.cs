@@ -265,18 +265,23 @@ public class PostStudent : MonoBehaviour
 
         Sequence jopBehavior = new Sequence(new List<BT_Node>
         {
-            new SetRandomBehavior(),
-            new FindSpotPattern(),
-            new ResetAnimParameters(),
-            new LerpLayerWeight(COMBAT_LAYER_INDEX, 0, 3),
-            new LerpLayerWeight(STRIKE_LAYER_INDEX, 0, 3),
+            //new ConditionDecorator(() => _blackboard.destBehavior != BehaviorType.Escape,
+            //    new Sequence(new List<BT_Node>
+            //    {
+                    new SetRandomBehavior(),
+                    new FindSpotPattern(),
+                    new ResetAnimParameters(),
+                    new SetAnimRootMotion(false),
+                    new LerpLayerWeight(COMBAT_LAYER_INDEX, 0, 3),
+                    new LerpLayerWeight(STRIKE_LAYER_INDEX, 0, 3),
+                //})),
             new EnumSwitchSelector<BehaviorType>(
                 bb => _blackboard.destBehavior,
                 behaviorNodes,
                 prowlSequence
             ),
         });
-        return new AttackReactivePattern(new CoopReactivePatttern(jopBehavior));
+        return new TakeHitReactivePattern(new AttackReactivePattern(new CoopReactivePatttern(jopBehavior)));
         //return new CoopReactivePatttern(jopBehavior);
         //return jopBehavior;
     }
@@ -354,9 +359,56 @@ public class PostStudent : MonoBehaviour
 
 
 
+    private Coroutine knockbackCoroutine;
+
+
+
     private void OnDamaged(HitInfo hitInfo, float hitAmount)
     {
+        _blackboard.isDamaged = true;
+        _blackboard.isStunned = true;
 
+        // 1. 방향 계산 (공격자 -> 나)
+        Vector3 pushDirection = (transform.position - hitInfo.hitPoint).normalized;
+        pushDirection.y = 0; // 하늘로 날아가는 것 방지
+
+        // 2. 물리 힘 적용 (코루틴 실행)
+        if (knockbackCoroutine != null) StopCoroutine(knockbackCoroutine);
+        knockbackCoroutine = StartCoroutine(KnockbackAddForceRoutine(pushDirection, hitInfo.impulse));
+    }
+
+
+
+    private IEnumerator KnockbackAddForceRoutine(Vector3 direction, float impulse)
+    {
+        // A. 에이전트의 위치 업데이트를 끕니다. (물리 엔진이 캐릭터를 움직이게 허용)
+        _blackboard.Agent.updatePosition = false;
+        _blackboard.Agent.updateRotation = false;
+
+        // B. 순간적인 힘을 가합니다. (Impulse 모드 사용)
+        // 캐릭터 무게(mass)가 1일 때 기준, impulse가 5~10 정도면 적당합니다.
+        Rigidbody _rb = GetComponent<Rigidbody>();
+        _rb.velocity = Vector3.zero; // 기존 속도 초기화
+        _rb.AddForce(direction * impulse, ForceMode.Impulse);
+
+        // C. 물리적인 힘이 적용될 아주 짧은 시간을 기다립니다.
+        yield return new WaitForSeconds(0.2f);
+
+        // D. 속도를 줄여서 자연스럽게 멈추게 합니다. (마찰력 효과)
+        float timer = 0;
+        while (_rb.velocity.magnitude > 0.1f && timer < 0.5f)
+        {
+            _rb.velocity = Vector3.Lerp(_rb.velocity, Vector3.zero, Time.deltaTime * 10f);
+            timer += Time.deltaTime;
+            yield return null;
+        }
+
+        // E. 다시 에이전트를 활성화하기 전, 에이전트 위치를 실제 물리 위치로 동기화
+        _blackboard.Agent.Warp(transform.position);
+        _blackboard.Agent.updatePosition = true;
+        _blackboard.Agent.updateRotation = true;
+
+        _rb.velocity = Vector3.zero;
     }
 
 
@@ -368,7 +420,8 @@ public class PostStudent : MonoBehaviour
         _agent.enabled = false;
         _anim.enabled = false;
         _characterCollider.enabled = false;
-        _blackboard.destSpot.Release(this);
+        _blackboard.destSpot?.Release(this);
+        StopAllCoroutines();
 
         SetRagdoll(true);
         ApplyRagdollImpact(hitInfo.hitPoint, hitInfo.hitRotation, hitInfo.impulse);
@@ -379,16 +432,19 @@ public class PostStudent : MonoBehaviour
     private void SetRagdoll(bool isActive)
     {
         _anim.enabled = !isActive;
+        _agent.enabled |= isActive;
 
         if (TryGetComponent(out Rigidbody rootRb))
         {
-            rootRb.isKinematic = isActive; // 래그돌이면 본체 물리 연산 중단
+            //rootRb.isKinematic = isActive; // 래그돌이면 본체 물리 연산 중단
             rootRb.useGravity = !isActive;
         }
 
         foreach (var rb in GetComponentsInChildren<Rigidbody>())
         {
+            if (rb == rootRb) continue;
             rb.isKinematic = !isActive;
+
             if (isActive) rb.velocity = Vector3.zero;
 
             if (rb.TryGetComponent(out Collider col))
