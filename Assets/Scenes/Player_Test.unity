@@ -721,7 +721,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 105615870}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 34c052201ab370e49847a290402b1ec8, type: 3}
+  m_Script: {fileID: 11500000, guid: 286c44a837afa6545b224479df346616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _coopSpots:
@@ -2348,7 +2348,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageData: {fileID: 11400000, guid: d954d1b05c8da6343a958861a7e4098c, type: 2}
-  _hitImpulse: 100
+  _hitImpulse: 500
   _attackRadius: 1.5
   _attackDistance: 2
   targetLayer:
@@ -14917,7 +14917,7 @@ Transform:
   m_GameObject: {fileID: 2136867286}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -1, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -19604,7 +19604,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _damageData: {fileID: 11400000, guid: d954d1b05c8da6343a958861a7e4098c, type: 2}
-  _hitImpulse: 100
+  _hitImpulse: 500
   _attackRadius: 1.5
   _attackDistance: 2
   targetLayer:

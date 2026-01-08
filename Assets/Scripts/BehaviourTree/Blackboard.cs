@@ -59,23 +59,26 @@ public class Blackboard
     public void LeadCoop()
     {
         coopData.spot = destSpot as CoopSpot;
+        coopData.type = destBehavior;
         coopData.isLeader = true;
     }
 
 
 
-    public void InviteCoop(CoopSpot spot)
+    public void InviteCoop(CoopSpot spot, BehaviorType type)
     {
         coopData.spot = spot;
+        coopData.type = type;
         coopData.isLeader = false;
     }
 
 
 
-    public void ExecuteCoop()
+    public void ExecuteCoop(GameObject targetObject = null)
     {
         coopData.slotIndex = coopData.spot.Index;
         coopData.isExecuting = true;
+        coopData.targetObject = targetObject;
     }
 
 
@@ -83,9 +86,11 @@ public class Blackboard
     public void SecadeCoop()
     {
         coopData.spot = null;
+        coopData.type = BehaviorType.None;
         coopData.isLeader = false;
         coopData.slotIndex = -1;
         coopData.isExecuting = false;
+        coopData.targetObject = null;
     }
 }
 
@@ -94,9 +99,11 @@ public class Blackboard
 public struct CoopData
 {
     public CoopSpot spot; // 협동 지점
+    public BehaviorType type;
     public bool isLeader;              // "Leader" 또는 "Follower"
     public int slotIndex;            // 배정된 자리 번호 (0, 1, 2...)
     public bool isExecuting;         // 실행 중인지 여부
+    public GameObject targetObject;
 }
 
 

@@ -5,23 +5,28 @@ using UnityEngine;
 
 public class CoopBehaviorPlace : MonoBehaviour
 {
-    [SerializeField] private CoopSpot[] _coopSpots;
+    [SerializeField] protected CoopSpot[] _coopSpots;
     [SerializeField] private float _searchRadius = 20f;
 
-    private List<ParticipantInfo> _participants = new();
+    protected List<ParticipantInfo> _participants = new();
     private GameObject _leader;
     private CoopPhase _phase = CoopPhase.None;
 
     public int CurrentParticipants => _participants.Count;
     public int RequiredParticipants => _coopSpots.Length;
     public CoopPhase Phase => _phase;
+    protected virtual BehaviorType RequiredBehavior => BehaviorType.None;
 
 
 
-    private void Awake()
+    protected virtual void Awake()
     {
         for(int i = 0; i < _coopSpots.Length; ++i)
         {
+            if (RequiredBehavior != BehaviorType.None && _coopSpots[i].HasBehavior(RequiredBehavior) == false)
+            {
+                Debug.LogError("CoopSpot의 RequiredBehavior 항목 누락");
+            }
             _coopSpots[i].Index = i;
             _coopSpots[i].JoinEvent.AddListener(OnJoined);
             _coopSpots[i].DisjoinEvent.AddListener(OnDisjoined);
@@ -195,6 +200,17 @@ public class CoopBehaviorPlace : MonoBehaviour
 
 
 
+    //private BehaviorType GetLeaderBehaviorType()
+    //{
+    //    if (_leader == null) return BehaviorType.None;
+    //    PostStudent student = _leader.GetComponent<PostStudent>();
+    //    if (student == null) return BehaviorType.None;
+
+    //    return student.Blackboard.coopData.type;
+    //}
+
+
+
     public int RequestPartners()
     {
         // 1. 모집이 필요한 인원 계산 (전체 필요 인원 - 현재 참여자 수)
@@ -220,7 +236,7 @@ public class CoopBehaviorPlace : MonoBehaviour
             {
                 // [방어 로직] 이미 다른 협동 중인 학생은 건너뜀
                 if (student.Blackboard.CanCoop == false) continue;
-                student.Blackboard.InviteCoop(GetFirstUsableSpot());
+                student.Blackboard.InviteCoop(GetFirstUsableSpot(), RequiredBehavior);
 
                 Debug.Log($"[Coop] {col.name}에게 협동 참여 요청을 보냈습니다. (남은 자리: {neededCount - (sentCount + 1)})");
 
@@ -257,7 +273,8 @@ public class CoopBehaviorPlace : MonoBehaviour
 
             if (actor.TryGetComponent(out PostStudent student))
             {
-                student.Blackboard.ExecuteCoop();
+                ExecuteStudent(student);
+                //student.Blackboard.ExecuteCoop();
             }
         }
 
@@ -265,6 +282,13 @@ public class CoopBehaviorPlace : MonoBehaviour
 
         // 4. (선택 사항) 만약 문이 열리거나 물체가 움직여야 한다면 여기서 호출
         // StartEnvironmentAction(); 
+    }
+
+
+
+    protected virtual void ExecuteStudent(PostStudent student)
+    {
+        student.Blackboard.ExecuteCoop();
     }
 }
 

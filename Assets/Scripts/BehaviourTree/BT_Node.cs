@@ -612,6 +612,54 @@ public class SetAttackTarget : BT_Node
 
 
 
+
+public class OverrideAttackTarget : BT_Node
+{
+    private Func<GameObject> _getTargetFunc;
+    private DamageReceiver _targetDamageable;
+
+    /// <summary>
+    /// 타겟을 반환하는 함수를 인자로 받습니다.
+    /// 예: () => _bb.coopData.target
+    /// </summary>
+    public OverrideAttackTarget(Func<GameObject> getTargetFunc)
+    {
+        _getTargetFunc = getTargetFunc;
+    }
+
+    public override NodeState Evaluate()
+    {
+        // 1. 함수를 실행하여 현재 타겟을 가져옴
+        GameObject currentTarget = _getTargetFunc?.Invoke();
+
+        if (currentTarget == null)
+        {
+            // 타겟이 없다면 블랙보드 정보도 비워주고 실패 반환
+            _bb.targetObject = null;
+            _bb.targetDamageable = null;
+            return NodeState.Failure;
+        }
+
+        // 2. 공격 가능한 대상인지 확인 (DamageReceiver 추출)
+        _targetDamageable = currentTarget.GetComponent<DamageReceiver>();
+
+        if (_targetDamageable != null && _targetDamageable.CanEffect)
+        {
+            // 3. 블랙보드에 실시간 타겟 정보 주입
+            _bb.targetObject = currentTarget;
+            _bb.targetDamageable = _targetDamageable;
+
+            // Debug.Log($"[BT] 타겟 오버라이드 완료: {currentTarget.name}");
+            return NodeState.Success;
+        }
+
+        // 공격 불가능한 상태(이미 사망 등)라면 실패
+        return NodeState.Failure;
+    }
+}
+
+
+
 public class ProbabilisticDodge : BT_Node
 {
     private float _chance;
@@ -831,11 +879,13 @@ public class FindDestSpot : BT_Node
 public class OverrideBehaveSpot : BT_Node
 {
     private Func<CoopSpot> _getSpotFunc;
+    private Func<BehaviorType> _getTypeFunc;
     private float _sampleRange = 2.0f;
 
-    public OverrideBehaveSpot(Func<CoopSpot> getSpotFunc)
+    public OverrideBehaveSpot(Func<CoopSpot> getSpotFunc, Func<BehaviorType> getTypeFunc)
     {
         _getSpotFunc = getSpotFunc;
+        _getTypeFunc = getTypeFunc;
     }
 
     public override NodeState Evaluate()
@@ -850,6 +900,9 @@ public class OverrideBehaveSpot : BT_Node
             PostStudent student = _bb.Avatar.GetComponent<PostStudent>();
             if (student == null)
                 return NodeState.Failure;
+            _bb.prevBehavior = _bb.destBehavior;
+            _bb.destBehavior = _getTypeFunc.Invoke();
+
             _bb.destSpot?.Release(student);
             _bb.destSpot = spot;
             _bb.destPosition = hit.position;

@@ -129,6 +129,16 @@ public class RandomSelector : CompositeNode
         _weights = weights;
     }
 
+
+    public RandomSelector(List<BT_Node> children) : base(children)
+    {
+        _weights = new List<System.Func<int>>();
+        for (int i = 0; i < children.Count; i++)
+        {
+            _weights.Add(() => 1); // 모든 자식이 동일한 1의 가중치를 가짐
+        }
+    }
+
     public override NodeState Evaluate()
     {
         if (children.Count == 0) return NodeState.Failure;

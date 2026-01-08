@@ -80,17 +80,12 @@ public class DefenseAttackPattern : PatternNode
 
 public class CombatPattern : PatternNode
 {
-    public CombatPattern(GameObject attackTarget)
+    public CombatPattern()
     {
-        _patternRoot = new Sequence(new List<BT_Node>
+        _patternRoot = new ParallelNode(new List<BT_Node>
         {
-            new SetAttackTarget(attackTarget),
-            // 1. 적에게 접근 (사거리 안에 들어올 때까지 Running, 들어오면 Success)
-            new ParallelNode(new List<BT_Node>
-            {
-                new CombatApproachPattern(),
-                new RotateToTarget(),
-            }),
+            new CombatApproachPattern(),
+            new RotateToTarget(),
         });
     }
 }
@@ -127,25 +122,28 @@ public class CombatApproachPattern : PatternNode
             new Sequence(new List<BT_Node>
             {
                 // --- [공격 단계] ---
-                new ActionNode(() => _bb.Anim.SetLayerWeight(COMBAT_LAYER_INDEX, 1), NodeState.Success),
+                //new ActionNode(() => _bb.Anim.SetLayerWeight(COMBAT_LAYER_INDEX, 1), NodeState.Success),
+                new LerpLayerWeight(STRIKE_LAYER_INDEX, 0f, 10f),
+                new LerpLayerWeight(COMBAT_LAYER_INDEX, 1f, 10f),
                 new StopNode(),
                 new SetAnimRootMotion(true),
                 new ActionNode(() => _isAttacking = true, NodeState.Success), // 플래그 ON
-                
+
                 new MeleeAttackPattern(), // 실제 주먹 휘두르는 동안
-                
+
                 new ActionNode(() => _isAttacking = false, NodeState.Success), // 공격 끝나자마자 플래그 OFF
-                
+
                 // --- [후딜레이 단계] ---
                 // 이제 _isAttacking이 false이므로, 
                 // 딜레이 도중 플레이어가 멀어지면 상위 Selector가 1번(추격)으로 즉시 갈아탑니다.
-                new Delay(() => 1.5f),
+                new Delay(() => UnityEngine.Random.Range(0, 2f)),
                 new SetAnimRootMotion(false),
             })
         });
     }
 
-    private bool IsAttacking() {
+    private bool IsAttacking()
+    {
         return _bb.Anim.GetCurrentAnimatorStateInfo(Global.COMBAT_LAYER_INDEX).IsTag("Attack");
     }
 
@@ -166,7 +164,7 @@ public class CombatApproachPattern : PatternNode
     private float GetDistance()
     {
         if (_bb.targetObject == null) return float.MaxValue;
-        
+
         return Vector3.Distance(_bb.Avatar.transform.position, _bb.targetDamageable.Position);
     }
 }
@@ -185,15 +183,19 @@ public class MeleeAttackPattern : PatternNode
             new PrintDebug("MeleeAttackPattern Start"),
             //new SetAnimRootMotion(true),
             new RandomSelector(
-                new List<BT_Node> { 
-                    new PlayOnceAnim("Elbow1", "Elbow1", COMBAT_LAYER_INDEX), 
+                new List<BT_Node> {
+                    new PlayOnceAnim("Punch1", "Punch1", COMBAT_LAYER_INDEX),
+                    new PlayOnceAnim("Punch2", "Punch2", COMBAT_LAYER_INDEX),
+                    new PlayOnceAnim("Punch3", "Punch3", COMBAT_LAYER_INDEX),
+                    new PlayOnceAnim("Punch4", "Punch4", COMBAT_LAYER_INDEX),
+                    new PlayOnceAnim("Punch5", "Punch5", COMBAT_LAYER_INDEX),
                     new PlayOnceAnim("Punch6", "Punch6", COMBAT_LAYER_INDEX),
-                    new PlayOnceAnim("Kick3", "Kick3", COMBAT_LAYER_INDEX) 
-                },
-                new List<System.Func<int>> { 
-                    () => 50, // 잽은 자주
-                    () => 10, // 훅은 보통
-                    () => 10  // 어퍼컷은 가끔
+
+                    new PlayOnceAnim("Elbow1", "Elbow1", COMBAT_LAYER_INDEX),
+
+                    new PlayOnceAnim("Kick1", "Kick1", COMBAT_LAYER_INDEX),
+                    new PlayOnceAnim("Kick2", "Kick2", COMBAT_LAYER_INDEX),
+                    new PlayOnceAnim("Kick3", "Kick3", COMBAT_LAYER_INDEX),
                 }
             ),
             //new SetAnimRootMotion(false),
@@ -228,9 +230,17 @@ public class RandomSpotSelectPattern : PatternNode
         {
             new RandomSelector(
                 new List<BT_Node> {
-                    //new ActionNode(() => _bb.destSpot= _behaveSpots.GetRandomSpotByWeight(), NodeState.Success)
-                    new PlayOnceAnim("Elbow1", "Elbow1", COMBAT_LAYER_INDEX),
                     new PlayOnceAnim("Punch6", "Punch6", COMBAT_LAYER_INDEX),
+                    new PlayOnceAnim("Punch6", "Punch6", COMBAT_LAYER_INDEX),
+                    new PlayOnceAnim("Punch6", "Punch6", COMBAT_LAYER_INDEX),
+                    new PlayOnceAnim("Punch6", "Punch6", COMBAT_LAYER_INDEX),
+                    new PlayOnceAnim("Punch6", "Punch6", COMBAT_LAYER_INDEX),
+                    new PlayOnceAnim("Punch6", "Punch6", COMBAT_LAYER_INDEX),
+
+                    new PlayOnceAnim("Elbow1", "Elbow1", COMBAT_LAYER_INDEX),
+
+                    new PlayOnceAnim("Kick3", "Kick3", COMBAT_LAYER_INDEX),
+                    new PlayOnceAnim("Kick3", "Kick3", COMBAT_LAYER_INDEX),
                     new PlayOnceAnim("Kick3", "Kick3", COMBAT_LAYER_INDEX)
                 },
                 new List<System.Func<int>> {
@@ -408,7 +418,7 @@ public class CoopPattern : PatternNode
         // 협동 패턴 루트 구성 예시
         _patternRoot = new Sequence(new List<BT_Node>
         {
-            new OverrideBehaveSpot(() => _bb.coopData.spot),
+            new OverrideBehaveSpot(() => _bb.coopData.spot, () => _bb.coopData.type),
             new ResetAnimParameters(),
             new MoveToSpot(),
             new RotateToSpot(),
@@ -421,7 +431,8 @@ public class CoopPattern : PatternNode
 
             // 4. 실제 협동 애니메이션 실행
             //new SetAnimRootMotion(true),
-            new SetAnimBool("Talking", true),
+            //new SetAnimBool("Talking", true),
+            new OverrideAttackTarget(() => _bb.coopData.targetObject),
             new ActionNode(null, NodeState.Running),
             //new SetAnimRootMotion(false),
             //new SetAttackTarget()
@@ -439,6 +450,20 @@ public class CoopReactivePatttern : PatternNode
         _patternRoot = new ReactiveSelector(new List<BT_Node>
         {
             new ConditionDecorator(() => _bb.coopData.spot != null, new CoopPattern()),
+            normalRoutine
+        });
+    }
+}
+
+
+
+public class AttackReactivePattern : PatternNode
+{
+    public AttackReactivePattern(BT_Node normalRoutine)
+    {
+        _patternRoot = new ReactiveSelector(new List<BT_Node>
+        {
+            new ConditionDecorator(() => _bb.targetDamageable != null && _bb.targetDamageable.CanEffect, new CombatPattern()),
             normalRoutine
         });
     }
@@ -484,6 +509,7 @@ public class TryEscapePattern : PatternNode
                 new Sequence(new List<BT_Node>
                 {
                     // --- [공격 단계] ---
+                    new LerpLayerWeight(COMBAT_LAYER_INDEX, 0, 10),
                     new LerpLayerWeight(STRIKE_LAYER_INDEX, 1, 10),
                     //new ActionNode(() => _bb.Anim.SetLayerWeight(STRIKE_LAYER_INDEX, 1), NodeState.Success),
                     new StopAndDisableAgentUpdate(),
