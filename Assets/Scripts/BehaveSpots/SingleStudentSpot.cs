@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SingleStudentSpot : BehaveSpot
 {
-    private PostStudent _occupant;
+    protected PostStudent _occupant;
     //public PostStudent Occupant => _occupant;
     public override bool IsUsable => base.IsUsable && _occupant == null;
 

@@ -43,6 +43,8 @@ public class PostStudent : MonoBehaviour
     //private bool _isDamaged = false;
     private DamageReceiver _damageReceiver;
 
+    public Blackboard Blackboard => _blackboard;
+
 
     private void Awake()
     {
@@ -265,14 +267,15 @@ public class PostStudent : MonoBehaviour
         {
             new SetRandomBehavior(),
             new FindSpotPattern(),
+            new ResetAnimParameters(),
             new EnumSwitchSelector<BehaviorType>(
                 bb => _blackboard.destBehavior,
                 behaviorNodes,
                 prowlSequence
             ),
         });
-
-        return jopBehavior;
+        return new CoopReactivePatttern(jopBehavior);
+        //return jopBehavior;
     }
 
 
@@ -359,8 +362,10 @@ public class PostStudent : MonoBehaviour
     {
         _root = null;
         _agent.speed = 0;
+        _agent.enabled = false;
         _anim.enabled = false;
         _characterCollider.enabled = false;
+        _blackboard.destSpot.Release(this);
 
         SetRagdoll(true);
         ApplyRagdollImpact(hitInfo.hitPoint, hitInfo.hitRotation, hitInfo.impulse);
@@ -371,6 +376,12 @@ public class PostStudent : MonoBehaviour
     private void SetRagdoll(bool isActive)
     {
         _anim.enabled = !isActive;
+
+        if (TryGetComponent(out Rigidbody rootRb))
+        {
+            rootRb.isKinematic = isActive; // 래그돌이면 본체 물리 연산 중단
+            rootRb.useGravity = !isActive;
+        }
 
         foreach (var rb in GetComponentsInChildren<Rigidbody>())
         {

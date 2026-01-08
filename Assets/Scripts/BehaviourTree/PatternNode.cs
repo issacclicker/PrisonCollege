@@ -7,6 +7,7 @@ using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static Global;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 
 
@@ -72,6 +73,25 @@ public class DefenseAttackPattern : PatternNode
     {
         base.Reset();
         _lastProcessedAttackID = -1;
+    }
+}
+
+
+
+public class CombatPattern : PatternNode
+{
+    public CombatPattern(GameObject attackTarget)
+    {
+        _patternRoot = new Sequence(new List<BT_Node>
+        {
+            new SetAttackTarget(attackTarget),
+            // 1. 적에게 접근 (사거리 안에 들어올 때까지 Running, 들어오면 Success)
+            new ParallelNode(new List<BT_Node>
+            {
+                new CombatApproachPattern(),
+                new RotateToTarget(),
+            }),
+        });
     }
 }
 
@@ -375,6 +395,51 @@ public class RushThroughPattern : PatternNode
                 attacker.StartAttack();
             }, NodeState.Success),
             new ActionNode(null, NodeState.Running),
+        });
+    }
+}
+
+
+
+public class CoopPattern : PatternNode
+{
+    public CoopPattern()
+    {
+        // 협동 패턴 루트 구성 예시
+        _patternRoot = new Sequence(new List<BT_Node>
+        {
+            new OverrideBehaveSpot(() => _bb.coopData.spot),
+            new ResetAnimParameters(),
+            new MoveToSpot(),
+            new RotateToSpot(),
+            new ActionNode(() => _bb.destSpot.Arrived(_bb.Avatar.GetComponent<PostStudent>())),
+            
+            //new PlayWaitAnimation(),
+
+            // 3. 실행 신호가 올 때까지 대기 (Phase가 Ready가 될 때까지)
+            new WaitUntilCondition(() => _bb.coopData.isExecuting),
+
+            // 4. 실제 협동 애니메이션 실행
+            //new SetAnimRootMotion(true),
+            new SetAnimBool("Talking", true),
+            new ActionNode(null, NodeState.Running),
+            //new SetAnimRootMotion(false),
+            //new SetAttackTarget()
+            //new PlayCoopAnimationNode()
+        });
+    }
+}
+
+
+
+public class CoopReactivePatttern : PatternNode
+{
+    public CoopReactivePatttern(BT_Node normalRoutine)
+    {
+        _patternRoot = new ReactiveSelector(new List<BT_Node>
+        {
+            new ConditionDecorator(() => _bb.coopData.spot != null, new CoopPattern()),
+            normalRoutine
         });
     }
 }
