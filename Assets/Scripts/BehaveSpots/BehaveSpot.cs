@@ -19,6 +19,7 @@ public class BehaveSpot : MonoBehaviour
 
     public virtual void Use(PostStudent userStudent) { }
     public virtual void Release(PostStudent userStudent) { }
+    public virtual void Arrived(PostStudent userStudent) { }
 }
 
 
@@ -32,4 +33,5 @@ public enum BehaviorType
     UseMicrowave = 1 << 2,
     Escape = 1 << 3,
     RushThrough = 1 << 4,
+    Fight = 1 << 5,
 }

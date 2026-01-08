@@ -67,7 +67,7 @@ public class OverlapAttacker : MonoBehaviour
             {
                 // 1. 낑김 방지를 위한 미세 위치 보정 (Push-out)
                 // normal은 충돌지점에서 나를 향하는 방향이므로, 이 방향으로 살짝 밀어줍니다.
-                float pushDist = 1f; // 약 5cm 정도 미세하게 밀어내기
+                float pushDist = 0.5f; // 약 5cm 정도 미세하게 밀어내기
                 transform.root.position += normal * pushDist;
 
                 // 2. 자신에게 오는 HitInfo 설정 (방향은 유지)

@@ -170,6 +170,32 @@ public class SetBehaveSpot : BT_Node
 
 
 
+public class WaitUntilCondition : BT_Node
+{
+    private Func<bool> _condition;
+
+    /// <param name="condition">true를 반환할 때까지 대기할 조건 함수</param>
+    public WaitUntilCondition(Func<bool> condition)
+    {
+        _condition = condition;
+    }
+
+    public override NodeState Evaluate()
+    {
+        // 조건이 충족되었는지 확인
+        if (_condition != null && _condition.Invoke())
+        {
+            // 조건 충족 시 Success를 반환하여 다음 노드로 넘어감
+            return NodeState.Success;
+        }
+
+        // 조건이 아직 충족되지 않았다면 계속 Running 상태 유지
+        return NodeState.Running;
+    }
+}
+
+
+
 public class MoveToSpot : BT_Node
 {
     public override NodeState Evaluate()
@@ -586,6 +612,134 @@ public class SetAttackTarget : BT_Node
 
 
 
+
+//public class OverrideAttackTarget : BT_Node
+//{
+//    private Func<GameObject> _getTargetFunc;
+//    private DamageReceiver _targetDamageable;
+
+//    /// <summary>
+//    /// 타겟을 반환하는 함수를 인자로 받습니다.
+//    /// 예: () => _bb.coopData.target
+//    /// </summary>
+//    public OverrideAttackTarget(Func<GameObject> getTargetFunc)
+//    {
+//        _getTargetFunc = getTargetFunc;
+//    }
+
+//    public override NodeState Evaluate()
+//    {
+//        // 1. 함수를 실행하여 현재 타겟을 가져옴
+//        GameObject currentTarget = _getTargetFunc?.Invoke();
+
+//        if (currentTarget == null)
+//        {
+//            // 타겟이 없다면 블랙보드 정보도 비워주고 실패 반환
+//            _bb.targetObject = null;
+//            _bb.targetDamageable = null;
+//            return NodeState.Failure;
+//        }
+
+//        // 2. 공격 가능한 대상인지 확인 (DamageReceiver 추출)
+//        _targetDamageable = currentTarget.GetComponent<DamageReceiver>();
+
+//        if (_targetDamageable != null && _targetDamageable.CanEffect)
+//        {
+//            // 3. 블랙보드에 실시간 타겟 정보 주입
+//            _bb.targetObject = currentTarget;
+//            _bb.targetDamageable = _targetDamageable;
+
+//            // Debug.Log($"[BT] 타겟 오버라이드 완료: {currentTarget.name}");
+//            return NodeState.Success;
+//        }
+
+//        // 공격 불가능한 상태(이미 사망 등)라면 실패
+//        return NodeState.Failure;
+//    }
+//}
+
+
+
+public class OverrideAttackTarget : BT_Node
+{
+    private Func<GameObject> _getTargetFunc;
+    private DamageReceiver _currentTargetDR;
+
+    public OverrideAttackTarget(Func<GameObject> getTargetFunc)
+    {
+        _getTargetFunc = getTargetFunc;
+    }
+
+    public override NodeState Evaluate()
+    {
+        GameObject newTarget = _getTargetFunc?.Invoke();
+
+        // 1. 타겟이 바뀌었거나 null이 된 경우 기존 이벤트 해제
+        if (_bb.targetObject != newTarget)
+        {
+            UnsubscribeCurrent();
+        }
+
+        if (newTarget == null)
+        {
+            ClearTarget();
+            return NodeState.Failure;
+        }
+
+        // 2. 새로운 타겟 설정 및 이벤트 구독
+        if (_bb.targetObject == null)
+        {
+            var dr = newTarget.GetComponent<DamageReceiver>();
+            if (dr != null && dr.CanEffect)
+            {
+                _bb.targetObject = newTarget;
+                _bb.targetDamageable = dr;
+                _currentTargetDR = dr;
+
+                // 타겟이 파괴(사망)되면 실행될 로직 등록
+                dr.DepletedEvent.AddListener(_ => OnTargetDepleted());
+            }
+            else
+            {
+                return NodeState.Failure;
+            }
+        }
+
+        return NodeState.Success;
+    }
+
+    private void OnTargetDepleted()
+    {
+        Debug.Log($"[BT] 타겟 {(_bb.targetObject != null ? _bb.targetObject.name : "Unknown")} 처치 완료. 참조를 제거합니다.");
+        ClearTarget();
+    }
+
+    private void ClearTarget()
+    {
+        UnsubscribeCurrent();
+        _bb.targetObject = null;
+        _bb.targetDamageable = null;
+    }
+
+    private void UnsubscribeCurrent()
+    {
+        if (_currentTargetDR != null)
+        {
+            _currentTargetDR.DepletedEvent.RemoveListener(_ => OnTargetDepleted());
+            _currentTargetDR = null;
+        }
+    }
+
+    // 노드가 리셋될 때 안전하게 구독 해제
+    public override void Reset()
+    {
+        UnsubscribeCurrent();
+        base.Reset();
+    }
+}
+
+
+
 public class ProbabilisticDodge : BT_Node
 {
     private float _chance;
@@ -750,10 +904,11 @@ public class SetRandomBehavior : BT_Node
 
         BehaviorType pickedType = weightSet.GetRandomValue();
 
-        if (pickedType == BehaviorType.None)
+        if (pickedType == BehaviorType.None || pickedType == _bb.destBehavior)
         {
             return NodeState.Failure;
         }
+        _bb.prevBehavior = _bb.destBehavior;
         _bb.destBehavior = pickedType;
         Debug.Log($"[BT] 행동 결정됨: {pickedType}");
 
@@ -796,6 +951,50 @@ public class FindDestSpot : BT_Node
         }
 
         return NodeState.Failure;
+    }
+}
+
+
+
+public class OverrideBehaveSpot : BT_Node
+{
+    private Func<CoopSpot> _getSpotFunc;
+    private Func<BehaviorType> _getTypeFunc;
+    private float _sampleRange = 2.0f;
+
+    public OverrideBehaveSpot(Func<CoopSpot> getSpotFunc, Func<BehaviorType> getTypeFunc)
+    {
+        _getSpotFunc = getSpotFunc;
+        _getTypeFunc = getTypeFunc;
+    }
+
+    public override NodeState Evaluate()
+    {
+        var spot = _getSpotFunc?.Invoke();
+        if (spot == null) return NodeState.Failure; // 실행 시점에 null이면 실패 처리
+        if (spot == _bb.destSpot) return NodeState.Success;
+
+        Vector3 rawPosition = spot.transform.position;
+        if (NavMesh.SamplePosition(rawPosition, out NavMeshHit hit, _sampleRange, NavMesh.AllAreas))
+        {
+            PostStudent student = _bb.Avatar.GetComponent<PostStudent>();
+            if (student == null)
+                return NodeState.Failure;
+            _bb.prevBehavior = _bb.destBehavior;
+            _bb.destBehavior = _getTypeFunc.Invoke();
+
+            _bb.destSpot?.Release(student);
+            _bb.destSpot = spot;
+            _bb.destPosition = hit.position;
+            Debug.Log($"OverrideBehaveSpot : {spot}");
+            _bb.destSpot.Use(student);
+            return NodeState.Success;
+        }
+        else
+        {
+            Debug.LogWarning($"[OverrideBehaveSpot] {spot.name} 주변에서 유효한 NavMesh를 찾을 수 없습니다.");
+            return NodeState.Failure;
+        }
     }
 }
 
@@ -974,5 +1173,53 @@ public class FadeLayerByIndex : BT_Node
         }
 
         return NodeState.Running;
+    }
+}
+
+
+
+
+public class ResetAnimParameters : BT_Node
+{
+    private string[] _excludeParams;
+
+    // 초기화에서 제외하고 싶은 파라미터 이름들을 인자로 받을 수 있습니다.
+    public ResetAnimParameters(params string[] excludeParams)
+    {
+        _excludeParams = excludeParams;
+    }
+
+    public override NodeState Evaluate()
+    {
+        if (_bb.Anim == null) return NodeState.Failure;
+
+        foreach (var parameter in _bb.Anim.parameters)
+        {
+            // 제외 목록에 포함되어 있다면 스킵
+            if (IsExcluded(parameter.name)) continue;
+
+            // Bool 타입 초기화
+            if (parameter.type == AnimatorControllerParameterType.Bool)
+            {
+                _bb.Anim.SetBool(parameter.name, false);
+            }
+            // Trigger 타입 초기화 (선택 사항)
+            else if (parameter.type == AnimatorControllerParameterType.Trigger)
+            {
+                _bb.Anim.ResetTrigger(parameter.name);
+            }
+        }
+
+        return NodeState.Success;
+    }
+
+    private bool IsExcluded(string name)
+    {
+        if (_excludeParams == null) return false;
+        foreach (var p in _excludeParams)
+        {
+            if (p == name) return true;
+        }
+        return false;
     }
 }
