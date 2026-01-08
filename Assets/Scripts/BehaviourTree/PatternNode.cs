@@ -109,7 +109,7 @@ public class CombatApproachPattern : PatternNode
                 {
                     new SetAnimRootMotion(true),
                     new WaitUntilCondition(() => !_bb.isDamaged),
-                    new Delay(() => UnityEngine.Random.Range(0f, 1f)),
+                    new Delay(() => UnityEngine.Random.Range(1f, 2f)),
                     new ActionNode(() => _bb.isStunned = false, NodeState.Success),
                 })
             ),
