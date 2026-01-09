@@ -5099,6 +5099,9 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 12352
+  _drawAttackGizmo: 1
+  _gizmoColor: {r: 1, g: 0, b: 0, a: 0.5}
+  weaponCamera: {fileID: 0}
 --- !u!114 &632807471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6331,8 +6334,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponData: {fileID: 11400000, guid: 4c6a87478836d0f489a4fb8b0be893e4, type: 2}
-  _attackRange: 3.5
-  _attackRadius: 0.7
+  _attackRange: 1.5
+  _attackRadius: 0.3
   _hitLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -11506,8 +11509,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weaponData: {fileID: 11400000, guid: ae032cf9c977a344fbde5aa80b7205d0, type: 2}
-  _attackRange: 3.5
-  _attackRadius: 0.7
+  _attackRange: 1.5
+  _attackRadius: 0.2
   _hitLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -19793,11 +19796,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _damageData: {fileID: 11400000, guid: d954d1b05c8da6343a958861a7e4098c, type: 2}
   _hitImpulse: 200
-  _attackRadius: 1.5
-  _attackDistance: 2
+  _attackRadius: 0.5
+  _attackDistance: 1.5
   targetLayer:
     serializedVersion: 2
     m_Bits: 12352
+  _drawAttackGizmo: 1
+  _gizmoColor: {r: 1, g: 0, b: 0, a: 0.5}
+  weaponCamera: {fileID: 470836298}
 --- !u!54 &3638309149840794946
 Rigidbody:
   m_ObjectHideFlags: 0

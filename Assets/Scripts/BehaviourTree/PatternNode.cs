@@ -532,36 +532,36 @@ public class TryEscapePattern : PatternNode
             new RotateToSpot(),
             new ReactiveSelector(new List<BT_Node>
             {
-                 new ConditionDecorator(() =>
+                new ConditionDecorator(() =>
                 {
-                    ExitSpot exitSpot = _bb.destSpot as ExitSpot;
-                    return exitSpot != null && exitSpot.CanExit;
+                   ExitSpot exitSpot = _bb.destSpot as ExitSpot;
+                   return exitSpot != null && exitSpot.CanExit;
                 },
-                    new Sequence(new List<BT_Node>
-                    {
-                        new ActionNode(() => _bb.isEscaping = true),
-                        new PrintDebug("Escape success!"),
-                        new StopAndDisableAgentUpdate(),
-                        new FadeLayerByIndex(0, 0.2f),
-                        new ActionNode(() =>
-                        {
-                            ExitSpot exitGate = _bb.destSpot as ExitSpot;
-                            exitGate.OpenGate();
-                        }, NodeState.Success),
-                        new EscapeTypeSelectPattern(),
-                        // exitGate의 세부타입별로 다른 PatternNode 실행하기
-                        new ActionNode(null, NodeState.Running),
-                        new ActionNode(() => _bb.isEscaping = false),
-                    })
+                   new Sequence(new List<BT_Node>
+                   {
+                       new ActionNode(() => _bb.isEscaping = true),
+                       new PrintDebug("Escape success!"),
+                       new StopAndDisableAgentUpdate(),
+                       new FadeLayerByIndex(0, 0.2f),
+                       new ActionNode(() =>
+                       {
+                           ExitSpot exitGate = _bb.destSpot as ExitSpot;
+                           exitGate.OpenGate();
+                       }, NodeState.Success),
+                       new EscapeTypeSelectPattern(),
+                       // exitGate의 세부타입별로 다른 PatternNode 실행하기
+                       new ActionNode(null, NodeState.Running),
+                       new ActionNode(() => _bb.isEscaping = false),
+                   })
                 ),
-                 new ConditionDecorator(() => _bb.isStunned,
-                    new Sequence(new List<BT_Node>
-                    {
-                        new SetAnimRootMotion(true),
-                        new WaitUntilCondition(() => !_bb.isDamaged),
-                        new Delay(() => UnityEngine.Random.Range(1f, 2f)),
-                        new ActionNode(() => _bb.isStunned = false, NodeState.Success),
-                    })
+                new ConditionDecorator(() => _bb.isStunned,
+                   new Sequence(new List<BT_Node>
+                   {
+                       new SetAnimRootMotion(true),
+                       new WaitUntilCondition(() => !_bb.isDamaged),
+                       new Delay(() => UnityEngine.Random.Range(1f, 2f)),
+                       new ActionNode(() => _bb.isStunned = false, NodeState.Success),
+                   })
                 ),
                 new Sequence(new List<BT_Node>
                 {
@@ -613,15 +613,15 @@ public class ExitAttackPattern : PatternNode
             new RandomSelector(
                 new List<BT_Node> {
                     new PlayOnceAnim("Punch1_z", "Punch1_z", STRIKE_LAYER_INDEX),
-                    new PlayOnceAnim("Punch2_z", "Punch2_z", STRIKE_LAYER_INDEX),
+                    //new PlayOnceAnim("Punch2_z", "Punch2_z", STRIKE_LAYER_INDEX),
                     new PlayOnceAnim("Punch3_z", "Punch3_z", STRIKE_LAYER_INDEX),
                     new PlayOnceAnim("Kick1_z", "Kick1_z", STRIKE_LAYER_INDEX),
                 },
                 new List<System.Func<int>> {
                     () => 10,
+                    //() => 0,
                     () => 0,
-                    () => 10,
-                    () => 10,
+                    () => 0,
                 }
             ),
             //new SetAnimRootMotion(false),

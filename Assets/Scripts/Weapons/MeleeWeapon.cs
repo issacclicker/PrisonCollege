@@ -20,6 +20,12 @@ public class MeleeWeapon : WeaponBase
         Vector3 origin = cam.position;
         Vector3 direction = cam.forward;
 
+        _lastOrigin = origin;
+        _lastDirection = direction;
+        _lastRange = range;
+        _lastRadius = radius;
+        _showGizmo = true;
+
         RaycastHit[] hits = Physics.SphereCastAll(origin, radius, direction, range, hitLayer | blockLayer);
         System.Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
 
@@ -44,5 +50,41 @@ public class MeleeWeapon : WeaponBase
                 receiver.TakeEffect(_weaponData.effect, hitInfo);
             }
         }
+    }
+
+    private Vector3 _lastOrigin;
+    private Vector3 _lastDirection;
+    private float _lastRange;
+    private float _lastRadius;
+    private bool _showGizmo = false;
+
+    private void OnDrawGizmos()
+    {
+        if (!_showGizmo) return;
+
+        Gizmos.color = Color.red; // 공격 범위 색상
+
+        // 1. 시작 지점의 구체
+        Gizmos.DrawWireSphere(_lastOrigin, _lastRadius);
+
+        // 2. 실제 Cast된 거리 계산 (히트되지 않았을 때를 대비해 range만큼 그림)
+        Vector3 endPoint = _lastOrigin + _lastDirection * _lastRange;
+
+        // 3. 끝 지점의 구체
+        Gizmos.DrawWireSphere(endPoint, _lastRadius);
+
+        // 4. 시작과 끝을 잇는 4개의 선 (원통 형태 시각화)
+        Vector3 up = Vector3.up * _lastRadius;
+        Vector3 right = Vector3.right * _lastRadius;
+
+        // 카메라 방향에 따른 수직/수평 벡터 계산 (더 정확한 시각화용)
+        Vector3 orthoUp = Vector3.Cross(_lastDirection, Vector3.right).normalized * _lastRadius;
+        if (orthoUp == Vector3.zero) orthoUp = Vector3.up * _lastRadius;
+        Vector3 orthoRight = Vector3.Cross(_lastDirection, orthoUp).normalized * _lastRadius;
+
+        Gizmos.DrawLine(_lastOrigin + orthoUp, endPoint + orthoUp);
+        Gizmos.DrawLine(_lastOrigin - orthoUp, endPoint - orthoUp);
+        Gizmos.DrawLine(_lastOrigin + orthoRight, endPoint + orthoRight);
+        Gizmos.DrawLine(_lastOrigin - orthoRight, endPoint - orthoRight);
     }
 }
