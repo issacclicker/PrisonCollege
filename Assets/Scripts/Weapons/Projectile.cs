@@ -21,6 +21,7 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject.IsInLayerMask(Global.STUDENT_LAYER_NAME) == false) return;
         if (collision.gameObject == Owner) return;
 
         float impactForce = collision.impulse.magnitude / Time.fixedDeltaTime;

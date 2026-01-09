@@ -530,7 +530,7 @@ public class TryEscapePattern : PatternNode
             //new SetSpeed(() => PostStudent._walkSpeed),
             new MoveToSpot(),
             new RotateToSpot(),
-            new Selector(new List<BT_Node>
+            new ReactiveSelector(new List<BT_Node>
             {
                  new ConditionDecorator(() =>
                 {
@@ -552,6 +552,15 @@ public class TryEscapePattern : PatternNode
                         // exitGate의 세부타입별로 다른 PatternNode 실행하기
                         new ActionNode(null, NodeState.Running),
                         new ActionNode(() => _bb.isEscaping = false),
+                    })
+                ),
+                 new ConditionDecorator(() => _bb.isStunned,
+                    new Sequence(new List<BT_Node>
+                    {
+                        new SetAnimRootMotion(true),
+                        new WaitUntilCondition(() => !_bb.isDamaged),
+                        new Delay(() => UnityEngine.Random.Range(1f, 2f)),
+                        new ActionNode(() => _bb.isStunned = false, NodeState.Success),
                     })
                 ),
                 new Sequence(new List<BT_Node>
