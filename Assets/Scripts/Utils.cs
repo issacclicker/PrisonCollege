@@ -51,6 +51,24 @@ public static class Utils
     }
 
 
+    public static bool IsInLayerMask(this GameObject obj, string layerName)
+    {
+        int layerIndex = LayerMask.NameToLayer(layerName);
+
+        // 2. 존재하지 않는 레이어 이름일 경우 처리 (-1 반환됨)
+        if (layerIndex == -1)
+        {
+            Debug.LogWarning($"Layer '{layerName}' does not exist!");
+            return false;
+        }
+
+        // 3. 비트 연산으로 오브젝트의 레이어와 비교
+        // (1 << obj.layer)는 오브젝트의 레이어를 비트로 변환한 값
+        // (1 << layerIndex)는 비교 대상 레이어를 비트로 변환한 값
+        return (1 << obj.layer) == (1 << layerIndex);
+    }
+
+
 
     // List<T>에 대한 확장 메서드 정의
     //public static T GetRandom<T>(this List<T> items) where T : IWeightedEntry

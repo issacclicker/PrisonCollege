@@ -502,9 +502,42 @@ public class PlayOnceAnim : BT_Node
         _triggered = false;
     }
 
+    //public override NodeState Evaluate()
+    //{
+    //    var stateInfo = _bb.Anim.GetCurrentAnimatorStateInfo(_layer);
+
+    //    // 1. 트리거 실행
+    //    if (!_triggered)
+    //    {
+    //        _bb.Anim.SetTrigger(_triggerName);
+    //        _triggered = true;
+    //        return NodeState.Running;
+    //    }
+
+    //    // 2. 애니메이션이 목표 스테이트에 있고, 한 바퀴 다 돌았는지 확인
+    //    // IsName은 스테이트 이름 혹은 "Base Layer.StateName" 형태여야 할 수 있습니다.
+    //    if (stateInfo.IsName(_stateName))
+    //    {
+    //        if (stateInfo.normalizedTime >= 0.95f)
+    //        {
+    //            Reset();
+    //            return NodeState.Success;
+    //        }
+    //    }
+    //    else if (_triggered && !_bb.Anim.IsInTransition(_layer))
+    //    {
+    //        // 트리거는 당겼는데 아직 스테이트 진입도 안 했고 트랜지션 중도 아니라면 대기
+    //        return NodeState.Running;
+    //    }
+
+    //    return NodeState.Running;
+    //}
+
+
     public override NodeState Evaluate()
     {
         var stateInfo = _bb.Anim.GetCurrentAnimatorStateInfo(_layer);
+        bool isInTransition = _bb.Anim.IsInTransition(_layer);
 
         // 1. 트리거 실행
         if (!_triggered)
@@ -514,20 +547,27 @@ public class PlayOnceAnim : BT_Node
             return NodeState.Running;
         }
 
-        // 2. 애니메이션이 목표 스테이트에 있고, 한 바퀴 다 돌았는지 확인
-        // IsName은 스테이트 이름 혹은 "Base Layer.StateName" 형태여야 할 수 있습니다.
+        // 2. 현재 상태가 목표한 애니메이션 스테이트인 경우
         if (stateInfo.IsName(_stateName))
         {
+            // 애니메이션 완료 체크 (95% 이상 진행 시 성공)
             if (stateInfo.normalizedTime >= 0.95f)
             {
                 Reset();
                 return NodeState.Success;
             }
-        }
-        else if (_triggered && !_bb.Anim.IsInTransition(_layer))
-        {
-            // 트리거는 당겼는데 아직 스테이트 진입도 안 했고 트랜지션 중도 아니라면 대기
             return NodeState.Running;
+        }
+
+        // 3. 중단(Interrupt) 확인 로직
+        // 트리거를 이미 당겼고(triggered), 목표 스테이트도 아닌데(2번 통과 못함), 
+        // 현재 다른 스테이트로 전환 중(Transition)도 아니라면? -> "다른 곳으로 튕겨 나갔음"
+        if (_triggered && !isInTransition)
+        {
+            // 목표했던 스테이트가 아닌 다른 스테이트에 머물고 있다면 실패로 간주
+            Debug.Log($"[PlayOnceAnim] {_stateName} 중단됨 (현재 상태: {stateInfo.fullPathHash})");
+            Reset();
+            return NodeState.Failure;
         }
 
         return NodeState.Running;

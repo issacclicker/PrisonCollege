@@ -263,20 +263,42 @@ public class PostStudent : MonoBehaviour
             { BehaviorType.RushThrough, new RushThroughPattern() },
         };
 
-        Sequence jopBehavior = new Sequence(new List<BT_Node>
+        Selector jopBehavior = new Selector(new List<BT_Node>
         {
-            new SetRandomBehavior(),
-            new FindSpotPattern(),
-            new ResetAnimParameters(),
-            new LerpLayerWeight(COMBAT_LAYER_INDEX, 0, 3),
-            new LerpLayerWeight(STRIKE_LAYER_INDEX, 0, 3),
-            new EnumSwitchSelector<BehaviorType>(
-                bb => _blackboard.destBehavior,
-                behaviorNodes,
-                prowlSequence
+            // 1. 무한 반복해야 하는 특정 비헤이비어 체크
+            new ConditionDecorator(() => _blackboard.destBehavior == BehaviorType.Escape, 
+                // 여기에 초기화가 필요 없는 루프 로직 배치
+                behaviorNodes[BehaviorType.Escape]
             ),
+
+            // 2. 일반적인 비헤이비어 (매번 초기화가 필요한 그룹)
+            new Sequence(new List<BT_Node>
+            {
+                new SetRandomBehavior(),
+                new FindSpotPattern(),
+                new ResetAnimParameters(),
+                new SetAnimRootMotion(false),
+                new LerpLayerWeight(COMBAT_LAYER_INDEX, 0, 3),
+                new LerpLayerWeight(STRIKE_LAYER_INDEX, 0, 3),
+                new EnumSwitchSelector<BehaviorType>(
+                    bb => _blackboard.destBehavior,
+                    behaviorNodes,
+                    prowlSequence
+                ),
+            })
+            //new SetRandomBehavior(),
+            //new FindSpotPattern(),
+            //new ResetAnimParameters(),
+            //new SetAnimRootMotion(false),
+            //new LerpLayerWeight(COMBAT_LAYER_INDEX, 0, 3),
+            //new LerpLayerWeight(STRIKE_LAYER_INDEX, 0, 3),
+            //new EnumSwitchSelector<BehaviorType>(
+            //    bb => _blackboard.destBehavior,
+            //    behaviorNodes,
+            //    prowlSequence
+            //),
         });
-        return new AttackReactivePattern(new CoopReactivePatttern(jopBehavior));
+        return new TakeHitReactivePattern(new AttackReactivePattern(new CoopReactivePatttern(jopBehavior)));
         //return new CoopReactivePatttern(jopBehavior);
         //return jopBehavior;
     }
@@ -354,9 +376,14 @@ public class PostStudent : MonoBehaviour
 
 
 
+    private Coroutine knockbackCoroutine;
+
+
+
     private void OnDamaged(HitInfo hitInfo, float hitAmount)
     {
-
+        _blackboard.isDamaged = true;
+        _blackboard.isStunned = true;
     }
 
 
@@ -368,7 +395,8 @@ public class PostStudent : MonoBehaviour
         _agent.enabled = false;
         _anim.enabled = false;
         _characterCollider.enabled = false;
-        _blackboard.destSpot.Release(this);
+        _blackboard.destSpot?.Release(this);
+        StopAllCoroutines();
 
         SetRagdoll(true);
         ApplyRagdollImpact(hitInfo.hitPoint, hitInfo.hitRotation, hitInfo.impulse);
@@ -379,16 +407,19 @@ public class PostStudent : MonoBehaviour
     private void SetRagdoll(bool isActive)
     {
         _anim.enabled = !isActive;
+        _agent.enabled |= isActive;
 
         if (TryGetComponent(out Rigidbody rootRb))
         {
-            rootRb.isKinematic = isActive; // 래그돌이면 본체 물리 연산 중단
+            //rootRb.isKinematic = isActive; // 래그돌이면 본체 물리 연산 중단
             rootRb.useGravity = !isActive;
         }
 
         foreach (var rb in GetComponentsInChildren<Rigidbody>())
         {
+            if (rb == rootRb) continue;
             rb.isKinematic = !isActive;
+
             if (isActive) rb.velocity = Vector3.zero;
 
             if (rb.TryGetComponent(out Collider col))

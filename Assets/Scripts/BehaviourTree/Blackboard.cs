@@ -42,6 +42,9 @@ public class Blackboard
     public GameObject targetObject;
     public BehaviorType prevBehavior;
     public BehaviorType destBehavior;
+    public bool isDamaged;
+    public bool isStunned;
+    public bool isEscaping;
 
     public CoopData coopData;
 
