@@ -5101,7 +5101,6 @@ MonoBehaviour:
     m_Bits: 12352
   _drawAttackGizmo: 1
   _gizmoColor: {r: 1, g: 0, b: 0, a: 0.5}
-  weaponCamera: {fileID: 0}
 --- !u!114 &632807471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19803,7 +19802,6 @@ MonoBehaviour:
     m_Bits: 12352
   _drawAttackGizmo: 1
   _gizmoColor: {r: 1, g: 0, b: 0, a: 0.5}
-  weaponCamera: {fileID: 470836298}
 --- !u!54 &3638309149840794946
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -25167,11 +25165,11 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_LowTwistLimit:
-    limit: -40
+    limit: -58.61902
     bounciness: 0
     contactDistance: 0
   m_HighTwistLimit:
-    limit: 40
+    limit: 62.52621
     bounciness: 0
     contactDistance: 0
   m_SwingLimitSpring:
@@ -25182,7 +25180,7 @@ CharacterJoint:
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
-    limit: 0
+    limit: 35.37265
     bounciness: 0
     contactDistance: 0
   m_EnableProjection: 1
@@ -25240,7 +25238,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.09160729
+  m_Radius: 0.13
   m_Center: {x: 0, y: 0.09160729, z: 0}
 --- !u!1 &7224570903308311008
 GameObject:
