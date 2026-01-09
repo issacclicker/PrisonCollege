@@ -34,6 +34,8 @@ public class ThrowWeapon : WeaponBase
         Vector3 camRight = playerCamera.transform.right;
         Vector3 camUp = playerCamera.transform.up;
         Quaternion camRot = playerCamera.transform.rotation;
+        Quaternion rotation = Quaternion.Euler(0, -1f, 0);
+        camForward = rotation * camForward;
 
         // 2. 생성 위치 계산 (카메라 중심 오프셋)
         Vector3 spawnPos = camPos

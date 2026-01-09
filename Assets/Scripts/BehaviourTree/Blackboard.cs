@@ -44,6 +44,7 @@ public class Blackboard
     public BehaviorType destBehavior;
     public bool isDamaged;
     public bool isStunned;
+    public bool isEscaping;
 
     public CoopData coopData;
 

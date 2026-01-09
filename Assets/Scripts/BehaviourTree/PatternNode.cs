@@ -539,6 +539,7 @@ public class TryEscapePattern : PatternNode
                 },
                     new Sequence(new List<BT_Node>
                     {
+                        new ActionNode(() => _bb.isEscaping = true),
                         new PrintDebug("Escape success!"),
                         new StopAndDisableAgentUpdate(),
                         new FadeLayerByIndex(0, 0.2f),
@@ -550,6 +551,7 @@ public class TryEscapePattern : PatternNode
                         new EscapeTypeSelectPattern(),
                         // exitGate의 세부타입별로 다른 PatternNode 실행하기
                         new ActionNode(null, NodeState.Running),
+                        new ActionNode(() => _bb.isEscaping = false),
                     })
                 ),
                 new Sequence(new List<BT_Node>

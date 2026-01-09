@@ -14478,7 +14478,7 @@ MonoBehaviour:
   _spawnPoint: {fileID: 1089156630}
   _targetPoint: {fileID: 1296602157}
   _openDelay: 0.2
-  _closeDelay: 0.5
+  _closeDelay: 1
   _closeDuration: 0.2
 --- !u!4 &2088033360
 Transform:
