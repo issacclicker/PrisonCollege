@@ -15652,6 +15652,7 @@ GameObject:
   - component: {fileID: 3638309149840794943}
   - component: {fileID: 3638309149840794944}
   - component: {fileID: 3638309149840794946}
+  - component: {fileID: 3638309149840794947}
   m_Layer: 6
   m_Name: Student
   m_TagString: Untagged
@@ -19698,7 +19699,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 550198852003525997}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.25
+  m_Radius: 0.4
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -19829,6 +19830,25 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3638309149840794947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550198852003525997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9591c8bcc25ab744988b20fe32a91b3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timeToWakeup: 2
+  _standupStateName: Stand Up
+  _standupClipName: Stand Up
+  _timeToResetBones: 0.75
+  StandUpCompleteEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &3639686440422013794
 GameObject:
   m_ObjectHideFlags: 0
