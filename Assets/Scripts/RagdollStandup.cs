@@ -15,7 +15,7 @@ public class RagdollStandup : MonoBehaviour
     }
 
     [Header("Settings")]
-    [SerializeField] private float _timeToWakeup = 3f; // »ç¿ë ¾ÈÇÔ? (Blend ½Ã°£À¸·Î ´ëÃ¼µÈµí)
+    [SerializeField] private float _timeToWakeup = 3f; // ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½? (Blend ï¿½Ã°ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ï¿½Èµï¿½)
     [SerializeField] private string _faceupStandupStateName = "StandUp";
     [SerializeField] private string _facedownStandupStateName = "StandUp";
     [SerializeField] private string _faceupStandupClipName = "StandUpClip";
@@ -48,7 +48,7 @@ public class RagdollStandup : MonoBehaviour
         _hipsBone = _anim.GetBoneTransform(HumanBodyBones.Hips);
         _boneRigidBodies = _hipsBone.GetComponentsInChildren<Rigidbody>();
 
-        // »À´ë ¹è¿­ ÃÊ±âÈ­
+        // ï¿½ï¿½ï¿½ï¿½ ï¿½è¿­ ï¿½Ê±ï¿½È­
         _bones = new Transform[_boneRigidBodies.Length];
         _faceupStandupBones = new BoneTransform[_bones.Length];
         _facedownStandupBones = new BoneTransform[_bones.Length];
@@ -62,7 +62,7 @@ public class RagdollStandup : MonoBehaviour
             _ragdollBones[i] = new BoneTransform();
         }
 
-        // Awake¿¡¼­ ¹Ì¸® ÀÏ¾î³ª±â ¾Ö´Ï¸ŞÀÌ¼ÇÀÇ 'Ã¹ ÇÁ·¹ÀÓ' Æ÷Áî¸¦ ÀúÀåÇØµÓ´Ï´Ù.
+        // Awakeï¿½ï¿½ï¿½ï¿½ ï¿½Ì¸ï¿½ ï¿½Ï¾î³ªï¿½ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ï¿½ï¿½ 'Ã¹ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½' ï¿½ï¿½ï¿½î¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½ØµÓ´Ï´ï¿½.
         PopulateAnimationStartBoneTransform(_faceupStandupClipName, _faceupStandupBones);
         PopulateAnimationStartBoneTransform(_facedownStandupClipName, _facedownStandupBones);
     }
@@ -79,7 +79,7 @@ public class RagdollStandup : MonoBehaviour
         BlendToAnimation(_timeToResetBones);
     }
 
-    // ½Ç½Ã°£ Æ÷Áî Ä¸Ã³¸¦ À§ÇÑ ÇÔ¼ö
+    // ï¿½Ç½Ã°ï¿½ ï¿½ï¿½ï¿½ï¿½ Ä¸Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½
     private void CaptureStandUpPose()
     {
         _anim.Play(GetStandUpStateName(), 0, 0f);
@@ -97,24 +97,24 @@ public class RagdollStandup : MonoBehaviour
         {
             for (int i = 0; i < _bones.Length; i++)
             {
-                // value 0: ·¡±×µ¹ Æ÷Áî, value 1: ÀÏ¾î³ª±â ½ÃÀÛ Æ÷Áî
+                // value 0: ï¿½ï¿½ï¿½×µï¿½ ï¿½ï¿½ï¿½ï¿½, value 1: ï¿½Ï¾î³ªï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
                 _bones[i].localPosition = Vector3.Lerp(_ragdollBones[i].position, standUpBones[i].position, value);
                 _bones[i].localRotation = Quaternion.Lerp(_ragdollBones[i].rotation, standUpBones[i].rotation, value);
             }
         })
         .SetEase(Ease.InQuad)
-        .SetTarget(this) // ½ºÅ©¸³Æ®°¡ ÆÄ±«µÇ¸é Æ®À©µµ Á¤Áö
+        .SetTarget(this) // ï¿½ï¿½Å©ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½Ä±ï¿½ï¿½Ç¸ï¿½ Æ®ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         .OnComplete(() =>
         {
-            // 6. º¸°£ÀÌ ³¡³ª¸é ºñ·Î¼Ò ¾Ö´Ï¸ŞÀÌÅÍ¸¦ ÄÑ°í ¾Ö´Ï¸ŞÀÌ¼Ç Àç»ı
+            // 6. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Î¼ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½Ñ°ï¿½ ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½
             //_anim.enabled = true;
             SetRagdoll(false);
             _anim.Rebind();
-            _anim.Update(0f); // ÃÊ±âÈ­
+            _anim.Update(0f); // ï¿½Ê±ï¿½È­
             _anim.Play(GetStandUpStateName(), 0, 0);
             //_anim.CrossFadeInFixedTime(_standupStateName, 0.15f, 0, 0f);
 
-            // 7. ¾Ö´Ï¸ŞÀÌ¼Ç ±æÀÌ¸¸Å­ ´ë±â ÈÄ ¿Ï·á ÀÌº¥Æ® ½ÇÇà
+            // 7. ï¿½Ö´Ï¸ï¿½ï¿½Ì¼ï¿½ ï¿½ï¿½ï¿½Ì¸ï¿½Å­ ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ï·ï¿½ ï¿½Ìºï¿½Æ® ï¿½ï¿½ï¿½ï¿½
             float animLength = _anim.GetCurrentAnimatorStateInfo(0).length;
             DOVirtual.DelayedCall(animLength, OnStandUpComplete).SetTarget(this);
         });
@@ -122,10 +122,17 @@ public class RagdollStandup : MonoBehaviour
 
     private void OnStandUpComplete()
     {
-        Debug.Log("DoTween: Ä³¸¯ÅÍ°¡ ¿ÏÀüÈ÷ ÀÏ¾î³µ½À´Ï´Ù.");
+        Debug.Log("DoTween: Ä³ï¿½ï¿½ï¿½Í°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ï¾î³µï¿½ï¿½ï¿½Ï´ï¿½.");
 
-        // ÀÌµ¿ °¡´ÉÇÏµµ·Ï NavMeshAgent È°¼ºÈ­
-        if (_agent != null) _agent.enabled = true;
+        // ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ïµï¿½ï¿½ï¿½ NavMeshAgent È°ï¿½ï¿½È­
+        if (_agent != null)
+        {
+            // 1. ì—ì´ì „íŠ¸ë¥¼ ì¼œê¸° ì „, í˜„ì¬ ìºë¦­í„° ìœ„ì¹˜ë¡œ ì—ì´ì „íŠ¸ ë°ì´í„°ë¥¼ ê°•ì œ ì´ë™(Warp)
+            _agent.Warp(transform.position);
+
+            // 2. ê·¸ ë‹¤ìŒ ì—ì´ì „íŠ¸ í™œì„±í™”
+            _agent.enabled = true;
+        }
 
         StandUpCompleteEvent?.Invoke();
     }
@@ -142,7 +149,7 @@ public class RagdollStandup : MonoBehaviour
         {
             rb.isKinematic = !isActive;
 
-            if (isActive) rb.velocity = Vector3.zero;
+            if (isActive) rb.linearVelocity = Vector3.zero;
 
             if (rb.TryGetComponent(out Collider col))
             {

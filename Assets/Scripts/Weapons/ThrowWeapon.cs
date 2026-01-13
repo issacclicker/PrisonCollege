@@ -5,13 +5,13 @@ using UnityEngine;
 public class ThrowWeapon : WeaponBase
 {
     [Header("--- Throw ---")]
-    [SerializeField] private GameObject _throwablePrefab; // ´øÁú ¹°Ã¼ ÇÁ¸®ÆÕ
-    [SerializeField] private Transform _throwableModel; // ´øÁú ¹°Ã¼ ÇÁ¸®ÆÕ
-    [SerializeField] private float _throwForce = 15f;     // ´øÁö´Â Èû
+    [SerializeField] private GameObject _throwablePrefab; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    [SerializeField] private Transform _throwableModel; // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ã¼ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    [SerializeField] private float _throwForce = 15f;     // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½
     [SerializeField] private Vector3 _throwOffset = new Vector3(0.5f, -0.2f, 1.0f);
-    [SerializeField] private float _flipSpeed = 20f; // À§¾Æ·¡ È¸Àü ¼Óµµ (³ôÀ»¼ö·Ï ºü¸§)
-    [Range(0f, 1f)] public float _spreadAmount = 0.02f; // ÅºÆÛÁü Á¤µµ
-    [Range(0f, 1f)] public float _torqueRandomness = 0.5f; // È¸Àü ºÒ±ÔÄ¢µµ
+    [SerializeField] private float _flipSpeed = 20f; // ï¿½ï¿½ï¿½Æ·ï¿½ È¸ï¿½ï¿½ ï¿½Óµï¿½ (ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
+    [Range(0f, 1f)] public float _spreadAmount = 0.02f; // Åºï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+    [Range(0f, 1f)] public float _torqueRandomness = 0.5f; // È¸ï¿½ï¿½ ï¿½Ò±ï¿½Ä¢ï¿½ï¿½
 
 
 
@@ -28,7 +28,7 @@ public class ThrowWeapon : WeaponBase
         Camera playerCamera = Camera.main;
         if (_throwablePrefab == null || playerCamera == null) return;
 
-        // 1. Ä«¸Þ¶ó ¹æÇâ µ¥ÀÌÅÍ
+        // 1. Ä«ï¿½Þ¶ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
         Vector3 camPos = playerCamera.transform.position;
         Vector3 camForward = playerCamera.transform.forward;
         Vector3 camRight = playerCamera.transform.right;
@@ -37,13 +37,13 @@ public class ThrowWeapon : WeaponBase
         Quaternion rotation = Quaternion.Euler(0, -1f, 0);
         camForward = rotation * camForward;
 
-        // 2. »ý¼º À§Ä¡ °è»ê (Ä«¸Þ¶ó Áß½É ¿ÀÇÁ¼Â)
+        // 2. ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¡ ï¿½ï¿½ï¿½ (Ä«ï¿½Þ¶ï¿½ ï¿½ß½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½)
         Vector3 spawnPos = camPos
                            + (camRight * _throwOffset.x)
                            + (camUp * _throwOffset.y)
                            + (camForward * _throwOffset.z);
 
-        // 3. »ý¼º È¸Àü (¼Õ °¢µµ À¯Áö)
+        // 3. ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½ (ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½)
         Quaternion finalRot = camRot * _throwableModel.localRotation;
 
         GameObject projectileObj = Instantiate(_throwablePrefab, spawnPos, finalRot);
@@ -57,31 +57,31 @@ public class ThrowWeapon : WeaponBase
 
         if (rb != null)
         {
-            rb.velocity = Vector3.zero;
+            rb.linearVelocity = Vector3.zero;
             rb.maxAngularVelocity = 1000f;
 
-            // 4. [¹«ÀÛÀ§¼º Ãß°¡] ¹ß»ç ¹æÇâ¿¡ »ìÂ¦ ¿ÀÂ÷ ÁÖ±â
-            // camForward ¹æÇâ¿¡ ¾ÆÁÖ ¹Ì¼¼ÇÏ°Ô À§/¾Æ·¡/¿· ·£´ý º¤ÅÍ¸¦ ¼¯½À´Ï´Ù.
+            // 4. [ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½] ï¿½ß»ï¿½ ï¿½ï¿½ï¿½â¿¡ ï¿½ï¿½Â¦ ï¿½ï¿½ï¿½ï¿½ ï¿½Ö±ï¿½
+            // camForward ï¿½ï¿½ï¿½â¿¡ ï¿½ï¿½ï¿½ï¿½ ï¿½Ì¼ï¿½ï¿½Ï°ï¿½ ï¿½ï¿½/ï¿½Æ·ï¿½/ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Í¸ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.
             Vector3 randomSpread = (camUp * Random.Range(-_spreadAmount, _spreadAmount))
                                  + (camRight * Random.Range(-_spreadAmount, _spreadAmount));
             Vector3 finalThrowDir = (camForward + randomSpread).normalized;
 
             rb.AddForce(finalThrowDir * _throwForce, ForceMode.Impulse);
 
-            // 5. [¹«ÀÛÀ§¼º Ãß°¡] È¸Àü ¹æÇâÀ» »ßµüÇÏ°Ô ¸¸µé±â
-            // Á¤Á÷ÇÑ ´ýºí¸µ È¸Àü(camRight)¿¡ ¾à°£ÀÇ »óÇÏÁÂ¿ì ºñÆ²±â¸¦ ¼¯½À´Ï´Ù.
+            // 5. [ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½] È¸ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ßµï¿½ï¿½Ï°ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
+            // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È¸ï¿½ï¿½(camRight)ï¿½ï¿½ ï¿½à°£ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Â¿ï¿½ ï¿½ï¿½Æ²ï¿½â¸¦ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.
             Vector3 randomTorque = new Vector3(
                 Random.Range(-_torqueRandomness, _torqueRandomness),
                 Random.Range(-_torqueRandomness, _torqueRandomness),
                 Random.Range(-_torqueRandomness, _torqueRandomness)
             );
 
-            // ±âº» È¸ÀüÃà(Right)¿¡ ·£´ý ºñÆ²±â Ãß°¡
+            // ï¿½âº» È¸ï¿½ï¿½ï¿½ï¿½(Right)ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Æ²ï¿½ï¿½ ï¿½ß°ï¿½
             Vector3 mixedAngularVelocity = (camRight + randomTorque) * _flipSpeed;
             rb.angularVelocity = mixedAngularVelocity;
         }
 
-        // Ãæµ¹ ¹«½Ã
+        // ï¿½æµ¹ ï¿½ï¿½ï¿½ï¿½
         Collider playerCol = GetComponentInParent<Collider>();
         Collider projCol = projectileObj.GetComponent<Collider>();
         if (playerCol != null && projCol != null) Physics.IgnoreCollision(playerCol, projCol);

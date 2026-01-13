@@ -455,7 +455,7 @@ public class PostStudent : MonoBehaviour
             if (rb == rootRb) continue;
             rb.isKinematic = !isActive;
 
-            if (isActive) rb.velocity = Vector3.zero;
+            if (isActive) rb.linearVelocity = Vector3.zero;
 
             if (rb.TryGetComponent(out Collider col))
             {
@@ -477,7 +477,7 @@ public class PostStudent : MonoBehaviour
         foreach (var rb in GetComponentsInChildren<Rigidbody>())
         {
             rb.isKinematic = false;
-            rb.velocity = Vector3.zero; // 튀는 현상 방지용 초기화
+            rb.linearVelocity = Vector3.zero; // 튀는 현상 방지용 초기화
 
             // 팁: killer의 위치로부터 반대 방향으로 아주 살짝 힘을 주면 더 자연스럽습니다.
             if (killer != null)

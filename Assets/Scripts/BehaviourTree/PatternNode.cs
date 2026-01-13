@@ -354,7 +354,7 @@ public class WindowEscapePattern : PatternNode
                 foreach (var rb in _bb.Avatar.GetComponentsInChildren<Rigidbody>())
                 {
                     rb.isKinematic = false;
-                    rb.velocity = Vector3.zero;
+                    rb.linearVelocity = Vector3.zero;
                     rb.AddForce(Vector3.down * 12f, ForceMode.VelocityChange);
                     rb.AddForce((Vector3.down + _bb.Avatar.forward).normalized * 2f, ForceMode.VelocityChange);
             
