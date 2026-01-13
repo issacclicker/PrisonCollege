@@ -422,6 +422,9 @@ public class PostStudent : MonoBehaviour
 
     private void OnStandUpComplete()
     {
+        _agent.updatePosition = true;    // 에이전트가 트랜스폼을 움직이도록 허용
+        _agent.updateRotation = true;    // 회전도 허용
+        _anim.applyRootMotion = false;
         _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots);
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);

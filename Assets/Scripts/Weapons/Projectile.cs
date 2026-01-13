@@ -10,20 +10,24 @@ public class Projectile : MonoBehaviour
     public WeaponData WeaponData { get; set; }
     public GameObject Owner { get; set; }
 
-
+    // 중복 충돌을 방지하기 위한 셋 (오브젝트 참조 저장)
+    private HashSet<GameObject> _hitObjects = new HashSet<GameObject>();
 
     private void Start()
     {
         Destroy(gameObject, _lifeTime);
     }
 
-
-
     private void OnCollisionEnter(Collision collision)
     {
+        // 1. 레이어 체크 및 주인 제외
         if (collision.gameObject.IsInLayerMask(Global.STUDENT_LAYER_NAME) == false) return;
         if (collision.gameObject == Owner) return;
 
+        // 2. ★ 이미 맞은 대상인지 체크 ★
+        if (_hitObjects.Contains(collision.gameObject)) return;
+
+        // 3. 충격량 체크
         float impactForce = collision.impulse.magnitude / Time.fixedDeltaTime;
         if (impactForce < _minImpactThreshold)
         {
@@ -31,15 +35,22 @@ public class Projectile : MonoBehaviour
             return;
         }
 
+        // 4. 데미지 전달
         if (collision.gameObject.TryGetComponent(out DamageReceiver receiver))
         {
-            ContactPoint contact = collision.contacts[0];
+            // 목록에 추가하여 다시 맞지 않게 함
+            _hitObjects.Add(collision.gameObject);
 
-            Vector3 hitPoint = contact.point;     // 충돌 지점
-            Vector3 hitNormal = contact.normal;   // 충돌 지점의 각도 (법선 벡터)
+            ContactPoint contact = collision.contacts[0];
+            Vector3 hitPoint = contact.point;
+            Vector3 hitNormal = contact.normal;
+
             HitInfo hitInfo = new HitInfo(hitPoint, Quaternion.LookRotation(hitNormal), Owner, WeaponData.hitImpulse);
 
             receiver.TakeEffect(WeaponData.effect, hitInfo);
+
+            // 만약 관통형이 아니라 첫 충돌에 바로 사라져야 한다면 아래 주석 해제
+            // Destroy(gameObject); 
         }
     }
 }
