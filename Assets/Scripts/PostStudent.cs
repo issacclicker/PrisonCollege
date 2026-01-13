@@ -70,6 +70,13 @@ public class PostStudent : MonoBehaviour
         _ragdollStandup = GetComponent<RagdollStandup>();
         _ragdollStandup.StandUpCompleteEvent.AddListener(OnStandUpComplete);
 
+        //_ragdollStandup.SetRagdoll(false);
+    }
+
+
+
+    private void Start()
+    {
         _ragdollStandup.SetRagdoll(false);
     }
 

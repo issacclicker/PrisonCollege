@@ -19842,10 +19842,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9591c8bcc25ab744988b20fe32a91b3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _timeToWakeup: 2
-  _standupStateName: Stand Up
-  _standupClipName: Stand Up
-  _timeToResetBones: 0.75
+  _timeToWakeup: 3
+  _faceupStandupStateName: FaceUpStandUp
+  _facedownStandupStateName: FaceDownStandUp
+  _faceupStandupClipName: Stand Up
+  _facedownStandupClipName: Standing Up
+  _timeToResetBones: 0.5
   StandUpCompleteEvent:
     m_PersistentCalls:
       m_Calls: []

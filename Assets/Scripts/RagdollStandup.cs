@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -15,8 +16,10 @@ public class RagdollStandup : MonoBehaviour
 
     [Header("Settings")]
     [SerializeField] private float _timeToWakeup = 3f; // 사용 안함? (Blend 시간으로 대체된듯)
-    [SerializeField] private string _standupStateName = "StandUp";
-    [SerializeField] private string _standupClipName = "StandUpClip";
+    [SerializeField] private string _faceupStandupStateName = "StandUp";
+    [SerializeField] private string _facedownStandupStateName = "StandUp";
+    [SerializeField] private string _faceupStandupClipName = "StandUpClip";
+    [SerializeField] private string _facedownStandupClipName = "StandUpClip";
     [SerializeField] private float _timeToResetBones = 0.5f;
 
     [Header("Components")]
@@ -27,9 +30,11 @@ public class RagdollStandup : MonoBehaviour
     private Rigidbody _rootRigidbody;
     private Collider _rootCollider;
 
-    private BoneTransform[] _standupBones;
+    private BoneTransform[] _faceupStandupBones;
+    private BoneTransform[] _facedownStandupBones;
     private BoneTransform[] _ragdollBones;
     private Transform[] _bones;
+    private bool _isFacingUp = false;
 
     public UnityEvent StandUpCompleteEvent = new();
 
@@ -45,24 +50,28 @@ public class RagdollStandup : MonoBehaviour
 
         // 뼈대 배열 초기화
         _bones = new Transform[_boneRigidBodies.Length];
-        _standupBones = new BoneTransform[_bones.Length];
+        _faceupStandupBones = new BoneTransform[_bones.Length];
+        _facedownStandupBones = new BoneTransform[_bones.Length];
         _ragdollBones = new BoneTransform[_bones.Length];
 
         for (int i = 0; i < _boneRigidBodies.Length; i++)
         {
             _bones[i] = _boneRigidBodies[i].transform;
-            _standupBones[i] = new BoneTransform();
+            _faceupStandupBones[i] = new BoneTransform();
+            _facedownStandupBones[i] = new BoneTransform();
             _ragdollBones[i] = new BoneTransform();
         }
 
         // Awake에서 미리 일어나기 애니메이션의 '첫 프레임' 포즈를 저장해둡니다.
-        //PopulateAnimationStartBoneTransform(_standupClipName, _standupBones);
+        PopulateAnimationStartBoneTransform(_faceupStandupClipName, _faceupStandupBones);
+        PopulateAnimationStartBoneTransform(_facedownStandupClipName, _facedownStandupBones);
     }
 
 
     public void WakeUp()
     {
         DOTween.Kill(this);
+        _isFacingUp = _hipsBone.forward.y > 0;
         AlignRotationToHips();
         AlignPositonToHips();
         PopulateBoneTransform(_ragdollBones);
@@ -73,22 +82,24 @@ public class RagdollStandup : MonoBehaviour
     // 실시간 포즈 캡처를 위한 함수
     private void CaptureStandUpPose()
     {
-        _anim.Play(_standupStateName, 0, 0f);
+        _anim.Play(GetStandUpStateName(), 0, 0f);
         _anim.Update(0f);
-        PopulateBoneTransform(_standupBones);
+        PopulateBoneTransform(GetStandUpBoneTransforms());
     }
 
 
 
     public void BlendToAnimation(float duration)
     {
+        BoneTransform[] standUpBones = GetStandUpBoneTransforms();
+
         DOVirtual.Float(0f, 1f, duration, (float value) =>
         {
             for (int i = 0; i < _bones.Length; i++)
             {
                 // value 0: 래그돌 포즈, value 1: 일어나기 시작 포즈
-                _bones[i].localPosition = Vector3.Lerp(_ragdollBones[i].position, _standupBones[i].position, value);
-                _bones[i].localRotation = Quaternion.Lerp(_ragdollBones[i].rotation, _standupBones[i].rotation, value);
+                _bones[i].localPosition = Vector3.Lerp(_ragdollBones[i].position, standUpBones[i].position, value);
+                _bones[i].localRotation = Quaternion.Lerp(_ragdollBones[i].rotation, standUpBones[i].rotation, value);
             }
         })
         .SetEase(Ease.InQuad)
@@ -100,7 +111,7 @@ public class RagdollStandup : MonoBehaviour
             SetRagdoll(false);
             _anim.Rebind();
             _anim.Update(0f); // 초기화
-            _anim.Play(_standupStateName);
+            _anim.Play(GetStandUpStateName(), 0, 0);
             //_anim.CrossFadeInFixedTime(_standupStateName, 0.15f, 0, 0f);
 
             // 7. 애니메이션 길이만큼 대기 후 완료 이벤트 실행
@@ -146,7 +157,7 @@ public class RagdollStandup : MonoBehaviour
 
         transform.position = _hipsBone.position;
 
-        Vector3 positonOffset = _standupBones[0].position;
+        Vector3 positonOffset = GetStandUpBoneTransforms()[0].position;
         positonOffset.y = 0;
         positonOffset = transform.rotation * positonOffset;
         transform.position -= positonOffset;
@@ -163,7 +174,12 @@ public class RagdollStandup : MonoBehaviour
         Vector3 originalHipsPosition = _hipsBone.position;
         Quaternion originalHipsRotation = _hipsBone.rotation;
 
-        Vector3 desiredForward = -_hipsBone.up;
+        //Vector3 desiredForward = -_hipsBone.up;
+        Vector3 desiredForward = _hipsBone.up;
+        if (_isFacingUp)
+        {
+            desiredForward *= -1;
+        }
         desiredForward.y = 0;
 
         if (desiredForward.sqrMagnitude > 0.01f)
@@ -173,6 +189,19 @@ public class RagdollStandup : MonoBehaviour
 
         _hipsBone.position = originalHipsPosition;
         _hipsBone.rotation = originalHipsRotation;
+    }
+
+
+    private string GetStandUpStateName()
+    {
+        return _isFacingUp ? _faceupStandupStateName : _facedownStandupStateName;
+    }
+
+
+
+    private BoneTransform[] GetStandUpBoneTransforms()
+    {
+        return _isFacingUp ? _faceupStandupBones : _facedownStandupBones;
     }
 
 
