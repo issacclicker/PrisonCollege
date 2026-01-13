@@ -5101,7 +5101,6 @@ MonoBehaviour:
     m_Bits: 12352
   _drawAttackGizmo: 1
   _gizmoColor: {r: 1, g: 0, b: 0, a: 0.5}
-  weaponCamera: {fileID: 0}
 --- !u!114 &632807471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15653,6 +15652,7 @@ GameObject:
   - component: {fileID: 3638309149840794943}
   - component: {fileID: 3638309149840794944}
   - component: {fileID: 3638309149840794946}
+  - component: {fileID: 3638309149840794947}
   m_Layer: 6
   m_Name: Student
   m_TagString: Untagged
@@ -19699,7 +19699,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 550198852003525997}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.25
+  m_Radius: 0.4
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -19803,7 +19803,6 @@ MonoBehaviour:
     m_Bits: 12352
   _drawAttackGizmo: 1
   _gizmoColor: {r: 1, g: 0, b: 0, a: 0.5}
-  weaponCamera: {fileID: 470836298}
 --- !u!54 &3638309149840794946
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -19831,6 +19830,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &3638309149840794947
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550198852003525997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9591c8bcc25ab744988b20fe32a91b3f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _timeToWakeup: 3
+  _faceupStandupStateName: FaceUpStandUp
+  _facedownStandupStateName: FaceDownStandUp
+  _faceupStandupClipName: Stand Up
+  _facedownStandupClipName: Standing Up
+  _timeToResetBones: 0.5
+  StandUpCompleteEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &3639686440422013794
 GameObject:
   m_ObjectHideFlags: 0
@@ -25167,11 +25187,11 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_LowTwistLimit:
-    limit: -40
+    limit: -58.61902
     bounciness: 0
     contactDistance: 0
   m_HighTwistLimit:
-    limit: 40
+    limit: 62.52621
     bounciness: 0
     contactDistance: 0
   m_SwingLimitSpring:
@@ -25182,7 +25202,7 @@ CharacterJoint:
     bounciness: 0
     contactDistance: 0
   m_Swing2Limit:
-    limit: 0
+    limit: 35.37265
     bounciness: 0
     contactDistance: 0
   m_EnableProjection: 1
@@ -25240,7 +25260,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.09160729
+  m_Radius: 0.13
   m_Center: {x: 0, y: 0.09160729, z: 0}
 --- !u!1 &7224570903308311008
 GameObject:

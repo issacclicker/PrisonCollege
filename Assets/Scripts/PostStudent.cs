@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
 using UnityEditor.PackageManager;
 using UnityEngine;
@@ -46,13 +47,16 @@ public class PostStudent : MonoBehaviour
     public Blackboard Blackboard => _blackboard;
 
 
+    private RagdollStandup _ragdollStandup;
+
+
     private void Awake()
     {
         _damageReceiver = GetComponent<DamageReceiver>();
         _agent = GetComponent<NavMeshAgent>();
         _anim = GetComponent<Animator>();
         _characterCollider = GetComponent<CapsuleCollider>();
-        _agent.acceleration = 100f;
+        _agent.acceleration = 20f;
 
         _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots);
         //_blackboard.Setup(_agent, _anim, transform);
@@ -63,7 +67,17 @@ public class PostStudent : MonoBehaviour
         _damageReceiver.StatDownEvent?.AddListener(OnDamaged);
         _damageReceiver.DepletedEvent?.AddListener(OnDie);
 
-        SetRagdoll(false);
+        _ragdollStandup = GetComponent<RagdollStandup>();
+        _ragdollStandup.StandUpCompleteEvent.AddListener(OnStandUpComplete);
+
+        //_ragdollStandup.SetRagdoll(false);
+    }
+
+
+
+    private void Start()
+    {
+        _ragdollStandup.SetRagdoll(false);
     }
 
 
@@ -398,8 +412,29 @@ public class PostStudent : MonoBehaviour
         _blackboard.destSpot?.Release(this);
         StopAllCoroutines();
 
-        SetRagdoll(true);
+        _ragdollStandup.SetRagdoll(true);
         ApplyRagdollImpact(hitInfo.hitPoint, hitInfo.hitRotation, hitInfo.impulse);
+
+        Invoke(nameof(Revive), 2f);
+    }
+
+
+
+    private void OnStandUpComplete()
+    {
+        _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots);
+        _root = ConstructBehaviorTree();
+        _root.SetBlackboard(_blackboard);
+        _damageReceiver.SetStatFull();
+    }
+
+
+
+    private void Revive()
+    {
+        //_damageReceiver.SetStatFull();
+
+        _ragdollStandup.WakeUp();
     }
 
 
