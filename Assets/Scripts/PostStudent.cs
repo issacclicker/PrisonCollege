@@ -60,26 +60,24 @@ public class PostStudent : MonoBehaviour
         _agent.acceleration = 20f;
         _animAttachables = GetComponents<IAnimAttachable>();
 
-        _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots);
-        //_blackboard.Setup(_agent, _anim, transform);
-        _speedSelector = ConstructSpeedSelector();
-        _root = ConstructBehaviorTree();
-        _root.SetBlackboard(_blackboard);
-
         _damageReceiver.StatDownEvent?.AddListener(OnDamaged);
         _damageReceiver.DepletedEvent?.AddListener(OnDie);
 
         _characterRagdoll.StandUpStartEvent?.AddListener(OnStandUpStart);
         _characterRagdoll.StandUpCompleteEvent.AddListener(OnStandUpComplete);
-        _characterRagdoll.UnTriggerRagdoll();
     }
 
 
 
-    //private void Start()
-    //{
-    //    _ragdollStandup.SetRagdoll(false);
-    //}
+    private void Start()
+    {
+        HideAllAnimAttachments();
+        _characterRagdoll.UnTriggerRagdoll();
+        _speedSelector = ConstructSpeedSelector();
+        _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots);
+        _root = ConstructBehaviorTree();
+        _root.SetBlackboard(_blackboard);
+    }
 
 
 
@@ -412,6 +410,16 @@ public class PostStudent : MonoBehaviour
 
 
 
+    private void HideAllAnimAttachments()
+    {
+        foreach (var animAttachable in _animAttachables)
+        {
+            animAttachable.HideAll();
+        }
+    }
+
+
+
     private void OnDie(HitInfo hitInfo)
     {
         _root = null;
@@ -421,12 +429,7 @@ public class PostStudent : MonoBehaviour
         _characterCollider.enabled = false;
         _blackboard.destSpot?.Release(this);
         StopAllCoroutines();
-
-        foreach (var animAttachable in _animAttachables)
-        {
-            animAttachable.HideAll();
-        }
-
+        HideAllAnimAttachments();
         //_ragdollStandup.SetRagdoll(true);
         _characterRagdoll.TriggerRagdoll();
         _characterRagdoll.ApplyBoneImpact(hitInfo.hitPoint, hitInfo.hitRotation, hitInfo.impulse);

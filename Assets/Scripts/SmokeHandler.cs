@@ -13,13 +13,20 @@ public class SmokingHandler : MonoBehaviour, IAnimAttachable
     public GameObject lighter;        // 라이터
     public GameObject cigarette;      // 담배 개비
 
+    private Fire _smokeFire;
+
+
+
     private void Awake()
     {
-        HideAll();
+        _smokeFire = cigarette.GetComponentInChildren<Fire>();
     }
+
+
 
     public void HideAll()
     {
+        _smokeFire.Extinguish();
         cigarettePack.SetActive(false);
         lighter.SetActive(false);
         cigarette.SetActive(false);
@@ -52,6 +59,7 @@ public class SmokingHandler : MonoBehaviour, IAnimAttachable
 
     public void ReleaseCigarette()
     {
+        _smokeFire.Extinguish();
         cigarette.SetActive(false);
     }
 
@@ -64,6 +72,12 @@ public class SmokingHandler : MonoBehaviour, IAnimAttachable
     public void HideLighter()
     {
         lighter.SetActive(false);
+    }
+
+
+    public void IgniteCigarette()
+    {
+        _smokeFire.Ignite();
     }
 
     // 공통 부착 로직

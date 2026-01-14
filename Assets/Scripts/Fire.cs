@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class Fire : MonoBehaviour
 {
+    [SerializeField] private ParticleSystem _fireParticle;
     private Stat _burnDuration;
     private bool _isBurning = false;
 
@@ -28,7 +29,7 @@ public class Fire : MonoBehaviour
 
     private void ActivateExtinguisher()
     {
-
+        Debug.Log("ActivateExtinguisher");
     }
 
 
@@ -37,6 +38,7 @@ public class Fire : MonoBehaviour
     {
         _isBurning = true;
         _burnDuration.Initialize(true);
+        _fireParticle.gameObject.SetActive(true);
     }
 
 
@@ -45,5 +47,6 @@ public class Fire : MonoBehaviour
     {
         _isBurning = false;
         _burnDuration.Initialize(true);
+        _fireParticle.gameObject.SetActive(false);
     }
 }
