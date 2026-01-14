@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class SmokingHandler : MonoBehaviour
+public class SmokingHandler : MonoBehaviour, IAnimAttachable
 {
     [Header("Sockets")]
     public Transform packHandSocket;
@@ -14,6 +14,11 @@ public class SmokingHandler : MonoBehaviour
     public GameObject cigarette;      // 담배 개비
 
     private void Awake()
+    {
+        HideAll();
+    }
+
+    public void HideAll()
     {
         cigarettePack.SetActive(false);
         lighter.SetActive(false);

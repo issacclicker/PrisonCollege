@@ -47,6 +47,7 @@ public class PostStudent : MonoBehaviour
     public Blackboard Blackboard => _blackboard;
 
     private CharacterRagdoll _characterRagdoll;
+    private IAnimAttachable[] _animAttachables;
 
 
     private void Awake()
@@ -57,6 +58,7 @@ public class PostStudent : MonoBehaviour
         _anim = GetComponent<Animator>();
         _characterCollider = GetComponent<CapsuleCollider>();
         _agent.acceleration = 20f;
+        _animAttachables = GetComponents<IAnimAttachable>();
 
         _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots);
         //_blackboard.Setup(_agent, _anim, transform);
@@ -419,6 +421,11 @@ public class PostStudent : MonoBehaviour
         _characterCollider.enabled = false;
         _blackboard.destSpot?.Release(this);
         StopAllCoroutines();
+
+        foreach (var animAttachable in _animAttachables)
+        {
+            animAttachable.HideAll();
+        }
 
         //_ragdollStandup.SetRagdoll(true);
         _characterRagdoll.TriggerRagdoll();
