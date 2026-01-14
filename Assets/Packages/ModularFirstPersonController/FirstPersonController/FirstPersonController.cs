@@ -509,6 +509,10 @@ public class FirstPersonController : MonoBehaviour
             // 최종 이동 벡터 (속도 * 시간)
             Vector3 movement = moveDir * currentSpeed * Time.fixedDeltaTime;
 
+            float floodFillRatio = FireSuppressionSystem.Instance.FloodFillRatio;
+            float speedRatio = Mathf.Lerp(1, 0.3f, floodFillRatio);
+            movement *= speedRatio;
+
             // 3. MovePosition으로 이동 (AddForce 대신 사용)
             // 현재 위치 + 이번 물리 프레임에 이동해야 할 양
             rb.MovePosition(rb.position + movement);

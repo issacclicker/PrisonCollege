@@ -15,6 +15,8 @@ public class FireSuppressionSystem : SceneSingleton<FireSuppressionSystem>
     private DG.Tweening.Sequence _floodSequence;
     private bool _isFlooding = false;
 
+    public float FloodFillRatio => _floodProgress.Ratio;
+
 
 
     protected override void Awake()
