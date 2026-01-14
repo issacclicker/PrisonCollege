@@ -13,6 +13,7 @@ public class Fire : MonoBehaviour
         _burnDuration = GetComponent<Stat>();
         _burnDuration.Initialize(true);
         _burnDuration.MaxReachEvent.AddListener(ActivateExtinguisher);
+        FireSuppressionSystem.Instance.FireExtinguishEvent.AddListener(Extinguish);
     }
 
 
@@ -30,6 +31,7 @@ public class Fire : MonoBehaviour
     private void ActivateExtinguisher()
     {
         Debug.Log("ActivateExtinguisher");
+        FireSuppressionSystem.Instance.StartSuppression();
     }
 
 
