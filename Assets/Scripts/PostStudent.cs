@@ -195,6 +195,14 @@ public class PostStudent : MonoBehaviour
             new PlayOnceAnim("LookAround", "LookAround")
             //new PlayLoopAnim("LookAround", 5)
         });
+        Sequence smokeSequence = new Sequence(new List<BT_Node>
+        {
+            //new SetRandomBehaveSpot(_restSpots),
+            _speedSelector,
+            new MoveToSpot(),
+            new PlayOnceAnim("Smoke", "Smoke")
+            //new PlayLoopAnim("LookAround", 5)
+        });
         //Sequence workSequence = new Sequence(new List<BT_Node>
         //{
         //    new SetBehaveSpot(chairSpot),
@@ -274,6 +282,7 @@ public class PostStudent : MonoBehaviour
             { BehaviorType.UseMicrowave, microwaveSequence },
             { BehaviorType.Escape, new TryEscapePattern() },
             { BehaviorType.RushThrough, new RushThroughPattern() },
+            { BehaviorType.Smoke, smokeSequence },
         };
 
         Selector jopBehavior = new Selector(new List<BT_Node>

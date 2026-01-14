@@ -21,17 +21,3 @@ public class BehaveSpot : MonoBehaviour
     public virtual void Release(PostStudent userStudent) { }
     public virtual void Arrived(PostStudent userStudent) { }
 }
-
-
-
-[System.Flags]
-public enum BehaviorType
-{
-    None = 0,
-    Sit = 1 << 0,
-    LookAround = 1 << 1,
-    UseMicrowave = 1 << 2,
-    Escape = 1 << 3,
-    RushThrough = 1 << 4,
-    Fight = 1 << 5,
-}

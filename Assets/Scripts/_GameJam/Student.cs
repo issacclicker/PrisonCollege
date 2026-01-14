@@ -192,7 +192,7 @@ public class Student : MonoBehaviour
         float delay = UnityEngine.Random.Range(waitingTime - 1, waitingTime + 1) * GetMultiplier();
         if (spot && (spot is DoorSpot || spot is WindowSpot))
             delay = 6;
-        else if (spot && (spot is SmokeSpot))
+        else if (spot && (spot is SmokeSpot_d))
             delay = 10.5f;
         StartCoroutine(RoutineDelay(delay));
     }
@@ -433,7 +433,7 @@ public class Student : MonoBehaviour
         GetComponent<Collider>().enabled = false;
         if (spot)
         {
-            if (!(spot is SmokeSpot || spot is DoorSpot || spot is WindowSpot))
+            if (!(spot is SmokeSpot_d || spot is DoorSpot || spot is WindowSpot))
             {
                 ChaosSystem.chaos += 10;
                 Warning warning = Instantiate(
