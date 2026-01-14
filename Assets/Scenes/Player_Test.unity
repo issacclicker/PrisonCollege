@@ -15853,7 +15853,7 @@ GameObject:
   - component: {fileID: 3638309149840794943}
   - component: {fileID: 3638309149840794944}
   - component: {fileID: 3638309149840794946}
-  - component: {fileID: 3638309149840794947}
+  - component: {fileID: 3638309149840794948}
   m_Layer: 6
   m_Name: Student
   m_TagString: Untagged
@@ -20091,7 +20091,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &3638309149840794947
+--- !u!114 &3638309149840794948
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -20100,15 +20100,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 550198852003525997}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9591c8bcc25ab744988b20fe32a91b3f, type: 3}
+  m_Script: {fileID: 11500000, guid: 0bd32b1191d9c4c4c9d7b26f8c20b3e4, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
-  _timeToWakeup: 3
-  _faceupStandupStateName: FaceUpStandUp
-  _facedownStandupStateName: FaceDownStandUp
-  _faceupStandupClipName: Stand Up
-  _facedownStandupClipName: Standing Up
-  _timeToResetBones: 0.5
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterRagdoll
+  _isAutoStandUp: 1
+  _velocityThreshold: 0.1
+  _standUpDelay: 2
+  _forcedStandUpTime: 10
+  _timeToLerpBones: 0.5
+  _boneSnapshots:
+  - stateName: FaceDownStandUp
+    clipName: Standing Up
+    isFacingUp: 0
+  - stateName: FaceUpStandUp
+    clipName: Stand Up
+    isFacingUp: 1
+  StandUpStartEvent:
+    m_PersistentCalls:
+      m_Calls: []
   StandUpCompleteEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -25562,11 +25571,11 @@ CharacterJoint:
     spring: 0
     damper: 0
   m_LowTwistLimit:
-    limit: -58.61902
+    limit: -70
     bounciness: 0
     contactDistance: 0
   m_HighTwistLimit:
-    limit: 62.52621
+    limit: 70
     bounciness: 0
     contactDistance: 0
   m_SwingLimitSpring:
@@ -25635,8 +25644,8 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.13
-  m_Center: {x: 0, y: 0.09160729, z: 0}
+  m_Radius: 0.14
+  m_Center: {x: 0, y: 0.09160729, z: 0.005}
 --- !u!1 &7224570903308311008
 GameObject:
   m_ObjectHideFlags: 0

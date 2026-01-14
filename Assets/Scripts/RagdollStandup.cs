@@ -77,6 +77,13 @@ public class RagdollStandup : MonoBehaviour
         PopulateBoneTransform(_ragdollBones);
         CaptureStandUpPose();
         BlendToAnimation(_timeToResetBones);
+
+        //SetRagdoll(false);
+        //_anim.Rebind();
+        //_anim.Update(0f);
+        //_anim.Play(GetStandUpStateName(), 0, 0);
+        //float animLength = _anim.GetCurrentAnimatorStateInfo(0).length;
+        //DOVirtual.DelayedCall(animLength, OnStandUpComplete).SetTarget(this);
     }
 
     // �ǽð� ���� ĸó�� ���� �Լ�
@@ -97,7 +104,6 @@ public class RagdollStandup : MonoBehaviour
         {
             for (int i = 0; i < _bones.Length; i++)
             {
-                // value 0: ���׵� ����, value 1: �Ͼ�� ���� ����
                 _bones[i].localPosition = Vector3.Lerp(_ragdollBones[i].position, standUpBones[i].position, value);
                 _bones[i].localRotation = Quaternion.Lerp(_ragdollBones[i].rotation, standUpBones[i].rotation, value);
             }
