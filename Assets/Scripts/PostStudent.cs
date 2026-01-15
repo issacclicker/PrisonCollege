@@ -219,8 +219,20 @@ public class PostStudent : MonoBehaviour
             new SetAnimBool("Carrying", true),
             new MoveToSpot(),
             new SetAnimBool("Carrying", false),
+            new ActionNode(() =>
+            {
+                MicrowaveSpot microwaveSpot = _blackboard.destSpot as MicrowaveSpot;
+                if (microwaveSpot == null) return;
+                microwaveSpot.PutFoodInMicrowave(GetComponent<PlateAttacher>().CurrentFood);
+            }),
             new RotateToSpot(),
-            new PlayOnceAnim("PushButton", "PushButton")
+            new PlayOnceAnim("PushButton", "PushButton"),
+            new ActionNode(() =>
+            {
+                MicrowaveSpot microwaveSpot = _blackboard.destSpot as MicrowaveSpot;
+                if (microwaveSpot == null) return;
+                microwaveSpot.OperateMicrowave();
+            }),
         });
 
         RandomSelector randomJobSelector = new RandomSelector(
