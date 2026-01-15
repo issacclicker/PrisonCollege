@@ -1,17 +1,17 @@
 using UnityEngine;
 
-public class SmokingHandler : MonoBehaviour, IAnimAttachable
+public class SmokeHandler : AnimAttacher
 {
     [Header("Sockets")]
-    public Transform packHandSocket;
-    public Transform lighterHandSocket;
-    public Transform cigaretteHandSocket;
-    public Transform cigaretteMouthSocket;
+    [SerializeField] private Transform _packHandSocket;
+    [SerializeField] private Transform _lighterHandSocket;
+    [SerializeField] private Transform _cigaretteHandSocket;
+    [SerializeField] private Transform _cigaretteMouthSocket;
 
     [Header("Props")]
-    public GameObject cigarettePack;  // 담배갑
-    public GameObject lighter;        // 라이터
-    public GameObject cigarette;      // 담배 개비
+    [SerializeField] private GameObject _cigarettePack;  // 담배갑
+    [SerializeField] private GameObject _lighter;        // 라이터
+    [SerializeField] private GameObject _cigarette;      // 담배 개비
 
     private Fire _smokeFire;
 
@@ -19,72 +19,64 @@ public class SmokingHandler : MonoBehaviour, IAnimAttachable
 
     private void Awake()
     {
-        _smokeFire = cigarette.GetComponentInChildren<Fire>();
+        _smokeFire = _cigarette.GetComponentInChildren<Fire>();
     }
 
 
 
-    public void HideAll()
+    public override void HideAll()
     {
         _smokeFire.Extinguish();
-        cigarettePack.SetActive(false);
-        lighter.SetActive(false);
-        cigarette.SetActive(false);
+        _cigarettePack.SetActive(false);
+        _lighter.SetActive(false);
+        _cigarette.SetActive(false);
     }
 
     // 1. 담배갑 꺼내기 (주머니 위치에서 손으로)
     public void ShowPack()
     {
-        cigarettePack.SetActive(true);
-        AttachProp(cigarettePack, packHandSocket);
+        AttachProp(_cigarettePack, _packHandSocket);
+        _cigarettePack.SetActive(true);
     }
 
     public void HidePack()
     {
-        cigarettePack.SetActive(false);
+        _cigarettePack.SetActive(false);
     }
 
     // 2. 담배 한 개비 입에 물기
     public void PutCigaretteInMouth()
     {
-        cigarette.SetActive(true);
-        AttachProp(cigarette, cigaretteMouthSocket);
+        AttachProp(_cigarette, _cigaretteMouthSocket);
+        _cigarette.SetActive(true);
     }
 
     public void GrabCigarette()
     {
-        cigarette.SetActive(true);
-        AttachProp(cigarette, cigaretteHandSocket);
+        AttachProp(_cigarette, _cigaretteHandSocket);
+        _cigarette.SetActive(true);
     }
 
     public void ReleaseCigarette()
     {
         _smokeFire.Extinguish();
-        cigarette.SetActive(false);
+        _cigarette.SetActive(false);
     }
 
     public void ShowLighter()
     {
-        lighter.SetActive(true);
-        AttachProp(lighter, lighterHandSocket);
+        AttachProp(_lighter, _lighterHandSocket);
+        _lighter.SetActive(true);
     }
 
     public void HideLighter()
     {
-        lighter.SetActive(false);
+        _lighter.SetActive(false);
     }
 
 
     public void IgniteCigarette()
     {
         _smokeFire.Ignite();
-    }
-
-    // 공통 부착 로직
-    private void AttachProp(GameObject prop, Transform targetSocket)
-    {
-        prop.transform.SetParent(targetSocket);
-        prop.transform.localPosition = Vector3.zero;
-        prop.transform.localRotation = Quaternion.identity;
     }
 }

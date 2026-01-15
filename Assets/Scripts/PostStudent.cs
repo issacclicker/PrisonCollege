@@ -27,6 +27,7 @@ public class PostStudent : MonoBehaviour
     private Blackboard _blackboard;
     private CapsuleCollider _characterCollider;
 
+    [SerializeField] private string _name;
     [Header("설정")]
     [SerializeField] private float _changeInterval = 2.0f; // 2초 간격
     [SerializeField] private Transform _targetDestination; // 이동 목표 지점
@@ -47,7 +48,7 @@ public class PostStudent : MonoBehaviour
     public Blackboard Blackboard => _blackboard;
 
     private CharacterRagdoll _characterRagdoll;
-    private IAnimAttachable[] _animAttachables;
+    private AnimAttacher[] _animAttachers;
 
 
     private void Awake()
@@ -58,7 +59,7 @@ public class PostStudent : MonoBehaviour
         _anim = GetComponent<Animator>();
         _characterCollider = GetComponent<CapsuleCollider>();
         _agent.acceleration = 20f;
-        _animAttachables = GetComponents<IAnimAttachable>();
+        _animAttachers = GetComponents<AnimAttacher>();
 
         _damageReceiver.StatDownEvent?.AddListener(OnDamaged);
         _damageReceiver.DepletedEvent?.AddListener(OnDie);
@@ -412,9 +413,9 @@ public class PostStudent : MonoBehaviour
 
     private void HideAllAnimAttachments()
     {
-        foreach (var animAttachable in _animAttachables)
+        foreach (var animAttacher in _animAttachers)
         {
-            animAttachable.HideAll();
+            animAttacher.HideAll();
         }
     }
 
