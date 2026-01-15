@@ -3,7 +3,7 @@ using UnityEngine;
 public class MicrowaveSpot : SingleStudentSpot
 {
     [SerializeField] private Microwave _microwave;
-    public override bool IsUsable =>  base.IsUsable && _microwave.IsOperating;
+    public override bool IsUsable =>  base.IsUsable && !_microwave.IsOperating;
 
 
 
