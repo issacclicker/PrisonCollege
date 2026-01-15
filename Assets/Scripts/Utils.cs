@@ -96,4 +96,32 @@ public static class Utils
 
     //    return items[items.Count - 1];
     //}
+
+    /// <summary>
+    /// 배열에서 무작위 원소를 반환합니다.
+    /// </summary>
+    public static T GetRandom<T>(this T[] array)
+    {
+        if (array == null || array.Length == 0)
+        {
+            Debug.LogWarning("GetRandom: 배열이 비어있습니다.");
+            return default;
+        }
+
+        return array[Random.Range(0, array.Length)];
+    }
+
+    /// <summary>
+    /// 리스트에서 무작위 원소를 반환합니다.
+    /// </summary>
+    public static T GetRandom<T>(this IList<T> list)
+    {
+        if (list == null || list.Count == 0)
+        {
+            Debug.LogWarning("GetRandom: 리스트가 비어있습니다.");
+            return default;
+        }
+
+        return list[Random.Range(0, list.Count)];
+    }
 }

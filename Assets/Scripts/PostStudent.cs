@@ -27,6 +27,7 @@ public class PostStudent : MonoBehaviour
     private Blackboard _blackboard;
     private CapsuleCollider _characterCollider;
 
+    [SerializeField] private string _name;
     [Header("설정")]
     [SerializeField] private float _changeInterval = 2.0f; // 2초 간격
     [SerializeField] private Transform _targetDestination; // 이동 목표 지점
@@ -46,38 +47,37 @@ public class PostStudent : MonoBehaviour
 
     public Blackboard Blackboard => _blackboard;
 
-
-    private RagdollStandup _ragdollStandup;
+    private CharacterRagdoll _characterRagdoll;
+    private AnimAttacher[] _animAttachers;
 
 
     private void Awake()
     {
+        _characterRagdoll = GetComponent<CharacterRagdoll>();
         _damageReceiver = GetComponent<DamageReceiver>();
         _agent = GetComponent<NavMeshAgent>();
         _anim = GetComponent<Animator>();
         _characterCollider = GetComponent<CapsuleCollider>();
         _agent.acceleration = 20f;
-
-        _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots);
-        //_blackboard.Setup(_agent, _anim, transform);
-        _speedSelector = ConstructSpeedSelector();
-        _root = ConstructBehaviorTree();
-        _root.SetBlackboard(_blackboard);
+        _animAttachers = GetComponents<AnimAttacher>();
 
         _damageReceiver.StatDownEvent?.AddListener(OnDamaged);
         _damageReceiver.DepletedEvent?.AddListener(OnDie);
 
-        _ragdollStandup = GetComponent<RagdollStandup>();
-        _ragdollStandup.StandUpCompleteEvent.AddListener(OnStandUpComplete);
-
-        //_ragdollStandup.SetRagdoll(false);
+        _characterRagdoll.StandUpStartEvent?.AddListener(OnStandUpStart);
+        _characterRagdoll.StandUpCompleteEvent.AddListener(OnStandUpComplete);
     }
 
 
 
     private void Start()
     {
-        _ragdollStandup.SetRagdoll(false);
+        HideAllAnimAttachments();
+        _characterRagdoll.UnTriggerRagdoll();
+        _speedSelector = ConstructSpeedSelector();
+        _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots);
+        _root = ConstructBehaviorTree();
+        _root.SetBlackboard(_blackboard);
     }
 
 
@@ -196,6 +196,14 @@ public class PostStudent : MonoBehaviour
             new PlayOnceAnim("LookAround", "LookAround")
             //new PlayLoopAnim("LookAround", 5)
         });
+        Sequence smokeSequence = new Sequence(new List<BT_Node>
+        {
+            //new SetRandomBehaveSpot(_restSpots),
+            _speedSelector,
+            new MoveToSpot(),
+            new PlayOnceAnim("Smoke", "Smoke")
+            //new PlayLoopAnim("LookAround", 5)
+        });
         //Sequence workSequence = new Sequence(new List<BT_Node>
         //{
         //    new SetBehaveSpot(chairSpot),
@@ -211,8 +219,20 @@ public class PostStudent : MonoBehaviour
             new SetAnimBool("Carrying", true),
             new MoveToSpot(),
             new SetAnimBool("Carrying", false),
+            new ActionNode(() =>
+            {
+                MicrowaveSpot microwaveSpot = _blackboard.destSpot as MicrowaveSpot;
+                if (microwaveSpot == null) return;
+                microwaveSpot.PutFoodInMicrowave(GetComponent<PlateAttacher>().CurrentFood);
+            }),
             new RotateToSpot(),
-            new PlayOnceAnim("PushButton", "PushButton")
+            new PlayOnceAnim("PushButton", "PushButton"),
+            new ActionNode(() =>
+            {
+                MicrowaveSpot microwaveSpot = _blackboard.destSpot as MicrowaveSpot;
+                if (microwaveSpot == null) return;
+                microwaveSpot.OperateMicrowave();
+            }),
         });
 
         RandomSelector randomJobSelector = new RandomSelector(
@@ -275,6 +295,7 @@ public class PostStudent : MonoBehaviour
             { BehaviorType.UseMicrowave, microwaveSequence },
             { BehaviorType.Escape, new TryEscapePattern() },
             { BehaviorType.RushThrough, new RushThroughPattern() },
+            { BehaviorType.Smoke, smokeSequence },
         };
 
         Selector jopBehavior = new Selector(new List<BT_Node>
@@ -402,6 +423,16 @@ public class PostStudent : MonoBehaviour
 
 
 
+    private void HideAllAnimAttachments()
+    {
+        foreach (var animAttacher in _animAttachers)
+        {
+            animAttacher.HideAll();
+        }
+    }
+
+
+
     private void OnDie(HitInfo hitInfo)
     {
         _root = null;
@@ -411,58 +442,59 @@ public class PostStudent : MonoBehaviour
         _characterCollider.enabled = false;
         _blackboard.destSpot?.Release(this);
         StopAllCoroutines();
+        HideAllAnimAttachments();
+        //_ragdollStandup.SetRagdoll(true);
+        _characterRagdoll.TriggerRagdoll();
+        _characterRagdoll.ApplyBoneImpact(hitInfo.hitPoint, hitInfo.hitRotation, hitInfo.impulse);
 
-        _ragdollStandup.SetRagdoll(true);
-        ApplyRagdollImpact(hitInfo.hitPoint, hitInfo.hitRotation, hitInfo.impulse);
+        //Invoke(nameof(Revive), 2f);
+    }
 
-        Invoke(nameof(Revive), 2f);
+
+
+    private void OnStandUpStart()
+    {
+        _damageReceiver.SetStatFull();
     }
 
 
 
     private void OnStandUpComplete()
     {
+        _agent.updatePosition = true;    // 에이전트가 트랜스폼을 움직이도록 허용
+        _agent.updateRotation = true;    // 회전도 허용
+        _anim.applyRootMotion = false;
         _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots);
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
-        _damageReceiver.SetStatFull();
     }
 
 
+    //이전
+    //private void SetRagdoll(bool isActive)
+    //{
+    //    _anim.enabled = !isActive;
+    //    _agent.enabled |= isActive;
 
-    private void Revive()
-    {
-        //_damageReceiver.SetStatFull();
+    //    if (TryGetComponent(out Rigidbody rootRb))
+    //    {
+    //        //rootRb.isKinematic = isActive; // 래그돌이면 본체 물리 연산 중단
+    //        rootRb.useGravity = !isActive;
+    //    }
 
-        _ragdollStandup.WakeUp();
-    }
+    //    foreach (var rb in GetComponentsInChildren<Rigidbody>())
+    //    {
+    //        if (rb == rootRb) continue;
+    //        rb.isKinematic = !isActive;
 
+    //        if (isActive) rb.linearVelocity = Vector3.zero;
 
-
-    private void SetRagdoll(bool isActive)
-    {
-        _anim.enabled = !isActive;
-        _agent.enabled |= isActive;
-
-        if (TryGetComponent(out Rigidbody rootRb))
-        {
-            //rootRb.isKinematic = isActive; // 래그돌이면 본체 물리 연산 중단
-            rootRb.useGravity = !isActive;
-        }
-
-        foreach (var rb in GetComponentsInChildren<Rigidbody>())
-        {
-            if (rb == rootRb) continue;
-            rb.isKinematic = !isActive;
-
-            if (isActive) rb.velocity = Vector3.zero;
-
-            if (rb.TryGetComponent(out Collider col))
-            {
-                col.isTrigger = !isActive;
-            }
-        }
-    }
+    //        if (rb.TryGetComponent(out Collider col))
+    //        {
+    //            col.isTrigger = !isActive;
+    //        }
+    //    }
+    //}
 
 
 
@@ -477,43 +509,43 @@ public class PostStudent : MonoBehaviour
         foreach (var rb in GetComponentsInChildren<Rigidbody>())
         {
             rb.isKinematic = false;
-            rb.velocity = Vector3.zero; // 튀는 현상 방지용 초기화
+            rb.linearVelocity = Vector3.zero; // 튀는 현상 방지용 초기화
 
             // 팁: killer의 위치로부터 반대 방향으로 아주 살짝 힘을 주면 더 자연스럽습니다.
             if (killer != null)
             {
-                ApplyRagdollImpact(hitPoint, hitRotation, impulse);
+                //ApplyRagdollImpact(hitPoint, hitRotation, impulse);
             }
         }
     }
 
 
 
-    private void ApplyRagdollImpact(Vector3 hitPoint, Quaternion hitRotation, float impulse)
-    {
-        Rigidbody closestRb = null;
-        float closestDistance = float.MaxValue;
+    //private void ApplyRagdollImpact(Vector3 hitPoint, Quaternion hitRotation, float impulse)
+    //{
+    //    Rigidbody closestRb = null;
+    //    float closestDistance = float.MaxValue;
 
-        // 1. 모든 래그돌 리지드바디 중 피격 지점과 가장 가까운 부위를 찾습니다.
-        Rigidbody[] rbs = GetComponentsInChildren<Rigidbody>();
-        foreach (var rb in rbs)
-        {
-            float dist = Vector3.Distance(rb.position, hitPoint);
-            if (dist < closestDistance)
-            {
-                closestDistance = dist;
-                closestRb = rb;
-            }
-        }
+    //    // 1. 모든 래그돌 리지드바디 중 피격 지점과 가장 가까운 부위를 찾습니다.
+    //    Rigidbody[] rbs = GetComponentsInChildren<Rigidbody>();
+    //    foreach (var rb in rbs)
+    //    {
+    //        float dist = Vector3.Distance(rb.position, hitPoint);
+    //        if (dist < closestDistance)
+    //        {
+    //            closestDistance = dist;
+    //            closestRb = rb;
+    //        }
+    //    }
 
-        // 2. 해당 부위에 물리 충격을 가합니다.
-        if (closestRb != null)
-        {
-            // hitRotation의 forward 방향으로 힘을 전달
-            Vector3 forceDir = hitRotation * Vector3.back;
+    //    // 2. 해당 부위에 물리 충격을 가합니다.
+    //    if (closestRb != null)
+    //    {
+    //        // hitRotation의 forward 방향으로 힘을 전달
+    //        Vector3 forceDir = hitRotation * Vector3.back;
 
-            // AddForceAtPosition을 쓰면 피격 지점 기준으로 회전력까지 발생해서 더 사실적입니다.
-            closestRb.AddForceAtPosition(forceDir * impulse, hitPoint, ForceMode.Impulse);
-        }
-    }
+    //        // AddForceAtPosition을 쓰면 피격 지점 기준으로 회전력까지 발생해서 더 사실적입니다.
+    //        closestRb.AddForceAtPosition(forceDir * impulse, hitPoint, ForceMode.Impulse);
+    //    }
+    //}
 }
