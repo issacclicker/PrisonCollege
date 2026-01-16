@@ -201,7 +201,8 @@ public class PostStudent : MonoBehaviour
             //new SetRandomBehaveSpot(_restSpots),
             _speedSelector,
             new MoveToSpot(),
-            new PlayOnceAnim("Smoke", "Smoke")
+            new PlayOnceAnim("Smoke", "Smoke"),
+            new Delay(() => 2f),
             //new PlayLoopAnim("LookAround", 5)
         });
         //Sequence workSequence = new Sequence(new List<BT_Node>
@@ -333,6 +334,7 @@ public class PostStudent : MonoBehaviour
             //    prowlSequence
             //),
         });
+        return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new CoopReactivePatttern(jopBehavior))));
         return new TakeHitReactivePattern(new AttackReactivePattern(new CoopReactivePatttern(jopBehavior)));
         //return new CoopReactivePatttern(jopBehavior);
         //return jopBehavior;

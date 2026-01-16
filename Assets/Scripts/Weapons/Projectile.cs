@@ -27,9 +27,10 @@ public class Projectile : MonoBehaviour
         // 2. ★ 이미 맞은 대상인지 체크 ★
         if (_hitObjects.Contains(collision.gameObject)) return;
 
+        float impactVelocity = collision.relativeVelocity.magnitude;
         // 3. 충격량 체크
         float impactForce = collision.impulse.magnitude / Time.fixedDeltaTime;
-        if (impactForce < _minImpactThreshold)
+        if (impactVelocity < _minImpactThreshold)
         {
             Debug.Log($"충격이 너무 약함 ({impactForce:F2}), 무시합니다.");
             return;

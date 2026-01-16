@@ -469,6 +469,96 @@ public class CoopReactivePatttern : PatternNode
 }
 
 
+public class SwimPattern : PatternNode
+{
+    public SwimPattern()
+    {
+        _patternRoot = new Sequence(new List<BT_Node>
+        {
+            //new SetAnimRootMotion(true),
+            new SetAnimBool("Swimming", true),
+        });
+    }
+}
+
+
+
+public class SwimReactivePattern : PatternNode
+{
+    public SwimReactivePattern(BT_Node normalRoutine)
+    {
+        _patternRoot = new ReactiveSelector(new List<BT_Node>
+        {
+            new ConditionDecorator(() =>
+            {
+                float floodFillRatio = FireSuppressionSystem.Instance.FloodFillRatio;
+                return (floodFillRatio > 0.99f && _bb.Anim.GetFloat("MoveSpeed") > 0);
+            }, new SwimPattern()),
+            new Sequence(new List<BT_Node>
+            {
+                //new SetAnimRootMotion(false),
+                new SetAnimBool("Swimming", false),
+                normalRoutine
+            }),
+        });
+    }
+}
+
+
+public class SwimOverridePattern : BT_Node
+{
+    private BT_Node _child;
+
+    public SwimOverridePattern(BT_Node child)
+    {
+        _child = child;
+    }
+
+    public override NodeState Evaluate()
+    {
+        // 1. 매 틱마다 물 높이와 이동 상태 체크
+        float floodRatio = FireSuppressionSystem.Instance.FloodFillRatio;
+        bool isMoving = _bb.Anim.GetFloat("MoveSpeed") > 0.1f;
+
+        // 2. 조건 만족 시 '이동 방식'만 수영으로 강제 설정
+        if (floodRatio > 0.98f && isMoving)
+        {
+            if (!_bb.Anim.GetBool("Swimming"))
+            {
+                _bb.Anim.applyRootMotion = true;
+                _bb.Anim.SetBool("Swimming", true);
+                // 필요하다면 수영 시 이동 속도 저하
+                // _bb.Agent.speed = _bb.originalSpeed * 0.5f; 
+            }
+        }
+        else
+        {
+            // 물이 빠졌거나 멈췄으면 보행 상태로 복구
+            if (_bb.Anim.GetBool("Swimming"))
+            {
+                _bb.Anim.applyRootMotion = false;
+                _bb.Anim.SetBool("Swimming", false);
+                // _bb.Agent.speed = _bb.originalSpeed;
+            }
+        }
+
+        // 3. ★ 핵심: 원래 하려던 행동(normalRoutine)은 조건과 상관없이 계속 실행 ★
+        return _child.Evaluate();
+    }
+
+
+    public override void SetBlackboard(Blackboard blackboard)
+    {
+        base.SetBlackboard(blackboard);
+        _child.SetBlackboard(blackboard);
+    }
+    public override void Reset()
+    {
+        base.Reset();
+        _child.Reset();
+    }
+}
+
 
 public class AttackReactivePattern : PatternNode
 {
