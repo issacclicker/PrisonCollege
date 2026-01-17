@@ -50,6 +50,9 @@ public class PostStudent : MonoBehaviour
     private CharacterRagdoll _characterRagdoll;
     private AnimAttacher[] _animAttachers;
 
+    [SerializeField] private OverlapAttacker _bodyOverlapAttacker;
+    [SerializeField] private OverlapAttacker _tackleOverlapAttacker;
+
 
     private void Awake()
     {
@@ -70,12 +73,14 @@ public class PostStudent : MonoBehaviour
 
 
 
+
     private void Start()
     {
         HideAllAnimAttachments();
+        StopAllOverlapAttackers();
         _characterRagdoll.UnTriggerRagdoll();
         _speedSelector = ConstructSpeedSelector();
-        _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots);
+        _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots, _player);
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
     }
@@ -95,6 +100,28 @@ public class PostStudent : MonoBehaviour
         {
             _root.Evaluate();
         }
+    }
+
+
+
+    public OverlapAttacker GetOverlapAttacker(OverlapAttackType overlapAttackType)
+    {
+        switch(overlapAttackType)
+        {
+            case OverlapAttackType.BodySlam:
+                return _bodyOverlapAttacker;
+            case OverlapAttackType.Tackle:
+                return _tackleOverlapAttacker;
+        }
+        return null;
+    }
+
+
+
+    private void StopAllOverlapAttackers()
+    {
+        _bodyOverlapAttacker.StopAttack();
+        _tackleOverlapAttacker.StopAttack();
     }
 
 
@@ -307,10 +334,19 @@ public class PostStudent : MonoBehaviour
                 behaviorNodes[BehaviorType.Escape]
             ),
 
+            new ConditionDecorator(() => _blackboard.destBehavior == BehaviorType.Tackle, 
+                // 여기에 초기화가 필요 없는 루프 로직 배치
+                new Sequence(new List<BT_Node>
+                {
+                    new TacklePattern(),
+                    //new ClearDestBehavior(),
+                })
+            ),
+
             // 2. 일반적인 비헤이비어 (매번 초기화가 필요한 그룹)
             new Sequence(new List<BT_Node>
             {
-                new SetRandomBehavior(),
+                //new SetRandomBehavior(),
                 new FindSpotPattern(),
                 new ResetAnimParameters(),
                 new SetAnimRootMotion(false),
@@ -334,10 +370,19 @@ public class PostStudent : MonoBehaviour
             //    prowlSequence
             //),
         });
-        return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new CoopReactivePatttern(jopBehavior))));
-        return new TakeHitReactivePattern(new AttackReactivePattern(new CoopReactivePatttern(jopBehavior)));
-        //return new CoopReactivePatttern(jopBehavior);
-        //return jopBehavior;
+
+        Sequence jobSeq = new Sequence(new List<BT_Node>
+        {
+            new SetRandomBehavior(),
+            jopBehavior
+        });
+        return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new CoopReactivePatttern(jobSeq))));
+        //return new TakeHitReactivePattern(new AttackReactivePattern(new CoopReactivePatttern(jopBehavior)));
+        BT_Node tackleTree = new Sequence(new List<BT_Node>
+        {
+            new TacklePattern(),
+        });
+        return tackleTree;
     }
 
 
@@ -444,6 +489,7 @@ public class PostStudent : MonoBehaviour
         _characterCollider.enabled = false;
         _blackboard.destSpot?.Release(this);
         StopAllCoroutines();
+        StopAllOverlapAttackers();
         HideAllAnimAttachments();
         //_ragdollStandup.SetRagdoll(true);
         _characterRagdoll.TriggerRagdoll();
@@ -466,7 +512,7 @@ public class PostStudent : MonoBehaviour
         _agent.updatePosition = true;    // 에이전트가 트랜스폼을 움직이도록 허용
         _agent.updateRotation = true;    // 회전도 허용
         _anim.applyRootMotion = false;
-        _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots);
+        _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots, _player);
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
     }

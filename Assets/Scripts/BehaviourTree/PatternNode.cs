@@ -639,7 +639,6 @@ public class TryEscapePattern : PatternNode
                            exitGate.OpenGate();
                        }, NodeState.Success),
                        new EscapeTypeSelectPattern(),
-                       // exitGate의 세부타입별로 다른 PatternNode 실행하기
                        new ActionNode(null, NodeState.Running),
                        new ActionNode(() => _bb.isEscaping = false),
                    })
@@ -728,6 +727,111 @@ public class ExitAttackPattern : PatternNode
         }
 
         return state;
+    }
+}
+
+
+
+public class TacklePattern : PatternNode
+{
+    private float SLIDE_RANGE = 4f;
+    private bool _isTackled = false;
+
+    public TacklePattern()
+    {
+        //_patternRoot = new ReactiveSelector(new List<BT_Node>
+        //{
+        //    // 사거리 내: 태클 실행
+        //    new ConditionDecorator(() => GetDistance() <= SLIDE_RANGE && !_isTackled,
+        //        new Sequence(new List<BT_Node>
+        //        {
+        //            new StopAndDisableAgentUpdate(),
+        //            new ActionNode(() => {
+        //                _isTackled = true;
+        //                var attacker = _bb.Avatar.GetComponent<PostStudent>().GetOverlapAttacker(OverlapAttackType.Tackle);
+        //                attacker.StartAttack();
+        //            }, NodeState.Success),
+        //            new SetAnimRootMotion(true),
+        //            new PlayOnceAnim("Tackle", "Tackle"),
+        //            new ActionNode(() => 
+        //            {
+        //                //_bb.Agent.Warp(_bb.Avatar.position);
+        //            }),
+        //            new SetAnimRootMotion(false),
+        //            //new EnableAgentUpdate(),
+        //            new ActionNode(() => {
+        //                var attacker = _bb.Avatar.GetComponent<PostStudent>().GetOverlapAttacker(OverlapAttackType.Tackle);
+        //                attacker.StopAttack();
+        //            }, NodeState.Success),
+        //        })
+        //    ),
+    
+        //    // 사거리 외: 추격
+        //    new Sequence(new List<BT_Node> {
+        //        new SetAnimRootMotion(false),
+        //        new SetSpeed(() => 6.75f),
+        //        new ParallelNode(new List<BT_Node>
+        //        {
+        //            new MoveToPlayer(),
+        //            new RotateToPlayer()
+        //        }),
+        //    })
+        //});
+
+        _patternRoot = new ReactiveSelector(new List<BT_Node>
+        {
+            // 사거리 내: 태클 실행
+            new ConditionDecorator(() => GetDistance() > SLIDE_RANGE && !_isTackled,
+                new Sequence(new List<BT_Node> {
+                    new SetAnimRootMotion(false),
+                    new SetSpeed(() => 6.75f),
+                    new ParallelNode(new List<BT_Node>
+                    {
+                        new MoveToPlayer(),
+                        new RotateToPlayer()
+                    }),
+                })
+            ),
+            new Sequence(new List<BT_Node>
+            {
+                new ActionNode(() => {
+                    _isTackled = true;
+                    var attacker = _bb.Avatar.GetComponent<PostStudent>().GetOverlapAttacker(OverlapAttackType.Tackle);
+                    attacker.StartAttack();
+                    _bb.Avatar.GetComponent<Collider>().enabled = false;
+                }, NodeState.Success),
+                new StopAndDisableAgentUpdate(),
+                new SetAnimRootMotion(true),
+                new PlayOnceAnim("Tackle", "Tackle", 0),
+                new ActionNode(() =>
+                {
+                    _bb.Agent.Warp(_bb.Avatar.position);
+                }),
+                new SetAnimRootMotion(false),
+                new EnableAgentUpdate(),
+                new ActionNode(() => {
+                    var attacker = _bb.Avatar.GetComponent<PostStudent>().GetOverlapAttacker(OverlapAttackType.Tackle);
+                    attacker.StopAttack();
+                    _bb.Avatar.GetComponent<Collider>().enabled = true;
+                }, NodeState.Success),
+            })
+        });
+    }
+
+
+
+    private float GetDistance()
+    {
+        if (_bb.Player == null) return float.MaxValue;
+
+        return Vector3.Distance(_bb.Avatar.transform.position, _bb.Player.transform.position);
+    }
+
+
+    public override void Reset()
+    {
+        base.Reset();
+        _isTackled = false;
     }
 }
 

@@ -241,6 +241,28 @@ public class MoveToTarget : BT_Node
 
 
 
+public class MoveToPlayer : BT_Node
+{
+    public override NodeState Evaluate()
+    {
+        _bb.Agent.SetSampleDestination(_bb.Player.transform.position, 2);
+        //Debug.Log($"목적지: {_bb.targetObject.name}, 남은 거리: {_bb.Agent.remainingDistance}");
+
+        // 목적지에 거의 도착했는지 확인
+        if (!_bb.Agent.pathPending && _bb.Agent.remainingDistance <= _bb.Agent.stoppingDistance)
+        {
+            _bb.Anim.SetFloat("MoveSpeed", 0);
+            return NodeState.Success;
+        }
+
+        float currentSpeed = _bb.Agent.velocity.magnitude;
+        _bb.Anim.SetFloat("MoveSpeed", currentSpeed);
+        return NodeState.Running; // 아직 가는 중
+    }
+}
+
+
+
 //나중에 일정 주기 가동시 Time.deltaTime 보정 필요
 public class RotateToSpot : BT_Node
 {
@@ -297,6 +319,35 @@ public class RotateToTarget : BT_Node
             _bb.Avatar.transform.rotation = Quaternion.Slerp(
                 _bb.Avatar.transform.rotation, 
                 targetRotation, 
+                Time.deltaTime * 10f // 회전 속도
+            );
+        }
+
+        // ParallelNode 안에서 계속 돌아야 하므로 항상 Running 반환
+        return NodeState.Running;
+    }
+}
+
+
+
+public class RotateToPlayer : BT_Node
+{
+    private const float ROTATION_SPEED = 10f; // 회전 속도
+    private const float FINISH_ANGLE = 5.0f;  // 이 각도 이내로 들어오면 완료
+
+    public override NodeState Evaluate()
+    {
+        if (_bb.Player == null) return NodeState.Failure;
+
+        Vector3 targetDir = _bb.Player.transform.position - _bb.Avatar.transform.position;
+        targetDir.y = 0;
+
+        if (targetDir.sqrMagnitude > 0.001f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(targetDir);
+            _bb.Avatar.transform.rotation = Quaternion.Slerp(
+                _bb.Avatar.transform.rotation,
+                targetRotation,
                 Time.deltaTime * 10f // 회전 속도
             );
         }
@@ -951,6 +1002,32 @@ public class SetRandomBehavior : BT_Node
         _bb.prevBehavior = _bb.destBehavior;
         _bb.destBehavior = pickedType;
         Debug.Log($"[BT] 행동 결정됨: {pickedType}");
+
+        return NodeState.Success;
+    }
+}
+
+
+
+public class ClearDestBehavior : BT_Node
+{
+    public override NodeState Evaluate()
+    {
+        // 1. 현재 destBehavior를 초기화하기 전에 로그를 남기거나 이전 상태로 백업할 수 있습니다.
+        // 만약 '이전 행동'을 명확히 끝내는 시점이라면 여기서 처리합니다.
+
+        if (_bb == null)
+        {
+            Debug.LogError("블랙보드 참조가 없습니다.");
+            return NodeState.Failure;
+        }
+
+        // 2. 행동 초기화 (None으로 설정)
+        // BehaviorType.None이 정의되어 있다고 가정합니다.
+        _bb.destBehavior = BehaviorType.None;
+
+        // 디버깅용 로그 (선택 사항)
+        Debug.Log("[BT] destBehavior가 초기화되었습니다.");
 
         return NodeState.Success;
     }

@@ -11,6 +11,7 @@ public class Blackboard
     public Transform Avatar { get; private set; }
     public BehaviorWeightSet BehaviorWeightSet { get; private set; }
     public StageSpots StageSpots { get; private set; }
+    public GameObject Player { get; private set; }
 
     //public void Setup(NavMeshAgent agent, Animator animator, Transform transform)
     //{
@@ -20,15 +21,17 @@ public class Blackboard
     //}
 
 
-    public Blackboard(GameObject owner, BehaviorWeightSet weightSet, StageSpots spots)
+    public Blackboard(GameObject owner, BehaviorWeightSet weightSet, StageSpots spots, GameObject player)
     {
         this.Agent = owner.GetComponent<NavMeshAgent>();
         this.Anim = owner.GetComponentInChildren<Animator>();
         this.Avatar = owner.transform;
+        this.Player = player;
         this.coopData = new();
 
         this.BehaviorWeightSet = weightSet;
         this.StageSpots = spots;
+        Player = player;
     }
 
 
