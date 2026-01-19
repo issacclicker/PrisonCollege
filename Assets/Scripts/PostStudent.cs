@@ -211,6 +211,7 @@ public class PostStudent : MonoBehaviour
         Sequence prowlSequence = new Sequence(new List<BT_Node>
         {
             //new SetRandomBehaveSpot(_prowlSpots),
+            new ActionNode(() => Debug.Log("prowlSequence")),
             _speedSelector,
             new MoveToSpot()
             //new PlayLoopAnim("LookAround", 5)
@@ -329,10 +330,10 @@ public class PostStudent : MonoBehaviour
         Selector jopBehavior = new Selector(new List<BT_Node>
         {
             // 1. 무한 반복해야 하는 특정 비헤이비어 체크
-            new ConditionDecorator(() => _blackboard.destBehavior == BehaviorType.Escape, 
-                // 여기에 초기화가 필요 없는 루프 로직 배치
-                behaviorNodes[BehaviorType.Escape]
-            ),
+            //new ConditionDecorator(() => _blackboard.destBehavior == BehaviorType.Escape, 
+            //    // 여기에 초기화가 필요 없는 루프 로직 배치
+            //    behaviorNodes[BehaviorType.Escape]
+            //),
 
             new ConditionDecorator(() => _blackboard.destBehavior == BehaviorType.Tackle, 
                 // 여기에 초기화가 필요 없는 루프 로직 배치
@@ -348,35 +349,29 @@ public class PostStudent : MonoBehaviour
             {
                 //new SetRandomBehavior(),
                 new FindSpotPattern(),
+                new EnableAgentUpdate(),
                 new ResetAnimParameters(),
                 new SetAnimRootMotion(false),
-                new LerpLayerWeight(COMBAT_LAYER_INDEX, 0, 3),
-                new LerpLayerWeight(STRIKE_LAYER_INDEX, 0, 3),
+                new ActionNode(() => Debug.Log(_blackboard.destBehavior)),
+                new LerpLayerWeight(COMBAT_LAYER_INDEX, 0, 10),
+                new LerpLayerWeight(STRIKE_LAYER_INDEX, 0, 10),
                 new EnumSwitchSelector<BehaviorType>(
                     bb => _blackboard.destBehavior,
                     behaviorNodes,
                     prowlSequence
                 ),
             })
-            //new SetRandomBehavior(),
-            //new FindSpotPattern(),
-            //new ResetAnimParameters(),
-            //new SetAnimRootMotion(false),
-            //new LerpLayerWeight(COMBAT_LAYER_INDEX, 0, 3),
-            //new LerpLayerWeight(STRIKE_LAYER_INDEX, 0, 3),
-            //new EnumSwitchSelector<BehaviorType>(
-            //    bb => _blackboard.destBehavior,
-            //    behaviorNodes,
-            //    prowlSequence
-            //),
         });
 
         Sequence jobSeq = new Sequence(new List<BT_Node>
         {
-            new SetRandomBehavior(),
+            new ConditionDecorator(() => _blackboard.destBehavior != BehaviorType.Escape, 
+                new SetRandomBehavior()
+            ),
             jopBehavior
         });
-        return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new CoopReactivePatttern(jobSeq))));
+        return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new CoopReactivePatttern(new EscapeGiveUpReactivePattern(jobSeq)))));
+        //return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new CoopReactivePatttern(jobSeq))));
         //return new TakeHitReactivePattern(new AttackReactivePattern(new CoopReactivePatttern(jopBehavior)));
         BT_Node tackleTree = new Sequence(new List<BT_Node>
         {

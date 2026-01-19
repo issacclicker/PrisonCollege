@@ -13,8 +13,10 @@ public class ExitGate : MonoBehaviour
     protected DamageReceiver _damageReceiver;
     protected ClickAndWait _interaction;
     protected GameObject _barricadePlaced;
+
     public bool IsBarricadePlaced => _barricadePlaced != null;
     public virtual ExitGateType GateType => ExitGateType.None;
+    public float HealthRatio => _damageReceiver ? GetComponent<Health>().Ratio : 0.0f;
 
 
 

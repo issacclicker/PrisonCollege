@@ -124,4 +124,15 @@ public static class Utils
 
         return list[Random.Range(0, list.Count)];
     }
+
+
+
+    /// <summary>
+    /// 두 Transform 사이의 직선 거리를 반환합니다. (3D)
+    /// </summary>
+    public static float DistanceTo(this Transform start, Transform target)
+    {
+        if (start == null || target == null) return 0f;
+        return Vector3.Distance(start.position, target.position);
+    }
 }

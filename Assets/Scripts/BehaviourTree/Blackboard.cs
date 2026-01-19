@@ -31,7 +31,7 @@ public class Blackboard
 
         this.BehaviorWeightSet = weightSet;
         this.StageSpots = spots;
-        Player = player;
+        this.currentState = AIState.Idle;
     }
 
 
@@ -57,8 +57,12 @@ public class Blackboard
     }
 
 
-
-    public bool CanCoop => coopData.spot == null && currentState == AIState.Idle;
+    //나쁜 행동중에는 코옵 불가능
+    public bool CanCoop => coopData.spot == null && !isEscaping
+        && destBehavior != BehaviorType.Tackle
+        && destBehavior != BehaviorType.RushThrough
+        && destBehavior != BehaviorType.Escape
+        && destBehavior != BehaviorType.Fight;
 
 
 

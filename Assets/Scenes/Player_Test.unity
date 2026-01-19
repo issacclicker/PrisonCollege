@@ -627,7 +627,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4502103e2ca72e342a8da9daf2b6ef0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _behaviorTypes: 10
+  _behaviorTypes: 8
   _exitGate: {fileID: 2088033359}
 --- !u!1 &183102489
 GameObject:
