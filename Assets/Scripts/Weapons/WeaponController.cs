@@ -5,6 +5,7 @@ using UnityEngine;
 public class WeaponController : MonoBehaviour
 {
     [SerializeField] private FirstPersonController _firstPersonController;
+    [SerializeField] private WeaponPanel _weaponPanel;
     public FirstPersonController FirstPersonController => _firstPersonController;
 
     [Header("무기 목록 (번호순)")]
@@ -41,13 +42,21 @@ public class WeaponController : MonoBehaviour
         for (int i = 0; i < _weapons.Length; i++)
         {
             _weapons[i].gameObject.SetActive(false);
+            _weapons[i].InfoUpdateEvent.AddListener(OnWeaponInfoUpdated);
         }
         Equip(startingIndex);
     }
 
+
+    public void OnWeaponInfoUpdated(WeaponBase weapon)
+    {
+        if (weapon != CurrentWeapon) return;
+        _weaponPanel.ShowInfo(CurrentWeapon);
+    }
+
     public bool TryAttack()
     {
-        if (_isSwapping || CurrentWeapon.IsPlayingAttackAnim) return false;
+        if (_isSwapping || CurrentWeapon.IsPlayingAttackAnim || CurrentWeapon.CanAttack == false) return false;
         
         CurrentWeapon.PlayAttackAnim(); // 공격 명령
         return true;
@@ -112,6 +121,7 @@ public class WeaponController : MonoBehaviour
 
         // 2. 인덱스 교체 및 새 무기 꺼내기
         _currentIdx = newIdx;
+        _weaponPanel.ShowInfo(CurrentWeapon);
         CurrentWeapon.PlayDrawAnim(_swapDuration);
 
         yield return new WaitForSeconds(_swapDuration);

@@ -1,8 +1,9 @@
+using Cinemachine.Editor;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ThrowWeapon : WeaponBase
+public class ThrowWeapon : WeaponBase, ICountableWeapon
 {
     [Header("--- Throw ---")]
     [SerializeField] private GameObject _throwablePrefab; // ���� ��ü ������
@@ -12,8 +13,32 @@ public class ThrowWeapon : WeaponBase
     [SerializeField] private float _flipSpeed = 20f; // ���Ʒ� ȸ�� �ӵ� (�������� ����)
     [Range(0f, 1f)] public float _spreadAmount = 0.02f; // ź���� ����
     [Range(0f, 1f)] public float _torqueRandomness = 0.5f; // ȸ�� �ұ�Ģ��
+    private ThrowAnimator _throwAnimator;
+    private int _count = 0;
+
+    public override string TypeName => "투척";
+    public override bool CanAttack => base.CanAttack && Amount > 0;
+
+    public int Amount => _count;
 
 
+
+    protected override void Awake()
+    {
+        base.Awake();
+        _throwAnimator = _animator as ThrowAnimator;
+        CheckAmmoModel();
+    }
+
+
+
+    //private void Update()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.Space))
+    //    {
+    //        Acquire(1);
+    //    }
+    //}
 
     protected override void ExecuteAttack()
     {
@@ -85,5 +110,35 @@ public class ThrowWeapon : WeaponBase
         Collider playerCol = GetComponentInParent<Collider>();
         Collider projCol = projectileObj.GetComponent<Collider>();
         if (playerCol != null && projCol != null) Physics.IgnoreCollision(playerCol, projCol);
+        --_count;
+        CheckAmmoModel();
+        InfoUpdateEvent?.Invoke(this);
+    }
+    
+
+
+    public void Acquire(int count)
+    {
+        int prevCount = _count;
+        _count += count;
+        if (prevCount <= 0 && _count > 0)
+        {
+            _throwAnimator.PlayRefillAnimation();
+        }
+        InfoUpdateEvent?.Invoke(this);
+    }
+
+
+
+    private void CheckAmmoModel()
+    {
+        if (_count > 0)
+        {
+            _throwAnimator.PlayRefillAnimation();
+        }
+        else
+        {
+            _throwableModel.gameObject.SetActive(false);
+        }
     }
 }
