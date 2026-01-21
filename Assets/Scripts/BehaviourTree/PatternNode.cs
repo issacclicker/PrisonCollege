@@ -8,7 +8,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UIElements;
 using static Global;
-using static UnityEditor.Experimental.GraphView.GraphView;
+using static Utils;
 
 
 
@@ -109,7 +109,7 @@ public class CombatApproachPattern : PatternNode
                 {
                     new SetAnimRootMotion(true),
                     new WaitUntilCondition(() => !_bb.isDamaged),
-                    new Delay(() => UnityEngine.Random.Range(1f, 2f)),
+                    new Delay(() => UnityEngine.Random.Range(0f, 1f)),
                     new ActionNode(() => _bb.isStunned = false, NodeState.Success),
                 })
             ),
@@ -308,6 +308,13 @@ public class FindSpotPattern : PatternNode
         if (state == NodeState.Success)
         {
             _currentRetryCount = 0;
+            return NodeState.Success;
+        }
+
+        if (state == NodeState.Failure
+        && _currentRetryCount < MAX_RETRY)
+        {
+            return NodeState.Running;
         }
 
         return state; // Running(대기 중) 또는 Success(찾음) 반환
@@ -469,6 +476,96 @@ public class CoopReactivePatttern : PatternNode
 }
 
 
+public class SwimPattern : PatternNode
+{
+    public SwimPattern()
+    {
+        _patternRoot = new Sequence(new List<BT_Node>
+        {
+            //new SetAnimRootMotion(true),
+            new SetAnimBool("Swimming", true),
+        });
+    }
+}
+
+
+
+public class SwimReactivePattern : PatternNode
+{
+    public SwimReactivePattern(BT_Node normalRoutine)
+    {
+        _patternRoot = new ReactiveSelector(new List<BT_Node>
+        {
+            new ConditionDecorator(() =>
+            {
+                float floodFillRatio = FireSuppressionSystem.Instance.FloodFillRatio;
+                return (floodFillRatio > 0.99f && _bb.Anim.GetFloat("MoveSpeed") > 0);
+            }, new SwimPattern()),
+            new Sequence(new List<BT_Node>
+            {
+                //new SetAnimRootMotion(false),
+                new SetAnimBool("Swimming", false),
+                normalRoutine
+            }),
+        });
+    }
+}
+
+
+public class SwimOverridePattern : BT_Node
+{
+    private BT_Node _child;
+
+    public SwimOverridePattern(BT_Node child)
+    {
+        _child = child;
+    }
+
+    public override NodeState Evaluate()
+    {
+        // 1. 매 틱마다 물 높이와 이동 상태 체크
+        float floodRatio = FireSuppressionSystem.Instance.FloodFillRatio;
+        bool isMoving = _bb.Anim.GetFloat("MoveSpeed") > 0.1f;
+
+        // 2. 조건 만족 시 '이동 방식'만 수영으로 강제 설정
+        if (floodRatio > 0.98f && isMoving)
+        {
+            if (!_bb.Anim.GetBool("Swimming"))
+            {
+                _bb.Anim.applyRootMotion = true;
+                _bb.Anim.SetBool("Swimming", true);
+                // 필요하다면 수영 시 이동 속도 저하
+                // _bb.Agent.speed = _bb.originalSpeed * 0.5f; 
+            }
+        }
+        else
+        {
+            // 물이 빠졌거나 멈췄으면 보행 상태로 복구
+            if (_bb.Anim.GetBool("Swimming"))
+            {
+                _bb.Anim.applyRootMotion = false;
+                _bb.Anim.SetBool("Swimming", false);
+                // _bb.Agent.speed = _bb.originalSpeed;
+            }
+        }
+
+        // 3. ★ 핵심: 원래 하려던 행동(normalRoutine)은 조건과 상관없이 계속 실행 ★
+        return _child.Evaluate();
+    }
+
+
+    public override void SetBlackboard(Blackboard blackboard)
+    {
+        base.SetBlackboard(blackboard);
+        _child.SetBlackboard(blackboard);
+    }
+    public override void Reset()
+    {
+        base.Reset();
+        _child.Reset();
+    }
+}
+
 
 public class AttackReactivePattern : PatternNode
 {
@@ -479,6 +576,268 @@ public class AttackReactivePattern : PatternNode
             new ConditionDecorator(() => _bb.targetDamageable != null, new CombatPattern()),
             normalRoutine
         });
+    }
+}
+
+
+
+public class WorkPattern : PatternNode
+{
+    public WorkPattern()
+    {
+        Sequence angrySeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Angry", "Angry", 1) });
+        Sequence clapSeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Clap", "Clap", 1) });
+        Sequence frustrateSeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Frustrated", "Frustrated", 1) });
+        Sequence justTyping = new Sequence(new List<BT_Node> { new Delay(() => 0.1f) });
+
+        // 3. 확률 선택기 구성 (가중치 부여)
+        RandomSelector chanceActionSelector = new RandomSelector(
+            new List<BT_Node> { angrySeq, clapSeq, frustrateSeq },
+            new List<System.Func<int>> {
+                () => 10, // 욕(분노) 10%
+                () => 10, // 박수 10%
+                () => 10, // 좌절 10%
+            }
+        );
+
+        _patternRoot = new Sequence(new List<BT_Node>
+        {
+            new SetRandomSpeedPattern(),
+            new MoveToSpot(),
+            new RotateToSpot(),
+            new SetAnimBool("Sitting", true),
+            new SetAnimBool("Typing", true),
+            new Delay(() => 4f),
+            chanceActionSelector,
+            new Delay(() => 3f),
+            chanceActionSelector,
+            new Delay(() => 4f),
+            new SetAnimBool("Sitting", false),
+            new SetAnimBool("Typing", false),
+            new ActionNode(() => _bb.isForceBehavior = false),
+        });
+    }
+}
+
+
+
+public class JopSelectSeqPattern : PatternNode
+{
+    public JopSelectSeqPattern(BT_Node afterRoutine)
+    {
+        _patternRoot = new Sequence(new List<BT_Node>
+        {
+            new ConditionDecorator(() => _bb.destBehavior != BehaviorType.Escape,
+                new SetRandomBehavior()
+            ),
+            afterRoutine
+        });
+    }
+}
+
+
+
+public class BoostReactivePattern : PatternNode
+{
+    public BoostReactivePattern(BT_Node normalRoutine)
+    {
+        _patternRoot = new ReactiveSelector(new List<BT_Node>
+        {
+            new ConditionDecorator(() => _bb.hasToWork && !_bb.isForceBehavior,
+                new Sequence(new List<BT_Node>
+                {
+                    new PrintDebug("hasToWork"),
+                    new SetSpecificBehavior(BehaviorType.Sit),
+                    new ActionNode(() => _bb.isForceBehavior = true),
+                    new ActionNode(() => _bb.hasToWork = false),
+                })
+            ),
+            new ConditionDecorator(() => _bb.hasToFrenzy,
+                new Sequence(new List<BT_Node>
+                {
+                    new PrintDebug("hasToFrenzy"),
+                    new ResetAnimParameters(),
+                    new SetAttackTarget(() =>_bb.Player),
+                    new ActionNode(() => _bb.isForceBehavior = true),
+                    new ActionNode(() => _bb.hasToFrenzy = false),
+                })
+            ),
+            normalRoutine
+        });
+    }
+}
+
+
+
+public class EscapeGiveUpReactivePattern : PatternNode
+{
+    private bool _isTriedGiveUp = false; 
+
+    public EscapeGiveUpReactivePattern(BT_Node normalRoutine)
+    {
+        //_patternRoot = new ReactiveSelector(new List<BT_Node>
+        //{
+        //    new ConditionDecorator(() => _bb.destBehavior == BehaviorType.Escape && _isTriedGiveUp == false && (GetDistance() <= 5) && _bb.Anim.GetLayerWeight(STRIKE_LAYER_INDEX) >= 0.99f && HasToGiveUp(), 
+        //        new Sequence(new List<BT_Node>
+        //        {
+        //            new ClearDestBehavior(),
+        //            new ActionNode(() => _isTriedGiveUp = false),
+        //        })
+        //    ),
+        //    new Sequence(new List<BT_Node>
+        //    {
+        //        //new PrintDebug("normalRoutine"),
+        //        //new ActionNode(() => _isTriedGiveUp = false),
+        //        normalRoutine
+        //    }),
+        //});
+
+
+
+        //_patternRoot = new ReactiveSelector(new List<BT_Node>
+        //{
+        //    new ConditionDecorator(() =>
+        //        _bb.destBehavior == BehaviorType.Escape
+        //        && GetDistance() <= 5
+        //        && _isTriedGiveUp == false // 1. 여기서 걸러줌
+        //        && _bb.Anim.GetLayerWeight(STRIKE_LAYER_INDEX) >= 0.99f,
+
+        //        new Sequence(new List<BT_Node>
+        //        {
+        //            // 2. Selector를 사용하여 성공/실패 여부와 상관없이 끝까지 가게 만듦
+        //            new Selector(new List<BT_Node>
+        //            {
+        //                // 주사위 성공 시 실행될 로직
+        //                new ConditionDecorator(() => HasToGiveUp(),
+        //                    new Sequence(new List<BT_Node>
+        //                    {
+        //                        new PrintDebug("GiveUp Success"),
+        //                        new ClearDestBehavior()
+        //                    })
+        //                ),
+
+        //                // 주사위가 실패(False)하더라도 Selector이므로 여기로 넘어옴
+        //                // 아무것도 안 하고 Success를 반환하게 해서 부모 Sequence가 계속 진행되게 함
+        //                new ActionNode(null, NodeState.Success)
+        //            }),
+
+        //            // 3. 주사위 결과가 무엇이든 Selector가 Success를 뱉으므로 무조건 실행됨
+        //            new ActionNode(() => _isTriedGiveUp = true)
+        //        })
+        //    ),
+
+        //    normalRoutine
+        //});
+
+
+
+        //_patternRoot = new ReactiveSelector(new List<BT_Node>
+        //{
+        //    new ConditionDecorator(() =>
+        //        _bb.destBehavior == BehaviorType.Escape
+        //        && GetDistance() <= 5
+        //        && _isTriedGiveUp == false // 1. 여기서 걸러줌
+        //        && _bb.Anim.GetLayerWeight(STRIKE_LAYER_INDEX) >= 0.99f,
+
+        //        new Sequence(new List<BT_Node>
+        //        {
+        //            new Selector(new List<BT_Node>
+        //            {
+        //                // 주사위 성공 시 실행될 로직
+        //                new ConditionDecorator(() => HasToGiveUp(),
+        //                    new ClearDestBehavior()
+        //                ),
+        //                new ActionNode(null, NodeState.Success)
+        //            }),
+        //            new ActionNode(() => _isTriedGiveUp = true, NodeState.Failure)
+        //        })
+        //    ),
+
+        //    normalRoutine
+        //});
+
+        _patternRoot = new ReactiveSelector(new List<BT_Node>
+        {
+            new ConditionDecorator(() =>
+                _bb.destBehavior == BehaviorType.Escape
+                && GetDistance() <= 5
+                && _isTriedGiveUp == false // 1. 여기서 걸러줌
+                && _bb.Anim.GetLayerWeight(STRIKE_LAYER_INDEX) >= 0.99f
+                && HasToGiveUp(),
+
+                new Sequence(new List<BT_Node>
+                {
+                    new ClearDestBehavior(),
+                    new ActionNode(() => _isTriedGiveUp = true, NodeState.Success)
+                })
+            ),
+
+            normalRoutine
+        });
+    }
+
+
+
+    private float GetDistance()
+    {
+        return Vector3.Distance(_bb.Player.transform.position, _bb.Avatar.position);
+    }
+
+
+
+    public override NodeState Evaluate()
+    {
+        if (_bb.destBehavior != BehaviorType.Escape)
+        {
+            _isTriedGiveUp = false;
+        }
+
+        return _patternRoot.Evaluate();
+    }
+
+
+
+    public override void Reset()
+    {
+        base.Reset();
+        _isTriedGiveUp = false;
+    }
+
+
+
+    //private bool HasToGiveUp()
+    //{
+    //    //if (_isTriedGiveUp) return false;
+    //    if (_bb.Anim.GetLayerWeight(STRIKE_LAYER_INDEX) <= 0.99f) return false;
+    //    ExitSpot exitSpot = _bb.destSpot as ExitSpot;
+    //    if (exitSpot == null) return false;
+    //    float healthRatio = exitSpot.GateHealthRatio;
+    //    _isTriedGiveUp = true;
+    //    Debug.Log(UnityEngine.Random.value + " : " + healthRatio);
+    //    Debug.Log(UnityEngine.Random.value < healthRatio);
+    //    return UnityEngine.Random.value < healthRatio;
+    //}
+
+
+
+    private bool HasToGiveUp()
+    {
+        ExitSpot exitSpot = _bb.destSpot as ExitSpot;
+        if (exitSpot == null) return false;
+
+        float roll = UnityEngine.Random.value;
+        float healthRatio = exitSpot.GateHealthRatio;
+        float giveupProbability = Mathf.Lerp(0, 0.6f, healthRatio);
+        bool isSuccess = roll < giveupProbability;
+
+        if (isSuccess == false)
+        {
+            _isTriedGiveUp = true;
+        }
+
+        Debug.Log($"[GiveUp 주사위] 결과: {isSuccess}, 확률: {roll} / {giveupProbability}");
+
+        return isSuccess;
     }
 }
 
@@ -523,11 +882,11 @@ public class TryEscapePattern : PatternNode
     public TryEscapePattern()
     {
         // 내부 로직 설계: Selector를 통해 조건별 분기
-        _patternRoot = new Sequence(new List<BT_Node>
+        Sequence escapeBehaviorSeq = new Sequence(new List<BT_Node>
         {
             new PrintDebug("TryEscapePattern"),
+            new ActionNode(() => _bb.isForceBehavior = true),
             new SetRandomSpeedPattern(),
-            //new SetSpeed(() => PostStudent._walkSpeed),
             new MoveToSpot(),
             new RotateToSpot(),
             new ReactiveSelector(new List<BT_Node>
@@ -539,6 +898,7 @@ public class TryEscapePattern : PatternNode
                 },
                    new Sequence(new List<BT_Node>
                    {
+                       new RotateToSpot(),
                        new ActionNode(() => _bb.isEscaping = true),
                        new PrintDebug("Escape success!"),
                        new StopAndDisableAgentUpdate(),
@@ -549,7 +909,6 @@ public class TryEscapePattern : PatternNode
                            exitGate.OpenGate();
                        }, NodeState.Success),
                        new EscapeTypeSelectPattern(),
-                       // exitGate의 세부타입별로 다른 PatternNode 실행하기
                        new ActionNode(null, NodeState.Running),
                        new ActionNode(() => _bb.isEscaping = false),
                    })
@@ -565,6 +924,7 @@ public class TryEscapePattern : PatternNode
                 ),
                 new Sequence(new List<BT_Node>
                 {
+                    new RotateToSpot(), 
                     // --- [공격 단계] ---
                     new LerpLayerWeight(COMBAT_LAYER_INDEX, 0, 10),
                     new LerpLayerWeight(STRIKE_LAYER_INDEX, 1, 10),
@@ -573,6 +933,7 @@ public class TryEscapePattern : PatternNode
                     new SetAnimRootMotion(true),
 
                     new ExitAttackPattern(), // 실제 주먹 휘두르는 동안
+                    new Delay(() => 0.1f),
                 
                     //new Delay(() => Time.deltaTime),
                     new SetAnimRootMotion(false),
@@ -581,6 +942,8 @@ public class TryEscapePattern : PatternNode
                 })
             }),
         });
+
+        _patternRoot = new LoopUntil(() => _bb.destBehavior != BehaviorType.Escape, escapeBehaviorSeq);
     }
 
     public override NodeState Evaluate()
@@ -620,8 +983,8 @@ public class ExitAttackPattern : PatternNode
                 new List<System.Func<int>> {
                     () => 10,
                     //() => 0,
-                    () => 0,
-                    () => 0,
+                    () => 10,
+                    () => 10,
                 }
             ),
             //new SetAnimRootMotion(false),
@@ -638,6 +1001,111 @@ public class ExitAttackPattern : PatternNode
         }
 
         return state;
+    }
+}
+
+
+
+public class TacklePattern : PatternNode
+{
+    private float SLIDE_RANGE = 4f;
+    private bool _isTackled = false;
+
+    public TacklePattern()
+    {
+        //_patternRoot = new ReactiveSelector(new List<BT_Node>
+        //{
+        //    // 사거리 내: 태클 실행
+        //    new ConditionDecorator(() => GetDistance() <= SLIDE_RANGE && !_isTackled,
+        //        new Sequence(new List<BT_Node>
+        //        {
+        //            new StopAndDisableAgentUpdate(),
+        //            new ActionNode(() => {
+        //                _isTackled = true;
+        //                var attacker = _bb.Avatar.GetComponent<PostStudent>().GetOverlapAttacker(OverlapAttackType.Tackle);
+        //                attacker.StartAttack();
+        //            }, NodeState.Success),
+        //            new SetAnimRootMotion(true),
+        //            new PlayOnceAnim("Tackle", "Tackle"),
+        //            new ActionNode(() => 
+        //            {
+        //                //_bb.Agent.Warp(_bb.Avatar.position);
+        //            }),
+        //            new SetAnimRootMotion(false),
+        //            //new EnableAgentUpdate(),
+        //            new ActionNode(() => {
+        //                var attacker = _bb.Avatar.GetComponent<PostStudent>().GetOverlapAttacker(OverlapAttackType.Tackle);
+        //                attacker.StopAttack();
+        //            }, NodeState.Success),
+        //        })
+        //    ),
+    
+        //    // 사거리 외: 추격
+        //    new Sequence(new List<BT_Node> {
+        //        new SetAnimRootMotion(false),
+        //        new SetSpeed(() => 6.75f),
+        //        new ParallelNode(new List<BT_Node>
+        //        {
+        //            new MoveToPlayer(),
+        //            new RotateToPlayer()
+        //        }),
+        //    })
+        //});
+
+        _patternRoot = new ReactiveSelector(new List<BT_Node>
+        {
+            new ConditionDecorator(() => GetDistance() > SLIDE_RANGE && !_isTackled,
+                new Sequence(new List<BT_Node> {
+                    new SetAnimRootMotion(false),
+                    new SetSpeed(() => 6.75f),
+                    new ParallelNode(new List<BT_Node>
+                    {
+                        new MoveToPlayer(),
+                        new RotateToPlayer()
+                    }),
+                })
+            ),
+            new Sequence(new List<BT_Node>
+            {
+                //new RotateToPlayer(),
+                new ActionNode(() => {
+                    _isTackled = true;
+                    var attacker = _bb.Avatar.GetComponent<PostStudent>().GetOverlapAttacker(OverlapAttackType.Tackle);
+                    attacker.StartAttack();
+                    _bb.Avatar.GetComponent<Collider>().enabled = false;
+                }, NodeState.Success),
+                new StopAndDisableAgentUpdate(),
+                new SetAnimRootMotion(true),
+                new PlayOnceAnim("Tackle", "Tackle", 0),
+                new ActionNode(() =>
+                {
+                    _bb.Agent.Warp(_bb.Avatar.position);
+                }),
+                new SetAnimRootMotion(false),
+                new EnableAgentUpdate(),
+                new ActionNode(() => {
+                    var attacker = _bb.Avatar.GetComponent<PostStudent>().GetOverlapAttacker(OverlapAttackType.Tackle);
+                    attacker.StopAttack();
+                    _bb.Avatar.GetComponent<Collider>().enabled = true;
+                }, NodeState.Success),
+            })
+        });
+    }
+
+
+
+    private float GetDistance()
+    {
+        if (_bb.Player == null) return float.MaxValue;
+
+        return _bb.Avatar.DistanceTo(_bb.Player.transform);
+    }
+
+
+    public override void Reset()
+    {
+        base.Reset();
+        _isTackled = false;
     }
 }
 

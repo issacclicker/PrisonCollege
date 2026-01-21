@@ -34,7 +34,7 @@ public class ThrowWeapon : WeaponBase
         Vector3 camRight = playerCamera.transform.right;
         Vector3 camUp = playerCamera.transform.up;
         Quaternion camRot = playerCamera.transform.rotation;
-        Quaternion rotation = Quaternion.Euler(0, -1f, 0);
+        Quaternion rotation = Quaternion.Euler(0, -0.5f, 0);
         camForward = rotation * camForward;
 
         // 2. ���� ��ġ ��� (ī�޶� �߽� ������)

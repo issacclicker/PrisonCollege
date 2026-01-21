@@ -41,7 +41,7 @@ public class Microwave : MonoBehaviour
 
     public void PutFood(FoodInfo foodInfo)
     {
-        _currentFoodInside = null;
+        Destroy(_currentFoodInside?.gameObj);
         _currentFoodInside = new();
         _currentFoodInside.isCauseFire = foodInfo.isCauseFire;
         Quaternion initialRotation = Quaternion.Euler(-90f, 0f, 0f);

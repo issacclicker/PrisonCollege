@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,8 +7,9 @@ using UnityEngine.Events;
 public abstract class EffectReceiver : MonoBehaviour, IEffectable
 {
     //[SerializeField] private Stat _effectStat;
+    public Func<bool> CanEffectChecker;
     public abstract Stat EffectedStat { get; }
-    public virtual bool CanEffect { get; }
+    public virtual bool CanEffect => (CanEffectChecker == null || CanEffectChecker());
     public virtual bool IsInvincible { get; set; }
     public virtual Vector3 Position => transform.position;
 

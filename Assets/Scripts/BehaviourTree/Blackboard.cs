@@ -11,6 +11,7 @@ public class Blackboard
     public Transform Avatar { get; private set; }
     public BehaviorWeightSet BehaviorWeightSet { get; private set; }
     public StageSpots StageSpots { get; private set; }
+    public GameObject Player { get; private set; }
 
     //public void Setup(NavMeshAgent agent, Animator animator, Transform transform)
     //{
@@ -20,15 +21,17 @@ public class Blackboard
     //}
 
 
-    public Blackboard(GameObject owner, BehaviorWeightSet weightSet, StageSpots spots)
+    public Blackboard(GameObject owner, BehaviorWeightSet weightSet, StageSpots spots, GameObject player)
     {
         this.Agent = owner.GetComponent<NavMeshAgent>();
         this.Anim = owner.GetComponentInChildren<Animator>();
         this.Avatar = owner.transform;
+        this.Player = player;
         this.coopData = new();
 
         this.BehaviorWeightSet = weightSet;
         this.StageSpots = spots;
+        this.currentState = AIState.Idle;
     }
 
 
@@ -46,6 +49,11 @@ public class Blackboard
     public bool isStunned;
     public bool isEscaping;
 
+    public bool hasToWork;
+    public bool hasToFrenzy;
+
+    public bool isForceBehavior;
+
     public CoopData coopData;
 
     public bool IsSeating()
@@ -54,8 +62,12 @@ public class Blackboard
     }
 
 
-
-    public bool CanCoop => coopData.spot == null && currentState == AIState.Idle;
+    //나쁜 행동중에는 코옵 불가능
+    public bool CanCoop => coopData.spot == null && !isEscaping
+        && destBehavior != BehaviorType.Tackle
+        && destBehavior != BehaviorType.RushThrough
+        && destBehavior != BehaviorType.Escape
+        && destBehavior != BehaviorType.Fight;
 
 
 

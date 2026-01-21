@@ -44,17 +44,22 @@ public class PostStudent : MonoBehaviour
 
     //private bool _isDamaged = false;
     private DamageReceiver _damageReceiver;
+    private BoostReceiver _boostReceiver;
 
     public Blackboard Blackboard => _blackboard;
 
     private CharacterRagdoll _characterRagdoll;
     private AnimAttacher[] _animAttachers;
 
+    [SerializeField] private OverlapAttacker _bodyOverlapAttacker;
+    [SerializeField] private OverlapAttacker _tackleOverlapAttacker;
+
 
     private void Awake()
     {
         _characterRagdoll = GetComponent<CharacterRagdoll>();
         _damageReceiver = GetComponent<DamageReceiver>();
+        _boostReceiver = GetComponent<BoostReceiver>();
         _agent = GetComponent<NavMeshAgent>();
         _anim = GetComponent<Animator>();
         _characterCollider = GetComponent<CapsuleCollider>();
@@ -64,20 +69,26 @@ public class PostStudent : MonoBehaviour
         _damageReceiver.StatDownEvent?.AddListener(OnDamaged);
         _damageReceiver.DepletedEvent?.AddListener(OnDie);
 
+        _boostReceiver.WorkTriggerEvent.AddListener(OnWorkTriggered);
+        _boostReceiver.FrenzyTriggerEvent.AddListener(OnFrenzyTriggered);
+
         _characterRagdoll.StandUpStartEvent?.AddListener(OnStandUpStart);
         _characterRagdoll.StandUpCompleteEvent.AddListener(OnStandUpComplete);
     }
 
 
 
+
     private void Start()
     {
         HideAllAnimAttachments();
+        StopAllOverlapAttackers();
         _characterRagdoll.UnTriggerRagdoll();
         _speedSelector = ConstructSpeedSelector();
-        _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots);
+        _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots, _player);
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
+        _boostReceiver.CanEffectChecker = () => _root != null && _blackboard != null && _blackboard.targetObject == null;
     }
 
 
@@ -95,6 +106,45 @@ public class PostStudent : MonoBehaviour
         {
             _root.Evaluate();
         }
+    }
+
+
+
+    private void OnWorkTriggered()
+    {
+        Debug.Log("OnWorkTriggered");
+        _blackboard.isForceBehavior = false;
+        _blackboard.hasToWork = true;
+    }
+
+
+
+    private void OnFrenzyTriggered()
+    {
+        Debug.Log("OnFrenzyTriggered");
+        _blackboard.hasToFrenzy = true;
+    }
+
+
+
+    public OverlapAttacker GetOverlapAttacker(OverlapAttackType overlapAttackType)
+    {
+        switch(overlapAttackType)
+        {
+            case OverlapAttackType.BodySlam:
+                return _bodyOverlapAttacker;
+            case OverlapAttackType.Tackle:
+                return _tackleOverlapAttacker;
+        }
+        return null;
+    }
+
+
+
+    private void StopAllOverlapAttackers()
+    {
+        _bodyOverlapAttacker.StopAttack();
+        _tackleOverlapAttacker.StopAttack();
     }
 
 
@@ -128,7 +178,7 @@ public class PostStudent : MonoBehaviour
     {
         Sequence combatSequence = new Sequence(new List<BT_Node>
         {
-            new SetAttackTarget(_player),
+            new SetAttackTarget(() => _player),
             new CombatApproachPattern()
         });
 
@@ -184,6 +234,7 @@ public class PostStudent : MonoBehaviour
         Sequence prowlSequence = new Sequence(new List<BT_Node>
         {
             //new SetRandomBehaveSpot(_prowlSpots),
+            new ActionNode(() => Debug.Log("prowlSequence")),
             _speedSelector,
             new MoveToSpot()
             //new PlayLoopAnim("LookAround", 5)
@@ -201,7 +252,8 @@ public class PostStudent : MonoBehaviour
             //new SetRandomBehaveSpot(_restSpots),
             _speedSelector,
             new MoveToSpot(),
-            new PlayOnceAnim("Smoke", "Smoke")
+            new PlayOnceAnim("Smoke", "Smoke"),
+            new Delay(() => 2f),
             //new PlayLoopAnim("LookAround", 5)
         });
         //Sequence workSequence = new Sequence(new List<BT_Node>
@@ -242,7 +294,7 @@ public class PostStudent : MonoBehaviour
 
         BT_Node combatSubTree = new Sequence(new List<BT_Node>
         {
-            new SetAttackTarget(_player),
+            new SetAttackTarget(() => _player),
             // 1. 적에게 접근 (사거리 안에 들어올 때까지 Running, 들어오면 Success)
             new ParallelNode(new List<BT_Node>
             {
@@ -291,7 +343,8 @@ public class PostStudent : MonoBehaviour
 
         var behaviorNodes = new Dictionary<BehaviorType, BT_Node>
         {
-            { BehaviorType.Sit, ConstructWorkSequence() },
+            //{ BehaviorType.Sit, ConstructWorkSequence() },
+            { BehaviorType.Sit, new WorkPattern() },
             { BehaviorType.UseMicrowave, microwaveSequence },
             { BehaviorType.Escape, new TryEscapePattern() },
             { BehaviorType.RushThrough, new RushThroughPattern() },
@@ -301,41 +354,65 @@ public class PostStudent : MonoBehaviour
         Selector jopBehavior = new Selector(new List<BT_Node>
         {
             // 1. 무한 반복해야 하는 특정 비헤이비어 체크
-            new ConditionDecorator(() => _blackboard.destBehavior == BehaviorType.Escape, 
+            //new ConditionDecorator(() => _blackboard.destBehavior == BehaviorType.Escape, 
+            //    // 여기에 초기화가 필요 없는 루프 로직 배치
+            //    behaviorNodes[BehaviorType.Escape]
+            //),
+
+            new ConditionDecorator(() => _blackboard.destBehavior == BehaviorType.Tackle, 
                 // 여기에 초기화가 필요 없는 루프 로직 배치
-                behaviorNodes[BehaviorType.Escape]
+                new Sequence(new List<BT_Node>
+                {
+                    new ActionNode(HideAllAnimAttachments),
+                    new ActionNode(StopAllOverlapAttackers),
+                    new TacklePattern(),
+                    //new ClearDestBehavior(),
+                })
             ),
 
             // 2. 일반적인 비헤이비어 (매번 초기화가 필요한 그룹)
             new Sequence(new List<BT_Node>
             {
-                new SetRandomBehavior(),
+                //new SetRandomBehavior(),
                 new FindSpotPattern(),
+                new ActionNode(HideAllAnimAttachments),
+                new ActionNode(StopAllOverlapAttackers),
+                new EnableAgentUpdate(),
                 new ResetAnimParameters(),
                 new SetAnimRootMotion(false),
-                new LerpLayerWeight(COMBAT_LAYER_INDEX, 0, 3),
-                new LerpLayerWeight(STRIKE_LAYER_INDEX, 0, 3),
+                new ActionNode(() => Debug.Log(_blackboard.destBehavior)),
+                new LerpLayerWeight(COMBAT_LAYER_INDEX, 0, 10),
+                new LerpLayerWeight(STRIKE_LAYER_INDEX, 0, 10),
                 new EnumSwitchSelector<BehaviorType>(
                     bb => _blackboard.destBehavior,
                     behaviorNodes,
                     prowlSequence
                 ),
             })
-            //new SetRandomBehavior(),
-            //new FindSpotPattern(),
-            //new ResetAnimParameters(),
-            //new SetAnimRootMotion(false),
-            //new LerpLayerWeight(COMBAT_LAYER_INDEX, 0, 3),
-            //new LerpLayerWeight(STRIKE_LAYER_INDEX, 0, 3),
-            //new EnumSwitchSelector<BehaviorType>(
-            //    bb => _blackboard.destBehavior,
-            //    behaviorNodes,
-            //    prowlSequence
-            //),
         });
-        return new TakeHitReactivePattern(new AttackReactivePattern(new CoopReactivePatttern(jopBehavior)));
-        //return new CoopReactivePatttern(jopBehavior);
-        //return jopBehavior;
+
+        Sequence jobSeq = new Sequence(new List<BT_Node>
+        {
+        new Selector(new List<BT_Node>
+            {
+                // 강제 모드면 아무것도 안 하고 바로 Success (이미 결정된 행동 유지)
+                new ConditionDecorator(() => _blackboard.isForceBehavior == true,
+                    new ActionNode(null, NodeState.Success)),
+                new SetRandomBehavior()
+            }),
+
+            new PrintDebug("jopBehavior"),
+            jopBehavior
+        });
+        return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new BoostReactivePattern(new CoopReactivePatttern(new EscapeGiveUpReactivePattern(jobSeq))))));
+        //return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new CoopReactivePatttern(new EscapeGiveUpReactivePattern(jobSeq)))));
+        //return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new CoopReactivePatttern(jobSeq))));
+        //return new TakeHitReactivePattern(new AttackReactivePattern(new CoopReactivePatttern(jopBehavior)));
+        BT_Node tackleTree = new Sequence(new List<BT_Node>
+        {
+            new TacklePattern(),
+        });
+        return tackleTree;
     }
 
 
@@ -442,6 +519,7 @@ public class PostStudent : MonoBehaviour
         _characterCollider.enabled = false;
         _blackboard.destSpot?.Release(this);
         StopAllCoroutines();
+        StopAllOverlapAttackers();
         HideAllAnimAttachments();
         //_ragdollStandup.SetRagdoll(true);
         _characterRagdoll.TriggerRagdoll();
@@ -464,9 +542,10 @@ public class PostStudent : MonoBehaviour
         _agent.updatePosition = true;    // 에이전트가 트랜스폼을 움직이도록 허용
         _agent.updateRotation = true;    // 회전도 허용
         _anim.applyRootMotion = false;
-        _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots);
+        _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots, _player);
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
+        OnWorkTriggered();
     }
 
 

@@ -31,4 +31,5 @@ public enum BehaviorType
     RushThrough = 1 << 4,
     Fight = 1 << 5,
     Smoke = 1 << 6,
+    Tackle = 1 << 7,
 }

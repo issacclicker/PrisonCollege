@@ -241,6 +241,28 @@ public class MoveToTarget : BT_Node
 
 
 
+public class MoveToPlayer : BT_Node
+{
+    public override NodeState Evaluate()
+    {
+        _bb.Agent.SetSampleDestination(_bb.Player.transform.position, 2);
+        //Debug.Log($"목적지: {_bb.targetObject.name}, 남은 거리: {_bb.Agent.remainingDistance}");
+
+        // 목적지에 거의 도착했는지 확인
+        if (!_bb.Agent.pathPending && _bb.Agent.remainingDistance <= _bb.Agent.stoppingDistance)
+        {
+            _bb.Anim.SetFloat("MoveSpeed", 0);
+            return NodeState.Success;
+        }
+
+        float currentSpeed = _bb.Agent.velocity.magnitude;
+        _bb.Anim.SetFloat("MoveSpeed", currentSpeed);
+        return NodeState.Running; // 아직 가는 중
+    }
+}
+
+
+
 //나중에 일정 주기 가동시 Time.deltaTime 보정 필요
 public class RotateToSpot : BT_Node
 {
@@ -297,6 +319,35 @@ public class RotateToTarget : BT_Node
             _bb.Avatar.transform.rotation = Quaternion.Slerp(
                 _bb.Avatar.transform.rotation, 
                 targetRotation, 
+                Time.deltaTime * 10f // 회전 속도
+            );
+        }
+
+        // ParallelNode 안에서 계속 돌아야 하므로 항상 Running 반환
+        return NodeState.Running;
+    }
+}
+
+
+
+public class RotateToPlayer : BT_Node
+{
+    private const float ROTATION_SPEED = 10f; // 회전 속도
+    private const float FINISH_ANGLE = 5.0f;  // 이 각도 이내로 들어오면 완료
+
+    public override NodeState Evaluate()
+    {
+        if (_bb.Player == null) return NodeState.Failure;
+
+        Vector3 targetDir = _bb.Player.transform.position - _bb.Avatar.transform.position;
+        targetDir.y = 0;
+
+        if (targetDir.sqrMagnitude > 0.001f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(targetDir);
+            _bb.Avatar.transform.rotation = Quaternion.Slerp(
+                _bb.Avatar.transform.rotation,
+                targetRotation,
                 Time.deltaTime * 10f // 회전 속도
             );
         }
@@ -483,12 +534,106 @@ public class PlayLoopAnim : BT_Node
 
 
 
+//public class PlayOnceAnim : BT_Node
+//{
+//    private string _triggerName;
+//    private string _stateName;   // 애니메이터에 설정된 스테이트 이름
+//    private int _layer;
+//    private bool _triggered = false;
+
+//    public PlayOnceAnim(string triggerName, string stateName, int layer = 0)
+//    {
+//        _triggerName = triggerName;
+//        _stateName = stateName;
+//        _layer = layer;
+//    }
+
+//    public override void Reset()
+//    {
+//        _triggered = false;
+//    }
+
+//    //public override NodeState Evaluate()
+//    //{
+//    //    var stateInfo = _bb.Anim.GetCurrentAnimatorStateInfo(_layer);
+
+//    //    // 1. 트리거 실행
+//    //    if (!_triggered)
+//    //    {
+//    //        _bb.Anim.SetTrigger(_triggerName);
+//    //        _triggered = true;
+//    //        return NodeState.Running;
+//    //    }
+
+//    //    // 2. 애니메이션이 목표 스테이트에 있고, 한 바퀴 다 돌았는지 확인
+//    //    // IsName은 스테이트 이름 혹은 "Base Layer.StateName" 형태여야 할 수 있습니다.
+//    //    if (stateInfo.IsName(_stateName))
+//    //    {
+//    //        if (stateInfo.normalizedTime >= 0.95f)
+//    //        {
+//    //            Reset();
+//    //            return NodeState.Success;
+//    //        }
+//    //    }
+//    //    else if (_triggered && !_bb.Anim.IsInTransition(_layer))
+//    //    {
+//    //        // 트리거는 당겼는데 아직 스테이트 진입도 안 했고 트랜지션 중도 아니라면 대기
+//    //        return NodeState.Running;
+//    //    }
+
+//    //    return NodeState.Running;
+//    //}
+
+
+//    public override NodeState Evaluate()
+//    {
+//        var stateInfo = _bb.Anim.GetCurrentAnimatorStateInfo(_layer);
+//        bool isInTransition = _bb.Anim.IsInTransition(_layer);
+
+//        // 1. 트리거 실행
+//        if (!_triggered)
+//        {
+//            _bb.Anim.SetTrigger(_triggerName);
+//            _triggered = true;
+//            return NodeState.Running;
+//        }
+
+//        // 2. 현재 상태가 목표한 애니메이션 스테이트인 경우
+//        if (stateInfo.IsName(_stateName))
+//        {
+//            // 애니메이션 완료 체크 (95% 이상 진행 시 성공)
+//            if (stateInfo.normalizedTime >= 0.95f)
+//            {
+//                Reset();
+//                return NodeState.Success;
+//            }
+//            return NodeState.Running;
+//        }
+
+//        // 3. 중단(Interrupt) 확인 로직
+//        // 트리거를 이미 당겼고(triggered), 목표 스테이트도 아닌데(2번 통과 못함), 
+//        // 현재 다른 스테이트로 전환 중(Transition)도 아니라면? -> "다른 곳으로 튕겨 나갔음"
+//        if (_triggered && !isInTransition)
+//        {
+//            // 목표했던 스테이트가 아닌 다른 스테이트에 머물고 있다면 실패로 간주
+//            Debug.Log($"[PlayOnceAnim] {_stateName} 중단됨 (현재 상태: {stateInfo.fullPathHash})");
+//            Reset();
+//            return NodeState.Failure;
+//        }
+
+//        return NodeState.Running;
+//    }
+//}
+
+
+
 public class PlayOnceAnim : BT_Node
 {
     private string _triggerName;
-    private string _stateName;   // 애니메이터에 설정된 스테이트 이름
+    private string _stateName;
     private int _layer;
     private bool _triggered = false;
+    private bool _enteredState = false; // ★ 목표 스테이트에 진입했는지 확인용
 
     public PlayOnceAnim(string triggerName, string stateName, int layer = 0)
     {
@@ -500,11 +645,13 @@ public class PlayOnceAnim : BT_Node
     public override void Reset()
     {
         _triggered = false;
+        _enteredState = false;
     }
 
     //public override NodeState Evaluate()
     //{
     //    var stateInfo = _bb.Anim.GetCurrentAnimatorStateInfo(_layer);
+    //    bool isInTransition = _bb.Anim.IsInTransition(_layer);
 
     //    // 1. 트리거 실행
     //    if (!_triggered)
@@ -514,24 +661,48 @@ public class PlayOnceAnim : BT_Node
     //        return NodeState.Running;
     //    }
 
-    //    // 2. 애니메이션이 목표 스테이트에 있고, 한 바퀴 다 돌았는지 확인
-    //    // IsName은 스테이트 이름 혹은 "Base Layer.StateName" 형태여야 할 수 있습니다.
-    //    if (stateInfo.IsName(_stateName))
+    //    // 2. 현재 목표 스테이트 재생 중인지 확인
+    //    bool isAtTarget = stateInfo.IsName(_stateName) || stateInfo.IsName("Base Layer." + _stateName);
+
+    //    if (isAtTarget)
     //    {
-    //        if (stateInfo.normalizedTime >= 0.95f)
+    //        _enteredState = true; // 일단 한 번이라도 들어왔으면 체크
+
+    //        // 95% 이상 돌았거나, 이미 다음 모션으로 '나가는' 트랜지션 중이라면 성공!
+    //        if (stateInfo.normalizedTime >= 0.95f || isInTransition)
     //        {
     //            Reset();
     //            return NodeState.Success;
     //        }
-    //    }
-    //    else if (_triggered && !_bb.Anim.IsInTransition(_layer))
-    //    {
-    //        // 트리거는 당겼는데 아직 스테이트 진입도 안 했고 트랜지션 중도 아니라면 대기
     //        return NodeState.Running;
+    //    }
+
+    //    // 3. 목표 스테이트는 아니지만, 트랜지션 중이라면 일단 기다림
+    //    if (isInTransition)
+    //    {
+    //        return NodeState.Running;
+    //    }
+
+    //    // 4. [수정된 로직] 이미 목표 스테이트에 들어갔다 나왔는데, 
+    //    // 트랜지션도 끝나고 다른 스테이트(Idle 등)라면? -> 성공으로 간주하고 탈출
+    //    if (_enteredState)
+    //    {
+    //        Reset();
+    //        return NodeState.Success;
+    //    }
+
+    //    // 5. 트리거는 당겼는데 아예 목표 스테이트에 구경도 못 해보고 딴 데로 갔을 때만 실패
+    //    if (_triggered && !isInTransition)
+    //    {
+    //        // 진짜 예외 상황일 때만 로그 출력
+    //        Debug.Log($"[PlayOnceAnim] {_stateName} 진입 실패 (예기치 못한 중단)");
+    //        Reset();
+    //        return NodeState.Failure;
     //    }
 
     //    return NodeState.Running;
     //}
+
 
 
     public override NodeState Evaluate()
@@ -539,19 +710,22 @@ public class PlayOnceAnim : BT_Node
         var stateInfo = _bb.Anim.GetCurrentAnimatorStateInfo(_layer);
         bool isInTransition = _bb.Anim.IsInTransition(_layer);
 
-        // 1. 트리거 실행
         if (!_triggered)
         {
+            // 이미 트랜지션 중이면 트리거를 쏘지 않고 다음 프레임 대기
+            if (isInTransition) return NodeState.Running;
+
             _bb.Anim.SetTrigger(_triggerName);
             _triggered = true;
-            return NodeState.Running;
+            return NodeState.Running; // 트리거 쏜 프레임은 무조건 Running
         }
 
-        // 2. 현재 상태가 목표한 애니메이션 스테이트인 경우
-        if (stateInfo.IsName(_stateName))
+        bool isAtTarget = stateInfo.IsName(_stateName) || stateInfo.IsName("Base Layer." + _stateName);
+
+        if (isAtTarget)
         {
-            // 애니메이션 완료 체크 (95% 이상 진행 시 성공)
-            if (stateInfo.normalizedTime >= 0.95f)
+            _enteredState = true;
+            if (stateInfo.normalizedTime >= 0.95f || isInTransition)
             {
                 Reset();
                 return NodeState.Success;
@@ -559,17 +733,16 @@ public class PlayOnceAnim : BT_Node
             return NodeState.Running;
         }
 
-        // 3. 중단(Interrupt) 확인 로직
-        // 트리거를 이미 당겼고(triggered), 목표 스테이트도 아닌데(2번 통과 못함), 
-        // 현재 다른 스테이트로 전환 중(Transition)도 아니라면? -> "다른 곳으로 튕겨 나갔음"
-        if (_triggered && !isInTransition)
+        if (isInTransition) return NodeState.Running;
+
+        if (_enteredState)
         {
-            // 목표했던 스테이트가 아닌 다른 스테이트에 머물고 있다면 실패로 간주
-            Debug.Log($"[PlayOnceAnim] {_stateName} 중단됨 (현재 상태: {stateInfo.fullPathHash})");
             Reset();
-            return NodeState.Failure;
+            return NodeState.Success;
         }
 
+        // [중요] 트리거를 쏜 직후라면, 최소한 몇 프레임은 '실패'라고 단정짓지 말고 대기
+        // 억지로 Failure를 반환해서 루프를 터뜨리지 않게 합니다.
         return NodeState.Running;
     }
 }
@@ -616,23 +789,25 @@ public class SetAnimBool : BT_Node
 
 public class SetAttackTarget : BT_Node
 {
+    private Func<GameObject> _targetSelector;
     private GameObject _targetObject;
     private DamageReceiver _targetDamageable;
 
-    public SetAttackTarget(GameObject target)
+    public SetAttackTarget(Func<GameObject> targetSelector)
     {
-        _targetObject = target;
+        _targetSelector = targetSelector;
     }
 
     public override NodeState Evaluate()
     {
-        if (_targetObject == null)
+        if (_targetSelector == null)
         {
             Debug.LogWarning("SetAttackTarget: Target GameObject is null.");
             return NodeState.Failure;
         }
 
         // 1. 타겟으로부터 IDamageable 인터페이스 추출
+        _targetObject = _targetSelector.Invoke();
         _targetDamageable = _targetObject.GetComponent<DamageReceiver>();
 
         // 2. 공격 가능한 대상인지 검사 (인터페이스 존재 여부 및 생존 여부)
@@ -943,8 +1118,14 @@ public class SetRandomBehavior : BT_Node
         }
 
         BehaviorType pickedType = weightSet.GetRandomValue();
+        Debug.Log($"[BT] 행동 선정됨: {pickedType}");
 
-        if (pickedType == BehaviorType.None || pickedType == _bb.destBehavior)
+        if (pickedType == BehaviorType.Tackle && _bb.Avatar.DistanceTo(_bb.Player.transform) <= 5)
+        {
+            return NodeState.Failure;
+        }
+
+        if (pickedType == BehaviorType.None || pickedType == _bb.destBehavior || pickedType == _bb.prevBehavior)
         {
             return NodeState.Failure;
         }
@@ -958,13 +1139,83 @@ public class SetRandomBehavior : BT_Node
 
 
 
+public class SetSpecificBehavior : BT_Node
+{
+    private BehaviorType _targetType;
+
+    // 생성자를 통해 어떤 행동으로 설정할지 주입받습니다.
+    public SetSpecificBehavior(BehaviorType type)
+    {
+        _targetType = type;
+    }
+
+    public override NodeState Evaluate()
+    {
+        // 1. 예외 조건: 현재 이미 그 행동을 하고 있거나, 이전 행동과 같다면 실패 처리 (무한 루프 방지)
+        if (_targetType == BehaviorType.None ||
+            _targetType == _bb.destBehavior ||
+            _targetType == _bb.prevBehavior)
+        {
+            return NodeState.Failure;
+        }
+
+        // 2. 특수 조건 (예: 태클인데 거리가 너무 가까우면 안 됨)
+        if (_targetType == BehaviorType.Tackle && _bb.Avatar.DistanceTo(_bb.Player.transform) <= 5)
+        {
+            return NodeState.Failure;
+        }
+
+        // 3. 행동 전환
+        _bb.prevBehavior = _bb.destBehavior;
+        _bb.destBehavior = _targetType;
+
+        Debug.Log($"[BT] 특정 행동으로 강제 설정됨: {_targetType}");
+
+        return NodeState.Success;
+    }
+}
+
+
+
+public class ClearDestBehavior : BT_Node
+{
+    public override NodeState Evaluate()
+    {
+        // 1. 현재 destBehavior를 초기화하기 전에 로그를 남기거나 이전 상태로 백업할 수 있습니다.
+        // 만약 '이전 행동'을 명확히 끝내는 시점이라면 여기서 처리합니다.
+
+        if (_bb == null)
+        {
+            Debug.LogError("블랙보드 참조가 없습니다.");
+            return NodeState.Failure;
+        }
+
+        // 2. 행동 초기화 (None으로 설정)
+        // BehaviorType.None이 정의되어 있다고 가정합니다.
+        _bb.prevBehavior = _bb.destBehavior;
+        _bb.destBehavior = BehaviorType.None;
+
+        // 디버깅용 로그 (선택 사항)
+        Debug.Log("[BT] destBehavior가 초기화되었습니다.");
+
+        return NodeState.Success;
+    }
+}
+
+
+
 public class FindDestSpot : BT_Node
 {
     private float _sampleRange = 2.0f; // 스팟 주변에서 NavMesh를 검색할 반경
 
     public override NodeState Evaluate()
     {
+        PostStudent student = _bb.Avatar.GetComponent<PostStudent>();
         BehaviorType targetType = _bb.destBehavior;
+
+        _bb.destSpot?.Release(student);
+        _bb.destSpot = null;
+
         BehaveSpot spot = _bb.StageSpots.GetRandomSpotByType(targetType);
 
         Debug.Log($"[{spot}]");
@@ -973,10 +1224,9 @@ public class FindDestSpot : BT_Node
             Vector3 rawPosition = spot.transform.position;
             if (NavMesh.SamplePosition(rawPosition, out NavMeshHit hit, _sampleRange, NavMesh.AllAreas))
             {
-                PostStudent student = _bb.Avatar.GetComponent<PostStudent>();
                 if (student == null)
                     return NodeState.Failure;
-                _bb.destSpot?.Release(student);
+                //_bb.destSpot?.Release(student);
                 _bb.destSpot = spot;
                 _bb.destPosition = hit.position;
                 Debug.Log($"FindDestSpot : {spot}");

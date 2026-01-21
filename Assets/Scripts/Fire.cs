@@ -38,6 +38,10 @@ public class Fire : MonoBehaviour
 
     public void Ignite()
     {
+        if (FireSuppressionSystem.Instance.FloodFillRatio > 0f)
+        {
+            return;
+        }
         _isBurning = true;
         _burnDuration.Initialize(true);
         _fireParticle.gameObject.SetActive(true);
