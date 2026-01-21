@@ -49,6 +49,11 @@ public class Blackboard
     public bool isStunned;
     public bool isEscaping;
 
+    public bool hasToWork;
+    public bool hasToFrenzy;
+
+    public bool isForceBehavior;
+
     public CoopData coopData;
 
     public bool IsSeating()

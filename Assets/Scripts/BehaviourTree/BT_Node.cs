@@ -789,23 +789,25 @@ public class SetAnimBool : BT_Node
 
 public class SetAttackTarget : BT_Node
 {
+    private Func<GameObject> _targetSelector;
     private GameObject _targetObject;
     private DamageReceiver _targetDamageable;
 
-    public SetAttackTarget(GameObject target)
+    public SetAttackTarget(Func<GameObject> targetSelector)
     {
-        _targetObject = target;
+        _targetSelector = targetSelector;
     }
 
     public override NodeState Evaluate()
     {
-        if (_targetObject == null)
+        if (_targetSelector == null)
         {
             Debug.LogWarning("SetAttackTarget: Target GameObject is null.");
             return NodeState.Failure;
         }
 
         // 1. 타겟으로부터 IDamageable 인터페이스 추출
+        _targetObject = _targetSelector.Invoke();
         _targetDamageable = _targetObject.GetComponent<DamageReceiver>();
 
         // 2. 공격 가능한 대상인지 검사 (인터페이스 존재 여부 및 생존 여부)
@@ -1130,6 +1132,44 @@ public class SetRandomBehavior : BT_Node
         _bb.prevBehavior = _bb.destBehavior;
         _bb.destBehavior = pickedType;
         Debug.Log($"[BT] 행동 결정됨: {pickedType}");
+
+        return NodeState.Success;
+    }
+}
+
+
+
+public class SetSpecificBehavior : BT_Node
+{
+    private BehaviorType _targetType;
+
+    // 생성자를 통해 어떤 행동으로 설정할지 주입받습니다.
+    public SetSpecificBehavior(BehaviorType type)
+    {
+        _targetType = type;
+    }
+
+    public override NodeState Evaluate()
+    {
+        // 1. 예외 조건: 현재 이미 그 행동을 하고 있거나, 이전 행동과 같다면 실패 처리 (무한 루프 방지)
+        if (_targetType == BehaviorType.None ||
+            _targetType == _bb.destBehavior ||
+            _targetType == _bb.prevBehavior)
+        {
+            return NodeState.Failure;
+        }
+
+        // 2. 특수 조건 (예: 태클인데 거리가 너무 가까우면 안 됨)
+        if (_targetType == BehaviorType.Tackle && _bb.Avatar.DistanceTo(_bb.Player.transform) <= 5)
+        {
+            return NodeState.Failure;
+        }
+
+        // 3. 행동 전환
+        _bb.prevBehavior = _bb.destBehavior;
+        _bb.destBehavior = _targetType;
+
+        Debug.Log($"[BT] 특정 행동으로 강제 설정됨: {_targetType}");
 
         return NodeState.Success;
     }

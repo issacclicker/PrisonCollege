@@ -44,6 +44,7 @@ public class PostStudent : MonoBehaviour
 
     //private bool _isDamaged = false;
     private DamageReceiver _damageReceiver;
+    private BoostReceiver _boostReceiver;
 
     public Blackboard Blackboard => _blackboard;
 
@@ -58,6 +59,7 @@ public class PostStudent : MonoBehaviour
     {
         _characterRagdoll = GetComponent<CharacterRagdoll>();
         _damageReceiver = GetComponent<DamageReceiver>();
+        _boostReceiver = GetComponent<BoostReceiver>();
         _agent = GetComponent<NavMeshAgent>();
         _anim = GetComponent<Animator>();
         _characterCollider = GetComponent<CapsuleCollider>();
@@ -66,6 +68,9 @@ public class PostStudent : MonoBehaviour
 
         _damageReceiver.StatDownEvent?.AddListener(OnDamaged);
         _damageReceiver.DepletedEvent?.AddListener(OnDie);
+
+        _boostReceiver.WorkTriggerEvent.AddListener(OnWorkTriggered);
+        _boostReceiver.FrenzyTriggerEvent.AddListener(OnFrenzyTriggered);
 
         _characterRagdoll.StandUpStartEvent?.AddListener(OnStandUpStart);
         _characterRagdoll.StandUpCompleteEvent.AddListener(OnStandUpComplete);
@@ -100,6 +105,23 @@ public class PostStudent : MonoBehaviour
         {
             _root.Evaluate();
         }
+    }
+
+
+
+    private void OnWorkTriggered()
+    {
+        Debug.Log("OnWorkTriggered");
+        _blackboard.isForceBehavior = false;
+        _blackboard.hasToWork = true;
+    }
+
+
+
+    private void OnFrenzyTriggered()
+    {
+        Debug.Log("OnFrenzyTriggered");
+        _blackboard.hasToFrenzy = true;
     }
 
 
@@ -155,7 +177,7 @@ public class PostStudent : MonoBehaviour
     {
         Sequence combatSequence = new Sequence(new List<BT_Node>
         {
-            new SetAttackTarget(_player),
+            new SetAttackTarget(() => _player),
             new CombatApproachPattern()
         });
 
@@ -271,7 +293,7 @@ public class PostStudent : MonoBehaviour
 
         BT_Node combatSubTree = new Sequence(new List<BT_Node>
         {
-            new SetAttackTarget(_player),
+            new SetAttackTarget(() => _player),
             // 1. 적에게 접근 (사거리 안에 들어올 때까지 Running, 들어오면 Success)
             new ParallelNode(new List<BT_Node>
             {
@@ -320,7 +342,8 @@ public class PostStudent : MonoBehaviour
 
         var behaviorNodes = new Dictionary<BehaviorType, BT_Node>
         {
-            { BehaviorType.Sit, ConstructWorkSequence() },
+            //{ BehaviorType.Sit, ConstructWorkSequence() },
+            { BehaviorType.Sit, new WorkPattern() },
             { BehaviorType.UseMicrowave, microwaveSequence },
             { BehaviorType.Escape, new TryEscapePattern() },
             { BehaviorType.RushThrough, new RushThroughPattern() },
@@ -339,6 +362,8 @@ public class PostStudent : MonoBehaviour
                 // 여기에 초기화가 필요 없는 루프 로직 배치
                 new Sequence(new List<BT_Node>
                 {
+                    new ActionNode(HideAllAnimAttachments),
+                    new ActionNode(StopAllOverlapAttackers),
                     new TacklePattern(),
                     //new ClearDestBehavior(),
                 })
@@ -349,6 +374,8 @@ public class PostStudent : MonoBehaviour
             {
                 //new SetRandomBehavior(),
                 new FindSpotPattern(),
+                new ActionNode(HideAllAnimAttachments),
+                new ActionNode(StopAllOverlapAttackers),
                 new EnableAgentUpdate(),
                 new ResetAnimParameters(),
                 new SetAnimRootMotion(false),
@@ -365,12 +392,19 @@ public class PostStudent : MonoBehaviour
 
         Sequence jobSeq = new Sequence(new List<BT_Node>
         {
-            new ConditionDecorator(() => _blackboard.destBehavior != BehaviorType.Escape, 
+        new Selector(new List<BT_Node>
+            {
+                // 강제 모드면 아무것도 안 하고 바로 Success (이미 결정된 행동 유지)
+                new ConditionDecorator(() => _blackboard.isForceBehavior == true,
+                    new ActionNode(null, NodeState.Success)),
                 new SetRandomBehavior()
-            ),
+            }),
+
+            new PrintDebug("jopBehavior"),
             jopBehavior
         });
-        return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new CoopReactivePatttern(new EscapeGiveUpReactivePattern(jobSeq)))));
+        return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new BoostReactivePattern(new CoopReactivePatttern(new EscapeGiveUpReactivePattern(jobSeq))))));
+        //return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new CoopReactivePatttern(new EscapeGiveUpReactivePattern(jobSeq)))));
         //return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new CoopReactivePatttern(jobSeq))));
         //return new TakeHitReactivePattern(new AttackReactivePattern(new CoopReactivePatttern(jopBehavior)));
         BT_Node tackleTree = new Sequence(new List<BT_Node>
@@ -510,6 +544,7 @@ public class PostStudent : MonoBehaviour
         _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots, _player);
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
+        OnWorkTriggered();
     }
 
 

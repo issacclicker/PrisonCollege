@@ -109,7 +109,7 @@ public class CombatApproachPattern : PatternNode
                 {
                     new SetAnimRootMotion(true),
                     new WaitUntilCondition(() => !_bb.isDamaged),
-                    new Delay(() => UnityEngine.Random.Range(1f, 2f)),
+                    new Delay(() => UnityEngine.Random.Range(0f, 1f)),
                     new ActionNode(() => _bb.isStunned = false, NodeState.Success),
                 })
             ),
@@ -581,6 +581,94 @@ public class AttackReactivePattern : PatternNode
 
 
 
+public class WorkPattern : PatternNode
+{
+    public WorkPattern()
+    {
+        Sequence angrySeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Angry", "Angry", 1) });
+        Sequence clapSeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Clap", "Clap", 1) });
+        Sequence frustrateSeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Frustrated", "Frustrated", 1) });
+        Sequence justTyping = new Sequence(new List<BT_Node> { new Delay(() => 0.1f) });
+
+        // 3. 확률 선택기 구성 (가중치 부여)
+        RandomSelector chanceActionSelector = new RandomSelector(
+            new List<BT_Node> { angrySeq, clapSeq, frustrateSeq },
+            new List<System.Func<int>> {
+                () => 10, // 욕(분노) 10%
+                () => 10, // 박수 10%
+                () => 10, // 좌절 10%
+            }
+        );
+
+        _patternRoot = new Sequence(new List<BT_Node>
+        {
+            new SetRandomSpeedPattern(),
+            new MoveToSpot(),
+            new RotateToSpot(),
+            new SetAnimBool("Sitting", true),
+            new SetAnimBool("Typing", true),
+            new Delay(() => 4f),
+            chanceActionSelector,
+            new Delay(() => 3f),
+            chanceActionSelector,
+            new Delay(() => 4f),
+            new SetAnimBool("Sitting", false),
+            new SetAnimBool("Typing", false),
+            new ActionNode(() => _bb.isForceBehavior = false),
+        });
+    }
+}
+
+
+
+public class JopSelectSeqPattern : PatternNode
+{
+    public JopSelectSeqPattern(BT_Node afterRoutine)
+    {
+        _patternRoot = new Sequence(new List<BT_Node>
+        {
+            new ConditionDecorator(() => _bb.destBehavior != BehaviorType.Escape,
+                new SetRandomBehavior()
+            ),
+            afterRoutine
+        });
+    }
+}
+
+
+
+public class BoostReactivePattern : PatternNode
+{
+    public BoostReactivePattern(BT_Node normalRoutine)
+    {
+        _patternRoot = new ReactiveSelector(new List<BT_Node>
+        {
+            new ConditionDecorator(() => _bb.hasToWork && !_bb.isForceBehavior,
+                new Sequence(new List<BT_Node>
+                {
+                    new PrintDebug("hasToWork"),
+                    new SetSpecificBehavior(BehaviorType.Sit),
+                    new ActionNode(() => _bb.isForceBehavior = true),
+                    new ActionNode(() => _bb.hasToWork = false),
+                })
+            ),
+            new ConditionDecorator(() => _bb.hasToFrenzy,
+                new Sequence(new List<BT_Node>
+                {
+                    new PrintDebug("hasToFrenzy"),
+                    new ResetAnimParameters(),
+                    new SetAttackTarget(() =>_bb.Player),
+                    new ActionNode(() => _bb.isForceBehavior = true),
+                    new ActionNode(() => _bb.hasToFrenzy = false),
+                })
+            ),
+            normalRoutine
+        });
+    }
+}
+
+
+
 public class EscapeGiveUpReactivePattern : PatternNode
 {
     private bool _isTriedGiveUp = false; 
@@ -797,6 +885,7 @@ public class TryEscapePattern : PatternNode
         Sequence escapeBehaviorSeq = new Sequence(new List<BT_Node>
         {
             new PrintDebug("TryEscapePattern"),
+            new ActionNode(() => _bb.isForceBehavior = true),
             new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new RotateToSpot(),
