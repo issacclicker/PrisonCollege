@@ -138613,6 +138613,7 @@ MonoBehaviour:
   maxVelocityChange: 10
   enableSprint: 1
   unlimitedSprint: 1
+  holdToSprint: 0
   sprintKey: 304
   sprintSpeed: 5
   sprintDuration: 5
