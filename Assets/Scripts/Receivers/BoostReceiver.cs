@@ -3,7 +3,6 @@ using UnityEngine.Events;
 
 public class BoostReceiver : EffectReceiver
 {
-    public override bool CanEffect => true;
     public override Stat EffectedStat => null;
     public UnityEvent WorkTriggerEvent = new();
     public UnityEvent FrenzyTriggerEvent = new();

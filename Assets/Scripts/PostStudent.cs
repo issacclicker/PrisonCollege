@@ -88,6 +88,7 @@ public class PostStudent : MonoBehaviour
         _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots, _player);
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
+        _boostReceiver.CanEffectChecker = () => _root != null && _blackboard != null && _blackboard.targetObject == null;
     }
 
 
