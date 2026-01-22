@@ -1,16 +1,13 @@
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class StageController : MonoBehaviour
+public class StageController : SceneSingleton<StageController>
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] private TextMeshProUGUI _timerTmp;
+    [SerializeField] private TextMeshProUGUI _chaosTmp;
+    [SerializeField] private TextMeshProUGUI _escapeTmp;
+    [SerializeField] private TextMeshProUGUI _moneyTmp;
+    [SerializeField] private TextMeshProUGUI _workingTmp;
+    [SerializeField] private Image _projectProgressBar;
 }

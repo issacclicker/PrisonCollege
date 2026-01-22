@@ -648,8 +648,11 @@ public class BoostReactivePattern : PatternNode
                 {
                     new PrintDebug("hasToWork"),
                     new SetSpecificBehavior(BehaviorType.Sit),
-                    new ActionNode(() => _bb.isForceBehavior = true),
-                    new ActionNode(() => _bb.hasToWork = false),
+                    new ActionNode(() =>
+                    {
+                        _bb.hasToWork = false;
+                        _bb.isForceBehavior = true;
+                    }),
                 })
             ),
             new ConditionDecorator(() => _bb.hasToFrenzy,
