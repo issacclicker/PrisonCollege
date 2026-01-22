@@ -19,14 +19,18 @@ public class Professor : MonoBehaviour, IAttackable
     private FirstPersonController _controller;
     private PlayerInteraction _playerInteraction;
     private Stamina _stamina;
+    private TaskCameraRotator _taskCameraRotator;
 
     private void Awake()
     {
+        _taskCameraRotator = _cameraFollow.GetComponent<TaskCameraRotator>();
         _rigidbody = GetComponent<Rigidbody>();
         _controller = GetComponent<FirstPersonController>();
         _playerInteraction = GetComponent<PlayerInteraction>();
         _stamina = GetComponent<Stamina>();
         _stamina.Initialize();
+
+        _taskCameraRotator.enabled = false;
     }
 
 
@@ -55,7 +59,8 @@ public class Professor : MonoBehaviour, IAttackable
         _controller.enabled = true;
         _rigidbody.isKinematic = false;
         _weaponController.Show();
-
+        _cameraFollow.currentPitch = 0;
+        _taskCameraRotator.enabled = false;
     }
 
 
@@ -67,6 +72,8 @@ public class Professor : MonoBehaviour, IAttackable
         _rigidbody.isKinematic = true;
         _weaponController.Hide();
         _cameraFollow.currentPitch = 0;
+        _taskCameraRotator.Initialize(Quaternion.LookRotation(transform.forward));
+        _taskCameraRotator.enabled = true;
     }
 
 
