@@ -14,7 +14,7 @@ public class ThrowWeapon : WeaponBase, ICountableWeapon
     [Range(0f, 1f)] public float _spreadAmount = 0.02f; // ź���� ����
     [Range(0f, 1f)] public float _torqueRandomness = 0.5f; // ȸ�� �ұ�Ģ��
     private ThrowAnimator _throwAnimator;
-    private int _count = 0;
+    [SerializeField] private int _count = 0;
 
     public override string TypeName => "투척";
     public override bool CanAttack => base.CanAttack && Amount > 0;
@@ -27,7 +27,7 @@ public class ThrowWeapon : WeaponBase, ICountableWeapon
     {
         base.Awake();
         _throwAnimator = _animator as ThrowAnimator;
-        CheckAmmoModel();
+        _throwableModel.gameObject.SetActive(_count > 0);
     }
 
 

@@ -396,7 +396,7 @@ public class PostStudent : MonoBehaviour
         new Selector(new List<BT_Node>
             {
                 // 강제 모드면 아무것도 안 하고 바로 Success (이미 결정된 행동 유지)
-                new ConditionDecorator(() => _blackboard.isForceBehavior == true,
+                new ConditionDecorator(() => _blackboard.isForceBehavior == true && _blackboard.destBehavior != BehaviorType.None,
                     new ActionNode(null, NodeState.Success)),
                 new SetRandomBehavior()
             }),
