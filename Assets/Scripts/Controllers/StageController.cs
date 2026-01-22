@@ -22,6 +22,8 @@ public class StageController : SceneSingleton<StageController>
     [SerializeField] private float _profProjectProgress = 20;
     [SerializeField] private float _chaosDecrease = 5;
     [SerializeField] private int _progectReward = 50;
+    [Header("Professor Task Place")]
+    [SerializeField] private ProfessorTask[] _professorTasks;
     [Header("ETC")]
     [SerializeField] private bool _isTestMode = true;
 
@@ -72,7 +74,7 @@ public class StageController : SceneSingleton<StageController>
     private void Update()
     {
         CountWorkingStudents();
-        ProgressProject_T();
+        CheckProfessorProgressing();
         ProgressProject();
         DecreaseStats();
         UpdateUIs();
@@ -88,6 +90,21 @@ public class StageController : SceneSingleton<StageController>
             if (student.IsWorking)
             {
                 _workingStudCount++;
+            }
+        }
+    }
+
+
+
+    private void CheckProfessorProgressing()
+    {
+        _isProfWorking = false;
+        foreach (var profTask in _professorTasks)
+        {
+            if (profTask.IsTasking)
+            {
+                _isProfWorking = true;
+                break;
             }
         }
     }

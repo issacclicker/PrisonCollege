@@ -19,7 +19,9 @@ public class WeaponController : MonoBehaviour
 
     public WeaponBase CurrentWeapon => _weapons[_currentIdx];
     public int WeaponCount => _weapons.Length;
-    public GameObject Owner { private set; get; } 
+    public GameObject Owner { private set; get; }
+    private bool isHiding = false;
+    public bool IsHiding => isHiding;
 
     // void Start()
     // {
@@ -45,6 +47,20 @@ public class WeaponController : MonoBehaviour
             _weapons[i].InfoUpdateEvent.AddListener(OnWeaponInfoUpdated);
         }
         Equip(startingIndex);
+    }
+
+    public void Hide()
+    {
+        isHiding = true;
+        CurrentWeapon?.PlayHolsterAnim(_swapDuration, null);
+    }
+
+
+
+    public void Show()
+    {
+        isHiding = false;
+        CurrentWeapon?.PlayDrawAnim(_swapDuration);
     }
 
 

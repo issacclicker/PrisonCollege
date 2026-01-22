@@ -62,7 +62,7 @@ public class PlayerInteraction : MonoBehaviour
     // 상호작용 시작 시 호출되는 함수 (예시)
     private void StartInteraction()
     {
-        if (_currentInteractable != null || !_currentInteractable.CanInteract)
+        if (_currentInteractable != null && _currentInteractable.CanInteract)
         {
             _activeInteractable = _currentInteractable;
             _activeInteractable.OnInteractStart();
