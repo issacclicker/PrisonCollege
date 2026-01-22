@@ -7,6 +7,7 @@ using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Animations;
+using UnityEngine.Events;
 using static Global;
 
 public class PostStudent : MonoBehaviour
@@ -53,6 +54,8 @@ public class PostStudent : MonoBehaviour
 
     [SerializeField] private OverlapAttacker _bodyOverlapAttacker;
     [SerializeField] private OverlapAttacker _tackleOverlapAttacker;
+
+    [HideInInspector] public UnityEvent DieEvent = new();
 
 
     private void Awake()
