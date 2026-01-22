@@ -118,7 +118,8 @@ public class StageController : SceneSingleton<StageController>
 
     private void OnStudentEscaped(PostStudent student)
     {
-
+        _chaosStat.Increase(30);
+        _escapeStat.Increase(1);
     }
 
 

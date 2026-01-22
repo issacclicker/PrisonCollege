@@ -102,6 +102,7 @@ public class PostStudent : MonoBehaviour
         _characterRagdoll.UnTriggerRagdoll();
         _speedSelector = ConstructSpeedSelector();
         _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots, _player);
+        _blackboard.EscapeSuccessEvent.AddListener(OnEscaped);
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
         _boostReceiver.CanEffectChecker = () => _root != null && _blackboard != null && _blackboard.targetObject == null;
@@ -522,6 +523,14 @@ public class PostStudent : MonoBehaviour
         {
             animAttacher.HideAll();
         }
+    }
+
+
+
+    private void OnEscaped()
+    {
+        EscapeEvent?.Invoke(this);
+        gameObject.SetActive(false);
     }
 
 

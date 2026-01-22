@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 [System.Serializable]
 public class Blackboard
@@ -12,6 +13,8 @@ public class Blackboard
     public BehaviorWeightSet BehaviorWeightSet { get; private set; }
     public StageSpots StageSpots { get; private set; }
     public GameObject Player { get; private set; }
+
+    public UnityEvent EscapeSuccessEvent = new();
 
     //public void Setup(NavMeshAgent agent, Animator animator, Transform transform)
     //{
