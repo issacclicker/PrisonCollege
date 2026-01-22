@@ -1389,7 +1389,7 @@ MonoBehaviour:
   _projectStat: {fileID: 335240829}
   _studProjectProgress: 5
   _profProjectProgress: 20
-  _chaosDecrease: 5
+  _chaosDecrease: 2
   _progectReward: 50
   _isTestMode: 1
 --- !u!4 &335240828
@@ -140498,7 +140498,7 @@ MonoBehaviour:
   _velocityThreshold: 0.1
   _standUpDelay: 2
   _forcedStandUpTime: 10
-  _timeToLerpBones: 0.5
+  _timeToLerpBones: 0.3
   _boneSnapshots:
   - stateName: FaceDownStandUp
     clipName: Standing Up
@@ -140543,7 +140543,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ffd385d7eb19d0419fd6e30d9ba0021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlateHandler
-  _fireCauseProbabiliy: 1
+  _fireCauseProbabiliy: 0.5
   _plateHandSocket: {fileID: 1922764701}
   _foodSocket: {fileID: 738170174}
   _plate: {fileID: 919132149060336288}

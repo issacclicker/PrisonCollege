@@ -125,7 +125,10 @@ public class StageController : SceneSingleton<StageController>
 
     private void OnStudentDied(PostStudent student)
     {
-
+        if (student.IsDoingHazardBehavior == false)
+        {
+            _chaosStat.Increase(10);
+        }
     }
 
 
@@ -144,7 +147,7 @@ public class StageController : SceneSingleton<StageController>
         int seconds = Mathf.FloorToInt(_timerStat.Current % 60f);
         _timerTmp.text = string.Format("{0:00}:{1:00}", minutes, seconds);
 
-        _chaosTmp.text = _chaosStat.Current.ToString();
+        _chaosTmp.text = _chaosStat.Current.ToString("F0");
 
         _escapeTmp.text = $"{_escapeStat.Current.ToString("F0")} / {_escapeStat.Max.ToString("F0")}";
 

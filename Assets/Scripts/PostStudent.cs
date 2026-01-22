@@ -52,6 +52,7 @@ public class PostStudent : MonoBehaviour
 
     private CharacterRagdoll _characterRagdoll;
     private AnimAttacher[] _animAttachers;
+    private PlateAttacher _plateAttacher;
 
     [SerializeField] private OverlapAttacker _bodyOverlapAttacker;
     [SerializeField] private OverlapAttacker _tackleOverlapAttacker;
@@ -61,7 +62,12 @@ public class PostStudent : MonoBehaviour
 
     public bool IsWorking =>
         Blackboard != null && Blackboard.destBehavior == BehaviorType.Sit
-        && _anim != null && _anim.GetBool("Typing");
+        && _anim != null && _anim.enabled && _anim.GetBool("Typing");
+
+    public bool IsDoingHazardBehavior =>
+        Blackboard.destBehavior.IsHazard()
+        || (Blackboard.destBehavior == BehaviorType.UseMicrowave && _plateAttacher.CurrentFood != null && _plateAttacher.CurrentFood.isCauseFire)
+        || Blackboard.targetObject != null;
 
 
     private void Awake()
@@ -74,6 +80,7 @@ public class PostStudent : MonoBehaviour
         _characterCollider = GetComponent<CapsuleCollider>();
         _agent.acceleration = 20f;
         _animAttachers = GetComponents<AnimAttacher>();
+        _plateAttacher = GetComponent<PlateAttacher>();
 
         _damageReceiver.StatDownEvent?.AddListener(OnDamaged);
         _damageReceiver.DepletedEvent?.AddListener(OnDie);
