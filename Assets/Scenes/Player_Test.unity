@@ -1387,8 +1387,11 @@ MonoBehaviour:
   _chaosStat: {fileID: 335240831}
   _escapeStat: {fileID: 335240830}
   _projectStat: {fileID: 335240829}
-  chaosDecreasePerSec: 5
-  progectReward: 50
+  _studProjectProgress: 5
+  _profProjectProgress: 20
+  _chaosDecrease: 5
+  _progectReward: 50
+  _isTestMode: 1
 --- !u!4 &335240828
 Transform:
   m_ObjectHideFlags: 0
@@ -100549,7 +100552,7 @@ GameObject:
   - component: {fileID: 3638309149840794951}
   m_Layer: 6
   m_Name: Student
-  m_TagString: Untagged
+  m_TagString: Student
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -140376,6 +140379,12 @@ MonoBehaviour:
   _stageSpots: {fileID: 1706312650}
   _bodyOverlapAttacker: {fileID: 530553826}
   _tackleOverlapAttacker: {fileID: 702207913}
+  DieEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  EscapeEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &3638309149840794941
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -49,6 +49,7 @@ public class StageController : SceneSingleton<StageController>
         foreach (var student in _students)
         {
             student.DieEvent.AddListener(OnStudentDied);
+            student.EscapeEvent.AddListener(OnStudentEscaped);
         }
     }
 
@@ -70,10 +71,25 @@ public class StageController : SceneSingleton<StageController>
 
     private void Update()
     {
+        CountWorkingStudents();
         ProgressProject_T();
         ProgressProject();
         DecreaseStats();
         UpdateUIs();
+    }
+
+
+
+    private void CountWorkingStudents()
+    {
+        _workingStudCount = 0;
+        foreach (var student in _students)
+        {
+            if (student.IsWorking)
+            {
+                _workingStudCount++;
+            }
+        }
     }
 
 
@@ -100,8 +116,14 @@ public class StageController : SceneSingleton<StageController>
     }
 
 
+    private void OnStudentEscaped(PostStudent student)
+    {
 
-    private void OnStudentDied()
+    }
+
+
+
+    private void OnStudentDied(PostStudent student)
     {
 
     }

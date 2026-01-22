@@ -23,6 +23,7 @@ public class Professor : MonoBehaviour, IAttackable
         _controller = GetComponent<FirstPersonController>();
         _playerInteraction = GetComponent<PlayerInteraction>();
         _stamina = GetComponent<Stamina>();
+        _stamina.Initialize();
     }
 
 

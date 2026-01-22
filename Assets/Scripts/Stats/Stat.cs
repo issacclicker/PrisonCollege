@@ -19,7 +19,7 @@ public class Stat : MonoBehaviour
     [HideInInspector] public UnityEvent DepletedEvent = new UnityEvent();
     [HideInInspector] public UnityEvent MaxReachEvent = new UnityEvent();
 
-    protected virtual void Awake() => Initialize();
+    //protected virtual void Awake() => Initialize();
 
 
 

@@ -12,6 +12,9 @@ public class WeaponRecharger : MonoBehaviour
 
     private void Awake()
     {
+        _rechargeAmount.Initialize();
+        _remainedSupplyTime.Initialize();
+
         _interaction = GetComponent<Click>();
         _interaction.ClickEvent.AddListener(RechargeWeapon);
         _interaction.ActionName = $"{_targetWeapon.Name} È¹µæ";

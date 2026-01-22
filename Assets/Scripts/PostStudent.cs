@@ -48,6 +48,7 @@ public class PostStudent : MonoBehaviour
     private BoostReceiver _boostReceiver;
 
     public Blackboard Blackboard => _blackboard;
+    public string Name => _name;
 
     private CharacterRagdoll _characterRagdoll;
     private AnimAttacher[] _animAttachers;
@@ -55,7 +56,12 @@ public class PostStudent : MonoBehaviour
     [SerializeField] private OverlapAttacker _bodyOverlapAttacker;
     [SerializeField] private OverlapAttacker _tackleOverlapAttacker;
 
-    [HideInInspector] public UnityEvent DieEvent = new();
+    [HideInInspector] public UnityEvent<PostStudent> DieEvent = new();
+    [HideInInspector] public UnityEvent<PostStudent> EscapeEvent = new();
+
+    public bool IsWorking =>
+        Blackboard != null && Blackboard.destBehavior == BehaviorType.Sit
+        && _anim != null && _anim.GetBool("Typing");
 
 
     private void Awake()
@@ -515,6 +521,8 @@ public class PostStudent : MonoBehaviour
 
     private void OnDie(HitInfo hitInfo)
     {
+        DieEvent?.Invoke(this);
+
         _root = null;
         _agent.speed = 0;
         _agent.enabled = false;
