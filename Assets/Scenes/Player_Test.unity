@@ -922,7 +922,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0b14c8fae3734049aa8723b2fbd0861, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonitorSpot
-  _behaviorTypes: 1
+  _behaviorTypes: 769
   _monitor: {fileID: 1509308181}
 --- !u!1 &180786424
 GameObject:

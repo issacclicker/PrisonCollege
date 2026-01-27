@@ -611,7 +611,19 @@ public class WorkPattern : PatternNode
             new SetAnimBool("Typing", true),
             new ActionNode(() =>
             {
-                (_bb.destSpot as MonitorSpot)?.TurnOnMonitor(DisplayState.Working);
+                MonitorSpot monitorSpot = _bb.destSpot as MonitorSpot;
+                switch (_bb.destBehavior)
+                {
+                    case BehaviorType.Work:
+                        monitorSpot?.TurnOnMonitor(DisplayState.Working);
+                        return;
+                    case BehaviorType.Hack:
+                        monitorSpot?.TurnOnMonitor(DisplayState.Hacking);
+                        return;
+                    case BehaviorType.Game:
+                        monitorSpot?.TurnOnMonitor(DisplayState.Gaming);
+                        return;
+                }
             }),
             new Delay(() => 4f),
             new ActionNode(() =>
@@ -632,6 +644,7 @@ public class WorkPattern : PatternNode
             new ActionNode(() =>
             {
                 (_bb.destSpot as MonitorSpot)?.ResumeMonitor();
+                LabLightSystem.Instance.TurnOff();
             }),
             new Delay(() => 4f),
             new SetAnimBool("Sitting", false),
@@ -669,7 +682,7 @@ public class BoostReactivePattern : PatternNode
                 new Sequence(new List<BT_Node>
                 {
                     new PrintDebug("hasToWork"),
-                    new SetSpecificBehavior(BehaviorType.Sit),
+                    new SetSpecificBehavior(BehaviorType.Work),
                     new ActionNode(() =>
                     {
                         _bb.hasToWork = false;

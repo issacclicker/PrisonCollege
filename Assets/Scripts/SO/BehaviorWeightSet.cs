@@ -37,7 +37,7 @@ public class BehaviorInfoAttribute : Attribute
 public enum BehaviorType
 {
     [BehaviorInfo(BehaviorSafety.Safe)] None = 0,
-    [BehaviorInfo(BehaviorSafety.Safe)] Sit = 1 << 0,
+    [BehaviorInfo(BehaviorSafety.Safe)] Work = 1 << 0,
     [BehaviorInfo(BehaviorSafety.Safe)] LookAround = 1 << 1,
     [BehaviorInfo(BehaviorSafety.Safe)] UseMicrowave = 1 << 2,
     [BehaviorInfo(BehaviorSafety.Hazard)] Escape = 1 << 3,
@@ -45,4 +45,6 @@ public enum BehaviorType
     [BehaviorInfo(BehaviorSafety.Hazard)] Fight = 1 << 5,
     [BehaviorInfo(BehaviorSafety.Hazard)] Smoke = 1 << 6,
     [BehaviorInfo(BehaviorSafety.Hazard)] Tackle = 1 << 7,
+    [BehaviorInfo(BehaviorSafety.Hazard)] Hack = 1 << 8,
+    [BehaviorInfo(BehaviorSafety.Safe)] Game = 1 << 9,
 }

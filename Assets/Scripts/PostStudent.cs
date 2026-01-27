@@ -61,7 +61,7 @@ public class PostStudent : MonoBehaviour
     [HideInInspector] public UnityEvent<PostStudent> EscapeEvent = new();
 
     public bool IsWorking =>
-        Blackboard != null && Blackboard.destBehavior == BehaviorType.Sit
+        Blackboard != null && Blackboard.destBehavior == BehaviorType.Work
         && _anim != null && _anim.enabled && _anim.GetBool("Typing");
 
     public bool IsDoingHazardBehavior =>
@@ -361,7 +361,9 @@ public class PostStudent : MonoBehaviour
         var behaviorNodes = new Dictionary<BehaviorType, BT_Node>
         {
             //{ BehaviorType.Sit, ConstructWorkSequence() },
-            { BehaviorType.Sit, new WorkPattern() },
+            { BehaviorType.Work, new WorkPattern() },
+            { BehaviorType.Game, new WorkPattern() },
+            { BehaviorType.Hack, new WorkPattern() },
             { BehaviorType.UseMicrowave, microwaveSequence },
             { BehaviorType.Escape, new TryEscapePattern() },
             { BehaviorType.RushThrough, new RushThroughPattern() },
