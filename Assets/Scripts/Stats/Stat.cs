@@ -14,12 +14,12 @@ public class Stat : MonoBehaviour
     public bool IsDepleted => _currentStat <= 0;
     public bool IsMax => _currentStat >= _maxStat;
 
-    public UnityEvent<float> IncreaseEvent = new UnityEvent<float>();
-    public UnityEvent<float> DecreaseEvent = new UnityEvent<float>();
-    public UnityEvent DepletedEvent = new UnityEvent();
-    public UnityEvent MaxReachEvent = new UnityEvent();
+    [HideInInspector] public UnityEvent<float> IncreaseEvent = new UnityEvent<float>();
+    [HideInInspector] public UnityEvent<float> DecreaseEvent = new UnityEvent<float>();
+    [HideInInspector] public UnityEvent DepletedEvent = new UnityEvent();
+    [HideInInspector] public UnityEvent MaxReachEvent = new UnityEvent();
 
-    protected virtual void Awake() => Initialize();
+    //protected virtual void Awake() => Initialize();
 
 
 

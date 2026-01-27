@@ -13,6 +13,7 @@ public class DamageReceiver : EffectReceiver
     private void Awake()
     {
         _health = GetComponent<Health>();
+        _health.Initialize();
     }
 
 

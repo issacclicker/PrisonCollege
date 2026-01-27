@@ -7,6 +7,7 @@ using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Animations;
+using UnityEngine.Events;
 using static Global;
 
 public class PostStudent : MonoBehaviour
@@ -47,12 +48,26 @@ public class PostStudent : MonoBehaviour
     private BoostReceiver _boostReceiver;
 
     public Blackboard Blackboard => _blackboard;
+    public string Name => _name;
 
     private CharacterRagdoll _characterRagdoll;
     private AnimAttacher[] _animAttachers;
+    private PlateAttacher _plateAttacher;
 
     [SerializeField] private OverlapAttacker _bodyOverlapAttacker;
     [SerializeField] private OverlapAttacker _tackleOverlapAttacker;
+
+    [HideInInspector] public UnityEvent<PostStudent> DieEvent = new();
+    [HideInInspector] public UnityEvent<PostStudent> EscapeEvent = new();
+
+    public bool IsWorking =>
+        Blackboard != null && Blackboard.destBehavior == BehaviorType.Sit
+        && _anim != null && _anim.enabled && _anim.GetBool("Typing");
+
+    public bool IsDoingHazardBehavior =>
+        Blackboard.destBehavior.IsHazard()
+        || (Blackboard.destBehavior == BehaviorType.UseMicrowave && _plateAttacher.CurrentFood != null && _plateAttacher.CurrentFood.isCauseFire)
+        || Blackboard.targetObject != null;
 
 
     private void Awake()
@@ -65,6 +80,7 @@ public class PostStudent : MonoBehaviour
         _characterCollider = GetComponent<CapsuleCollider>();
         _agent.acceleration = 20f;
         _animAttachers = GetComponents<AnimAttacher>();
+        _plateAttacher = GetComponent<PlateAttacher>();
 
         _damageReceiver.StatDownEvent?.AddListener(OnDamaged);
         _damageReceiver.DepletedEvent?.AddListener(OnDie);
@@ -86,6 +102,7 @@ public class PostStudent : MonoBehaviour
         _characterRagdoll.UnTriggerRagdoll();
         _speedSelector = ConstructSpeedSelector();
         _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots, _player);
+        _blackboard.EscapeSuccessEvent.AddListener(OnEscaped);
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
         _boostReceiver.CanEffectChecker = () => _root != null && _blackboard != null && _blackboard.targetObject == null;
@@ -396,7 +413,7 @@ public class PostStudent : MonoBehaviour
         new Selector(new List<BT_Node>
             {
                 // 강제 모드면 아무것도 안 하고 바로 Success (이미 결정된 행동 유지)
-                new ConditionDecorator(() => _blackboard.isForceBehavior == true,
+                new ConditionDecorator(() => _blackboard.isForceBehavior == true && _blackboard.destBehavior != BehaviorType.None,
                     new ActionNode(null, NodeState.Success)),
                 new SetRandomBehavior()
             }),
@@ -510,8 +527,18 @@ public class PostStudent : MonoBehaviour
 
 
 
+    private void OnEscaped()
+    {
+        EscapeEvent?.Invoke(this);
+        gameObject.SetActive(false);
+    }
+
+
+
     private void OnDie(HitInfo hitInfo)
     {
+        DieEvent?.Invoke(this);
+
         _root = null;
         _agent.speed = 0;
         _agent.enabled = false;

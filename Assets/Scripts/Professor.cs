@@ -13,16 +13,24 @@ public class Professor : MonoBehaviour, IAttackable
     [SerializeField] private bool _isSwapWheelnvert = false; // true면 방향이 반대가 됨
     [SerializeField] private float _sprintStaminaDrain = 20f;
     [SerializeField] private float _staminaRegenRate = 5f;
+    [SerializeField] private CameraFollow _cameraFollow;
 
+    private Rigidbody _rigidbody;
     private FirstPersonController _controller;
     private PlayerInteraction _playerInteraction;
     private Stamina _stamina;
+    private TaskCameraRotator _taskCameraRotator;
 
     private void Awake()
     {
+        _taskCameraRotator = _cameraFollow.GetComponent<TaskCameraRotator>();
+        _rigidbody = GetComponent<Rigidbody>();
         _controller = GetComponent<FirstPersonController>();
         _playerInteraction = GetComponent<PlayerInteraction>();
         _stamina = GetComponent<Stamina>();
+        _stamina.Initialize();
+
+        _taskCameraRotator.enabled = false;
     }
 
 
@@ -42,6 +50,30 @@ public class Professor : MonoBehaviour, IAttackable
         HandleSprintStamina();
         HandleWeaponAttack();
         HandleWeaponSwap();
+    }
+
+
+
+    public void UnsetTaskPose()
+    {
+        _controller.enabled = true;
+        _rigidbody.isKinematic = false;
+        _weaponController.Show();
+        _cameraFollow.currentPitch = 0;
+        _taskCameraRotator.enabled = false;
+    }
+
+
+
+    public void SetTaskPose()
+    {
+        _controller.StopSprinting();
+        _controller.enabled = false;
+        _rigidbody.isKinematic = true;
+        _weaponController.Hide();
+        _cameraFollow.currentPitch = 0;
+        _taskCameraRotator.Initialize(Quaternion.LookRotation(transform.forward));
+        _taskCameraRotator.enabled = true;
     }
 
 
@@ -66,6 +98,7 @@ public class Professor : MonoBehaviour, IAttackable
 
     private void HandleWeaponAttack()
     {
+        if (_weaponController.IsHiding) return;
         if (Input.GetMouseButtonDown(0))
         {
             float currentWeaponStaminaCost = _weaponController.CurrentWeapon.StaminaCost;
@@ -86,6 +119,7 @@ public class Professor : MonoBehaviour, IAttackable
 
     private void HandleWeaponSwap()
     {
+        if (_weaponController.IsHiding) return;
         // 숫자키 입력 예시
         for (int i = 0; i < _weaponController.WeaponCount; i++)
         {

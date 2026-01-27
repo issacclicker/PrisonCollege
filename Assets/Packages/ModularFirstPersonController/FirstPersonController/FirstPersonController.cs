@@ -453,6 +453,12 @@ public class FirstPersonController : MonoBehaviour
         #endregion
     }
 
+    public void StopSprinting()
+    {
+        isSprinting = false;
+        sprintToggleState = false; // 토글 모드일 경우를 대비해 반드시 꺼줘야 함
+    }
+
     // Sets isGrounded based on a raycast sent straigth down from the player object
     private void CheckGround()
     {

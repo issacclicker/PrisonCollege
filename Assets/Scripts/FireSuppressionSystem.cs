@@ -24,13 +24,13 @@ public class FireSuppressionSystem : SceneSingleton<FireSuppressionSystem>
         base.Awake();
         _floodTransform.gameObject.SetActive(false);
         _floodProgress = GetComponent<Stat>();
+        _floodProgress.Initialize(true);
     }
 
 
     private void Start()
     {
         _floodTransform.gameObject.SetActive(false);
-        _floodProgress.Initialize(true);
         _sprinklerCtrl.TurnOffImmediate();
     }
 

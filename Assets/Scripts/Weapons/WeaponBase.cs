@@ -1,20 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using static UnityEngine.UI.GridLayoutGroup;
 
 [RequireComponent(typeof(WeaponAnimator))]
 public class WeaponBase : MonoBehaviour
 {
     [Header("--- Base ---")]
+    [SerializeField] private string _name;
     [SerializeField] protected WeaponData _weaponData;
     protected GameObject _owner;
-    private WeaponAnimator _animator;
+    protected WeaponAnimator _animator;
     public bool IsPlayingAttackAnim => _animator.IsPlayAttackAnim;
+    public virtual bool CanAttack => true;
     public float StaminaCost => _weaponData.staminaCost;
+    public virtual string TypeName => "¹«±â";
+    public string Name => _name;
 
 
-    private void Awake()
+    public UnityEvent<WeaponBase> InfoUpdateEvent = new();
+
+
+    protected virtual void Awake()
     {
         _owner = GetComponentInParent<WeaponController>().FirstPersonController.gameObject;
         _animator = GetComponent<WeaponAnimator>();
@@ -41,7 +49,6 @@ public class WeaponBase : MonoBehaviour
 
     protected virtual void ExecuteAttack() { }
 }
-
 
 
 

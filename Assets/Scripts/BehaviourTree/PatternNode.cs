@@ -337,7 +337,8 @@ public class DoorEscapePatter : PatternNode
         {
             new SetAnimRootMotion(true),
             new SetAnimBool("EscapeRunning", true),
-            new PlayOnceAnim("EscapeJump", "EscapeJump"),
+            new Delay(() => 0.5f),
+            //new PlayOnceAnim("EscapeJump", "EscapeJump"),
         });
     }
 }
@@ -371,6 +372,7 @@ public class WindowEscapePattern : PatternNode
                     }
                 }
             }),
+            new Delay(() => 0.2f),
         });
     }
 }
@@ -648,8 +650,11 @@ public class BoostReactivePattern : PatternNode
                 {
                     new PrintDebug("hasToWork"),
                     new SetSpecificBehavior(BehaviorType.Sit),
-                    new ActionNode(() => _bb.isForceBehavior = true),
-                    new ActionNode(() => _bb.hasToWork = false),
+                    new ActionNode(() =>
+                    {
+                        _bb.hasToWork = false;
+                        _bb.isForceBehavior = true;
+                    }),
                 })
             ),
             new ConditionDecorator(() => _bb.hasToFrenzy,
@@ -909,6 +914,7 @@ public class TryEscapePattern : PatternNode
                            exitGate.OpenGate();
                        }, NodeState.Success),
                        new EscapeTypeSelectPattern(),
+                       new ActionNode(() => _bb.EscapeSuccessEvent?.Invoke()),
                        new ActionNode(null, NodeState.Running),
                        new ActionNode(() => _bb.isEscaping = false),
                    })
