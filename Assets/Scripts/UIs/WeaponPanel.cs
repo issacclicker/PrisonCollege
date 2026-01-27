@@ -19,12 +19,12 @@ public class WeaponPanel : MonoBehaviour
         if (weaponBullet == null)
         {
             _curBulletTmp.text = "-";
-            _maxBulletTmp.text = string.Empty;
+            //_maxBulletTmp.text = string.Empty;
         }
         else
         {
-            _curBulletTmp.text = weaponBullet.Current.ToString();
-            _maxBulletTmp.text = $"/ {weaponBullet.Max.ToString()}";
+            _curBulletTmp.text = $"{weaponBullet.Current.ToString("F0")} / {weaponBullet.Max.ToString("F0")}";
+            //_maxBulletTmp.text = $"/ {weaponBullet.Max.ToString()}";
         }
     }
 }
