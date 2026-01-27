@@ -11,6 +11,9 @@ public class GunWeapon : WeaponBase
     [SerializeField] private int _initialBullets;
     [SerializeField] private ParticleSystem[] _muzzlaFlashParticles;
     [SerializeField] private GameObject _bulletHolePrefab;
+    [SerializeField] private GameObject _trailPrefab;
+    [SerializeField] private GameObject _cartridgePrefab;
+    [SerializeField] private Transform _shellOutletSocket;
 
     public override string TypeName => "BB탄총";
     private Stat _magazine;
@@ -94,6 +97,13 @@ public class GunWeapon : WeaponBase
             }
         }
 
+        Vector3 trailDest = ray.origin + (ray.direction * _range);
+        BulletTrail trail = Instantiate(_trailPrefab, _muzzleSocket.position, Quaternion.identity).GetComponent<BulletTrail>();
+        trail.Shot(trailDest);
+
+        //Cartridge cartridge = Instantiate(_cartridgePrefab, _shellOutletSocket.position, Quaternion.identity).GetComponent<Cartridge>();
+        //cartridge.Eject(_shellOutletSocket.right);
+
         _magazine.Decrease(1);
         InfoUpdateEvent?.Invoke(this);
     }
@@ -156,19 +166,19 @@ public class GunWeapon : WeaponBase
     }
 
     [Header("Steam")]
-    [SerializeField] private GameObject steamParticlePrefab; // 생성할 스팀 프리팹
-    [SerializeField] private Transform spawnPoint;           // 생성 위치 (보통 총구)
-    [SerializeField] private float destroyTime = 10.0f;       // 파티클 자동 삭제 시간
+    [SerializeField] private GameObject _steamParticlePrefab; // 생성할 스팀 프리팹
+    [SerializeField] private Transform _muzzleSocket;           // 생성 위치 (보통 총구)
+    [SerializeField] private float _destroyTime = 10.0f;       // 파티클 자동 삭제 시간
 
     private void ShootParticle()
     {
-        if (steamParticlePrefab != null && spawnPoint != null)
+        if (_steamParticlePrefab != null && _muzzleSocket != null)
         {
             // 1. 프리팹 생성 (위치와 회전값 적용)
-            GameObject particle = Instantiate(steamParticlePrefab, spawnPoint.position, spawnPoint.rotation, spawnPoint);
+            GameObject particle = Instantiate(_steamParticlePrefab, _muzzleSocket.position, _muzzleSocket.rotation, _muzzleSocket);
 
             // 2. 성능을 위해 일정 시간 후 오브젝트 파괴
-            Destroy(particle, destroyTime);
+            Destroy(particle, _destroyTime);
         }
         else
         {

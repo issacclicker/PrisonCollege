@@ -969,7 +969,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _behaviorTypes: 72
-  _exitGate: {fileID: 8393390669886378025}
+  _exitGate: {fileID: 2088033359}
 --- !u!1 &182511861
 GameObject:
   m_ObjectHideFlags: 0
@@ -6119,6 +6119,11 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 221893140}
   m_Mesh: {fileID: 907443798041971296, guid: 2426e1ba90370404ba80d84fcfd800cc, type: 3}
+--- !u!4 &233363360 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 400006, guid: 75dcb58506746b84db987c4ce01e99b5, type: 3}
+  m_PrefabInstance: {fileID: 2125429964}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &283624614 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1899234461967459725, guid: c1261337aad64ef4db60b9b168b33feb, type: 3}
@@ -6398,6 +6403,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
   _maxStat: 100
+  _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -6423,6 +6429,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
   _maxStat: 4
+  _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -6448,6 +6455,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
   _maxStat: 200
+  _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -6473,6 +6481,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
   _maxStat: 121
+  _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -11628,6 +11637,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
   _maxStat: 3
+  _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -28700,7 +28710,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!108 &657129529
 Light:
   m_ObjectHideFlags: 0
@@ -60749,6 +60759,7 @@ MonoBehaviour:
   _kickBackZ: 0.1
   _kickUpX: 4
   _randomMaxYaw: 2
+  _preDelayTime: 0.035
 --- !u!114 &1046194459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60766,7 +60777,7 @@ MonoBehaviour:
   InfoUpdateEvent:
     m_PersistentCalls:
       m_Calls: []
-  _range: 100
+  _range: 50
   _targetLayer:
     serializedVersion: 2
     m_Bits: 64
@@ -60778,6 +60789,9 @@ MonoBehaviour:
   - {fileID: 1818804788}
   - {fileID: 182511864}
   _bulletHolePrefab: {fileID: 0}
+  _trailPrefab: {fileID: 406013017293586499, guid: bb6cf03e5e5415f4e8f7ae16287b4080, type: 3}
+  _cartridgePrefab: {fileID: 0}
+  _shellOutletSocket: {fileID: 1786104895}
   _duration: 0.06
   _strength: 0.25
   _vibrato: 50
@@ -60786,10 +60800,10 @@ MonoBehaviour:
   _shotSound: {fileID: 8300000, guid: 5f2ff987b25b6e74d9f6aeea804f7872, type: 3}
   _volume: 0.7
   _pitchRandomness: 0.05
-  _clipDelayLength: 0.03
-  steamParticlePrefab: {fileID: 494177654316973265, guid: 67fdd2a7d04b8074595f4856930649c5, type: 3}
-  spawnPoint: {fileID: 1949590082}
-  destroyTime: 10
+  _clipDelayLength: 0.025
+  _steamParticlePrefab: {fileID: 0}
+  _muzzleSocket: {fileID: 1949590082}
+  _destroyTime: 10
 --- !u!114 &1046194460
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60803,6 +60817,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
   _maxStat: 100
+  _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -97964,6 +97979,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
   _maxStat: 5
+  _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -98041,6 +98057,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
   _maxStat: 3
+  _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -104307,6 +104324,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
   _maxStat: 3
+  _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -109393,6 +109411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
   _maxStat: 5
+  _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -109579,6 +109598,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
   _maxStat: 5
+  _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -109604,6 +109624,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
   _maxStat: 3
+  _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -109795,6 +109816,37 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1781666928}
   m_Mesh: {fileID: 2335094746353239326, guid: 2426e1ba90370404ba80d84fcfd800cc, type: 3}
+--- !u!1 &1786104894
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1786104895}
+  m_Layer: 10
+  m_Name: ShellOutlet
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1786104895
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1786104894}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.0097, y: 0.0269, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 233363360}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1797345761
 GameObject:
   m_ObjectHideFlags: 0
@@ -130635,13 +130687,14 @@ GameObject:
   - component: {fileID: 2088033362}
   - component: {fileID: 2088033361}
   - component: {fileID: 2088033365}
+  - component: {fileID: 2088033366}
   m_Layer: 13
   m_Name: WindowExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2088033359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -130656,7 +130709,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _barricadeParent: {fileID: 1613158598}
   _barricadePrefab: {fileID: 6917073365472557711, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
-  _isbarricadeEnabled: 0
+  _isbarricadeEnabled: 1
   _windowPanelPrefab: {fileID: 454933394021031062, guid: ab21d600c42507149a8328957064cd31, type: 3}
   _spawnPoint: {fileID: 1089156630}
   _targetPoint: {fileID: 1296602157}
@@ -130718,6 +130771,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxStat: 100
+  _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -130765,6 +130819,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxStat: 3
+  _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -130798,6 +130853,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2, y: 2, z: 0.1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2088033366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2088033358}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 038533621325e984ab0dc82162efb8bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatRecovery
+  _targetStat: {fileID: 2088033362}
+  _recoveryDelay: 4
+  _recoverySpeed: 50
 --- !u!1 &2115876170
 GameObject:
   m_ObjectHideFlags: 0
@@ -131003,6 +131073,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 400004, guid: 75dcb58506746b84db987c4ce01e99b5, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1949590082}
+    - targetCorrespondingSourceObject: {fileID: 400006, guid: 75dcb58506746b84db987c4ce01e99b5, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1786104895}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 75dcb58506746b84db987c4ce01e99b5, type: 3}
 --- !u!1 &2135874724
@@ -176721,6 +176794,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxStat: 100
+  _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -177881,6 +177955,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Duration
   _maxStat: 8
+  _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -177906,6 +177981,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
   _maxStat: 3
+  _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -179037,6 +179113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxStat: 100
+  _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -179062,6 +179139,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxStat: 100
+  _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -200341,13 +200419,14 @@ GameObject:
   - component: {fileID: 8393390669886378024}
   - component: {fileID: 8393390669886378023}
   - component: {fileID: 8393390669886378025}
+  - component: {fileID: 8393390669886378026}
   m_Layer: 13
   m_Name: DoorExit
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!1 &7840618771634871328
 GameObject:
   m_ObjectHideFlags: 0
@@ -201671,6 +201750,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxStat: 3
+  _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -201720,6 +201800,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxStat: 100
+  _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -201746,13 +201827,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _barricadeParent: {fileID: 183102490}
   _barricadePrefab: {fileID: 6917073365472557711, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
-  _isbarricadeEnabled: 0
+  _isbarricadeEnabled: 1
   _doorPanel: {fileID: 405387155402176415}
   _isOpened: 0
   _openAngle: -90
   _closeAngle: 0
   _duration: 0.1
   _closeDelay: 0.5
+--- !u!114 &8393390669886378026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7813458723616291323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 038533621325e984ab0dc82162efb8bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StatRecovery
+  _targetStat: {fileID: 8393390669886378024}
+  _recoveryDelay: 4
+  _recoverySpeed: 50
 --- !u!1 &8399255897879073182
 GameObject:
   m_ObjectHideFlags: 0
@@ -208159,9 +208255,9 @@ SceneRoots:
   - {fileID: 1393121279}
   - {fileID: 1662744209}
   - {fileID: 8393390669886378019}
+  - {fileID: 2088033360}
   - {fileID: 1706312651}
   - {fileID: 476100962}
-  - {fileID: 2088033360}
   - {fileID: 1802429586}
   - {fileID: 646758636}
   - {fileID: 1550039509}

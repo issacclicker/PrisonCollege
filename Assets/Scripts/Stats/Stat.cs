@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class Stat : MonoBehaviour
 {
     [SerializeField] protected float _maxStat = 100f;
-    protected float _currentStat;
+    [SerializeField] protected float _currentStat;
 
     public float Current => _currentStat;
     public float Max => _maxStat;
