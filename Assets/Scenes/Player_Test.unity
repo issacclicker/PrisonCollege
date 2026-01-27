@@ -140871,7 +140871,7 @@ Transform:
   m_GameObject: {fileID: 4203832506254779687}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -2.366, y: -0.0000000020954758, z: 9.292}
+  m_LocalPosition: {x: -5.889, y: 1.209, z: 9.292}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -143129,6 +143129,7 @@ GameObject:
   - component: {fileID: 4203832506254779688}
   - component: {fileID: 4203832506254779690}
   - component: {fileID: 4203832506254779689}
+  - component: {fileID: 4203832506254779691}
   m_Layer: 0
   m_Name: microwave_old
   m_TagString: Untagged
@@ -143149,7 +143150,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Microwave
   _explosionParticle: {fileID: 892748941}
-  _fireInvokeThereshold: 0.25
+  _fireInvokeThereshold: 0.5
   _foodSocket: {fileID: 1855892641}
 --- !u!114 &4203832506254779689
 MonoBehaviour:
@@ -143199,6 +143200,21 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   MaxReachEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &4203832506254779691
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4203832506254779687}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2aeb5111234778408410921d3acfd94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Click
+  ClickEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!33 &4263066602754281858
