@@ -17,6 +17,7 @@ public class ProfessorTask : MonoBehaviour
         _interaction = GetComponent<Click>();
         _interaction.ActionName = "프로젝트 진행";
         _interaction.ClickEvent.AddListener(OnTaskStateChanged);
+        _interaction.FillAmount = 0;
     }
 
 
@@ -25,6 +26,17 @@ public class ProfessorTask : MonoBehaviour
     {
         ElapseTaskTime();
         CheckMovementInputToStopTask();
+        ApplyProjectProgressFill();
+    }
+
+
+
+    private void ApplyProjectProgressFill()
+    {
+        if (IsTasking)
+        {
+            _interaction.FillAmount = StageController.Instance.ProjectProgress;
+        }
     }
 
 
@@ -81,6 +93,7 @@ public class ProfessorTask : MonoBehaviour
 
     private void StopTask()
     {
+        _interaction.FillAmount = 0;
         _isTasking = false;
         _professor.UnsetTaskPose();
         _taskElapsed = 0;

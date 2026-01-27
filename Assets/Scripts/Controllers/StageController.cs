@@ -32,6 +32,8 @@ public class StageController : SceneSingleton<StageController>
     private bool _isProfWorking = false;
     private List<PostStudent> _students = new();
 
+    public float ProjectProgress => _projectStat.Ratio;
+
 
 
     protected override void Awake()
