@@ -5,7 +5,8 @@ public class WeaponPanel : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _nameTmp;
     [SerializeField] private TextMeshProUGUI _typeTmp;
-    [SerializeField] private TextMeshProUGUI _countTmp;
+    [SerializeField] private TextMeshProUGUI _curBulletTmp;
+    [SerializeField] private TextMeshProUGUI _maxBulletTmp;
 
 
 
@@ -13,7 +14,17 @@ public class WeaponPanel : MonoBehaviour
     {
         _nameTmp.text = weapon.Name;
         _typeTmp.text = weapon.TypeName;
-        ICountableWeapon countable = weapon as ICountableWeapon;
-        _countTmp.text = countable != null ? countable.Amount.ToString() : "-";
+
+        Stat weaponBullet = weapon.GetComponent<Stat>();
+        if (weaponBullet == null)
+        {
+            _curBulletTmp.text = "-";
+            _maxBulletTmp.text = string.Empty;
+        }
+        else
+        {
+            _curBulletTmp.text = weaponBullet.Current.ToString();
+            _maxBulletTmp.text = $"/ {weaponBullet.Max.ToString()}";
+        }
     }
 }

@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ThrowWeapon : WeaponBase, ICountableWeapon
+public class ThrowWeapon : WeaponBase
 {
     [Header("--- Throw ---")]
     [SerializeField] private GameObject _throwablePrefab; // ���� ��ü ������
@@ -14,20 +14,23 @@ public class ThrowWeapon : WeaponBase, ICountableWeapon
     [Range(0f, 1f)] public float _spreadAmount = 0.02f; // ź���� ����
     [Range(0f, 1f)] public float _torqueRandomness = 0.5f; // ȸ�� �ұ�Ģ��
     private ThrowAnimator _throwAnimator;
-    [SerializeField] private int _count = 0;
-
+    [SerializeField] private int _initialBullets = 0;
+    private Stat _magazine;
     public override string TypeName => "투척";
-    public override bool CanAttack => base.CanAttack && Amount > 0;
-
-    public int Amount => _count;
+    public override bool CanAttack => base.CanAttack && !_magazine.IsDepleted;
+    public int CurrentBulltes => (int)Mathf.Round(_magazine.Current);
+    public int MaxBullets => (int)Mathf.Round(_magazine.Max);
 
 
 
     protected override void Awake()
     {
         base.Awake();
+        _magazine = GetComponent<Stat>();
+        _magazine.Initialize(true);
+        _magazine.Increase(_initialBullets);
         _throwAnimator = _animator as ThrowAnimator;
-        _throwableModel.gameObject.SetActive(_count > 0);
+        _throwableModel.gameObject.SetActive(!_magazine.IsDepleted);
     }
 
 
@@ -110,29 +113,32 @@ public class ThrowWeapon : WeaponBase, ICountableWeapon
         Collider playerCol = GetComponentInParent<Collider>();
         Collider projCol = projectileObj.GetComponent<Collider>();
         if (playerCol != null && projCol != null) Physics.IgnoreCollision(playerCol, projCol);
-        --_count;
+        _magazine.Decrease(1);
         CheckAmmoModel();
         InfoUpdateEvent?.Invoke(this);
     }
     
 
 
-    public void Acquire(int count)
+    public bool Acquire(int count)
     {
-        int prevCount = _count;
-        _count += count;
-        if (prevCount <= 0 && _count > 0)
+        if (_magazine.IsMax) return false;
+        int prevCount = CurrentBulltes;
+        _magazine.Increase(count);
+        int currentCount = CurrentBulltes;
+        if (prevCount <= 0 && currentCount > 0)
         {
             _throwAnimator.PlayRefillAnimation();
         }
         InfoUpdateEvent?.Invoke(this);
+        return true;
     }
 
 
 
     private void CheckAmmoModel()
     {
-        if (_count > 0)
+        if (!_magazine.IsDepleted)
         {
             _throwAnimator.PlayRefillAnimation();
         }

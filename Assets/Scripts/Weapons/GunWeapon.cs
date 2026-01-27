@@ -1,15 +1,29 @@
 using UnityEngine;
 
-public class GunWeapon : WeaponBase, ICountableWeapon
+public class GunWeapon : WeaponBase
 {
+    [SerializeField] private int _initialBullets;
     public override string TypeName => "¿¡¾î°Ç";
-    private int _count = 0;
-    public int Amount => _count;
-    public override bool CanAttack => base.CanAttack && Amount > 0;
+    private Stat _magazine;
+    public override bool CanAttack => base.CanAttack && !_magazine.IsDepleted;
 
-    public void Acquire(int count)
+
+
+    protected override void Awake()
     {
-        _count += count;
+        base.Awake();
+        _magazine = GetComponent<Stat>();
+        _magazine.Initialize(true);
+        _magazine.Increase(_initialBullets);
+    }
+
+
+
+    public bool Acquire(int count)
+    {
+        if (_magazine.IsMax) return false;
+        _magazine.Increase(count);
         InfoUpdateEvent?.Invoke(this);
+        return true;
     }
 }
