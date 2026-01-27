@@ -10,6 +10,7 @@ public class GunAnimator : WeaponAnimator
     [SerializeField] private float _kickBackZ = 0.2f;
     [SerializeField] private float _kickUpX = 5f;
     [SerializeField] private float _randomMaxYaw = 1f;
+    [SerializeField] private float _preDelayTime = 1f;
     protected override void AddAttackFrames(DOTweenSeq attackAnimSeq, System.Action attackExecution, float attackDuration)
     {
         // 1. 시간 배분 (공격 지속 시간을 쪼갭니다)
@@ -20,6 +21,7 @@ public class GunAnimator : WeaponAnimator
         // 2. 반동 수치 설정 (인스펙터 변수가 있다면 그것을 사용하세요)
         float randomYaw = Random.Range(-_randomMaxYaw, _randomMaxYaw); // 좌우 무작위 흔들림
 
+        attackAnimSeq.AppendInterval(_preDelayTime);
         // [Step 1] 반동 (Recoil Kick)
         // 매우 빠르게 뒤로 밀려나며 총구가 들립니다.
         attackAnimSeq.Append(transform.DOLocalMoveZ(-_kickBackZ, recoilTime).SetEase(Ease.OutExpo));
