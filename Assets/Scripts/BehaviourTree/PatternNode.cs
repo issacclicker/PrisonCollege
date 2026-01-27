@@ -609,10 +609,30 @@ public class WorkPattern : PatternNode
             new RotateToSpot(),
             new SetAnimBool("Sitting", true),
             new SetAnimBool("Typing", true),
+            new ActionNode(() =>
+            {
+                (_bb.destSpot as MonitorSpot)?.TurnOnMonitor(DisplayState.Working);
+            }),
             new Delay(() => 4f),
+            new ActionNode(() =>
+            {
+                (_bb.destSpot as MonitorSpot)?.PauseMonitor();
+            }),
             chanceActionSelector,
+            new ActionNode(() =>
+            {
+                (_bb.destSpot as MonitorSpot)?.ResumeMonitor();
+            }),
             new Delay(() => 3f),
+            new ActionNode(() =>
+            {
+                (_bb.destSpot as MonitorSpot)?.PauseMonitor();
+            }),
             chanceActionSelector,
+            new ActionNode(() =>
+            {
+                (_bb.destSpot as MonitorSpot)?.ResumeMonitor();
+            }),
             new Delay(() => 4f),
             new SetAnimBool("Sitting", false),
             new SetAnimBool("Typing", false),

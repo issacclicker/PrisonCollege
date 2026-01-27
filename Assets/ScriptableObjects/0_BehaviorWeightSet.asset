@@ -14,11 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _weightedElements:
   - _behaviorType: 1
-    _chance: 1
+    _chance: 20
   - _behaviorType: 2
     _chance: 1
   - _behaviorType: 4
-    _chance: 20
+    _chance: 1
   - _behaviorType: 8
     _chance: 0
   - _behaviorType: 16

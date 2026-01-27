@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class ProfessorTask : MonoBehaviour
 {
+    [SerializeField] private Monitor _monitor;
     [SerializeField] private Professor _professor;
     [SerializeField] private Transform _cameraSocket;
     private Click _interaction;
@@ -87,6 +88,7 @@ public class ProfessorTask : MonoBehaviour
         AttachProp(_professor.gameObject, _cameraSocket);
         _professor.SetTaskPose();
         _taskElapsed = 0;
+        _monitor.ChangeDisplay(DisplayState.Working);
     }
 
 
@@ -97,6 +99,7 @@ public class ProfessorTask : MonoBehaviour
         _isTasking = false;
         _professor.UnsetTaskPose();
         _taskElapsed = 0;
+        _monitor.ChangeDisplay(DisplayState.Off);
     }
 
 
