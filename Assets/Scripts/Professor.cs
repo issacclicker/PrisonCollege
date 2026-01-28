@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
@@ -14,15 +15,25 @@ public class Professor : MonoBehaviour, IAttackable
     [SerializeField] private float _sprintStaminaDrain = 20f;
     [SerializeField] private float _staminaRegenRate = 5f;
     [SerializeField] private CameraFollow _cameraFollow;
+    [SerializeField] private float _damageShakeAmount;
 
     private Rigidbody _rigidbody;
     private FirstPersonController _controller;
     private PlayerInteraction _playerInteraction;
     private Stamina _stamina;
     private TaskCameraRotator _taskCameraRotator;
+    private HealthVolume _healthVolume;
+    private Health _health;
+    private DamageReceiver _damageReceiver;
 
     private void Awake()
     {
+        _healthVolume = GetComponent<HealthVolume>();
+        _health = GetComponent<Health>();
+        _health.DecreaseEvent.AddListener(_ => _healthVolume.AdjustVolume(_health.Ratio));
+        _health.IncreaseEvent.AddListener(_ => _healthVolume.AdjustVolume(_health.Ratio));
+        _damageReceiver = GetComponent<DamageReceiver>();
+        _damageReceiver.StatDownEvent.AddListener(OnDamaged);
         _taskCameraRotator = _cameraFollow.GetComponent<TaskCameraRotator>();
         _rigidbody = GetComponent<Rigidbody>();
         _controller = GetComponent<FirstPersonController>();
@@ -37,6 +48,7 @@ public class Professor : MonoBehaviour, IAttackable
     private void Start()
     {
         _weaponController.EquipWeapon(0, gameObject);
+        _healthVolume.AdjustVolume(_health.Ratio);
     }
 
 
@@ -50,6 +62,15 @@ public class Professor : MonoBehaviour, IAttackable
         HandleSprintStamina();
         HandleWeaponAttack();
         HandleWeaponSwap();
+    }
+
+
+
+    private void OnDamaged(HitInfo hitInfo, float amount)
+    {
+        Camera.main.transform.DOComplete();
+        float shakeStrength = amount * _damageShakeAmount;
+        Camera.main.transform.DOShakePosition(0.3f, shakeStrength, 25, 90);
     }
 
 
