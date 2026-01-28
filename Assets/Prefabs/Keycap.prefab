@@ -152,5 +152,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Projectile
   _minImpactThreshold: 0.1
-  _lifeTime: 5
+  _lifeTime: 3
   _destroyOnHit: 0
