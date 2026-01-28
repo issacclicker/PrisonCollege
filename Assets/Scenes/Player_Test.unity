@@ -87825,7 +87825,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CameraShaker
   _mainCamera: {fileID: 4459864849984057310}
   _weaponCamera: {fileID: 470836298}
-  _damageShakePosAmount: 1
+  _damageShakePosAmount: 0.008
   _recoilShakePosAmount: 1
   _recoilShakeRotAmount: 5
   _weaponCameraShakeAmount: 0.5
