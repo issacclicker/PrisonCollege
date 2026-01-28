@@ -87826,7 +87826,7 @@ MonoBehaviour:
   _mainCamera: {fileID: 4459864849984057310}
   _weaponCamera: {fileID: 470836298}
   _damageShakePosAmount: 1
-  _recoilShakePosAmount: 0.8
+  _recoilShakePosAmount: 1
   _recoilShakeRotAmount: 5
   _weaponCameraShakeAmount: 0.5
 --- !u!4 &1445995138
