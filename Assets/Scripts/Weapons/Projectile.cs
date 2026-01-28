@@ -14,7 +14,7 @@ public class Projectile : MonoBehaviour
     // 중복 충돌을 방지하기 위한 셋 (오브젝트 참조 저장)
     private HashSet<GameObject> _hitObjects = new HashSet<GameObject>();
 
-    private void Start()
+    protected virtual void Start()
     {
         Destroy(gameObject, _lifeTime);
     }
