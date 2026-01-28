@@ -87794,6 +87794,56 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 093c001e5d81e0e498668a2a4299b9fc, type: 3}
   m_PrefabInstance: {fileID: 1443572020}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1445995136
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1445995138}
+  - component: {fileID: 1445995137}
+  m_Layer: 0
+  m_Name: CameraShaker
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1445995137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445995136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b056224765431c345b99f58358e8db2b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraShaker
+  _mainCamera: {fileID: 4459864849984057310}
+  _weaponCamera: {fileID: 470836298}
+  _damageShakePosAmount: 1
+  _recoilShakePosAmount: 0.8
+  _recoilShakeRotAmount: 5
+  _weaponCameraShakeAmount: 0.5
+--- !u!4 &1445995138
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1445995136}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1450389451
 GameObject:
   m_ObjectHideFlags: 0
@@ -114909,7 +114959,6 @@ MonoBehaviour:
   _sprintStaminaDrain: 20
   _staminaRegenRate: 5
   _cameraFollow: {fileID: 4459864849984057312}
-  _damageShakeAmount: 0.008
 --- !u!1 &1818804786
 GameObject:
   m_ObjectHideFlags: 0
@@ -178998,7 +179047,7 @@ MonoBehaviour:
   walkSpeed: 3
   maxVelocityChange: 10
   enableSprint: 1
-  unlimitedSprint: 1
+  unlimitedSprint: 0
   holdToSprint: 0
   sprintKey: 304
   sprintSpeed: 5
@@ -208429,3 +208478,4 @@ SceneRoots:
   - {fileID: 335240828}
   - {fileID: 6360048871259455670}
   - {fileID: 1923626039}
+  - {fileID: 1445995138}

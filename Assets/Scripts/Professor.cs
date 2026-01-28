@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using static CartoonFX.CFXR_Effect;
 
 public class Professor : MonoBehaviour, IAttackable
 {
@@ -15,7 +16,6 @@ public class Professor : MonoBehaviour, IAttackable
     [SerializeField] private float _sprintStaminaDrain = 20f;
     [SerializeField] private float _staminaRegenRate = 5f;
     [SerializeField] private CameraFollow _cameraFollow;
-    [SerializeField] private float _damageShakeAmount;
 
     private Rigidbody _rigidbody;
     private FirstPersonController _controller;
@@ -68,9 +68,7 @@ public class Professor : MonoBehaviour, IAttackable
 
     private void OnDamaged(HitInfo hitInfo, float amount)
     {
-        Camera.main.transform.DOComplete();
-        float shakeStrength = amount * _damageShakeAmount;
-        Camera.main.transform.DOShakePosition(0.3f, shakeStrength, 25, 90);
+        CameraShaker.Instance.DoDamagedShake(amount);
     }
 
 

@@ -135,6 +135,8 @@ public class GunWeapon : WeaponBase
     private void PlayCameraShake()
     {
         // 이전 흔들림이 끝나지 않았을 경우를 대비해 살짝 보정
+        CameraShaker.Instance.DoRecoilShake(_strength);
+        return;
         DOTween.Complete(Camera.main.transform);
 
         // Position 흔들기
