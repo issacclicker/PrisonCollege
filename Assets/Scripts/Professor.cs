@@ -1,7 +1,9 @@
-﻿using System.Collections;
+﻿using DG.Tweening;
+using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
+using static CartoonFX.CFXR_Effect;
 
 public class Professor : MonoBehaviour, IAttackable
 {
@@ -20,9 +22,18 @@ public class Professor : MonoBehaviour, IAttackable
     private PlayerInteraction _playerInteraction;
     private Stamina _stamina;
     private TaskCameraRotator _taskCameraRotator;
+    private HealthVolume _healthVolume;
+    private Health _health;
+    private DamageReceiver _damageReceiver;
 
     private void Awake()
     {
+        _healthVolume = GetComponent<HealthVolume>();
+        _health = GetComponent<Health>();
+        _health.DecreaseEvent.AddListener(_ => _healthVolume.AdjustVolume(_health.Ratio));
+        _health.IncreaseEvent.AddListener(_ => _healthVolume.AdjustVolume(_health.Ratio));
+        _damageReceiver = GetComponent<DamageReceiver>();
+        _damageReceiver.StatDownEvent.AddListener(OnDamaged);
         _taskCameraRotator = _cameraFollow.GetComponent<TaskCameraRotator>();
         _rigidbody = GetComponent<Rigidbody>();
         _controller = GetComponent<FirstPersonController>();
@@ -37,6 +48,7 @@ public class Professor : MonoBehaviour, IAttackable
     private void Start()
     {
         _weaponController.EquipWeapon(0, gameObject);
+        _healthVolume.AdjustVolume(_health.Ratio);
     }
 
 
@@ -50,6 +62,13 @@ public class Professor : MonoBehaviour, IAttackable
         HandleSprintStamina();
         HandleWeaponAttack();
         HandleWeaponSwap();
+    }
+
+
+
+    private void OnDamaged(HitInfo hitInfo, float amount)
+    {
+        CameraShaker.Instance.DoDamagedShake(amount);
     }
 
 

@@ -13,6 +13,7 @@ public class ExitGate : MonoBehaviour
     protected DamageReceiver _damageReceiver;
     protected ClickAndWait _interaction;
     protected GameObject _barricadePlaced;
+    protected StatRecovery _statRecovery;
 
     public bool IsBarricadePlaced => _barricadePlaced != null;
     public virtual ExitGateType GateType => ExitGateType.None;
@@ -24,6 +25,7 @@ public class ExitGate : MonoBehaviour
     {
         _damageReceiver = GetComponent<DamageReceiver>();
         _interaction = GetComponent<ClickAndWait>();
+        _statRecovery = GetComponent<StatRecovery>();
 
         _interaction.ProgressCompleteEvent.AddListener(PlaceBarricade);
         _damageReceiver.DepletedEvent.AddListener(_ => BreakBarricade());
@@ -47,6 +49,7 @@ public class ExitGate : MonoBehaviour
         _interaction.SetInteractable(false);
         _barricadePlaced = Instantiate(_barricadePrefab, _barricadeParent);
         _damageReceiver.SetStatFull();
+        _statRecovery.CanRecover = true;
     }
 
 
@@ -57,6 +60,7 @@ public class ExitGate : MonoBehaviour
         Destroy(_barricadePlaced);
         _barricadePlaced = null;
         _damageReceiver.SetStatEmpty();
+        _statRecovery.CanRecover = false;
     }
 
     public virtual void Open() { }

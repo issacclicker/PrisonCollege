@@ -147,6 +147,7 @@ public class WeaponController : MonoBehaviour
     private void Equip(int idx)
     {
         _currentIdx = idx;
+        _weaponPanel.ShowInfo(CurrentWeapon);
         CurrentWeapon.gameObject.SetActive(true);
         // 즉시 장착은 애니메이션 없이 위치만 고정
     }

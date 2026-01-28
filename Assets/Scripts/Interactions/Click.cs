@@ -3,10 +3,11 @@ using UnityEngine.Events;
 
 public class Click : MonoBehaviour, IPlayerInteractable
 {
+    public bool InteractState { get; set; } = true;
     public string ActionName { get; set; } = "상호작용";
     public float FillAmount { get; set; } = 1;
     public string InteractionPrompt => $"[클릭] {ActionName}";
-    public bool CanInteract => true;
+    public bool CanInteract => InteractState;
     public float UIFillRatio => FillAmount;
 
     public UnityEvent ClickEvent = new();

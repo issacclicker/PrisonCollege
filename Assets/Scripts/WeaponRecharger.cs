@@ -65,9 +65,19 @@ public class WeaponRecharger : MonoBehaviour
     private void RechargeWeapon()
     {
         if (_rechargeAmount.IsDepleted) return;
-        ICountableWeapon countableWeapon = _targetWeapon as ICountableWeapon;
-        if (countableWeapon == null) return;
-        _rechargeAmount.Decrease(1);
-        countableWeapon.Acquire(1);
+        //ICountableWeapon countableWeapon = _targetWeapon as ICountableWeapon;
+        //if (countableWeapon == null) return;
+        //_rechargeAmount.Decrease(1);
+        //countableWeapon.Acquire(1);
+
+        ThrowWeapon throwWeapon = _targetWeapon as ThrowWeapon;
+        GunWeapon gunWeapon = _targetWeapon as GunWeapon;
+        if (throwWeapon == null && gunWeapon == null) return;
+
+        bool recharged = (throwWeapon?.Acquire(1) ?? false) || (gunWeapon?.Acquire(1) ?? false);
+        if (recharged)
+        {
+            _rechargeAmount.Decrease(1);
+        }
     }
 }

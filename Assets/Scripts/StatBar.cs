@@ -7,13 +7,13 @@ using UnityEngine.UI;
 
 public class StatBar : MonoBehaviour
 {
-    [SerializeField] private Stat _targetStat;
-    [SerializeField] private Image _fillImage;
-    [SerializeField] private Gradient _colorGradient;
+    [SerializeField] protected Stat _targetStat;
+    [SerializeField] protected Image _fillImage;
+    [SerializeField] protected Gradient _colorGradient;
 
 
 
-    private void Start()
+    protected virtual void Start()
     {
         OnStatChanged(0);
         _targetStat.IncreaseEvent.AddListener(OnStatChanged);
@@ -22,10 +22,17 @@ public class StatBar : MonoBehaviour
 
 
 
-    private void OnStatChanged(float amount)
+    protected virtual void OnStatChanged(float amount)
     {
-        float ratio = Mathf.Clamp01(_targetStat.Ratio);
-        _fillImage.fillAmount = ratio;
-        _fillImage.color = _colorGradient.Evaluate(ratio);
+        UpdateUI(_targetStat.Ratio);
+    }
+
+
+
+    protected void UpdateUI(float ratio)
+    {
+        float clampedRatio = Mathf.Clamp01(ratio);
+        _fillImage.fillAmount = clampedRatio;
+        _fillImage.color = _colorGradient.Evaluate(clampedRatio);
     }
 }
