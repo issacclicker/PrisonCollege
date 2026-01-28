@@ -814,6 +814,7 @@ public class SetAttackTarget : BT_Node
         if (_targetDamageable != null && _targetDamageable.CanEffect)
         {
             // 3. 블랙보드에 타겟 정보 저장 (이후 Chase, Attack 노드에서 사용)
+            _bb.destSpot?.Release(_bb.Avatar.GetComponent<PostStudent>());
             _bb.targetObject = _targetObject;
             _bb.targetDamageable = _targetDamageable;
 
