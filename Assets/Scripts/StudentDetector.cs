@@ -6,6 +6,7 @@ public class StudentDetector : MonoBehaviour
     [SerializeField] private float _detectionRange = 50f;
     [SerializeField] private LayerMask _targetLayer;
     [SerializeField] private LayerMask _blockLayer;
+    [SerializeField] private float _detectSphereRadius; 
 
     private PostStudent _currentDetectedStudent;
     private Camera _mainCam;
@@ -28,20 +29,21 @@ public class StudentDetector : MonoBehaviour
         RaycastHit hit;
         LayerMask combinedLayer = _targetLayer | _blockLayer;
 
-        // [수정] 1인칭 시점: 카메라의 위치에서 카메라가 바라보는 정면(화면 중앙)으로 레이 발사
-        Ray ray = new Ray(_mainCam.transform.position, _mainCam.transform.forward);
+        // 카메라 위치에서 정면 방향으로 구를 발사
+        Vector3 origin = _mainCam.transform.position;
+        Vector3 direction = _mainCam.transform.forward;
 
-        // Physics.Raycast의 매개변수를 생성한 ray로 교체
-        if (Physics.Raycast(ray, out hit, _detectionRange, combinedLayer))
+        // Raycast를 SphereCast로 교체
+        if (Physics.SphereCast(origin, _detectSphereRadius, direction, out hit, _detectionRange, combinedLayer))
         {
-            // 2. 장애물에 가려졌는지 확인 (확장 메서드 IsInLayerMask 유지)
+            // 1. 장애물에 가려졌는지 확인
             if (hit.collider.gameObject.IsInLayerMask(_blockLayer))
             {
                 ClearDetection();
                 return;
             }
 
-            // 3. 학생인지 확인
+            // 2. 학생인지 확인 (SphereCast는 히트된 콜라이더 정보를 정확히 반환함)
             PostStudent student = hit.collider.GetComponentInParent<PostStudent>();
             if (student != null)
             {
@@ -54,7 +56,7 @@ public class StudentDetector : MonoBehaviour
             }
         }
 
-        // 4. 아무것도 맞지 않았거나 학생이 아닌 경우
+        // 3. 아무것도 맞지 않았거나 학생이 아닌 경우
         ClearDetection();
     }
 

@@ -52,7 +52,7 @@ public class OverlapAttacker : MonoBehaviour
         Vector3 normal = (origin - contactPoint).normalized;
         if (normal == Vector3.zero) normal = -transform.forward;
 
-        HitInfo hitInfoToOther = new HitInfo(contactPoint, Quaternion.LookRotation(normal), gameObject, _hitImpulse);
+        HitInfo hitInfoToOther = new HitInfo(contactPoint, Quaternion.LookRotation(normal), _rootObject, _hitImpulse);
 
         // 3. 상대방 공격 (VictimOnly 또는 BothDamage일 때)
         if (other.TryGetComponent(out DamageReceiver otherReceiver))

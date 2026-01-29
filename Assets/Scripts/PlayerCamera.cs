@@ -37,6 +37,7 @@ public class PlayerCamera : MonoBehaviour
         _cameraFollow.enabled = false;
         _rigidbody.isKinematic = false;
         _collider.isTrigger = false;
+        _collider.enabled = true;
     }
 
 
@@ -47,6 +48,7 @@ public class PlayerCamera : MonoBehaviour
         _cameraFollow.enabled = true;
         _rigidbody.isKinematic = true;
         _collider.isTrigger = true;
+        _collider.enabled = false;
     }
 
 

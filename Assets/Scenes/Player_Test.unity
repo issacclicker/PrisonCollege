@@ -30136,7 +30136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _isAttacking: 0
   _damageData: {fileID: 11400000, guid: 3c4627951ae8d3c4891ebcd69f4ecf87, type: 2}
-  _hitImpulse: 1000
+  _hitImpulse: 600
   _victimOnlyLayer:
     serializedVersion: 2
     m_Bits: 4160
@@ -181424,6 +181424,7 @@ MonoBehaviour:
   _blockLayer:
     serializedVersion: 2
     m_Bits: 10240
+  _detectSphereRadius: 0.05
 --- !u!1 &4508835664202935965
 GameObject:
   m_ObjectHideFlags: 0
