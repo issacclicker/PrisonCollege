@@ -7,6 +7,7 @@ public class Microwave : MonoBehaviour
     [SerializeField] private ParticleSystem _explosionParticle;
     [SerializeField] [Range(0f, 1f)] private float _fireInvokeThereshold;
     [SerializeField] private Transform _foodSocket;
+    private ExplosionShacker _explosionShacker;
     private Click _interaction;
     private Duration _operateDuration;
     private Fire _fire;
@@ -26,6 +27,7 @@ public class Microwave : MonoBehaviour
         _fire = GetComponent<Fire>();
         _operateDuration.Initialize(true);
         _operateDuration.MaxReachEvent.AddListener(Quit);
+        _explosionShacker = GetComponent<ExplosionShacker>();
 
         _interaction.ClickEvent.AddListener(Quit);
         _interaction.InteractState = false;
@@ -84,6 +86,7 @@ public class Microwave : MonoBehaviour
     {
         _explosionParticle.gameObject.SetActive(true);
         _explosionParticle.Play();
+        _explosionShacker.PlayShake();
         _fire.Ignite();
         Quit();
     }

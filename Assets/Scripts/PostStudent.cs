@@ -30,13 +30,13 @@ public class PostStudent : MonoBehaviour
 
     [SerializeField] private string _name;
     [Header("설정")]
-    [SerializeField] private float _changeInterval = 2.0f; // 2초 간격
-    [SerializeField] private Transform _targetDestination; // 이동 목표 지점
-
-    [SerializeField] private BehaveSpot _chairSpot;
-    [SerializeField] private SpotGroup _restSpots;
-    [SerializeField] private SpotGroup _microwaveSpots;
-    [SerializeField] private SpotGroup _prowlSpots;
+    //[SerializeField] private float _changeInterval = 2.0f; // 2초 간격
+    //[SerializeField] private Transform _targetDestination; // 이동 목표 지점
+    //
+    //[SerializeField] private BehaveSpot _chairSpot;
+    //[SerializeField] private SpotGroup _restSpots;
+    //[SerializeField] private SpotGroup _microwaveSpots;
+    //[SerializeField] private SpotGroup _prowlSpots;
 
     [SerializeField] private GameObject _player;
 
@@ -432,6 +432,17 @@ public class PostStudent : MonoBehaviour
             new TacklePattern(),
         });
         return tackleTree;
+    }
+
+
+
+    public void UnFocusProfessorAttack()
+    {
+        _blackboard.targetObject = null;
+        _blackboard.targetDamageable = null;
+        _blackboard.isForceBehavior = false;
+        _blackboard.hasToWork = false;
+        _blackboard.hasToFrenzy = false;
     }
 
 

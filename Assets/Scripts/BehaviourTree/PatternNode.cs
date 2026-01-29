@@ -179,6 +179,14 @@ public class CombatApproachPattern : PatternNode
 
         return Vector3.Distance(_bb.Avatar.transform.position, _bb.targetDamageable.Position);
     }
+
+
+
+    public override void Reset()
+    {
+        base.Reset();
+        _isAttacking = false;
+    }
 }
 
 
@@ -575,7 +583,13 @@ public class AttackReactivePattern : PatternNode
     {
         _patternRoot = new ReactiveSelector(new List<BT_Node>
         {
-            new ConditionDecorator(() => _bb.targetDamageable != null, new CombatPattern()),
+            new ConditionDecorator(() => _bb.targetDamageable != null, 
+                new Sequence(new List<BT_Node>
+                {
+                    new ResetAnimParameters(),
+                    new CombatPattern(),
+                })
+            ),
             normalRoutine
         });
     }

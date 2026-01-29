@@ -1,8 +1,11 @@
 ﻿using DG.Tweening;
+using GLTFast.Schema;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.Events;
 using static CartoonFX.CFXR_Effect;
 
 public class Professor : MonoBehaviour, IAttackable
@@ -15,16 +18,22 @@ public class Professor : MonoBehaviour, IAttackable
     [SerializeField] private bool _isSwapWheelnvert = false; // true면 방향이 반대가 됨
     [SerializeField] private float _sprintStaminaDrain = 20f;
     [SerializeField] private float _staminaRegenRate = 5f;
-    [SerializeField] private CameraFollow _cameraFollow;
+    [SerializeField] private PlayerCamera _playerCamera;
+
+    [SerializeField] private CanvasGroup _aliveCanvas;
+    [SerializeField] private CanvasGroup _deadCanvas;
 
     private Rigidbody _rigidbody;
     private FirstPersonController _controller;
     private PlayerInteraction _playerInteraction;
     private Stamina _stamina;
-    private TaskCameraRotator _taskCameraRotator;
     private HealthVolume _healthVolume;
     private Health _health;
     private DamageReceiver _damageReceiver;
+    private Collider _collider;
+    private StatRecovery _statRecovery;
+
+    public UnityEvent<string> DieEvent = new();
 
     private void Awake()
     {
@@ -34,19 +43,23 @@ public class Professor : MonoBehaviour, IAttackable
         _health.IncreaseEvent.AddListener(_ => _healthVolume.AdjustVolume(_health.Ratio));
         _damageReceiver = GetComponent<DamageReceiver>();
         _damageReceiver.StatDownEvent.AddListener(OnDamaged);
-        _taskCameraRotator = _cameraFollow.GetComponent<TaskCameraRotator>();
+        _damageReceiver.DepletedEvent.AddListener(Die);
         _rigidbody = GetComponent<Rigidbody>();
         _controller = GetComponent<FirstPersonController>();
         _playerInteraction = GetComponent<PlayerInteraction>();
         _stamina = GetComponent<Stamina>();
         _stamina.Initialize();
-
-        _taskCameraRotator.enabled = false;
+        _collider = GetComponent<Collider>();
+        _statRecovery = GetComponent<StatRecovery>();
     }
 
 
     private void Start()
     {
+        _aliveCanvas.alpha = 1;
+        _deadCanvas.alpha = 0;
+        _health.ResetEvent.AddListener(_ => _healthVolume.AdjustVolume(_health.Ratio));
+        _playerCamera.DisablePhysics();
         _weaponController.EquipWeapon(0, gameObject);
         _healthVolume.AdjustVolume(_health.Ratio);
     }
@@ -59,9 +72,44 @@ public class Professor : MonoBehaviour, IAttackable
         // {
         //     attackAnimator.PlayMeleeSwing(Attack);
         // }
+        if (_health.IsDepleted) return;
         HandleSprintStamina();
         HandleWeaponAttack();
         HandleWeaponSwap();
+    }
+
+
+
+    public void Revive()
+    {
+        transform.forward = _playerCamera.transform.forward;
+        transform.position = _playerCamera.transform.position + Vector3.up * 1.5f;
+        _health.Initialize();
+        _stamina.Initialize();
+        _aliveCanvas.alpha = 1;
+        _deadCanvas.alpha = 0;
+        _statRecovery.enabled = true;
+        _collider.enabled = true;
+        _controller.enabled = true;
+        _weaponController.Show();
+        _playerCamera.DisablePhysics();
+    }
+
+
+
+    private void Die(HitInfo hitInfo)
+    {
+        _aliveCanvas.alpha = 0;
+        _deadCanvas.alpha = 1;
+        _statRecovery.enabled = false;
+        _collider.enabled = false;
+        _controller.enabled = false;
+        _weaponController.Hide();
+        _playerCamera.ApplyDeathPhysics(hitInfo);
+
+        PostStudent attackerStudent = hitInfo.attacker.GetComponent<PostStudent>();
+        attackerStudent.UnFocusProfessorAttack();
+        DieEvent?.Invoke(attackerStudent.Name);
     }
 
 
@@ -78,8 +126,7 @@ public class Professor : MonoBehaviour, IAttackable
         _controller.enabled = true;
         _rigidbody.isKinematic = false;
         _weaponController.Show();
-        _cameraFollow.currentPitch = 0;
-        _taskCameraRotator.enabled = false;
+        _playerCamera.DisableTaskMode();
     }
 
 
@@ -90,9 +137,7 @@ public class Professor : MonoBehaviour, IAttackable
         _controller.enabled = false;
         _rigidbody.isKinematic = true;
         _weaponController.Hide();
-        _cameraFollow.currentPitch = 0;
-        _taskCameraRotator.Initialize(Quaternion.LookRotation(transform.forward));
-        _taskCameraRotator.enabled = true;
+        _playerCamera.EnableTaskMode(transform.forward);
     }
 
 
