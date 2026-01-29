@@ -40,7 +40,6 @@ public class StudentInfo : MonoBehaviour
 
     public void Hide()
     {
-        Debug.Log("StudentInfo.Hide");
         _canvasGroup.alpha = 0f;
         nameTmp.text = string.Empty;
         _healthBar.SetTarget(null);

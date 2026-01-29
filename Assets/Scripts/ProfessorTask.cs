@@ -19,7 +19,7 @@ public class ProfessorTask : MonoBehaviour
         _interaction.ActionName = "프로젝트 진행";
         _interaction.ClickEvent.AddListener(OnTaskStateChanged);
         _interaction.FillAmount = 0;
-        _professor.DieEvent?.AddListener(OnProfessorDied);
+        _professor.DieEvent?.AddListener(_ => OnProfessorDied());
     }
 
 

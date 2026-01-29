@@ -11,4 +11,5 @@ public static class Global
 
     public const string STUDENT_LAYER_NAME = "Student";
     public const string HITBLOCK_LAYER_NAME = "HitObstacle";
+    public const string PLAYER_LAYER_NAME = "Player";
 }

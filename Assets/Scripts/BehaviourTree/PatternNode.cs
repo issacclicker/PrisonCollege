@@ -179,6 +179,14 @@ public class CombatApproachPattern : PatternNode
 
         return Vector3.Distance(_bb.Avatar.transform.position, _bb.targetDamageable.Position);
     }
+
+
+
+    public override void Reset()
+    {
+        base.Reset();
+        _isAttacking = false;
+    }
 }
 
 

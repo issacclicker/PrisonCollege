@@ -1,7 +1,9 @@
 ﻿using DG.Tweening;
+using GLTFast.Schema;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Events;
 using static CartoonFX.CFXR_Effect;
@@ -18,6 +20,9 @@ public class Professor : MonoBehaviour, IAttackable
     [SerializeField] private float _staminaRegenRate = 5f;
     [SerializeField] private PlayerCamera _playerCamera;
 
+    [SerializeField] private CanvasGroup _aliveCanvas;
+    [SerializeField] private CanvasGroup _deadCanvas;
+
     private Rigidbody _rigidbody;
     private FirstPersonController _controller;
     private PlayerInteraction _playerInteraction;
@@ -28,7 +33,7 @@ public class Professor : MonoBehaviour, IAttackable
     private Collider _collider;
     private StatRecovery _statRecovery;
 
-    public UnityEvent DieEvent = new();
+    public UnityEvent<string> DieEvent = new();
 
     private void Awake()
     {
@@ -51,6 +56,8 @@ public class Professor : MonoBehaviour, IAttackable
 
     private void Start()
     {
+        _aliveCanvas.alpha = 1;
+        _deadCanvas.alpha = 0;
         _health.ResetEvent.AddListener(_ => _healthVolume.AdjustVolume(_health.Ratio));
         _playerCamera.DisablePhysics();
         _weaponController.EquipWeapon(0, gameObject);
@@ -73,15 +80,36 @@ public class Professor : MonoBehaviour, IAttackable
 
 
 
+    public void Revive()
+    {
+        transform.forward = _playerCamera.transform.forward;
+        transform.position = _playerCamera.transform.position + Vector3.up * 1.5f;
+        _health.Initialize();
+        _stamina.Initialize();
+        _aliveCanvas.alpha = 1;
+        _deadCanvas.alpha = 0;
+        _statRecovery.enabled = true;
+        _collider.enabled = true;
+        _controller.enabled = true;
+        _weaponController.Show();
+        _playerCamera.DisablePhysics();
+    }
+
+
+
     private void Die(HitInfo hitInfo)
     {
+        _aliveCanvas.alpha = 0;
+        _deadCanvas.alpha = 1;
         _statRecovery.enabled = false;
         _collider.enabled = false;
         _controller.enabled = false;
         _weaponController.Hide();
         _playerCamera.ApplyDeathPhysics(hitInfo);
-        hitInfo.attacker.GetComponent<PostStudent>().UnFocusProfessorAttack();
-        DieEvent?.Invoke();
+
+        PostStudent attackerStudent = hitInfo.attacker.GetComponent<PostStudent>();
+        attackerStudent.UnFocusProfessorAttack();
+        DieEvent?.Invoke(attackerStudent.Name);
     }
 
 
