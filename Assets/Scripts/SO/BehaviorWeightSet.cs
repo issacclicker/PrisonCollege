@@ -47,4 +47,13 @@ public enum BehaviorType
     [BehaviorInfo(BehaviorSafety.Hazard)] Tackle = 1 << 7,
     [BehaviorInfo(BehaviorSafety.Hazard)] Hack = 1 << 8,
     [BehaviorInfo(BehaviorSafety.Safe)] Game = 1 << 9,
+
+    //추가 예정
+    [BehaviorInfo(BehaviorSafety.Safe)] Talk = 1 << 10,
+    [BehaviorInfo(BehaviorSafety.Safe)] Dance = 1 << 11,
+    [BehaviorInfo(BehaviorSafety.Safe)] Worship = 1 << 12,
+    [BehaviorInfo(BehaviorSafety.Safe)] Sports = 1 << 13,
+    [BehaviorInfo(BehaviorSafety.Safe)] Sleep = 1 << 14,
+
+    [BehaviorInfo(BehaviorSafety.Hazard)] Music = 1 << 15,
 }
