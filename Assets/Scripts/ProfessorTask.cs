@@ -19,6 +19,7 @@ public class ProfessorTask : MonoBehaviour
         _interaction.ActionName = "프로젝트 진행";
         _interaction.ClickEvent.AddListener(OnTaskStateChanged);
         _interaction.FillAmount = 0;
+        _professor.DieEvent?.AddListener(OnProfessorDied);
     }
 
 
@@ -78,6 +79,15 @@ public class ProfessorTask : MonoBehaviour
         {
             DoTask();
         }
+    }
+
+
+
+    private void OnProfessorDied()
+    {
+        if (!IsTasking) return;
+        _isTasking = false;
+        _monitor.ChangeDisplay(DisplayState.Off);
     }
 
 

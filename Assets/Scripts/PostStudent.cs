@@ -436,6 +436,17 @@ public class PostStudent : MonoBehaviour
 
 
 
+    public void UnFocusProfessorAttack()
+    {
+        _blackboard.targetObject = null;
+        _blackboard.targetDamageable = null;
+        _blackboard.isForceBehavior = false;
+        _blackboard.hasToWork = false;
+        _blackboard.hasToFrenzy = false;
+    }
+
+
+
     private float GetRandomSpeed()
     {
         return UnityEngine.Random.Range(_walkSpeed, _sprintSpeed);
