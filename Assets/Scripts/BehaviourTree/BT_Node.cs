@@ -1140,6 +1140,26 @@ public class SetRandomBehavior : BT_Node
 
 
 
+public class ClearDestSpot : BT_Node
+{
+    public ClearDestSpot()
+    {
+
+    }
+
+
+
+    public override NodeState Evaluate()
+    {
+        PostStudent student = _bb.Avatar.GetComponent<PostStudent>();
+        _bb.destSpot?.Release(student);
+        _bb.destSpot = null;
+        return NodeState.Success;
+    }
+}
+
+
+
 public class SetSpecificBehavior : BT_Node
 {
     private BehaviorType _targetType;

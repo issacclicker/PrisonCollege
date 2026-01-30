@@ -59,7 +59,10 @@ public class CharacterRagdoll : MonoBehaviour
         _agent = GetComponent<NavMeshAgent>();
         _anim = GetComponent<Animator>();
         _hipsBone = _anim.GetBoneTransform(HumanBodyBones.Hips);
-        _boneRigidbodies = _hipsBone.GetComponentsInChildren<Rigidbody>();
+        //_boneRigidbodies = _hipsBone.GetComponentsInChildren<Rigidbody>();
+        _boneRigidbodies = _hipsBone.GetComponentsInChildren<Rigidbody>()
+            .Where(rb => rb.gameObject.layer == LayerMask.NameToLayer("StudentBone"))
+            .ToArray();
 
         _bones = new Transform[_boneRigidbodies.Length];
         _ragdollBones = new BoneTransform[_bones.Length];

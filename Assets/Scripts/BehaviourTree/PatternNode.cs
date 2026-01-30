@@ -462,11 +462,30 @@ public class CoopPattern : PatternNode
             // 4. 실제 협동 애니메이션 실행
             //new SetAnimRootMotion(true),
             //new SetAnimBool("Talking", true),
-            new OverrideAttackTarget(() => _bb.coopData.targetObject),
-            new ActionNode(null, NodeState.Running),
+
+            //new OverrideAttackTarget(() => _bb.coopData.targetObject),
+            //new ActionNode(null, NodeState.Running),
+
             //new SetAnimRootMotion(false),
             //new SetAttackTarget()
             //new PlayCoopAnimationNode()
+
+            new Selector(new List<BT_Node>
+            {
+                new ConditionDecorator(() => _bb.coopData.targetObject,
+                    new Sequence(new List<BT_Node>
+                    {
+                        new OverrideAttackTarget(() => _bb.coopData.targetObject),
+                        new ActionNode(null, NodeState.Running),
+                    })
+                ),
+
+                new Sequence(new List<BT_Node>
+                {
+                    new SetAnimBool("Talking", true),
+                    new ActionNode(null, NodeState.Running),
+                })
+            })
         });
     }
 }
@@ -586,7 +605,16 @@ public class AttackReactivePattern : PatternNode
             new ConditionDecorator(() => _bb.targetDamageable != null, 
                 new Sequence(new List<BT_Node>
                 {
+                    new ActionNode(() =>
+                    {
+                        PostStudent student = _bb.Avatar.GetComponent<PostStudent>();
+                        student?.HideAllAnimAttachments();
+                        student?.StopAllOverlapAttackers();
+                    }),
+                    new EnableAgentUpdate(),
                     new ResetAnimParameters(),
+                    new ClearDestBehavior(),
+                    new ClearDestSpot(),
                     new CombatPattern(),
                 })
             ),
@@ -820,6 +848,7 @@ public class EscapeGiveUpReactivePattern : PatternNode
                 new Sequence(new List<BT_Node>
                 {
                     new ClearDestBehavior(),
+                    new ClearDestSpot(),
                     new ActionNode(() => _isTriedGiveUp = true, NodeState.Success)
                 })
             ),

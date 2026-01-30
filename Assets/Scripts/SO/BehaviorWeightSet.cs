@@ -56,4 +56,7 @@ public enum BehaviorType
     [BehaviorInfo(BehaviorSafety.Safe)] Sleep = 1 << 14,
 
     [BehaviorInfo(BehaviorSafety.Hazard)] Music = 1 << 15,
+
+    [BehaviorInfo(BehaviorSafety.Safe)] SitFloor = 1 << 16,
+    [BehaviorInfo(BehaviorSafety.Safe)] SitChair = 1 << 17,
 }

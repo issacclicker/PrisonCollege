@@ -44,6 +44,7 @@ public class PlayerCamera : MonoBehaviour
 
     public void DisablePhysics()
     {
+        //_cameraFollow.currentPitch = 0;
         _taskCameraRotator.enabled = false;
         _cameraFollow.enabled = true;
         _rigidbody.isKinematic = true;

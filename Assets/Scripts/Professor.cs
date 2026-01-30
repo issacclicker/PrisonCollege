@@ -82,8 +82,9 @@ public class Professor : MonoBehaviour, IAttackable
 
     public void Revive()
     {
+        _rigidbody.isKinematic = false;
         transform.forward = _playerCamera.transform.forward;
-        transform.position = _playerCamera.transform.position + Vector3.up * 1.5f;
+        transform.position = _playerCamera.transform.position + Vector3.up * 1f;
         _health.Initialize();
         _stamina.Initialize();
         _aliveCanvas.alpha = 1;
@@ -99,6 +100,7 @@ public class Professor : MonoBehaviour, IAttackable
 
     private void Die(HitInfo hitInfo)
     {
+        _rigidbody.isKinematic = true;
         _aliveCanvas.alpha = 0;
         _deadCanvas.alpha = 1;
         _statRecovery.enabled = false;
@@ -108,7 +110,7 @@ public class Professor : MonoBehaviour, IAttackable
         _playerCamera.ApplyDeathPhysics(hitInfo);
 
         PostStudent attackerStudent = hitInfo.attacker.GetComponent<PostStudent>();
-        attackerStudent.UnFocusProfessorAttack();
+        //attackerStudent.UnFocusProfessorAttack();
         DieEvent?.Invoke(attackerStudent.Name);
     }
 

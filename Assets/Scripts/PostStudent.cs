@@ -38,7 +38,7 @@ public class PostStudent : MonoBehaviour
     //[SerializeField] private SpotGroup _microwaveSpots;
     //[SerializeField] private SpotGroup _prowlSpots;
 
-    [SerializeField] private GameObject _player;
+    [SerializeField] private Professor _player;
 
     [SerializeField] private BehaviorWeightSet _behaviorWeightSet;
     [SerializeField] private StageSpots _stageSpots;
@@ -90,6 +90,8 @@ public class PostStudent : MonoBehaviour
 
         _characterRagdoll.StandUpStartEvent?.AddListener(OnStandUpStart);
         _characterRagdoll.StandUpCompleteEvent.AddListener(OnStandUpComplete);
+
+        _player.DieEvent.AddListener(_ => UnFocusProfessorAttack());
     }
 
 
@@ -101,7 +103,7 @@ public class PostStudent : MonoBehaviour
         StopAllOverlapAttackers();
         _characterRagdoll.UnTriggerRagdoll();
         _speedSelector = ConstructSpeedSelector();
-        _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots, _player);
+        _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots, _player.gameObject);
         _blackboard.EscapeSuccessEvent.AddListener(OnEscaped);
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
@@ -158,7 +160,7 @@ public class PostStudent : MonoBehaviour
 
 
 
-    private void StopAllOverlapAttackers()
+    public void StopAllOverlapAttackers()
     {
         _bodyOverlapAttacker.StopAttack();
         _tackleOverlapAttacker.StopAttack();
@@ -195,7 +197,7 @@ public class PostStudent : MonoBehaviour
     {
         Sequence combatSequence = new Sequence(new List<BT_Node>
         {
-            new SetAttackTarget(() => _player),
+            new SetAttackTarget(() => _player.gameObject),
             new CombatApproachPattern()
         });
 
@@ -311,7 +313,7 @@ public class PostStudent : MonoBehaviour
 
         BT_Node combatSubTree = new Sequence(new List<BT_Node>
         {
-            new SetAttackTarget(() => _player),
+            new SetAttackTarget(() => _player.gameObject),
             // 1. 적에게 접근 (사거리 안에 들어올 때까지 Running, 들어오면 Success)
             new ParallelNode(new List<BT_Node>
             {
@@ -358,6 +360,68 @@ public class PostStudent : MonoBehaviour
 
         //return new Selector(new List<BT_Node> { randomJobSelector });
 
+        Sequence danceSequence = new Sequence(new List<BT_Node>
+        {
+            //new SetRandomBehaveSpot(_restSpots),
+            _speedSelector,
+            new MoveToSpot(),
+            new SetAnimBool("Dancing", true),
+            new Delay(() => 5f),
+            //new PlayLoopAnim("LookAround", 5)
+        });
+
+        Sequence worshipSequence = new Sequence(new List<BT_Node>
+        {
+            //new SetRandomBehaveSpot(_restSpots),
+            _speedSelector,
+            new MoveToSpot(),
+            new RotateToSpot(),
+            new SetAnimBool("Praying", true),
+            new Delay(() => 5f),
+            //new PlayLoopAnim("LookAround", 5)
+        });
+
+        Sequence sportsSequence = new Sequence(new List<BT_Node>
+        {
+            //new SetRandomBehaveSpot(_restSpots),
+            _speedSelector,
+            new MoveToSpot(),
+            new SetAnimBool("Burpeeing", true),
+            new Delay(() => 5f),
+            //new PlayLoopAnim("LookAround", 5)
+        });
+
+        Sequence sleepSequence = new Sequence(new List<BT_Node>
+        {
+            //new SetRandomBehaveSpot(_restSpots),
+            _speedSelector,
+            new MoveToSpot(),
+            new SetAnimBool("Sleeping", true),
+            new Delay(() => 5f),
+            //new PlayLoopAnim("LookAround", 5)
+        });
+
+        Sequence sitFloorSequence = new Sequence(new List<BT_Node>
+        {
+            //new SetRandomBehaveSpot(_restSpots),
+            _speedSelector,
+            new MoveToSpot(),
+            new SetAnimBool("SittingFloor", true),
+            new Delay(() => 5f),
+            //new PlayLoopAnim("LookAround", 5)
+        });
+
+        Sequence sitChairSequence = new Sequence(new List<BT_Node>
+        {
+            //new SetRandomBehaveSpot(_restSpots),
+            _speedSelector,
+            new MoveToSpot(),
+            new RotateToSpot(),
+            new SetAnimBool("SittingChair", true),
+            new Delay(() => 5f),
+            //new PlayLoopAnim("LookAround", 5)
+        });
+
         var behaviorNodes = new Dictionary<BehaviorType, BT_Node>
         {
             //{ BehaviorType.Sit, ConstructWorkSequence() },
@@ -367,7 +431,14 @@ public class PostStudent : MonoBehaviour
             { BehaviorType.UseMicrowave, microwaveSequence },
             { BehaviorType.Escape, new TryEscapePattern() },
             { BehaviorType.RushThrough, new RushThroughPattern() },
-            { BehaviorType.Smoke, smokeSequence },
+
+            { BehaviorType.Dance, danceSequence },
+            { BehaviorType.Worship, worshipSequence },
+            { BehaviorType.Sports, sportsSequence },
+            { BehaviorType.Sleep, sleepSequence },
+
+            { BehaviorType.SitChair, sitChairSequence },
+            { BehaviorType.SitFloor, sitFloorSequence },
         };
 
         Selector jopBehavior = new Selector(new List<BT_Node>
@@ -384,6 +455,7 @@ public class PostStudent : MonoBehaviour
                 {
                     new ActionNode(HideAllAnimAttachments),
                     new ActionNode(StopAllOverlapAttackers),
+                    new ClearDestSpot(),
                     new TacklePattern(),
                     //new ClearDestBehavior(),
                 })
@@ -438,6 +510,7 @@ public class PostStudent : MonoBehaviour
 
     public void UnFocusProfessorAttack()
     {
+        if (_blackboard.targetObject != _player.gameObject) return;
         _blackboard.targetObject = null;
         _blackboard.targetDamageable = null;
         _blackboard.isForceBehavior = false;
@@ -530,7 +603,7 @@ public class PostStudent : MonoBehaviour
 
 
 
-    private void HideAllAnimAttachments()
+    public void HideAllAnimAttachments()
     {
         foreach (var animAttacher in _animAttachers)
         {
@@ -582,7 +655,7 @@ public class PostStudent : MonoBehaviour
         _agent.updatePosition = true;    // 에이전트가 트랜스폼을 움직이도록 허용
         _agent.updateRotation = true;    // 회전도 허용
         _anim.applyRootMotion = false;
-        _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots, _player);
+        _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots, _player.gameObject);
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
         OnWorkTriggered();

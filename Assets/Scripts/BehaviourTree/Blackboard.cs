@@ -66,11 +66,14 @@ public class Blackboard
 
 
     //나쁜 행동중에는 코옵 불가능
-    public bool CanCoop => coopData.spot == null && !isEscaping
-        && destBehavior != BehaviorType.Tackle
-        && destBehavior != BehaviorType.RushThrough
-        && destBehavior != BehaviorType.Escape
-        && destBehavior != BehaviorType.Fight;
+    //public bool CanCoop => coopData.spot == null && !isEscaping
+    //    && destBehavior != BehaviorType.Tackle
+    //    && destBehavior != BehaviorType.RushThrough
+    //    && destBehavior != BehaviorType.Escape;
+    //    //&& destBehavior != BehaviorType.Fight;
+
+
+    public bool CanCoop => coopData.spot == null && destBehavior.GetSafety() == BehaviorSafety.Safe && targetObject == null && !isForceBehavior;
 
 
 
@@ -101,6 +104,14 @@ public class Blackboard
 
 
 
+    public void ExecuteTalk()
+    {
+        coopData.isExecuting = true;
+        coopData.targetAnimName = "Talking";
+    }
+
+
+
     public void SecadeCoop()
     {
         coopData.spot = null;
@@ -109,6 +120,7 @@ public class Blackboard
         coopData.slotIndex = -1;
         coopData.isExecuting = false;
         coopData.targetObject = null;
+        coopData.targetAnimName = null;
     }
 }
 
@@ -122,6 +134,7 @@ public struct CoopData
     public int slotIndex;            // 배정된 자리 번호 (0, 1, 2...)
     public bool isExecuting;         // 실행 중인지 여부
     public GameObject targetObject;
+    public string targetAnimName;
 }
 
 

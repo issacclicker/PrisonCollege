@@ -208,6 +208,52 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 184759}
   m_Mesh: {fileID: -2432090755550338912, guid: 9c7cab859df4c234e80b58db1cb849d1, type: 3}
+--- !u!1 &4319531
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4319532}
+  - component: {fileID: 4319533}
+  m_Layer: 0
+  m_Name: Spot11
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4319532
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4319531}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 8.755, y: 0, z: 4.496}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 476100962}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &4319533
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4319531}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3f574c3767cca47b15d2ad6a7643d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SingleStudentSpot
+  _behaviorTypes: 227328
+  _occupant: {fileID: 0}
 --- !u!1001 &28942906
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -338,6 +384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _behaviorTypes: 32
+  _occupant: {fileID: 0}
   JoinEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -686,6 +733,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _behaviorTypes: 2
+  _occupant: {fileID: 0}
 --- !u!1 &119353716
 GameObject:
   m_ObjectHideFlags: 0
@@ -1100,6 +1148,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonitorSpot
   _behaviorTypes: 769
+  _occupant: {fileID: 0}
   _monitor: {fileID: 1509308181}
 --- !u!1 &176667505
 GameObject:
@@ -1282,6 +1331,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _behaviorTypes: 72
+  _occupant: {fileID: 0}
   _exitGate: {fileID: 2088033359}
 --- !u!1 &182511861
 GameObject:
@@ -6298,7 +6348,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa71c66075d62944780c305a5366e1f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _behaviorTypes: 32
+  _behaviorTypes: 1024
+  _occupant: {fileID: 0}
   JoinEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -22615,6 +22666,8 @@ Transform:
   - {fileID: 180786425}
   - {fileID: 835622701}
   - {fileID: 1200239159}
+  - {fileID: 1164601567}
+  - {fileID: 4319532}
   - {fileID: 105615871}
   - {fileID: 1619110933}
   m_Father: {fileID: 0}
@@ -23501,6 +23554,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MicrowaveSpot
   _behaviorTypes: 6
+  _occupant: {fileID: 0}
   _microwave: {fileID: 4203832506254779688}
 --- !u!1 &558930296
 GameObject:
@@ -30073,7 +30127,7 @@ GameObject:
   - component: {fileID: 702207914}
   - component: {fileID: 702207913}
   - component: {fileID: 702207912}
-  m_Layer: 15
+  m_Layer: 0
   m_Name: Tackle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -30089,7 +30143,7 @@ Transform:
   m_GameObject: {fileID: 702207910}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0582, y: -0.0077, z: 0}
+  m_LocalPosition: {x: -0.061, y: 0.024, z: -0.023}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -30162,7 +30216,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.08
+  m_Radius: 0.1
   m_Height: 0.36
   m_Direction: 0
   m_Center: {x: 0, y: 0, z: 0}
@@ -45854,6 +45908,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _behaviorTypes: 0
+  _occupant: {fileID: 0}
   _targetExitSpot: {fileID: 180786427}
 --- !u!1 &838723679
 GameObject:
@@ -77563,6 +77618,52 @@ ParticleSystem:
         m_PostInfinity: 2
         m_RotationOrder: 4
     vectorLabel1_3: W
+--- !u!1 &1164601566
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1164601567}
+  - component: {fileID: 1164601568}
+  m_Layer: 0
+  m_Name: Spot10
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1164601567
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164601566}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 4.86, y: 0, z: 5.73}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 476100962}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &1164601568
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1164601566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2c3f574c3767cca47b15d2ad6a7643d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SingleStudentSpot
+  _behaviorTypes: 227328
+  _occupant: {fileID: 0}
 --- !u!1 &1191874917
 GameObject:
   m_ObjectHideFlags: 0
@@ -82502,6 +82603,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _behaviorTypes: 0
+  _occupant: {fileID: 0}
   _targetExitSpot: {fileID: 180786427}
 --- !u!1 &1207309409
 GameObject:
@@ -100464,6 +100566,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1619110933}
   - component: {fileID: 1619110934}
+  - component: {fileID: 1619110935}
   m_Layer: 0
   m_Name: Coop_Talk
   m_TagString: Untagged
@@ -100479,15 +100582,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1619110932}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: -0.44690052, w: 0.8945837}
-  m_LocalPosition: {x: -12.304, y: 0, z: 4.554}
+  m_LocalRotation: {x: 0, y: -0.2717763, z: 0, w: 0.96236044}
+  m_LocalPosition: {x: 1.67, y: 0, z: 8.81}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1800108812}
   - {fileID: 199565057}
   m_Father: {fileID: 476100962}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -53.09}
+  m_LocalEulerAnglesHint: {x: 0, y: -31.54, z: 0}
 --- !u!114 &1619110934
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -100497,13 +100600,42 @@ MonoBehaviour:
   m_GameObject: {fileID: 1619110932}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 286c44a837afa6545b224479df346616, type: 3}
+  m_Script: {fileID: 11500000, guid: 0e9a4d7ddbdf7af4fb3442bce3f10e0a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: Assembly-CSharp::TalkPlace
   _coopSpots:
   - {fileID: 1800108813}
   - {fileID: 199565058}
   _searchRadius: 20
+--- !u!114 &1619110935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1619110932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4f8e8c1ec73d24428c2ce4a7f200958, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Duration
+  _maxStat: 3
+  _currentStat: 0
+  IncreaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DecreaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DepletedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  MaxReachEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  ResetEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1641552894
 GameObject:
   m_ObjectHideFlags: 0
@@ -111701,7 +111833,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa71c66075d62944780c305a5366e1f4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _behaviorTypes: 32
+  _behaviorTypes: 1024
+  _occupant: {fileID: 0}
   JoinEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -137849,6 +137982,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _behaviorTypes: 32
+  _occupant: {fileID: 0}
   JoinEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -178805,7 +178939,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: "\uC774\uB8E8\uB9AC"
-  _player: {fileID: 4459864851346212170}
+  _player: {fileID: 1815076853}
   _behaviorWeightSet: {fileID: 11400000, guid: ce046bb6febef6142b878691527993c1, type: 2}
   _stageSpots: {fileID: 1706312650}
   _bodyOverlapAttacker: {fileID: 530553826}
@@ -181116,7 +181250,7 @@ Rigidbody:
   m_IsKinematic: 0
   m_Interpolate: 1
   m_Constraints: 112
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
 --- !u!23 &4459864851346212164
 MeshRenderer:
   m_ObjectHideFlags: 0
