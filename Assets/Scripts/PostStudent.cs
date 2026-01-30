@@ -53,6 +53,7 @@ public class PostStudent : MonoBehaviour
     private CharacterRagdoll _characterRagdoll;
     private AnimAttacher[] _animAttachers;
     private PlateAttacher _plateAttacher;
+    private SingAttacher _singAttacher;
 
     [SerializeField] private OverlapAttacker _bodyOverlapAttacker;
     [SerializeField] private OverlapAttacker _tackleOverlapAttacker;
@@ -67,7 +68,8 @@ public class PostStudent : MonoBehaviour
     public bool IsDoingHazardBehavior =>
         Blackboard.destBehavior.IsHazard()
         || (Blackboard.destBehavior == BehaviorType.UseMicrowave && _plateAttacher.CurrentFood != null && _plateAttacher.CurrentFood.isCauseFire)
-        || Blackboard.targetObject != null;
+        || Blackboard.targetObject != null
+        || (Blackboard.destBehavior == BehaviorType.Sing && _singAttacher.IsBad);
 
 
     private void Awake()
@@ -81,6 +83,7 @@ public class PostStudent : MonoBehaviour
         _agent.acceleration = 20f;
         _animAttachers = GetComponents<AnimAttacher>();
         _plateAttacher = GetComponent<PlateAttacher>();
+        _singAttacher = GetComponent<SingAttacher>();
 
         _damageReceiver.StatDownEvent?.AddListener(OnDamaged);
         _damageReceiver.DepletedEvent?.AddListener(OnDie);
@@ -422,6 +425,19 @@ public class PostStudent : MonoBehaviour
             //new PlayLoopAnim("LookAround", 5)
         });
 
+        Sequence singSequence = new Sequence(new List<BT_Node>
+        {
+            //new SetRandomBehaveSpot(_restSpots),
+            _speedSelector,
+            new MoveToSpot(),
+            new StopAndDisableAgentUpdate(),
+            new SetAnimRootMotion(true),
+            new SetAnimBool("Singing", true),
+            new ActionNode(() => _singAttacher.SingASong()),
+            new Delay(() => 20f),
+            //new PlayLoopAnim("LookAround", 5)
+        });
+
         var behaviorNodes = new Dictionary<BehaviorType, BT_Node>
         {
             //{ BehaviorType.Sit, ConstructWorkSequence() },
@@ -439,6 +455,8 @@ public class PostStudent : MonoBehaviour
 
             { BehaviorType.SitChair, sitChairSequence },
             { BehaviorType.SitFloor, sitFloorSequence },
+
+            { BehaviorType.Sing, singSequence },
         };
 
         Selector jopBehavior = new Selector(new List<BT_Node>
