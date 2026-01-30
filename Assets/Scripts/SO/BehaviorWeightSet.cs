@@ -54,9 +54,8 @@ public enum BehaviorType
     [BehaviorInfo(BehaviorSafety.Safe)] Worship = 1 << 12,
     [BehaviorInfo(BehaviorSafety.Safe)] Sports = 1 << 13,
     [BehaviorInfo(BehaviorSafety.Safe)] Sleep = 1 << 14,
+    [BehaviorInfo(BehaviorSafety.Safe)] SitFloor = 1 << 15,
+    [BehaviorInfo(BehaviorSafety.Safe)] SitChair = 1 << 16,
 
-    [BehaviorInfo(BehaviorSafety.Hazard)] Music = 1 << 15,
-
-    [BehaviorInfo(BehaviorSafety.Safe)] SitFloor = 1 << 16,
-    [BehaviorInfo(BehaviorSafety.Safe)] SitChair = 1 << 17,
+    [BehaviorInfo(BehaviorSafety.Safe)] Sing = 1 << 17,
 }

@@ -447,6 +447,13 @@ public class CoopPattern : PatternNode
         // 협동 패턴 루트 구성 예시
         _patternRoot = new Sequence(new List<BT_Node>
         {
+            new ActionNode(() => 
+            {
+                PostStudent student = _bb.Avatar.GetComponent<PostStudent>();
+                student?.HideAllAnimAttachments();
+                student?.StopAllOverlapAttackers();
+            }),
+            new EnableAgentUpdate(),
             new OverrideBehaveSpot(() => _bb.coopData.spot, () => _bb.coopData.type),
             new SetAnimRootMotion(false),
             new ResetAnimParameters(),
