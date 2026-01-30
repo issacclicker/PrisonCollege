@@ -20,6 +20,7 @@ public class StageController : SceneSingleton<StageController>
     [Header("Stage Play Values")]
     [SerializeField] private float _studProjectProgress = 5;
     [SerializeField] private float _profProjectProgress = 20;
+    [SerializeField] private float _chaosIncrease = 3;
     [SerializeField] private float _chaosDecrease = 5;
     [SerializeField] private int _progectReward = 50;
     [Header("Professor Task Place")]
@@ -78,6 +79,7 @@ public class StageController : SceneSingleton<StageController>
         CountWorkingStudents();
         CheckProfessorProgressing();
         ProgressProject();
+        IncreaseChaos();
         DecreaseStats();
         UpdateUIs();
     }
@@ -176,6 +178,21 @@ public class StageController : SceneSingleton<StageController>
         _workingTmp.text = $"{_workingStudCount.ToString()}명 작업중";
 
         _projectProgressBar.fillAmount = _projectStat.Ratio;
+    }
+
+
+
+    private void IncreaseChaos()
+    {
+        int chaosCauseCount = 0;
+        foreach (PostStudent student in _students)
+        {
+            if (student.IsCausingChaos)
+            {
+                chaosCauseCount++;
+            }
+        }
+        _chaosStat.Increase(chaosCauseCount * _chaosIncrease * Time.deltaTime);
     }
 
 

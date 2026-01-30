@@ -24,7 +24,7 @@ MonoBehaviour:
   - _behaviorType: 16
     _chance: 0
   - _behaviorType: 32
-    _chance: 0
+    _chance: 1
   - _behaviorType: 64
     _chance: 0
   - _behaviorType: 128
@@ -48,4 +48,4 @@ MonoBehaviour:
   - _behaviorType: 65536
     _chance: 1
   - _behaviorType: 131072
-    _chance: 100
+    _chance: 1

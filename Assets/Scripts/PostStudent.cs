@@ -61,15 +61,17 @@ public class PostStudent : MonoBehaviour
     [HideInInspector] public UnityEvent<PostStudent> DieEvent = new();
     [HideInInspector] public UnityEvent<PostStudent> EscapeEvent = new();
 
-    public bool IsWorking =>
+    public bool IsWorking => 
         Blackboard != null && Blackboard.destBehavior == BehaviorType.Work
         && _anim != null && _anim.enabled && _anim.GetBool("Typing");
 
-    public bool IsDoingHazardBehavior =>
+    public bool IsDoingHazardBehavior => _damageReceiver.CanEffect && (
         Blackboard.destBehavior.IsHazard()
         || (Blackboard.destBehavior == BehaviorType.UseMicrowave && _plateAttacher.CurrentFood != null && _plateAttacher.CurrentFood.isCauseFire)
         || Blackboard.targetObject != null
-        || (Blackboard.destBehavior == BehaviorType.Sing && _singAttacher.IsBad);
+        || (Blackboard.destBehavior == BehaviorType.Sing && _singAttacher.IsBad));
+
+    public bool IsCausingChaos => _damageReceiver.CanEffect && Blackboard.targetDamageable != null || (Blackboard.destBehavior == BehaviorType.Sing && _singAttacher.IsBad);
 
 
     private void Awake()
