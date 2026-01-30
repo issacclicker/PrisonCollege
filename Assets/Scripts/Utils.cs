@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -124,4 +125,44 @@ public static class Utils
 
         return list[Random.Range(0, list.Count)];
     }
+
+
+
+    /// <summary>
+    /// 두 Transform 사이의 직선 거리를 반환합니다. (3D)
+    /// </summary>
+    public static float DistanceTo(this Transform start, Transform target)
+    {
+        if (start == null || target == null) return 0f;
+        return Vector3.Distance(start.position, target.position);
+    }
+
+
+
+    private static readonly Dictionary<BehaviorType, BehaviorSafety> _safetyCache = new();
+
+    public static BehaviorSafety GetSafety(this BehaviorType type)
+    {
+        // 1. 캐시 확인
+        if (_safetyCache.TryGetValue(type, out var cachedSafety))
+            return cachedSafety;
+
+        // 2. 리플렉션으로 Attribute 찾기
+        var field = typeof(BehaviorType).GetField(type.ToString());
+        if (field != null)
+        {
+            var attr = field.GetCustomAttribute<BehaviorInfoAttribute>();
+            if (attr != null)
+            {
+                _safetyCache[type] = attr.Safety;
+                return attr.Safety;
+            }
+        }
+
+        // 3. 값이 없거나 복합 플래그인 경우 기본값 반환
+        return BehaviorSafety.Safe;
+    }
+
+    // 도우미 메서드: 위험 행동인지 바로 확인
+    public static bool IsHazard(this BehaviorType type) => GetSafety(type) == BehaviorSafety.Hazard;
 }

@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class Progress : Stat
 {
-    protected override void Awake() => Initialize(true);
+    //protected override void Awake() => Initialize(true);
 }

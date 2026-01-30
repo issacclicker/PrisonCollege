@@ -132,7 +132,7 @@ public class CoopBehaviorPlace : MonoBehaviour
         }
     }
 
-    private void BreakUpCoop()
+    protected void BreakUpCoop()
     {
         // 1. 모든 참여자(남은 인원)에게 해산 신호 전달
         foreach (var p in _participants)
@@ -254,7 +254,7 @@ public class CoopBehaviorPlace : MonoBehaviour
 
 
 
-    public void Execute()
+    public virtual void Execute()
     {
         // 1. 실행 가능한 상태인지 최종 확인
         if (_phase != CoopPhase.Ready)

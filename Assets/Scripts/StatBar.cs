@@ -7,25 +7,72 @@ using UnityEngine.UI;
 
 public class StatBar : MonoBehaviour
 {
-    [SerializeField] private Stat _targetStat;
-    [SerializeField] private Image _fillImage;
-    [SerializeField] private Gradient _colorGradient;
+    [SerializeField] protected Stat _targetStat;
+    [SerializeField] protected Image _fillImage;
+    [SerializeField] protected Gradient _colorGradient;
 
 
 
-    private void Start()
+    //protected virtual void Start()
+    //{
+    //    OnStatChanged(0);
+    //    _targetStat?.IncreaseEvent.AddListener(OnStatChanged);
+    //    _targetStat?.DecreaseEvent.AddListener(OnStatChanged);
+    //}
+
+
+
+    protected virtual void Start()
     {
-        OnStatChanged(0);
-        _targetStat.IncreaseEvent.AddListener(OnStatChanged);
-        _targetStat.DecreaseEvent.AddListener(OnStatChanged);
+        // 초기 설정이 되어있다면 구독, 없으면 나중에 SetTarget으로 설정
+        if (_targetStat != null) BindEvents();
+        UpdateUI(_targetStat != null ? _targetStat.Ratio : 0);
+    }
+
+
+    public virtual void SetTarget(Stat newStat)
+    {
+        // 기존 스탯 구독 해제 (중요! 메모리 누수 방지)
+        if (_targetStat != null)
+        {
+            _targetStat.IncreaseEvent.RemoveListener(_ => OnStatChanged());
+            _targetStat.DecreaseEvent.RemoveListener(_ => OnStatChanged());
+            _targetStat.ResetEvent.RemoveListener(_ => OnStatChanged());
+        }
+
+        _targetStat = newStat;
+
+        if (_targetStat != null)
+        {
+            BindEvents();
+            UpdateUI(_targetStat.Ratio);
+        }
+        else
+        {
+            UpdateUI(0);
+        }
+    }
+
+    private void BindEvents()
+    {
+        _targetStat.IncreaseEvent.AddListener(_ => OnStatChanged());
+        _targetStat.DecreaseEvent.AddListener(_ => OnStatChanged());
+        _targetStat.ResetEvent.AddListener(_ => OnStatChanged());
     }
 
 
 
-    private void OnStatChanged(float amount)
+    protected virtual void OnStatChanged()
     {
-        float ratio = Mathf.Clamp01(_targetStat.Ratio);
-        _fillImage.fillAmount = ratio;
-        _fillImage.color = _colorGradient.Evaluate(ratio);
+        UpdateUI(_targetStat.Ratio);
+    }
+
+
+
+    protected void UpdateUI(float ratio)
+    {
+        float clampedRatio = Mathf.Clamp01(ratio);
+        _fillImage.fillAmount = clampedRatio;
+        _fillImage.color = _colorGradient.Evaluate(clampedRatio);
     }
 }

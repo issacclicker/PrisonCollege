@@ -6,7 +6,7 @@ using UnityEngine.Events;
 public class Stat : MonoBehaviour
 {
     [SerializeField] protected float _maxStat = 100f;
-    protected float _currentStat;
+    [SerializeField] protected float _currentStat;
 
     public float Current => _currentStat;
     public float Max => _maxStat;
@@ -14,18 +14,20 @@ public class Stat : MonoBehaviour
     public bool IsDepleted => _currentStat <= 0;
     public bool IsMax => _currentStat >= _maxStat;
 
-    public UnityEvent<float> IncreaseEvent = new UnityEvent<float>();
-    public UnityEvent<float> DecreaseEvent = new UnityEvent<float>();
-    public UnityEvent DepletedEvent = new UnityEvent();
-    public UnityEvent MaxReachEvent = new UnityEvent();
+    [HideInInspector] public UnityEvent<float> IncreaseEvent = new UnityEvent<float>();
+    [HideInInspector] public UnityEvent<float> DecreaseEvent = new UnityEvent<float>();
+    [HideInInspector] public UnityEvent DepletedEvent = new UnityEvent();
+    [HideInInspector] public UnityEvent MaxReachEvent = new UnityEvent();
+    [HideInInspector] public UnityEvent<float> ResetEvent = new UnityEvent<float>();
 
-    protected virtual void Awake() => Initialize();
+    //protected virtual void Awake() => Initialize();
 
 
 
     public virtual void Initialize(bool issetToZero = false)
     {
         _currentStat = issetToZero ? 0 : _maxStat;
+        ResetEvent?.Invoke(_currentStat);
     }
 
 

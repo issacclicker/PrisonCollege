@@ -6,13 +6,14 @@ public class DamageReceiver : EffectReceiver
 {
     private Health _health;
     public override Stat EffectedStat => _health;
-    public override bool CanEffect => _health != null && !_health.IsDepleted;
+    public override bool CanEffect => base.CanEffect && _health != null && !_health.IsDepleted;
 
 
 
     private void Awake()
     {
         _health = GetComponent<Health>();
+        _health.Initialize();
     }
 
 

@@ -11,6 +11,8 @@ public class MeleeWeapon : WeaponBase
     [SerializeField] private LayerMask _hitLayer;      // 대상 레이어 (Enemy, Obstacle 등)
     [SerializeField] private LayerMask _blockLayer;
 
+    public override string TypeName => "근접";
+
     protected override void ExecuteAttack() => PerformMeleeAttack(_attackRange, _attackRadius, _hitLayer, _blockLayer);
 
 

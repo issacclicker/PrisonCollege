@@ -413,3 +413,43 @@ public class ParallelOR : CompositeNode
         }
     }
 }
+
+
+
+public class LoopUntil : CompositeNode
+{
+    private System.Func<bool> _condition;
+
+    // 생성자: 반복할 노드(child)와 탈출 조건(condition)을 받음
+    public LoopUntil(System.Func<bool> condition, BT_Node child)
+        : base(new List<BT_Node> { child })
+    {
+        _condition = condition;
+    }
+
+    public override NodeState Evaluate()
+    {
+        // 1. 조건을 만족하면 루프를 종료하고 Success 반환
+        if (_condition != null && _condition())
+        {
+            Reset(); // 루프 탈출 시 자식들의 상태를 초기화
+            return NodeState.Success;
+        }
+
+        // 2. 자식 노드가 있다면 실행
+        if (children.Count > 0)
+        {
+            NodeState childState = children[0].Evaluate();
+
+            // 만약 자식이 내부적으로 루프를 돌리는 Running 상태라면 계속 진행
+            // 자식이 Success나 Failure를 뱉어도 조건이 안 맞으면 다시 돌림
+        }
+
+        // 3. 조건이 만족되지 않았으므로 트리는 이 노드에 머묾
+        return NodeState.Running;
+    }
+
+
+
+    public override void Reset() { }
+}

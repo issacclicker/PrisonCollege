@@ -1,4 +1,5 @@
 using System;
+using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
 
 public class Microwave : MonoBehaviour
@@ -6,6 +7,8 @@ public class Microwave : MonoBehaviour
     [SerializeField] private ParticleSystem _explosionParticle;
     [SerializeField] [Range(0f, 1f)] private float _fireInvokeThereshold;
     [SerializeField] private Transform _foodSocket;
+    private ExplosionShacker _explosionShacker;
+    private Click _interaction;
     private Duration _operateDuration;
     private Fire _fire;
 
@@ -18,11 +21,18 @@ public class Microwave : MonoBehaviour
 
     private void Awake()
     {
+        _interaction = GetComponent<Click>();
         _explosionParticle.gameObject.SetActive(false);
         _operateDuration = GetComponent<Duration>();
         _fire = GetComponent<Fire>();
         _operateDuration.Initialize(true);
         _operateDuration.MaxReachEvent.AddListener(Quit);
+        _explosionShacker = GetComponent<ExplosionShacker>();
+
+        _interaction.ClickEvent.AddListener(Quit);
+        _interaction.InteractState = false;
+        _interaction.ActionName = "À½½Ä »©±â";
+        _interaction.FillAmount = 1f;
     }
 
 
@@ -41,13 +51,14 @@ public class Microwave : MonoBehaviour
 
     public void PutFood(FoodInfo foodInfo)
     {
-        _currentFoodInside = null;
+        Destroy(_currentFoodInside?.gameObj);
         _currentFoodInside = new();
         _currentFoodInside.isCauseFire = foodInfo.isCauseFire;
         Quaternion initialRotation = Quaternion.Euler(-90f, 0f, 0f);
         _currentFoodInside.gameObj = Instantiate(foodInfo.gameObj, _foodSocket.position, initialRotation, _foodSocket);
         //AttachProp(_currentFoodInside.gameObj, _foodSocket);
         _currentFoodInside.gameObj.SetActive(true);
+        _interaction.InteractState = true;
     }
 
 
@@ -66,6 +77,7 @@ public class Microwave : MonoBehaviour
         _isOperating = false;
         _currentFoodInside?.gameObj.SetActive(false);
         _currentFoodInside = null;
+        _interaction.InteractState = false;
     }
 
 
@@ -74,6 +86,7 @@ public class Microwave : MonoBehaviour
     {
         _explosionParticle.gameObject.SetActive(true);
         _explosionParticle.Play();
+        _explosionShacker.PlayShake();
         _fire.Ignite();
         Quit();
     }

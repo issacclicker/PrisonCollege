@@ -23,6 +23,7 @@ public class ClickAndWait : MonoBehaviour, IPlayerInteractable
     private void Awake()
     {
         _progress = GetComponent<Progress>();
+        _progress.Initialize(true);
         _progress.MaxReachEvent.AddListener(() => ProgressCompleteEvent?.Invoke());
     }
 

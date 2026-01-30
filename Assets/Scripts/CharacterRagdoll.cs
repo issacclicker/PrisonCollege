@@ -1,7 +1,6 @@
 ﻿using DG.Tweening;
 using System;
 using System.Linq;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -46,6 +45,7 @@ public class CharacterRagdoll : MonoBehaviour
     private bool _isStandingUp = false;
     private BoneTransform[] _ragdollBones;
     private Transform[] _bones;
+    private Tween _standUpTween;
 
     public UnityEvent StandUpStartEvent = new();
     public UnityEvent StandUpCompleteEvent = new();
@@ -59,7 +59,10 @@ public class CharacterRagdoll : MonoBehaviour
         _agent = GetComponent<NavMeshAgent>();
         _anim = GetComponent<Animator>();
         _hipsBone = _anim.GetBoneTransform(HumanBodyBones.Hips);
-        _boneRigidbodies = _hipsBone.GetComponentsInChildren<Rigidbody>();
+        //_boneRigidbodies = _hipsBone.GetComponentsInChildren<Rigidbody>();
+        _boneRigidbodies = _hipsBone.GetComponentsInChildren<Rigidbody>()
+            .Where(rb => rb.gameObject.layer == LayerMask.NameToLayer("StudentBone"))
+            .ToArray();
 
         _bones = new Transform[_boneRigidbodies.Length];
         _ragdollBones = new BoneTransform[_bones.Length];
@@ -263,18 +266,22 @@ public class CharacterRagdoll : MonoBehaviour
 
     private void StartStandUp(string targetStandUpStateName)
     {
+        _standUpTween?.Kill();
         UnTriggerRagdoll();
         _anim.Rebind();
         _anim.Update(0f);
         _anim.Play(targetStandUpStateName, 0, 0);
-        float animLength = _anim.GetCurrentAnimatorStateInfo(0).length;
-        DOVirtual.DelayedCall(animLength, StandUpCompleted).SetTarget(this);
+        var stateInfo = _anim.GetCurrentAnimatorStateInfo(0);
+        float animLength = stateInfo.length / stateInfo.speed;
+        _standUpTween = DOVirtual.DelayedCall(animLength, StandUpCompleted).SetTarget(this);
     }
 
 
 
-    private void StandUpCompleted()
+    public void StandUpCompleted()
     {
+        _standUpTween?.Kill();
+        _standUpTween = null;
         _isStandingUp = false;
         StandUpCompleteEvent?.Invoke();
     }

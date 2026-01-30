@@ -12,11 +12,13 @@ public class InteractionUI : MonoBehaviour
     [Range(0, 1)] private float _fullAlpha = 1;
     [SerializeField] private float _fadeDuration = 0.2f;
     private CanvasGroup _canvasGroup;
+    private Vector3 _fullScale;
 
 
 
     private void Awake()
     {
+        _fullScale = transform.localScale;
         _canvasGroup = GetComponent<CanvasGroup>();
         _canvasGroup.alpha = 0f;
     }
@@ -29,8 +31,8 @@ public class InteractionUI : MonoBehaviour
         Fill(0);
         _canvasGroup.DOKill();
         transform.DOKill();
-        transform.localScale = Vector3.one * 0.8f;
-        transform.DOScale(_fullAlpha, _fadeDuration).SetEase(Ease.OutBack);
+        transform.localScale = _fullScale * 0.8f;
+        transform.DOScale(_fullScale, _fadeDuration).SetEase(Ease.OutBack);
         _canvasGroup.DOFade(_fullAlpha, _fadeDuration)
                     .SetUpdate(true);
     }

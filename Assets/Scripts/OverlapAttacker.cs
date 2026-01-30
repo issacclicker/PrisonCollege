@@ -4,8 +4,10 @@ using UnityEngine;
 
 public class OverlapAttacker : MonoBehaviour
 {
-    private bool _isAttacking = false;
+    [SerializeField] private bool _isAttacking = false;
     private HashSet<GameObject> _hitTargets = new HashSet<GameObject>();
+    private GameObject _rootObject;
+    private ExplosionShacker _explosionShacker;
 
     [Header("Settings")]
     [SerializeField] private DamageData _damageData;
@@ -14,6 +16,13 @@ public class OverlapAttacker : MonoBehaviour
     [Header("Layer Filters")]
     [SerializeField] private LayerMask _victimOnlyLayer; // 얘네는 맞기만 함 (예: Enemy)
     [SerializeField] private LayerMask _bothDamageLayer; // 닿으면 양쪽 다 데미지 (예: Trap, Destructible)
+
+
+    private void Awake()
+    {
+        _rootObject = transform.root.gameObject;
+        _explosionShacker = GetComponent<ExplosionShacker>();
+    }
 
     public void StartAttack()
     {
@@ -29,7 +38,7 @@ public class OverlapAttacker : MonoBehaviour
 
         // 1. 최상위 부모 기준으로 중복 체크
         GameObject rootTarget = other.transform.root.gameObject;
-        if (_hitTargets.Contains(rootTarget)) return;
+        if (_hitTargets.Contains(rootTarget) || rootTarget == _rootObject) return;
 
         int targetLayer = other.gameObject.layer;
         bool isVictimOnly = ((1 << targetLayer) & _victimOnlyLayer) != 0;
@@ -43,7 +52,7 @@ public class OverlapAttacker : MonoBehaviour
         Vector3 normal = (origin - contactPoint).normalized;
         if (normal == Vector3.zero) normal = -transform.forward;
 
-        HitInfo hitInfoToOther = new HitInfo(contactPoint, Quaternion.LookRotation(normal), gameObject, _hitImpulse);
+        HitInfo hitInfoToOther = new HitInfo(contactPoint, Quaternion.LookRotation(normal), _rootObject, _hitImpulse);
 
         // 3. 상대방 공격 (VictimOnly 또는 BothDamage일 때)
         if (other.TryGetComponent(out DamageReceiver otherReceiver))
@@ -67,8 +76,17 @@ public class OverlapAttacker : MonoBehaviour
                 );
 
                 // 3. 효과 적용
+                _explosionShacker.PlayShake();
                 myReceiver.TakeEffect(_damageData, hitInfoToMe);
             }
         }
     }
+}
+
+
+
+
+public enum OverlapAttackType
+{
+    BodySlam, Tackle
 }
