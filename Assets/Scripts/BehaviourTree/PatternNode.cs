@@ -963,7 +963,7 @@ public class TakeHitReactivePattern : PatternNode
     {
         _patternRoot = new ParallelOR(new List<BT_Node>
         {
-            new ConditionDecorator(() => _bb.isDamaged, new TakeHitPattern()),
+            new ConditionDecorator(() => _bb.isDamaged && !_bb.isEscaping, new TakeHitPattern()),
             normalRoutine
         });
     }

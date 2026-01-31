@@ -108,7 +108,7 @@ public class StageController : SceneSingleton<StageController>
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            _chaosStat.Increase(20);
+            //_chaosStat.Increase(20);
         }
         CountWorkingStudents();
         CheckProfessorProgressing();

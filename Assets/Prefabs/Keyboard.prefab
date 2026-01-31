@@ -100,7 +100,6 @@ GameObject:
   - component: {fileID: 7229925474334283257}
   - component: {fileID: 4937621013753584265}
   - component: {fileID: 396320528555403247}
-  - component: {fileID: 5038181903379657974}
   - component: {fileID: 253908482451300575}
   - component: {fileID: 3248756631819066077}
   m_Layer: 0
@@ -175,21 +174,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 1
---- !u!114 &5038181903379657974
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6601050947256481345}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27b331948bbdd214c9b67a3d55ba5218, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Projectile
-  _minImpactThreshold: 0.1
-  _lifeTime: 10
-  _destroyOnHit: 0
 --- !u!114 &253908482451300575
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -235,6 +219,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   MaxReachEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  ResetEvent:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &8723474698151477066

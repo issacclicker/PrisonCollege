@@ -68,7 +68,7 @@ public class PostStudent : MonoBehaviour
         Blackboard != null && Blackboard.destBehavior == BehaviorType.Work
         && _anim != null && _anim.enabled && _anim.GetBool("Typing");
 
-    public bool IsDoingHazardBehavior => _damageReceiver.CanEffect && (
+    public bool IsDoingHazardBehavior => (
         Blackboard.destBehavior.IsHazard()
         || (Blackboard.destBehavior == BehaviorType.UseMicrowave && _plateAttacher.CurrentFood != null && _plateAttacher.CurrentFood.isCauseFire)
         || Blackboard.targetObject != null
