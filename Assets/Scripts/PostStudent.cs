@@ -8,7 +8,9 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Animations;
 using UnityEngine.Events;
+using UnityEngine.Experimental.GlobalIllumination;
 using static Global;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PostStudent : MonoBehaviour
 {
@@ -38,14 +40,15 @@ public class PostStudent : MonoBehaviour
     //[SerializeField] private SpotGroup _microwaveSpots;
     //[SerializeField] private SpotGroup _prowlSpots;
 
-    [SerializeField] private Professor _player;
-
+    //[SerializeField] private Professor _player;
     [SerializeField] private BehaviorWeightSet _behaviorWeightSet;
-    [SerializeField] private StageSpots _stageSpots;
+    //[SerializeField] private StageSpots _stageSpots;
 
     //private bool _isDamaged = false;
     private DamageReceiver _damageReceiver;
     private BoostReceiver _boostReceiver;
+    private Professor _player;
+    private StageSpots _stageSpots;
 
     public Blackboard Blackboard => _blackboard;
     public string Name => _name;
@@ -72,6 +75,14 @@ public class PostStudent : MonoBehaviour
         || (Blackboard.destBehavior == BehaviorType.Sing && _singAttacher.IsBad));
 
     public bool IsCausingChaos => _damageReceiver.CanEffect && Blackboard.targetDamageable != null || (Blackboard.destBehavior == BehaviorType.Sing && _singAttacher.IsBad);
+    public bool IsComputerBehavior =>
+        Blackboard.destBehavior == BehaviorType.Work
+        || Blackboard.destBehavior == BehaviorType.Game
+        || Blackboard.destBehavior == BehaviorType.Hack;
+
+
+    public MonitorSpot SeatSpot {  get; set; }
+    //public BehaviorWeightSet BehaviorWeightSet { get; set; }
 
 
     private void Awake()
@@ -82,7 +93,7 @@ public class PostStudent : MonoBehaviour
         _agent = GetComponent<NavMeshAgent>();
         _anim = GetComponent<Animator>();
         _characterCollider = GetComponent<CapsuleCollider>();
-        _agent.acceleration = 20f;
+        _agent.acceleration = 100f;
         _animAttachers = GetComponents<AnimAttacher>();
         _plateAttacher = GetComponent<PlateAttacher>();
         _singAttacher = GetComponent<SingAttacher>();
@@ -96,7 +107,10 @@ public class PostStudent : MonoBehaviour
         _characterRagdoll.StandUpStartEvent?.AddListener(OnStandUpStart);
         _characterRagdoll.StandUpCompleteEvent.AddListener(OnStandUpComplete);
 
+        _player = StageController.Instance.Player;
         _player.DieEvent.AddListener(_ => UnFocusProfessorAttack());
+
+        _stageSpots = StageController.Instance.StageSpots;
     }
 
 
@@ -210,44 +224,44 @@ public class PostStudent : MonoBehaviour
     }
 
 
-    private BT_Node ConstructWorkSequence()
-    {
-        // 1. 개별 액션 시퀀스 정의
-        Sequence angrySeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Angry", "Angry", 1) });
-        Sequence clapSeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Clap", "Clap", 1) });
-        Sequence frustrateSeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Frustrated", "Frustrated", 1) });
+    //private BT_Node ConstructWorkSequence()
+    //{
+    //    // 1. 개별 액션 시퀀스 정의
+    //    Sequence angrySeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Angry", "Angry", 1) });
+    //    Sequence clapSeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Clap", "Clap", 1) });
+    //    Sequence frustrateSeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Frustrated", "Frustrated", 1) });
 
-        // 2. 아무것도 안 하고 타이핑만 계속할 상태 (대기 노드)
-        Sequence justTyping = new Sequence(new List<BT_Node> { new Delay(() => 0.1f) });
+    //    // 2. 아무것도 안 하고 타이핑만 계속할 상태 (대기 노드)
+    //    Sequence justTyping = new Sequence(new List<BT_Node> { new Delay(() => 0.1f) });
 
-        // 3. 확률 선택기 구성 (가중치 부여)
-        RandomSelector chanceActionSelector = new RandomSelector(
-            new List<BT_Node> { angrySeq, clapSeq, frustrateSeq, justTyping },
-            new List<System.Func<int>> {
-                () => 10, // 욕(분노) 10%
-                () => 10, // 박수 10%
-                () => 10, // 좌절 10%
-                () => 1  // 그냥 계속 타이핑 70%
-            }
-        );
+    //    // 3. 확률 선택기 구성 (가중치 부여)
+    //    RandomSelector chanceActionSelector = new RandomSelector(
+    //        new List<BT_Node> { angrySeq, clapSeq, frustrateSeq, justTyping },
+    //        new List<System.Func<int>> {
+    //            () => 10, // 욕(분노) 10%
+    //            () => 10, // 박수 10%
+    //            () => 10, // 좌절 10%
+    //            () => 1  // 그냥 계속 타이핑 70%
+    //        }
+    //    );
 
-        // 4. 메인 워크 시퀀스에 조립
-        Sequence workSequence = new Sequence(new List<BT_Node>
-        {
-            //new SetBehaveSpot(_chairSpot),
-            _speedSelector,
-            new MoveToSpot(),
-            new RotateToSpot(),
-            new SetAnimBool("Sitting", true),
-            new SetAnimBool("Typing", true),
-            new Delay(() => 3f),
-            chanceActionSelector,
-            new Delay(() => 6f),
-            new SetAnimBool("Sitting", false),
-            new SetAnimBool("Typing", false),
-        });
-        return workSequence;
-    }
+    //    // 4. 메인 워크 시퀀스에 조립
+    //    Sequence workSequence = new Sequence(new List<BT_Node>
+    //    {
+    //        //new SetBehaveSpot(_chairSpot),
+    //        _speedSelector,
+    //        new MoveToSpot(),
+    //        new RotateToSpot(),
+    //        new SetAnimBool("Sitting", true),
+    //        new SetAnimBool("Typing", true),
+    //        new Delay(() => 3f),
+    //        chanceActionSelector,
+    //        new Delay(() => 6f),
+    //        new SetAnimBool("Sitting", false),
+    //        new SetAnimBool("Typing", false),
+    //    });
+    //    return workSequence;
+    //}
 
     private BT_Node ConstructBehaviorTree()
     {
@@ -277,8 +291,7 @@ public class PostStudent : MonoBehaviour
             _speedSelector,
             new MoveToSpot(),
             new PlayOnceAnim("Smoke", "Smoke"),
-            new Delay(() => 2f),
-            //new PlayLoopAnim("LookAround", 5)
+            //new Delay(() => 2f),
         });
         //Sequence workSequence = new Sequence(new List<BT_Node>
         //{
@@ -311,10 +324,10 @@ public class PostStudent : MonoBehaviour
             }),
         });
 
-        RandomSelector randomJobSelector = new RandomSelector(
-            new List<BT_Node> { prowlSequence, restSequence, ConstructWorkSequence(), microwaveSequence },
-            new List<System.Func<int>> { () => 50, () => 50, () => 50, () => 50 }
-        );
+        //RandomSelector randomJobSelector = new RandomSelector(
+        //    new List<BT_Node> { prowlSequence, restSequence, ConstructWorkSequence(), microwaveSequence },
+        //    new List<System.Func<int>> { () => 50, () => 50, () => 50, () => 50 }
+        //);
 
         BT_Node combatSubTree = new Sequence(new List<BT_Node>
         {
@@ -367,82 +380,74 @@ public class PostStudent : MonoBehaviour
 
         Sequence danceSequence = new Sequence(new List<BT_Node>
         {
-            //new SetRandomBehaveSpot(_restSpots),
             _speedSelector,
             new MoveToSpot(),
             new SetAnimBool("Dancing", true),
-            new Delay(() => 5f),
-            //new PlayLoopAnim("LookAround", 5)
+            //new Delay(() => 5f),
+            new DelayRange(6, 8),
         });
 
         Sequence worshipSequence = new Sequence(new List<BT_Node>
         {
-            //new SetRandomBehaveSpot(_restSpots),
             _speedSelector,
             new MoveToSpot(),
             new RotateToSpot(),
             new SetAnimBool("Praying", true),
-            new Delay(() => 5f),
-            //new PlayLoopAnim("LookAround", 5)
+            //new Delay(() => 5f),
+            new DelayRange(6, 8),
         });
 
         Sequence sportsSequence = new Sequence(new List<BT_Node>
         {
-            //new SetRandomBehaveSpot(_restSpots),
             _speedSelector,
             new MoveToSpot(),
             new SetAnimBool("Burpeeing", true),
-            new Delay(() => 5f),
-            //new PlayLoopAnim("LookAround", 5)
+            //new Delay(() => 5f),
+            new DelayRange(6, 8),
         });
 
         Sequence sleepSequence = new Sequence(new List<BT_Node>
         {
-            //new SetRandomBehaveSpot(_restSpots),
             _speedSelector,
             new MoveToSpot(),
             new SetAnimBool("Sleeping", true),
-            new Delay(() => 5f),
-            //new PlayLoopAnim("LookAround", 5)
+            //new Delay(() => 5f),
+            new DelayRange(6, 8),
         });
 
         Sequence sitFloorSequence = new Sequence(new List<BT_Node>
         {
-            //new SetRandomBehaveSpot(_restSpots),
             _speedSelector,
             new MoveToSpot(),
             new SetAnimBool("SittingFloor", true),
-            new Delay(() => 5f),
-            //new PlayLoopAnim("LookAround", 5)
+            //new Delay(() => 5f),
+            new DelayRange(6, 8),
         });
 
         Sequence sitChairSequence = new Sequence(new List<BT_Node>
         {
-            //new SetRandomBehaveSpot(_restSpots),
             _speedSelector,
             new MoveToSpot(),
             new RotateToSpot(),
             new SetAnimBool("SittingChair", true),
-            new Delay(() => 5f),
-            //new PlayLoopAnim("LookAround", 5)
+            //new Delay(() => 5f),
+            new DelayRange(6, 8),
         });
 
         Sequence singSequence = new Sequence(new List<BT_Node>
         {
-            //new SetRandomBehaveSpot(_restSpots),
             _speedSelector,
             new MoveToSpot(),
             new StopAndDisableAgentUpdate(),
             new SetAnimRootMotion(true),
             new SetAnimBool("Singing", true),
             new ActionNode(() => _singAttacher.SingASong()),
-            new Delay(() => 20f),
-            //new PlayLoopAnim("LookAround", 5)
+            //new Delay(() => 20f),
+            new DelayRange(18, 20),
         });
 
         var behaviorNodes = new Dictionary<BehaviorType, BT_Node>
         {
-            //{ BehaviorType.Sit, ConstructWorkSequence() },
             { BehaviorType.Work, new WorkPattern() },
             { BehaviorType.Game, new WorkPattern() },
             { BehaviorType.Hack, new WorkPattern() },

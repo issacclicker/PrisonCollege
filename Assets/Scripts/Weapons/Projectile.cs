@@ -38,6 +38,7 @@ public class Projectile : MonoBehaviour
         }
 
         // 4. 데미지 전달
+        if (WeaponData == null || WeaponData.effect == null) return;
         EffectReceiver receiver = WeaponData.effect.GetActorReceiver(collision.gameObject);
         if (receiver && receiver.CanEffect)
         {

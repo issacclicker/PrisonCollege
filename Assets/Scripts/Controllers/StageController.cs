@@ -1,7 +1,8 @@
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using System.Collections.Generic;
 
 public class StageController : SceneSingleton<StageController>
 {
@@ -23,17 +24,25 @@ public class StageController : SceneSingleton<StageController>
     [SerializeField] private float _chaosIncrease = 3;
     [SerializeField] private float _chaosDecrease = 5;
     [SerializeField] private int _progectReward = 50;
+    [SerializeField] private float _minDelayFactor = 0.25f;
+    [SerializeField] private float _delayFuncFactor = 0.5f;
     [Header("Professor Task Place")]
     [SerializeField] private ProfessorTask[] _professorTasks;
     [Header("ETC")]
+    [SerializeField] private Professor _player;
+    [SerializeField] private StageSpots _stageSpots;
+    [SerializeField] private StudentSpawner _studentSpawner;
+    [SerializeField] private StageOver _stageOver;
     [SerializeField] private bool _isTestMode = true;
 
     private int _money = 0;
     private int _workingStudCount = 0;
     private bool _isProfWorking = false;
-    private List<PostStudent> _students = new();
+    private List<PostStudent> _studentList = new();
 
     public float ProjectProgress => _projectStat.Ratio;
+    public Professor Player => _player;
+    public StageSpots StageSpots => _stageSpots;
 
 
 
@@ -45,17 +54,38 @@ public class StageController : SceneSingleton<StageController>
         _escapeStat.Initialize(true);
         _projectStat.Initialize(true);
 
-        _timerStat.DepletedEvent.AddListener(GameOver);
-        _escapeStat.MaxReachEvent.AddListener(GameOver);
+        _timerStat.DepletedEvent.AddListener(() => GameOver(true));
+        _escapeStat.MaxReachEvent.AddListener(() => GameOver(false));
         _projectStat.MaxReachEvent.AddListener(OnProjectSuccessed);
 
-        SetStudentList();
+        //SetStudentList();
 
-        foreach (var student in _students)
+        //foreach (var student in _studentList)
+        //{
+        //    student.DieEvent.AddListener(OnStudentDied);
+        //    student.EscapeEvent.AddListener(OnStudentEscaped);
+        //}
+    }
+
+
+
+    private void Start()
+    {
+        _studentList = _studentSpawner.SpawnStudents();
+
+        foreach (var student in _studentList)
         {
             student.DieEvent.AddListener(OnStudentDied);
             student.EscapeEvent.AddListener(OnStudentEscaped);
         }
+    }
+
+
+
+    public void Restart()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
 
@@ -68,7 +98,7 @@ public class StageController : SceneSingleton<StageController>
         {
             PostStudent student = obj.GetComponent<PostStudent>();
             if (student == null) continue;
-            _students.Add(student);
+            _studentList.Add(student);
         }
     }
 
@@ -76,6 +106,10 @@ public class StageController : SceneSingleton<StageController>
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            _chaosStat.Increase(20);
+        }
         CountWorkingStudents();
         CheckProfessorProgressing();
         ProgressProject();
@@ -89,7 +123,7 @@ public class StageController : SceneSingleton<StageController>
     private void CountWorkingStudents()
     {
         _workingStudCount = 0;
-        foreach (var student in _students)
+        foreach (var student in _studentList)
         {
             if (student.IsWorking)
             {
@@ -131,9 +165,12 @@ public class StageController : SceneSingleton<StageController>
 
 
 
-    private void GameOver()
+    private void GameOver(bool isSuccess)
     {
-
+        Time.timeScale = 0;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        _stageOver.ShowOverPanel(isSuccess);
     }
 
 
@@ -185,7 +222,7 @@ public class StageController : SceneSingleton<StageController>
     private void IncreaseChaos()
     {
         int chaosCauseCount = 0;
-        foreach (PostStudent student in _students)
+        foreach (PostStudent student in _studentList)
         {
             if (student.IsCausingChaos)
             {
@@ -201,5 +238,14 @@ public class StageController : SceneSingleton<StageController>
     {
         _timerStat.Decrease(Time.deltaTime);
         _chaosStat.Decrease(_chaosDecrease * Time.deltaTime);
+    }
+
+
+
+    public float GetChaosEffectedDelay(float delay)
+    {
+        float chaosRatio = _chaosStat.Ratio;
+        float delayFactor = _delayFuncFactor * chaosRatio * chaosRatio + (_minDelayFactor - 1 - _delayFuncFactor) * chaosRatio + 1;
+        return delayFactor * delay;
     }
 }

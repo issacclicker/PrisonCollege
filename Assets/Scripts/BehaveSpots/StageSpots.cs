@@ -59,8 +59,9 @@ public class StageSpots : MonoBehaviour
 
 
 
-    public BehaveSpot GetRandomSpotByType(BehaviorType type)
+    public BehaveSpot GetRandomSpotByType(BehaviorType type, PostStudent student)
     {
+        if (student.IsComputerBehavior) return student.SeatSpot;
         List<BehaveSpot> spots = GetSpotsByType(type);
         List<BehaveSpot> availableSpots = spots.FindAll(s => s.IsUsable);
 

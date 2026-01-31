@@ -408,6 +408,7 @@ public class Delay : BT_Node
 
 
 
+
 //public class SetRandomSpeed : BT_Node
 //{
 //    private Func<float> _getSpeedFunc;
@@ -1228,16 +1229,18 @@ public class ClearDestBehavior : BT_Node
 public class FindDestSpot : BT_Node
 {
     private float _sampleRange = 2.0f; // 스팟 주변에서 NavMesh를 검색할 반경
+    private PostStudent _student;
 
     public override NodeState Evaluate()
     {
-        PostStudent student = _bb.Avatar.GetComponent<PostStudent>();
+        if (_student == null)
+            _student = _bb.Avatar.GetComponent<PostStudent>();
         BehaviorType targetType = _bb.destBehavior;
 
-        _bb.destSpot?.Release(student);
+        _bb.destSpot?.Release(_student);
         _bb.destSpot = null;
 
-        BehaveSpot spot = _bb.StageSpots.GetRandomSpotByType(targetType);
+        BehaveSpot spot = _bb.StageSpots.GetRandomSpotByType(targetType, _student);
 
         Debug.Log($"[{spot}]");
         if (spot != null && spot.IsUsable)
@@ -1245,13 +1248,13 @@ public class FindDestSpot : BT_Node
             Vector3 rawPosition = spot.transform.position;
             if (NavMesh.SamplePosition(rawPosition, out NavMeshHit hit, _sampleRange, NavMesh.AllAreas))
             {
-                if (student == null)
+                if (_student == null)
                     return NodeState.Failure;
                 //_bb.destSpot?.Release(student);
                 _bb.destSpot = spot;
                 _bb.destPosition = hit.position;
                 Debug.Log($"FindDestSpot : {spot}");
-                _bb.destSpot.Use(student);
+                _bb.destSpot.Use(_student);
                 return NodeState.Success;
             }
             else

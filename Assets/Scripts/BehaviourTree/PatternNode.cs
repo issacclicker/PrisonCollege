@@ -109,7 +109,8 @@ public class CombatApproachPattern : PatternNode
                 {
                     new SetAnimRootMotion(true),
                     new WaitUntilCondition(() => !_bb.isDamaged),
-                    new Delay(() => UnityEngine.Random.Range(0f, 1f)),
+                    //new Delay(() => UnityEngine.Random.Range(0f, 1f)),
+                    new DelayRange(0, 1),
                     new ActionNode(() => _bb.isStunned = false, NodeState.Success),
                 })
             ),
@@ -138,7 +139,8 @@ public class CombatApproachPattern : PatternNode
                 new LerpLayerWeight(STRIKE_LAYER_INDEX, 0f, 10f),
                 new LerpLayerWeight(COMBAT_LAYER_INDEX, 1f, 10f),
                 new StopNode(),
-                new Delay(() => UnityEngine.Random.Range(1f, 2f)),
+                //new Delay(() => UnityEngine.Random.Range(1f, 2f)),
+                new DelayRange(1, 2),
                 new ActionNode(() => _isAttacking = true, NodeState.Success), // 플래그 ON
 
                 new MeleeAttackPattern(), // 실제 주먹 휘두르는 동안
@@ -148,7 +150,8 @@ public class CombatApproachPattern : PatternNode
                 // --- [후딜레이 단계] ---
                 // 이제 _isAttacking이 false이므로, 
                 // 딜레이 도중 플레이어가 멀어지면 상위 Selector가 1번(추격)으로 즉시 갈아탑니다.
-                new Delay(() => UnityEngine.Random.Range(0f, 1f)),
+                //new Delay(() => UnityEngine.Random.Range(0f, 1f)),
+                new DelayRange(0, 0.5f),
                 new SetAnimRootMotion(false),
             })
         });
@@ -337,9 +340,9 @@ public class FindSpotPattern : PatternNode
 
 
 
-public class DoorEscapePatter : PatternNode
+public class DoorEscapePattern : PatternNode
 {
-    public DoorEscapePatter() 
+    public DoorEscapePattern() 
     {
         _patternRoot = new Sequence(new List<BT_Node>
         {
@@ -405,7 +408,7 @@ public class EscapeTypeSelectPattern : PatternNode
     {
         _patternRoot = new Selector(new List<BT_Node>
         {
-            new ConditionDecorator(() => (_bb.destSpot as ExitSpot).GateType == ExitGateType.Door, new DoorEscapePatter()),
+            new ConditionDecorator(() => (_bb.destSpot as ExitSpot).GateType == ExitGateType.Door, new DoorEscapePattern()),
             new ConditionDecorator(() => (_bb.destSpot as ExitSpot).GateType == ExitGateType.Window, new WindowEscapePattern()),
             new ConditionDecorator(() => (_bb.destSpot as ExitSpot).GateType == ExitGateType.Vent, new VentEscapePattern()),
         });
@@ -428,7 +431,8 @@ public class RushThroughPattern : PatternNode
             new StopAndDisableAgentUpdate(),
             new SetAnimRootMotion(true),
             new SetAnimBool("Rush", true),
-            new Delay(() => 1.1f),
+            //new Delay(() => 1.1f),
+            new DelayRange(3, 5),
             new ActionNode(() => {
                 var attacker = _bb.Avatar.GetComponentInChildren<OverlapAttacker>();
                 attacker.StartAttack();
@@ -639,7 +643,7 @@ public class WorkPattern : PatternNode
         Sequence angrySeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Angry", "Angry", 1) });
         Sequence clapSeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Clap", "Clap", 1) });
         Sequence frustrateSeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Frustrated", "Frustrated", 1) });
-        Sequence justTyping = new Sequence(new List<BT_Node> { new Delay(() => 0.1f) });
+        Sequence justTyping = new Sequence(new List<BT_Node> { new Delay(() => 2f) });
 
         // 3. 확률 선택기 구성 (가중치 부여)
         RandomSelector chanceActionSelector = new RandomSelector(
@@ -674,7 +678,8 @@ public class WorkPattern : PatternNode
                         return;
                 }
             }),
-            new Delay(() => 4f),
+            //new Delay(() => 4),
+            new DelayRange(4, 5),
             new ActionNode(() =>
             {
                 (_bb.destSpot as MonitorSpot)?.PauseMonitor();
@@ -684,7 +689,8 @@ public class WorkPattern : PatternNode
             {
                 (_bb.destSpot as MonitorSpot)?.ResumeMonitor();
             }),
-            new Delay(() => 3f),
+            //new Delay(() => 3f),
+            new DelayRange(3, 4),
             new ActionNode(() =>
             {
                 (_bb.destSpot as MonitorSpot)?.PauseMonitor();
@@ -695,7 +701,8 @@ public class WorkPattern : PatternNode
                 (_bb.destSpot as MonitorSpot)?.ResumeMonitor();
                 LabLightSystem.Instance.TurnOff();
             }),
-            new Delay(() => 4f),
+            //new Delay(() => 4f),
+            new DelayRange(4, 5),
             new SetAnimBool("Sitting", false),
             new SetAnimBool("Typing", false),
             new ActionNode(() => _bb.isForceBehavior = false),
@@ -1007,7 +1014,8 @@ public class TryEscapePattern : PatternNode
                    {
                        new SetAnimRootMotion(true),
                        new WaitUntilCondition(() => !_bb.isDamaged),
-                       new Delay(() => UnityEngine.Random.Range(1f, 2f)),
+                       //new Delay(() => UnityEngine.Random.Range(1f, 2f)),
+                       new DelayRange(1, 2),
                        new ActionNode(() => _bb.isStunned = false, NodeState.Success),
                    })
                 ),
@@ -1222,5 +1230,32 @@ public class SetRandomSpeedPattern : PatternNode
                 () => 3   // Sprint 3%
             }
         );
+    }
+}
+
+
+
+public class DelayRange : PatternNode
+{
+    private float _min;
+    private float _max;
+    private bool _isChaosEffect;
+
+    public DelayRange(float min, float max, bool isChaosEffect = true)
+    {
+        _min = min;
+        _max = max;
+        _isChaosEffect = isChaosEffect;
+        _patternRoot = new Delay(GetDelay);
+    }
+
+    private float GetDelay()
+    {
+        float randDelay = UnityEngine.Random.Range(_min, _max);
+        if (_isChaosEffect && StageController.Instance)
+        {
+            return StageController.Instance.GetChaosEffectedDelay(randDelay);
+        }
+        return randDelay;
     }
 }
