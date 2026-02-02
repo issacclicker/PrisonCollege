@@ -15,6 +15,12 @@ public class FuseBox : MonoBehaviour
     }
 
 
+    private void Start()
+    {
+        _interaction.SetInteractable(false);
+    }
+
+
     private void TurnOnLights()
     {
         LabLightSystem.Instance.TurnOn();
