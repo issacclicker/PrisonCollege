@@ -78219,7 +78219,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5236b65ab7079ec449edf6e5ea522f95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LabLightSystem
-  _toggleableLightGroup: {fileID: 0}
+  _toggleableLightGroup: {fileID: 1723287470}
   LightsOffEvent:
     m_PersistentCalls:
       m_Calls: []
