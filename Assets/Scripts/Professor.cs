@@ -19,6 +19,7 @@ public class Professor : MonoBehaviour, IAttackable
     [SerializeField] private float _sprintStaminaDrain = 20f;
     [SerializeField] private float _staminaRegenRate = 5f;
     [SerializeField] private PlayerCamera _playerCamera;
+    [SerializeField] private Transform _taskEndTransform;
 
     [SerializeField] private CanvasGroup _aliveCanvas;
     [SerializeField] private CanvasGroup _deadCanvas;
@@ -125,10 +126,20 @@ public class Professor : MonoBehaviour, IAttackable
 
     public void UnsetTaskPose()
     {
-        _controller.enabled = true;
+        transform.SetParent(null);
+        if (_taskEndTransform != null)
+        {
+            _controller.enabled = false;
+            _rigidbody.isKinematic = true;
+            transform.position = _taskEndTransform.position;
+            transform.rotation = _taskEndTransform.rotation;
+            _rigidbody.position = _taskEndTransform.position;
+            _rigidbody.rotation = _taskEndTransform.rotation;
+        }
         _rigidbody.isKinematic = false;
         _weaponController.Show();
         _playerCamera.DisableTaskMode();
+        _controller.enabled = true;
     }
 
 
@@ -136,6 +147,7 @@ public class Professor : MonoBehaviour, IAttackable
     public void SetTaskPose()
     {
         _controller.StopSprinting();
+        _controller.SetOriginalFOV();
         _controller.enabled = false;
         _rigidbody.isKinematic = true;
         _weaponController.Hide();
