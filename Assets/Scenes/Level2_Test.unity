@@ -52856,7 +52856,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff2c12d12250f174aacdd3d96c3b0c44, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ProfessorTask
-  _monitor: {fileID: 0}
+  _monitor: {fileID: 439390225}
   _cameraSocket: {fileID: 612474605}
 --- !u!4 &1351610178
 Transform:
