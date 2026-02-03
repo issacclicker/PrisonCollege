@@ -448,6 +448,7 @@ public class PostStudent : MonoBehaviour
 
         var behaviorNodes = new Dictionary<BehaviorType, BT_Node>
         {
+            { BehaviorType.LookAround, restSequence },
             { BehaviorType.Work, new WorkPattern() },
             { BehaviorType.Game, new WorkPattern() },
             { BehaviorType.Hack, new WorkPattern() },
