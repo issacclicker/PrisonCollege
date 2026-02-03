@@ -143,6 +143,12 @@ public class Professor : MonoBehaviour, IAttackable
     }
 
 
+    public void DisableController()
+    {
+        _controller.enabled = false;
+    }
+
+
 
     public void SetTaskPose()
     {

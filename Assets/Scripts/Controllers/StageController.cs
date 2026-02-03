@@ -168,6 +168,7 @@ public class StageController : SceneSingleton<StageController>
     private void GameOver(bool isSuccess)
     {
         Time.timeScale = 0;
+        Player.DisableController();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         _stageOver.ShowOverPanel(isSuccess);

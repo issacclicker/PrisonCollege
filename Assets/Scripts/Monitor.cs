@@ -8,7 +8,7 @@ public class Monitor : MonoBehaviour
     [SerializeField] private VideoPlayer _workingVideo;
     [SerializeField] private VideoPlayer _hackingVideo;
     [SerializeField] private VideoPlayer _gamingVideo;
-    private MeshRenderer _renderer;
+    [SerializeField] private MeshRenderer _renderer;
     private VideoPlayer _currentVideo;
     private Dictionary<DisplayState, VideoPlayer> _stateVideoDic = new();
 
@@ -16,7 +16,7 @@ public class Monitor : MonoBehaviour
 
     private void Awake()
     {
-        _renderer = GetComponent<MeshRenderer>();
+        //_renderer = GetComponent<MeshRenderer>();
         _stateVideoDic.Add(DisplayState.Off, null);
         _stateVideoDic.Add(DisplayState.Working, _workingVideo);
         _stateVideoDic.Add(DisplayState.Hacking, _hackingVideo);
