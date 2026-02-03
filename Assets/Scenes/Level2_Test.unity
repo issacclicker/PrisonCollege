@@ -9739,6 +9739,7 @@ GameObject:
   - component: {fileID: 199097850}
   - component: {fileID: 199097852}
   - component: {fileID: 199097851}
+  - component: {fileID: 199097853}
   m_Layer: 0
   m_Name: CoopTalk
   m_TagString: Untagged
@@ -9804,10 +9805,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e9a4d7ddbdf7af4fb3442bce3f10e0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TalkPlace
+  _maxReadyDuration: {fileID: 199097853}
   _coopSpots:
   - {fileID: 32518632}
   - {fileID: 1575164304}
   _searchRadius: 20
+--- !u!114 &199097853
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 199097849}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2832918e06c9a04488e97af97613ad69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Stat
+  _maxStat: 10
+  _currentStat: 0
+  IncreaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DecreaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DepletedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  MaxReachEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  ResetEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &204057730
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -20449,6 +20480,7 @@ GameObject:
   m_Component:
   - component: {fileID: 470215810}
   - component: {fileID: 470215811}
+  - component: {fileID: 470215812}
   m_Layer: 0
   m_Name: CoopFight (1)
   m_TagString: Untagged
@@ -20485,10 +20517,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 286c44a837afa6545b224479df346616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FightPlace
+  _maxReadyDuration: {fileID: 470215812}
   _coopSpots:
   - {fileID: 143954508}
   - {fileID: 187039775}
   _searchRadius: 20
+--- !u!114 &470215812
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 470215809}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2832918e06c9a04488e97af97613ad69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Stat
+  _maxStat: 10
+  _currentStat: 0
+  IncreaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DecreaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DepletedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  MaxReachEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  ResetEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &472742640
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -28642,6 +28704,7 @@ GameObject:
   m_Component:
   - component: {fileID: 815562981}
   - component: {fileID: 815562982}
+  - component: {fileID: 815562983}
   m_Layer: 0
   m_Name: CoopFight
   m_TagString: Untagged
@@ -28678,10 +28741,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 286c44a837afa6545b224479df346616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FightPlace
+  _maxReadyDuration: {fileID: 815562983}
   _coopSpots:
   - {fileID: 1005165599}
   - {fileID: 379876886}
   _searchRadius: 20
+--- !u!114 &815562983
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 815562980}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2832918e06c9a04488e97af97613ad69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Stat
+  _maxStat: 10
+  _currentStat: 0
+  IncreaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DecreaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DepletedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  MaxReachEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  ResetEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &822511146
 GameObject:
   m_ObjectHideFlags: 0
@@ -34003,6 +34096,7 @@ GameObject:
   - component: {fileID: 841486644}
   - component: {fileID: 841486646}
   - component: {fileID: 841486645}
+  - component: {fileID: 841486647}
   m_Layer: 0
   m_Name: CoopTalk (2)
   m_TagString: Untagged
@@ -34068,10 +34162,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e9a4d7ddbdf7af4fb3442bce3f10e0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TalkPlace
+  _maxReadyDuration: {fileID: 841486647}
   _coopSpots:
   - {fileID: 713277280}
   - {fileID: 1074975492}
   _searchRadius: 20
+--- !u!114 &841486647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 841486643}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2832918e06c9a04488e97af97613ad69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Stat
+  _maxStat: 10
+  _currentStat: 0
+  IncreaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DecreaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DepletedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  MaxReachEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  ResetEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &844969703
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -75280,6 +75404,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1878006319}
   - component: {fileID: 1878006320}
+  - component: {fileID: 1878006321}
   m_Layer: 0
   m_Name: CoopFight (2)
   m_TagString: Untagged
@@ -75316,10 +75441,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 286c44a837afa6545b224479df346616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FightPlace
+  _maxReadyDuration: {fileID: 1878006321}
   _coopSpots:
   - {fileID: 1863282998}
   - {fileID: 719665814}
   _searchRadius: 20
+--- !u!114 &1878006321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1878006318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2832918e06c9a04488e97af97613ad69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Stat
+  _maxStat: 10
+  _currentStat: 0
+  IncreaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DecreaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DepletedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  MaxReachEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  ResetEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1880305768
 GameObject:
   m_ObjectHideFlags: 0
@@ -85893,6 +86048,7 @@ GameObject:
   - component: {fileID: 1920657142}
   - component: {fileID: 1920657144}
   - component: {fileID: 1920657143}
+  - component: {fileID: 1920657145}
   m_Layer: 0
   m_Name: CoopTalk (1)
   m_TagString: Untagged
@@ -85958,10 +86114,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e9a4d7ddbdf7af4fb3442bce3f10e0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TalkPlace
+  _maxReadyDuration: {fileID: 1920657145}
   _coopSpots:
   - {fileID: 151468335}
   - {fileID: 1557967245}
   _searchRadius: 20
+--- !u!114 &1920657145
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1920657141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2832918e06c9a04488e97af97613ad69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Stat
+  _maxStat: 10
+  _currentStat: 0
+  IncreaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DecreaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DepletedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  MaxReachEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  ResetEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1924218317
 GameObject:
   m_ObjectHideFlags: 0

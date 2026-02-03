@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class CoopBehaviorPlace : MonoBehaviour
 {
+    [SerializeField] private Stat _maxReadyDuration;
     [SerializeField] protected CoopSpot[] _coopSpots;
     [SerializeField] private float _searchRadius = 20f;
 
@@ -32,12 +33,25 @@ public class CoopBehaviorPlace : MonoBehaviour
             _coopSpots[i].DisjoinEvent.AddListener(OnDisjoined);
             _coopSpots[i].ArriveEvent.AddListener(OnActorArrived);
         }
+        _maxReadyDuration.Initialize();
+        _maxReadyDuration.MaxReachEvent.AddListener(BreakUpCoop);
+    }
+
+
+
+    private void Update()
+    {
+        if (CurrentParticipants > 0 && Phase != CoopPhase.Executing)
+        {
+            _maxReadyDuration.Increase(Time.deltaTime);
+        }
     }
 
 
 
     public void OnJoined(GameObject actor)
     {
+        _maxReadyDuration.Initialize();
         if (Phase == CoopPhase.Executing)
         {
             BreakUpCoop();

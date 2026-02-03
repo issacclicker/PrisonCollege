@@ -505,9 +505,9 @@ public class CoopPattern : PatternNode
 
 
 
-public class CoopReactivePatttern : PatternNode
+public class CoopReactivePattern : PatternNode
 {
-    public CoopReactivePatttern(BT_Node normalRoutine)
+    public CoopReactivePattern(BT_Node normalRoutine)
     {
         _patternRoot = new ReactiveSelector(new List<BT_Node>
         {
