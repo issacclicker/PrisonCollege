@@ -72,7 +72,16 @@ public class Monitor : MonoBehaviour
         _currentVideo?.Stop();
         _currentVideo = _stateVideoDic[displayState];
         _currentVideo?.Play();
-        _renderer.material.color = _currentVideo != null ? Color.white : Color.black;
+        if (displayState == DisplayState.Off)
+        {
+            _renderer.material.color = Color.black;
+            _renderer.material.DisableKeyword("_EMISSION");
+        }
+        else
+        {
+            _renderer.material.color = Color.white;
+            _renderer.material.EnableKeyword("_EMISSION");
+        }
     }
 }
 
