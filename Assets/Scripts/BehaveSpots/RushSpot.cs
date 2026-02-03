@@ -34,6 +34,22 @@ public class RushSpot : SingleStudentSpot
 
 
 
+    public override void Use(PostStudent userStudent)
+    {
+        base.Use(userStudent);
+        _targetExitSpot.Use(userStudent);
+    }
+
+
+
+    public override void Release(PostStudent userStudent)
+    {
+        base.Release(userStudent);
+        _targetExitSpot.Release(userStudent);
+    }
+
+
+
 
     public override bool IsUsable => base.IsUsable && _targetExitSpot.IsUsable && !_targetExitSpot.CanExit;
     public override BehaviorType BehaviorTypes => BehaviorType.RushThrough;

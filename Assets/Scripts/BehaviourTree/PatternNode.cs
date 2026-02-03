@@ -434,9 +434,10 @@ public class RushThroughPattern : PatternNode
             //new Delay(() => 1.1f),
             new DelayRange(3, 5),
             new ActionNode(() => {
-                var attacker = _bb.Avatar.GetComponentInChildren<OverlapAttacker>();
+                var attacker = _bb.Avatar.GetComponent<PostStudent>().GetOverlapAttacker(OverlapAttackType.BodySlam);
                 attacker.StartAttack();
             }, NodeState.Success),
+            new PlayOnceAnim("RushStart", "RushStart"),
             new ActionNode(null, NodeState.Running),
         });
     }
@@ -451,6 +452,7 @@ public class CoopPattern : PatternNode
         // 협동 패턴 루트 구성 예시
         _patternRoot = new Sequence(new List<BT_Node>
         {
+            //new ConditionNode(() => !_bb.coopData.isLeader ||_bb.coopData.spot != _bb.destSpot),
             new ActionNode(() => 
             {
                 PostStudent student = _bb.Avatar.GetComponent<PostStudent>();
@@ -625,7 +627,8 @@ public class AttackReactivePattern : PatternNode
                     new EnableAgentUpdate(),
                     new ResetAnimParameters(),
                     new ClearDestBehavior(),
-                    new ClearDestSpot(),
+
+                    //new ClearDestSpot(),
                     new CombatPattern(),
                 })
             ),
@@ -699,7 +702,8 @@ public class WorkPattern : PatternNode
             new ActionNode(() =>
             {
                 (_bb.destSpot as MonitorSpot)?.ResumeMonitor();
-                LabLightSystem.Instance.TurnOff();
+                if (_bb.destBehavior == BehaviorType.Hack)
+                    LabLightSystem.Instance.TurnOff();
             }),
             //new Delay(() => 4f),
             new DelayRange(4, 5),

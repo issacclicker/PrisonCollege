@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class ExitGate : MonoBehaviour
 {
@@ -14,20 +15,25 @@ public class ExitGate : MonoBehaviour
     protected ClickAndWait _interaction;
     protected GameObject _barricadePlaced;
     protected StatRecovery _statRecovery;
+    protected ExplosionShacker _explosionShacker;
+    private Health _health;
 
     public bool IsBarricadePlaced => _barricadePlaced != null;
     public virtual ExitGateType GateType => ExitGateType.None;
-    public float HealthRatio => _damageReceiver ? GetComponent<Health>().Ratio : 0.0f;
+    public float HealthRatio => _health ? _health.Ratio : 0.0f;
 
 
 
     protected virtual void Awake()
     {
+        _health = GetComponent<Health>();
+        _explosionShacker = GetComponent<ExplosionShacker>();
         _damageReceiver = GetComponent<DamageReceiver>();
         _interaction = GetComponent<ClickAndWait>();
         _statRecovery = GetComponent<StatRecovery>();
 
         _interaction.ProgressCompleteEvent.AddListener(PlaceBarricade);
+        _damageReceiver.StatDownEvent.AddListener((_, decreasion) => OnDamaged(decreasion));
         _damageReceiver.DepletedEvent.AddListener(_ => BreakBarricade());
         Close();
     }
@@ -40,6 +46,16 @@ public class ExitGate : MonoBehaviour
             PlaceBarricade();
         else
             BreakBarricade();
+    }
+
+
+
+    private void OnDamaged(float decreasion)
+    {
+        if (decreasion / _health.Max > 0.99)
+        {
+            _explosionShacker.PlayShake();
+        }
     }
 
 

@@ -51936,7 +51936,6 @@ GameObject:
   - component: {fileID: 6928052635513494867}
   - component: {fileID: 6042109257675916524}
   - component: {fileID: 3938472979124932813}
-  - component: {fileID: 2477180364206862062}
   m_Layer: 6
   m_Name: BodySlam
   m_TagString: Untagged
@@ -52030,20 +52029,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &2477180364206862062
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6613676775005140563}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09ba60a5e32dc2040864d549520dba7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ExplosionShacker
-  _maxStrength: 1
-  _maxRadius: 20
 --- !u!1 &6666090858514350115
 GameObject:
   m_ObjectHideFlags: 0

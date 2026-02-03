@@ -15,7 +15,7 @@ public class ExplosionShacker : MonoBehaviour
 
 
 
-    public void PlayShake()
+    public void PlayShake(float strengthRate = 1)
     {
         Debug.Log("ExplosionShacker.PlayShake");
         Collider[] hitColliders = Physics.OverlapSphere(transform.position, _maxRadius, _playerLayer);
@@ -28,7 +28,7 @@ public class ExplosionShacker : MonoBehaviour
 
             float distance = Vector3.Distance(transform.position, professor.transform.position);
             float falloffRatio = Mathf.Clamp01(1 - (distance / _maxRadius));
-            float finalStrength = (falloffRatio * falloffRatio) * _maxStrength;
+            float finalStrength = (falloffRatio * falloffRatio) * _maxStrength * strengthRate;
             CameraShaker.Instance.DoExplosionShake(finalStrength);
         }
     }

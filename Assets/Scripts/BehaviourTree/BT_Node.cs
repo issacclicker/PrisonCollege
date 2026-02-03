@@ -1285,6 +1285,7 @@ public class OverrideBehaveSpot : BT_Node
     public override NodeState Evaluate()
     {
         var spot = _getSpotFunc?.Invoke();
+        //if (spot == _bb.coopData.spot) return NodeState.Failure;
         if (spot == null) return NodeState.Failure; // 실행 시점에 null이면 실패 처리
         if (spot == _bb.destSpot) return NodeState.Success;
 

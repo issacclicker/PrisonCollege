@@ -38,6 +38,11 @@ public class CoopBehaviorPlace : MonoBehaviour
 
     public void OnJoined(GameObject actor)
     {
+        if (Phase == CoopPhase.Executing)
+        {
+            BreakUpCoop();
+            return;
+        }
         if (!_participants.Any(p => p.actor == actor))
         {
             _participants.Add(new ParticipantInfo(actor));
@@ -46,6 +51,11 @@ public class CoopBehaviorPlace : MonoBehaviour
             // 1. 첫 번째로 들어온 사람을 리더로 설정 (필요 시)
             if (_leader == null)
             {
+                //if (actor.GetComponent<PostStudent>().Blackboard.coopData.spot != null)
+                //{
+                //    BreakUpCoop();
+                //    return;
+                //}
                 SetLeader(actor);
                 int sendCount = RequestPartners();
                 if (sendCount <= 0)
@@ -121,6 +131,7 @@ public class CoopBehaviorPlace : MonoBehaviour
 
     public void OnDisjoined(GameObject actor)
     {
+        Debug.Log($"[Coop] OnDisjoined {actor.name}");
         int index = _participants.FindIndex(p => p.actor == actor);
         if (index != -1)
         {
@@ -190,7 +201,7 @@ public class CoopBehaviorPlace : MonoBehaviour
     {
         for (int i = 0; i < _coopSpots.Length; i++)
         {
-            if (_coopSpots[i] != null && _coopSpots[i].IsUsable)
+            if (_coopSpots[i] != null && _coopSpots[i].IsEmpty)
             {
                 return _coopSpots[i];
             }

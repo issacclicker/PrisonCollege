@@ -122,6 +122,12 @@ public class Blackboard
         coopData.targetObject = null;
         coopData.targetAnimName = null;
     }
+
+
+    public void DisableSpot()
+    {
+        coopData.spot = null;
+    }
 }
 
 

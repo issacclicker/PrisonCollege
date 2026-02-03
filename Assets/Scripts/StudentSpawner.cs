@@ -10,10 +10,12 @@ public class StudentSpawner : MonoBehaviour
 
     public List<PostStudent> SpawnStudents()
     {
+        int index = 0;
         List<PostStudent> studentList = new();
         foreach (var entry in spawnEntries)
         {
             PostStudent student = Instantiate(entry.studentPrefab, entry.spawnTransform.position, entry.spawnTransform.rotation).GetComponent<PostStudent>();
+            student.name = "Student" + ++index;
             student.SeatSpot = entry.seatSpot;
             studentList.Add(student);
         }

@@ -181,6 +181,7 @@ public class PostStudent : MonoBehaviour
 
     public void StopAllOverlapAttackers()
     {
+        Debug.Log("StopAllOverlapAttackers");
         _bodyOverlapAttacker.StopAttack();
         _tackleOverlapAttacker.StopAttack();
     }
