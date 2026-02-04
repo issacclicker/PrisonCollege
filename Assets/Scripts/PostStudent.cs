@@ -127,7 +127,7 @@ public class PostStudent : MonoBehaviour
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
         _boostReceiver.CanEffectChecker = () => _root != null && _blackboard != null && _blackboard.targetObject == null;
-        _damageReceiver.CanEffectChecker = () => _root != null && _blackboard != null && _blackboard.isEscaping == false;
+        _damageReceiver.CanEffectChecker = () => _blackboard != null && _blackboard.isEscaping == false;
     }
 
 
