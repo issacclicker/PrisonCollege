@@ -25,5 +25,6 @@ public class FightPlace : CoopBehaviorPlace
     {
         GameObject fightTarget = GetOtherParticipantActor(student);
         student.Blackboard.ExecuteCoop(fightTarget);
+        //student.Blackboard.DisableSpot();
     }
 }

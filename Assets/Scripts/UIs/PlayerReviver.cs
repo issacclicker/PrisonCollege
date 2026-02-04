@@ -7,7 +7,7 @@ public class PlayerReviver : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI _faintingTmp;
     [SerializeField] private TextMeshProUGUI _timerTmp;
-    [SerializeField] private Professor _professor;
+    private Professor _professor;
     private Stat _timerStat;
     private bool _isPlayerDied = false;
 
@@ -15,6 +15,7 @@ public class PlayerReviver : MonoBehaviour
 
     private void Awake()
     {
+        _professor = StageController.Instance.Player;
         _timerStat = GetComponent<Stat>();
         _professor.DieEvent.AddListener(StartReviveTimer);
         _timerStat.DepletedEvent.AddListener(RevivePlayer);

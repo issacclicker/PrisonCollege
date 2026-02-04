@@ -7,6 +7,7 @@ public class Microwave : MonoBehaviour
     [SerializeField] private ParticleSystem _explosionParticle;
     [SerializeField] [Range(0f, 1f)] private float _fireInvokeThereshold;
     [SerializeField] private Transform _foodSocket;
+    [SerializeField] private Light _cookingLight;
     private ExplosionShacker _explosionShacker;
     private Click _interaction;
     private Duration _operateDuration;
@@ -21,6 +22,7 @@ public class Microwave : MonoBehaviour
 
     private void Awake()
     {
+        _cookingLight.enabled = false;
         _interaction = GetComponent<Click>();
         _explosionParticle.gameObject.SetActive(false);
         _operateDuration = GetComponent<Duration>();
@@ -29,7 +31,7 @@ public class Microwave : MonoBehaviour
         _operateDuration.MaxReachEvent.AddListener(Quit);
         _explosionShacker = GetComponent<ExplosionShacker>();
 
-        _interaction.ClickEvent.AddListener(Quit);
+        _interaction.ClickEvent.AddListener(RemoveFood);
         _interaction.InteractState = false;
         _interaction.ActionName = "À½½Ä »©±â";
         _interaction.FillAmount = 1f;
@@ -41,7 +43,7 @@ public class Microwave : MonoBehaviour
     {
         if (_isOperating == false) return;
         _operateDuration.Increase(Time.deltaTime);
-        if (_operateDuration.Ratio >= _fireInvokeThereshold && _currentFoodInside.isCauseFire)
+        if (_operateDuration.Ratio >= _fireInvokeThereshold && _currentFoodInside != null && _currentFoodInside.isCauseFire)
         {
             Explode();
         }
@@ -68,6 +70,18 @@ public class Microwave : MonoBehaviour
         if (_currentFoodInside == null) return;
         _isOperating = true;
         _operateDuration.Initialize(true);
+        _cookingLight.enabled = true;
+    }
+
+
+
+    private void RemoveFood()
+    {
+        if (_currentFoodInside != null && !_currentFoodInside.isCauseFire)
+        {
+            StageController.Instance.NormalFoodRemoved();
+        }
+        Quit();
     }
 
 
@@ -75,6 +89,7 @@ public class Microwave : MonoBehaviour
     public void Quit()
     {
         _isOperating = false;
+        _cookingLight.enabled = false;
         _currentFoodInside?.gameObj.SetActive(false);
         _currentFoodInside = null;
         _interaction.InteractState = false;

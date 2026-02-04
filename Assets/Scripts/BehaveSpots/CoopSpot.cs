@@ -5,10 +5,13 @@ using UnityEngine.Events;
 
 public class CoopSpot : SingleStudentSpot
 {
+    [SerializeField] private bool _isLead;
     public int Index { get; set; } = -1;
     public UnityEvent<GameObject> JoinEvent = new();
     public UnityEvent<GameObject> DisjoinEvent = new();
     public UnityEvent<GameObject> ArriveEvent = new();
+    public override bool IsUsable => base.IsUsable && _isLead;
+    public bool IsEmpty => base.IsUsable;
 
 
     public override void Use(PostStudent userStudent)

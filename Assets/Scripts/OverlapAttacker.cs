@@ -7,7 +7,7 @@ public class OverlapAttacker : MonoBehaviour
     [SerializeField] private bool _isAttacking = false;
     private HashSet<GameObject> _hitTargets = new HashSet<GameObject>();
     private GameObject _rootObject;
-    private ExplosionShacker _explosionShacker;
+    //private ExplosionShacker _explosionShacker;
 
     [Header("Settings")]
     [SerializeField] private DamageData _damageData;
@@ -21,7 +21,7 @@ public class OverlapAttacker : MonoBehaviour
     private void Awake()
     {
         _rootObject = transform.root.gameObject;
-        _explosionShacker = GetComponent<ExplosionShacker>();
+        //_explosionShacker = GetComponent<ExplosionShacker>();
     }
 
     public void StartAttack()
@@ -76,7 +76,7 @@ public class OverlapAttacker : MonoBehaviour
                 );
 
                 // 3. 효과 적용
-                _explosionShacker.PlayShake();
+                //_explosionShacker.PlayShake();
                 myReceiver.TakeEffect(_damageData, hitInfoToMe);
             }
         }

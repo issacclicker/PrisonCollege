@@ -280,7 +280,8 @@ public class FirstPersonController : MonoBehaviour
                 if (!unlimitedSprint)
                 {
                     sprintRemaining -= 1 * Time.deltaTime;
-                    if (sprintRemaining <= 0)
+                    //if (sprintRemaining <= 0)
+                    if (GetComponent<Stamina>().IsDepleted)
                     {
                         isSprinting = false;
                         isSprintCooldown = true;
@@ -293,6 +294,7 @@ public class FirstPersonController : MonoBehaviour
             {
                 // Regain sprint while not sprinting
                 sprintRemaining = Mathf.Clamp(sprintRemaining += 1 * Time.deltaTime, 0, sprintDuration);
+                //sprintRemaining = GetComponent<Stamina>().Current;
             }
 
             // Handles sprint cooldown 
@@ -425,7 +427,7 @@ public class FirstPersonController : MonoBehaviour
 
             // 스프린트 조건 체크
             // (Vertical > 0f 조건은 위에서 이미 체크했지만, 안전을 위해 유지)
-            if (enableSprint && sprintInput && sprintRemaining > 0f && !isSprintCooldown && Input.GetAxisRaw("Vertical") > 0f)
+            if (enableSprint && sprintInput && !GetComponent<Stamina>().IsDepleted && !isSprintCooldown && Input.GetAxisRaw("Vertical") > 0f)
             {
                 currentSpeed = sprintSpeed;
                 isSprinting = true;
@@ -457,6 +459,12 @@ public class FirstPersonController : MonoBehaviour
     {
         isSprinting = false;
         sprintToggleState = false; // 토글 모드일 경우를 대비해 반드시 꺼줘야 함
+    }
+
+    public void SetOriginalFOV()
+    {
+        isZoomed = false;
+        playerCamera.fieldOfView = fov;
     }
 
     // Sets isGrounded based on a raycast sent straigth down from the player object

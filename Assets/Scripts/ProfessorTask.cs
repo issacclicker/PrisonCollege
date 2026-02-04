@@ -4,10 +4,9 @@ using UnityEngine;
 public class ProfessorTask : MonoBehaviour
 {
     [SerializeField] private Monitor _monitor;
-    [SerializeField] private Professor _professor;
     [SerializeField] private Transform _cameraSocket;
     private Click _interaction;
-    private float _taskElapsed = 0;
+    private Professor _professor;
     private bool _isTasking = false;
     public bool IsTasking => _isTasking;
 
@@ -15,6 +14,7 @@ public class ProfessorTask : MonoBehaviour
 
     private void Awake()
     {
+        _professor = StageController.Instance.Player;
         _interaction = GetComponent<Click>();
         _interaction.ActionName = "프로젝트 진행";
         _interaction.ClickEvent.AddListener(OnTaskStateChanged);
@@ -45,10 +45,6 @@ public class ProfessorTask : MonoBehaviour
 
     private void ElapseTaskTime()
     {
-        if (_isTasking)
-        {
-            _taskElapsed += Time.deltaTime;
-        }
     }
 
 
@@ -97,7 +93,6 @@ public class ProfessorTask : MonoBehaviour
         _isTasking = true;
         AttachProp(_professor.gameObject, _cameraSocket);
         _professor.SetTaskPose();
-        _taskElapsed = 0;
         _monitor.ChangeDisplay(DisplayState.Working);
     }
 
@@ -108,7 +103,6 @@ public class ProfessorTask : MonoBehaviour
         _interaction.FillAmount = 0;
         _isTasking = false;
         _professor.UnsetTaskPose();
-        _taskElapsed = 0;
         _monitor.ChangeDisplay(DisplayState.Off);
     }
 

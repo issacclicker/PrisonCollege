@@ -9766,7 +9766,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!1 &2246818340498376823
 GameObject:
   m_ObjectHideFlags: 0
@@ -23817,9 +23817,9 @@ Transform:
   m_GameObject: {fileID: 4634107686383236858}
   serializedVersion: 2
   m_LocalRotation: {x: -0.08924201, y: 0, z: -0, w: 0.99601}
-  m_LocalPosition: {x: 5.426782e-15, y: 0.10393011, z: -3.907985e-16}
+  m_LocalPosition: {x: -0, y: 0.116, z: 0.069}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8109255214477847924}
   - {fileID: 3584089142251378836}
@@ -24222,7 +24222,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 4739142842488691258}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.4
+  m_Radius: 0.2
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -24231,7 +24231,7 @@ NavMeshAgent:
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
-  m_Height: 2
+  m_Height: 1.8
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
@@ -24248,7 +24248,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: "\uC774\uB8E8\uB9AC"
-  _behaviorWeightSet: {fileID: 11400000, guid: ce046bb6febef6142b878691527993c1, type: 2}
+  _behaviorWeightSet: {fileID: 11400000, guid: 1591aace07a5be841b34c0f1bf14467d, type: 2}
   _bodyOverlapAttacker: {fileID: 6042109257675916524}
   _tackleOverlapAttacker: {fileID: 6843810854157803772}
   DieEvent:
@@ -24419,7 +24419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ffd385d7eb19d0419fd6e30d9ba0021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlateHandler
-  _fireCauseProbabiliy: 1
+  _fireCauseProbabiliy: 0.5
   _plateHandSocket: {fileID: 8594731441959657980}
   _foodSocket: {fileID: 139633328368151020}
   _plate: {fileID: 8203877676197950362}
@@ -51936,7 +51936,6 @@ GameObject:
   - component: {fileID: 6928052635513494867}
   - component: {fileID: 6042109257675916524}
   - component: {fileID: 3938472979124932813}
-  - component: {fileID: 2477180364206862062}
   m_Layer: 6
   m_Name: BodySlam
   m_TagString: Untagged
@@ -51978,7 +51977,7 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.4
+  m_Radius: 0.3
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 1, z: 0}
@@ -52029,21 +52028,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!114 &2477180364206862062
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6613676775005140563}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 09ba60a5e32dc2040864d549520dba7b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::ExplosionShacker
-  _maxStrength: 1
-  _maxRadius: 20
+  m_CollisionDetection: 2
 --- !u!1 &6666090858514350115
 GameObject:
   m_ObjectHideFlags: 0

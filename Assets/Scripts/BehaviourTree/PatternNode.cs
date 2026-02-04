@@ -431,12 +431,14 @@ public class RushThroughPattern : PatternNode
             new StopAndDisableAgentUpdate(),
             new SetAnimRootMotion(true),
             new SetAnimBool("Rush", true),
-            //new Delay(() => 1.1f),
-            new DelayRange(3, 5),
+            new Delay(() => 1.1f),
+            //new DelayRange(3, 5),
+            //new SetAnimRootMotion(true),
             new ActionNode(() => {
-                var attacker = _bb.Avatar.GetComponentInChildren<OverlapAttacker>();
+                var attacker = _bb.Avatar.GetComponent<PostStudent>().GetOverlapAttacker(OverlapAttackType.BodySlam);
                 attacker.StartAttack();
             }, NodeState.Success),
+            new PlayOnceAnim("RushStart", "RushStart"),
             new ActionNode(null, NodeState.Running),
         });
     }
@@ -451,6 +453,7 @@ public class CoopPattern : PatternNode
         // 협동 패턴 루트 구성 예시
         _patternRoot = new Sequence(new List<BT_Node>
         {
+            //new ConditionNode(() => !_bb.coopData.isLeader ||_bb.coopData.spot != _bb.destSpot),
             new ActionNode(() => 
             {
                 PostStudent student = _bb.Avatar.GetComponent<PostStudent>();
@@ -503,9 +506,9 @@ public class CoopPattern : PatternNode
 
 
 
-public class CoopReactivePatttern : PatternNode
+public class CoopReactivePattern : PatternNode
 {
-    public CoopReactivePatttern(BT_Node normalRoutine)
+    public CoopReactivePattern(BT_Node normalRoutine)
     {
         _patternRoot = new ReactiveSelector(new List<BT_Node>
         {
@@ -539,7 +542,7 @@ public class SwimReactivePattern : PatternNode
             new ConditionDecorator(() =>
             {
                 float floodFillRatio = FireSuppressionSystem.Instance.FloodFillRatio;
-                return (floodFillRatio > 0.99f && _bb.Anim.GetFloat("MoveSpeed") > 0);
+                return (floodFillRatio > 0.99f && _bb.Anim.GetFloat("MoveSpeed") > 0 && _bb.isEscaping == false);
             }, new SwimPattern()),
             new Sequence(new List<BT_Node>
             {
@@ -613,7 +616,7 @@ public class AttackReactivePattern : PatternNode
     {
         _patternRoot = new ReactiveSelector(new List<BT_Node>
         {
-            new ConditionDecorator(() => _bb.targetDamageable != null, 
+            new ConditionDecorator(() => _bb.targetDamageable != null && _bb.isEscaping == false, 
                 new Sequence(new List<BT_Node>
                 {
                     new ActionNode(() =>
@@ -625,7 +628,8 @@ public class AttackReactivePattern : PatternNode
                     new EnableAgentUpdate(),
                     new ResetAnimParameters(),
                     new ClearDestBehavior(),
-                    new ClearDestSpot(),
+
+                    //new ClearDestSpot(),
                     new CombatPattern(),
                 })
             ),
@@ -699,7 +703,8 @@ public class WorkPattern : PatternNode
             new ActionNode(() =>
             {
                 (_bb.destSpot as MonitorSpot)?.ResumeMonitor();
-                LabLightSystem.Instance.TurnOff();
+                if (_bb.destBehavior == BehaviorType.Hack)
+                    LabLightSystem.Instance.TurnOff();
             }),
             //new Delay(() => 4f),
             new DelayRange(4, 5),
@@ -734,7 +739,7 @@ public class BoostReactivePattern : PatternNode
     {
         _patternRoot = new ReactiveSelector(new List<BT_Node>
         {
-            new ConditionDecorator(() => _bb.hasToWork && !_bb.isForceBehavior,
+            new ConditionDecorator(() => _bb.hasToWork && !_bb.isForceBehavior && _bb.isEscaping == false,
                 new Sequence(new List<BT_Node>
                 {
                     new PrintDebug("hasToWork"),
@@ -746,7 +751,7 @@ public class BoostReactivePattern : PatternNode
                     }),
                 })
             ),
-            new ConditionDecorator(() => _bb.hasToFrenzy,
+            new ConditionDecorator(() => _bb.hasToFrenzy && _bb.isEscaping == false,
                 new Sequence(new List<BT_Node>
                 {
                     new PrintDebug("hasToFrenzy"),
@@ -861,6 +866,8 @@ public class EscapeGiveUpReactivePattern : PatternNode
 
                 new Sequence(new List<BT_Node>
                 {
+                    new ResetAnimParameters(),
+                    new LerpLayerWeight(STRIKE_LAYER_INDEX, 0, 10),
                     new ClearDestBehavior(),
                     new ClearDestSpot(),
                     new ActionNode(() => _isTriedGiveUp = true, NodeState.Success)
@@ -922,7 +929,7 @@ public class EscapeGiveUpReactivePattern : PatternNode
 
         float roll = UnityEngine.Random.value;
         float healthRatio = exitSpot.GateHealthRatio;
-        float giveupProbability = Mathf.Lerp(0, 0.6f, healthRatio);
+        float giveupProbability = Mathf.Lerp(0, 0.4f, healthRatio);
         bool isSuccess = roll < giveupProbability;
 
         if (isSuccess == false)

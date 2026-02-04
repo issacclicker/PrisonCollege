@@ -73,7 +73,7 @@ public class Blackboard
     //    //&& destBehavior != BehaviorType.Fight;
 
 
-    public bool CanCoop => coopData.spot == null && destBehavior.GetSafety() == BehaviorSafety.Safe && targetObject == null && !isForceBehavior;
+    public bool CanCoop => coopData.spot == null && destBehavior.GetSafety() == BehaviorSafety.Safe && targetObject == null && !isForceBehavior && isEscaping == false;
 
 
 
@@ -121,6 +121,12 @@ public class Blackboard
         coopData.isExecuting = false;
         coopData.targetObject = null;
         coopData.targetAnimName = null;
+    }
+
+
+    public void DisableSpot()
+    {
+        coopData.spot = null;
     }
 }
 

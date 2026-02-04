@@ -18,12 +18,27 @@ public class StageController : SceneSingleton<StageController>
     [SerializeField] private Stat _chaosStat;
     [SerializeField] private Stat _escapeStat;
     [SerializeField] private Stat _projectStat;
-    [Header("Stage Play Values")]
-    [SerializeField] private float _studProjectProgress = 5;
-    [SerializeField] private float _profProjectProgress = 20;
-    [SerializeField] private float _chaosIncrease = 3;
-    [SerializeField] private float _chaosDecrease = 5;
+    [Header("Chaos Settings")]
+    [Tooltip("ㅄ짓 학생없는 동안 초당 감소량")]
+    [SerializeField] private float _defaultReduction = 5;
+    [Tooltip("ㅄ짓 학생당 초당 증가량")]
+    [SerializeField] private float _increasePerStud = 3;
+    [Tooltip("무고한 학생 때려눕혔을때 증가량")]
+    [SerializeField] private float _innocentKillPenalty = 10;
+    [Tooltip("학생 탈출했을때 증가량")]
+    [SerializeField] private float _studEscapedPenalty = 30;
+    [Tooltip("총기 발사 증가량")]
+    [SerializeField] private float _gunShotPenalty = 10;
+    [Tooltip("정상 음식 뺐을때 증가량")]
+    [SerializeField] private float _normalFoodRemovedPenalty = 10;
+    [Header("Task Settings")]
+    [Tooltip("학생당 초당 진행량")]
+    [SerializeField] private float _studTaskProgress = 5;
+    [Tooltip("교수의 초당 진행량")]
+    [SerializeField] private float _profTaskProgress = 20;
+    [Tooltip("프로젝트 완수마다 보상량")]
     [SerializeField] private int _progectReward = 50;
+    [Header("Behavior Func Settings")]
     [SerializeField] private float _minDelayFactor = 0.25f;
     [SerializeField] private float _delayFuncFactor = 0.5f;
     [Header("Professor Task Place")]
@@ -151,8 +166,8 @@ public class StageController : SceneSingleton<StageController>
 
     private void ProgressProject()
     {
-        float studTotalProgress = _workingStudCount * _studProjectProgress * Time.deltaTime;
-        float profTotalProgress = _isProfWorking ? _profProjectProgress * Time.deltaTime : 0;
+        float studTotalProgress = _workingStudCount * _studTaskProgress * Time.deltaTime;
+        float profTotalProgress = _isProfWorking ? _profTaskProgress * Time.deltaTime : 0;
         _projectStat.Increase(studTotalProgress + profTotalProgress);
     }
 
@@ -168,6 +183,7 @@ public class StageController : SceneSingleton<StageController>
     private void GameOver(bool isSuccess)
     {
         Time.timeScale = 0;
+        Player.DisableController();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
         _stageOver.ShowOverPanel(isSuccess);
@@ -176,17 +192,17 @@ public class StageController : SceneSingleton<StageController>
 
     private void OnStudentEscaped(PostStudent student)
     {
-        _chaosStat.Increase(30);
+        _chaosStat.Increase(_studEscapedPenalty);
         _escapeStat.Increase(1);
     }
 
 
 
-    private void OnStudentDied(PostStudent student)
+    private void OnStudentDied(PostStudent student, HitInfo hitInfo)
     {
-        if (student.IsDoingHazardBehavior == false)
+        if (student.IsDoingHazardBehavior == false && hitInfo.attacker == Player.gameObject)
         {
-            _chaosStat.Increase(10);
+            _chaosStat.Increase(_innocentKillPenalty);
         }
     }
 
@@ -229,7 +245,14 @@ public class StageController : SceneSingleton<StageController>
                 chaosCauseCount++;
             }
         }
-        _chaosStat.Increase(chaosCauseCount * _chaosIncrease * Time.deltaTime);
+        if (chaosCauseCount > 0)
+        {
+            _chaosStat.Increase(chaosCauseCount * _increasePerStud * Time.deltaTime);
+        }
+        else
+        {
+            _chaosStat.Decrease(_defaultReduction * Time.deltaTime);
+        }
     }
 
 
@@ -237,7 +260,7 @@ public class StageController : SceneSingleton<StageController>
     private void DecreaseStats()
     {
         _timerStat.Decrease(Time.deltaTime);
-        _chaosStat.Decrease(_chaosDecrease * Time.deltaTime);
+        //_chaosStat.Decrease(_defaultReduction * Time.deltaTime);
     }
 
 
@@ -247,5 +270,19 @@ public class StageController : SceneSingleton<StageController>
         float chaosRatio = _chaosStat.Ratio;
         float delayFactor = _delayFuncFactor * chaosRatio * chaosRatio + (_minDelayFactor - 1 - _delayFuncFactor) * chaosRatio + 1;
         return delayFactor * delay;
+    }
+
+
+
+    public void GunShoot()
+    {
+        _chaosStat.Increase(_gunShotPenalty);
+    }
+
+
+
+    public void NormalFoodRemoved()
+    {
+        _chaosStat.Increase(_normalFoodRemovedPenalty);
     }
 }

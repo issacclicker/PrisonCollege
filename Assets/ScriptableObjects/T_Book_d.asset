@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6049502b3a92ed94caebd61fba21f0ec, type: 3}
   m_Name: T_Book_d
   m_EditorClassIdentifier: 
-  value: 30
+  value: 100
   effectVisualPrefab: {fileID: 0}
