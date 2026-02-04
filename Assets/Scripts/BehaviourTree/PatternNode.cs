@@ -866,6 +866,8 @@ public class EscapeGiveUpReactivePattern : PatternNode
 
                 new Sequence(new List<BT_Node>
                 {
+                    new ResetAnimParameters(),
+                    new LerpLayerWeight(STRIKE_LAYER_INDEX, 0, 10),
                     new ClearDestBehavior(),
                     new ClearDestSpot(),
                     new ActionNode(() => _isTriedGiveUp = true, NodeState.Success)
