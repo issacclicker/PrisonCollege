@@ -92915,7 +92915,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2088033359
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -92930,7 +92930,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _barricadeParent: {fileID: 1613158598}
   _barricadePrefab: {fileID: 6917073365472557711, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
-  _isbarricadeEnabled: 1
+  _isbarricadeEnabled: 0
   _windowPanelPrefab: {fileID: 454933394021031062, guid: ab21d600c42507149a8328957064cd31, type: 3}
   _spawnPoint: {fileID: 1089156630}
   _targetPoint: {fileID: 1296602157}
@@ -144531,7 +144531,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &7977752047128832590
 Transform:
   m_ObjectHideFlags: 0
@@ -144866,7 +144866,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _barricadeParent: {fileID: 183102490}
   _barricadePrefab: {fileID: 6917073365472557711, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
-  _isbarricadeEnabled: 1
+  _isbarricadeEnabled: 0
   _doorPanel: {fileID: 405387155402176415}
   _isOpened: 0
   _openAngle: -90

@@ -429,10 +429,11 @@ public class RushThroughPattern : PatternNode
             new MoveToSpot(),
             new RotateToSpot(),
             new StopAndDisableAgentUpdate(),
-            new SetAnimRootMotion(true),
+            //new SetAnimRootMotion(true),
             new SetAnimBool("Rush", true),
             //new Delay(() => 1.1f),
             new DelayRange(3, 5),
+            new SetAnimRootMotion(true),
             new ActionNode(() => {
                 var attacker = _bb.Avatar.GetComponent<PostStudent>().GetOverlapAttacker(OverlapAttackType.BodySlam);
                 attacker.StartAttack();

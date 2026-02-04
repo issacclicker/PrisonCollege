@@ -20,7 +20,8 @@ public class RushSpot : SingleStudentSpot
         if (_targetExitSpot == null) return;
 
         // 1. 방향 벡터 계산 (타겟 위치 - 내 위치)
-        Vector3 direction = _targetExitSpot.GatePosition - transform.position;
+        //Vector3 direction = _targetExitSpot.GatePosition - transform.position;
+        Vector3 direction = _targetExitSpot.transform.position - transform.position;
 
         // 2. 수평 회전만 유지 (캐릭터가 앞뒤로 기울어지는 것 방지)
         direction.y = 0;
