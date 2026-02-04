@@ -541,7 +541,7 @@ public class SwimReactivePattern : PatternNode
             new ConditionDecorator(() =>
             {
                 float floodFillRatio = FireSuppressionSystem.Instance.FloodFillRatio;
-                return (floodFillRatio > 0.99f && _bb.Anim.GetFloat("MoveSpeed") > 0);
+                return (floodFillRatio > 0.99f && _bb.Anim.GetFloat("MoveSpeed") > 0 && _bb.isEscaping == false);
             }, new SwimPattern()),
             new Sequence(new List<BT_Node>
             {
@@ -615,7 +615,7 @@ public class AttackReactivePattern : PatternNode
     {
         _patternRoot = new ReactiveSelector(new List<BT_Node>
         {
-            new ConditionDecorator(() => _bb.targetDamageable != null, 
+            new ConditionDecorator(() => _bb.targetDamageable != null && _bb.isEscaping == false, 
                 new Sequence(new List<BT_Node>
                 {
                     new ActionNode(() =>
@@ -738,7 +738,7 @@ public class BoostReactivePattern : PatternNode
     {
         _patternRoot = new ReactiveSelector(new List<BT_Node>
         {
-            new ConditionDecorator(() => _bb.hasToWork && !_bb.isForceBehavior,
+            new ConditionDecorator(() => _bb.hasToWork && !_bb.isForceBehavior && _bb.isEscaping == false,
                 new Sequence(new List<BT_Node>
                 {
                     new PrintDebug("hasToWork"),
@@ -750,7 +750,7 @@ public class BoostReactivePattern : PatternNode
                     }),
                 })
             ),
-            new ConditionDecorator(() => _bb.hasToFrenzy,
+            new ConditionDecorator(() => _bb.hasToFrenzy && _bb.isEscaping == false,
                 new Sequence(new List<BT_Node>
                 {
                     new PrintDebug("hasToFrenzy"),

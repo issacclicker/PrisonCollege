@@ -183,9 +183,9 @@ public class StageController : SceneSingleton<StageController>
 
 
 
-    private void OnStudentDied(PostStudent student)
+    private void OnStudentDied(PostStudent student, HitInfo hitInfo)
     {
-        if (student.IsDoingHazardBehavior == false)
+        if (student.IsDoingHazardBehavior == false && hitInfo.attacker == Player.gameObject)
         {
             _chaosStat.Increase(10);
         }

@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c3f574c3767cca47b15d2ad6a7643d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SingleStudentSpot
-  _behaviorTypes: 260096
+  _behaviorTypes: 260160
   _occupant: {fileID: 0}
 --- !u!1 &7209769
 GameObject:
@@ -926,6 +926,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 286c44a837afa6545b224479df346616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxReadyDuration: {fileID: 0}
   _coopSpots:
   - {fileID: 34305412}
   - {fileID: 2136867288}
@@ -67327,7 +67328,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c3f574c3767cca47b15d2ad6a7643d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SingleStudentSpot
-  _behaviorTypes: 260096
+  _behaviorTypes: 260160
   _occupant: {fileID: 0}
 --- !u!1 &1191874917
 GameObject:
@@ -80165,6 +80166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e9a4d7ddbdf7af4fb3442bce3f10e0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TalkPlace
+  _maxReadyDuration: {fileID: 0}
   _coopSpots:
   - {fileID: 1800108813}
   - {fileID: 199565058}

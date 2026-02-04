@@ -61,7 +61,7 @@ public class PostStudent : MonoBehaviour
     [SerializeField] private OverlapAttacker _bodyOverlapAttacker;
     [SerializeField] private OverlapAttacker _tackleOverlapAttacker;
 
-    [HideInInspector] public UnityEvent<PostStudent> DieEvent = new();
+    [HideInInspector] public UnityEvent<PostStudent, HitInfo> DieEvent = new();
     [HideInInspector] public UnityEvent<PostStudent> EscapeEvent = new();
 
     public bool IsWorking => 
@@ -127,6 +127,7 @@ public class PostStudent : MonoBehaviour
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
         _boostReceiver.CanEffectChecker = () => _root != null && _blackboard != null && _blackboard.targetObject == null;
+        _damageReceiver.CanEffectChecker = () => _root != null && _blackboard != null && _blackboard.isEscaping == false;
     }
 
 
@@ -456,6 +457,7 @@ public class PostStudent : MonoBehaviour
             { BehaviorType.UseMicrowave, microwaveSequence },
             { BehaviorType.Escape, new TryEscapePattern() },
             { BehaviorType.RushThrough, new RushThroughPattern() },
+            { BehaviorType.Smoke, smokeSequence },
 
             { BehaviorType.Dance, danceSequence },
             { BehaviorType.Worship, worshipSequence },
@@ -650,7 +652,7 @@ public class PostStudent : MonoBehaviour
 
     private void OnDie(HitInfo hitInfo)
     {
-        DieEvent?.Invoke(this);
+        DieEvent?.Invoke(this, hitInfo);
 
         _root = null;
         _agent.speed = 0;

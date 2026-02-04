@@ -73,7 +73,7 @@ public class Blackboard
     //    //&& destBehavior != BehaviorType.Fight;
 
 
-    public bool CanCoop => coopData.spot == null && destBehavior.GetSafety() == BehaviorSafety.Safe && targetObject == null && !isForceBehavior;
+    public bool CanCoop => coopData.spot == null && destBehavior.GetSafety() == BehaviorSafety.Safe && targetObject == null && !isForceBehavior && isEscaping == false;
 
 
 
