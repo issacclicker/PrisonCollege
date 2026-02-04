@@ -147,4 +147,12 @@ public class ThrowWeapon : WeaponBase
             _throwableModel.gameObject.SetActive(false);
         }
     }
+
+
+
+    public bool Fill()
+    {
+        int fillAmount = (int)(_magazine.Max - _magazine.Current);
+        return Acquire(fillAmount);
+    }
 }

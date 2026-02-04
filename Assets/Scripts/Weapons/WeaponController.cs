@@ -151,4 +151,34 @@ public class WeaponController : MonoBehaviour
         CurrentWeapon.gameObject.SetActive(true);
         // 즉시 장착은 애니메이션 없이 위치만 고정
     }
+
+
+
+    public List<WeaponBase> GetDamageWeapons()
+    {
+        List<WeaponBase> damageWeapons = new List<WeaponBase>();
+        foreach (var weapon in _weapons)
+        {
+            if (weapon.EffectData is DamageData)
+            {
+                damageWeapons.Add(weapon);
+            }
+        }
+        return damageWeapons;
+    }
+
+
+
+    public List<WeaponBase> GetBoostWeapons()
+    {
+        List<WeaponBase> boostWeapons = new List<WeaponBase>();
+        foreach (var weapon in _weapons)
+        {
+            if (weapon.EffectData is BoostData)
+            {
+                boostWeapons.Add(weapon);
+            }
+        }
+        return boostWeapons;
+    }
 }

@@ -105,6 +105,7 @@ public class GunWeapon : WeaponBase
         //cartridge.Eject(_shellOutletSocket.right);
 
         _magazine.Decrease(1);
+        StageController.Instance.GunShoot();
         InfoUpdateEvent?.Invoke(this);
     }
 
@@ -124,6 +125,14 @@ public class GunWeapon : WeaponBase
         _magazine.Increase(count);
         InfoUpdateEvent?.Invoke(this);
         return true;
+    }
+
+
+
+    public bool Fill()
+    {
+        int fillAmount = (int)(_magazine.Max - _magazine.Current);
+        return Acquire(fillAmount);
     }
 
     [Header("Camera Shake Settings")]

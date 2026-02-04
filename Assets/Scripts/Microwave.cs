@@ -29,7 +29,7 @@ public class Microwave : MonoBehaviour
         _operateDuration.MaxReachEvent.AddListener(Quit);
         _explosionShacker = GetComponent<ExplosionShacker>();
 
-        _interaction.ClickEvent.AddListener(Quit);
+        _interaction.ClickEvent.AddListener(RemoveFood);
         _interaction.InteractState = false;
         _interaction.ActionName = "À½½Ä »©±â";
         _interaction.FillAmount = 1f;
@@ -68,6 +68,18 @@ public class Microwave : MonoBehaviour
         if (_currentFoodInside == null) return;
         _isOperating = true;
         _operateDuration.Initialize(true);
+    }
+
+
+
+    private void RemoveFood()
+    {
+        if (_currentFoodInside == null) return;
+        if (!_currentFoodInside.isCauseFire)
+        {
+            StageController.Instance.NormalFoodRemoved();
+        }
+        Quit();
     }
 
 

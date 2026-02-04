@@ -17,6 +17,7 @@ public class WeaponBase : MonoBehaviour
     public float StaminaCost => _weaponData.staminaCost;
     public virtual string TypeName => "¹«±â";
     public string Name => _name;
+    public EffectData EffectData => _weaponData.effect;
 
 
     public UnityEvent<WeaponBase> InfoUpdateEvent = new();
