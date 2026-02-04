@@ -9766,7 +9766,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!1 &2246818340498376823
 GameObject:
   m_ObjectHideFlags: 0
@@ -24419,7 +24419,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ffd385d7eb19d0419fd6e30d9ba0021, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlateHandler
-  _fireCauseProbabiliy: 1
+  _fireCauseProbabiliy: 0.5
   _plateHandSocket: {fileID: 8594731441959657980}
   _foodSocket: {fileID: 139633328368151020}
   _plate: {fileID: 8203877676197950362}
@@ -52028,7 +52028,7 @@ Rigidbody:
   m_IsKinematic: 1
   m_Interpolate: 0
   m_Constraints: 0
-  m_CollisionDetection: 0
+  m_CollisionDetection: 2
 --- !u!1 &6666090858514350115
 GameObject:
   m_ObjectHideFlags: 0

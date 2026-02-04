@@ -890,6 +890,7 @@ GameObject:
   m_Component:
   - component: {fileID: 105615871}
   - component: {fileID: 105615872}
+  - component: {fileID: 105615873}
   m_Layer: 0
   m_Name: Coop_Fight
   m_TagString: Untagged
@@ -926,11 +927,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 286c44a837afa6545b224479df346616, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxReadyDuration: {fileID: 0}
+  _maxReadyDuration: {fileID: 105615873}
   _coopSpots:
   - {fileID: 34305412}
   - {fileID: 2136867288}
   _searchRadius: 20
+--- !u!114 &105615873
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 105615870}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2832918e06c9a04488e97af97613ad69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Stat
+  _maxStat: 10
+  _currentStat: 0
+  IncreaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DecreaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DepletedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  MaxReachEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  ResetEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &107311894
 GameObject:
   m_ObjectHideFlags: 0
@@ -1543,7 +1573,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _behaviorTypes: 72
   _occupant: {fileID: 0}
-  _exitGate: {fileID: 2088033359}
+  _exitGate: {fileID: 8393390669886378025}
 --- !u!1 &182511861
 GameObject:
   m_ObjectHideFlags: 0
@@ -80129,6 +80159,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1619110933}
   - component: {fileID: 1619110934}
+  - component: {fileID: 1619110936}
   - component: {fileID: 1619110935}
   m_Layer: 0
   m_Name: Coop_Talk
@@ -80166,7 +80197,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0e9a4d7ddbdf7af4fb3442bce3f10e0a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TalkPlace
-  _maxReadyDuration: {fileID: 0}
+  _maxReadyDuration: {fileID: 1619110936}
   _coopSpots:
   - {fileID: 1800108813}
   - {fileID: 199565058}
@@ -80184,6 +80215,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Duration
   _maxStat: 3
+  _currentStat: 0
+  IncreaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DecreaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DepletedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  MaxReachEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  ResetEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1619110936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1619110932}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2832918e06c9a04488e97af97613ad69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Stat
+  _maxStat: 10
   _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
@@ -92930,7 +92990,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _barricadeParent: {fileID: 1613158598}
   _barricadePrefab: {fileID: 6917073365472557711, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
-  _isbarricadeEnabled: 0
+  _isbarricadeEnabled: 1
   _windowPanelPrefab: {fileID: 454933394021031062, guid: ab21d600c42507149a8328957064cd31, type: 3}
   _spawnPoint: {fileID: 1089156630}
   _targetPoint: {fileID: 1296602157}
@@ -144866,7 +144926,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _barricadeParent: {fileID: 183102490}
   _barricadePrefab: {fileID: 6917073365472557711, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
-  _isbarricadeEnabled: 0
+  _isbarricadeEnabled: 1
   _doorPanel: {fileID: 405387155402176415}
   _isOpened: 0
   _openAngle: -90
