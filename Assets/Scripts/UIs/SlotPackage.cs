@@ -1,5 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SlotPackage : MonoBehaviour
@@ -8,7 +10,10 @@ public class SlotPackage : MonoBehaviour
     [SerializeField] private SlotEntry _passiveSlotEntry;
     [SerializeField] private List<ItemSlot> _weaponSlotList;
     [SerializeField] private List<ItemSlot> _equipSlotList;
-    private List<SlotSelector> _slotList = new();
+    [SerializeField] private ItemInfoPanel _itemInfoPanel;
+    [SerializeField] private TextMeshProUGUI _moneyTmp;
+    private List<ItemSlot> _passiveSlotList;
+    private List<SlotSelector> _slotSelectorList = new();
     private SlotSelector _selectedSlot;
     private bool _isSelectedSlotFixed;
 
@@ -32,12 +37,14 @@ public class SlotPackage : MonoBehaviour
         //        _slotList.Add(slotSelector);
         //    }
         //}
+        _itemInfoPanel.HidePanel();
+        _moneyTmp.text = InventorySystem.Instance.Money.ToString("N0");
         InventorySystem.Instance.ConstructShopSlots(_shopSlotEntry);
-        InventorySystem.Instance.ConstructPassiveSlots(_passiveSlotEntry);
+        InventorySystem.Instance.ConstructPassiveSlots(_passiveSlotEntry, out _passiveSlotList);
         InventorySystem.Instance.FillWeaponSlots(_weaponSlotList);
         InventorySystem.Instance.FillEquipSlots(_equipSlotList);
-        _slotList = Object.FindObjectsByType<SlotSelector>(FindObjectsSortMode.None).ToList();
-        foreach (var slot in _slotList)
+        _slotSelectorList = Object.FindObjectsByType<SlotSelector>(FindObjectsSortMode.None).ToList();
+        foreach (var slot in _slotSelectorList)
         {
             slot.PointerClickEvent.AddListener(SlotPointerClicked);
         }
@@ -51,12 +58,67 @@ public class SlotPackage : MonoBehaviour
         if (_selectedSlot == targetSlot)
         {
             _selectedSlot = null;
+            _itemInfoPanel.HidePanel();
         }
         else
         {
             _selectedSlot = targetSlot;
+            _itemInfoPanel.ShowPanel(_selectedSlot.GetComponent<ItemSlot>());
         }
         _selectedSlot?.HighLight();
+    }
+
+
+
+    public void Purchase()
+    {
+        if (_selectedSlot == null) return;
+        GameObject prevSlotObject = _selectedSlot.gameObject;
+        Item selectedItem = _selectedSlot.GetComponent<ItemSlot>().Item;
+        if (selectedItem.price > InventorySystem.Instance.Money) return;
+        InventorySystem.Instance.Purchase(selectedItem);
+        _moneyTmp.text = InventorySystem.Instance.Money.ToString("N0");
+        //Destroy(_selectedSlot.gameObject);
+        if (selectedItem is PassiveItem)
+        {
+            _selectedSlot = AddPassiveItemSlot(selectedItem);
+        }
+        else if (selectedItem is WeaponItem)
+        {
+            _selectedSlot = AddWeaponItemSlot(selectedItem);
+        }
+        _selectedSlot.HighLight();
+        _itemInfoPanel.ShowPanel(_selectedSlot.GetComponent<ItemSlot>());
+        Destroy(prevSlotObject);
+    }
+
+
+
+    private SlotSelector AddPassiveItemSlot(Item item)
+    {
+        GameObject newSlotObject = Instantiate(_passiveSlotEntry.prefab, _passiveSlotEntry.parent);
+        ItemSlot itemSlot = newSlotObject.GetComponent<ItemSlot>();
+        _passiveSlotList.Add(itemSlot);
+        itemSlot.SetItem(item);
+        SlotSelector slotSelector = newSlotObject.GetComponent<SlotSelector>();
+        _slotSelectorList.Add(_selectedSlot);
+        slotSelector.PointerClickEvent.AddListener(SlotPointerClicked);
+        return slotSelector;
+    }
+
+
+
+    private SlotSelector AddWeaponItemSlot(Item item)
+    {
+        foreach (ItemSlot slot in _weaponSlotList)
+        {
+            if (slot.Item == null)
+            {
+                slot.SetItem(item);
+                return slot.GetComponent<SlotSelector>();
+            }
+        }
+        return null;
     }
 }
 

@@ -1,13 +1,16 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class ItemInfo : MonoBehaviour
+public class ItemInfoPanel : MonoBehaviour
 {
+    [SerializeField] private Image _iconImg;
     [SerializeField] private TextMeshProUGUI _nameTmp;
     [SerializeField] private TextMeshProUGUI _typeTmp;
     [SerializeField] private TextMeshProUGUI _priceTmp;
     [SerializeField] private TextMeshProUGUI _effectTmp;
     [SerializeField] private TextMeshProUGUI _descriptionTmp;
+    [SerializeField] private GameObject _purchaseBtnObject;
     private CanvasGroup _canvasGroup;
 
 
@@ -20,13 +23,16 @@ public class ItemInfo : MonoBehaviour
 
 
 
-    public void ShowPanel(Item item)
+    public void ShowPanel(ItemSlot itemSlot)
     {
-        _nameTmp.text = item.name;
-        _priceTmp.text = $"$ {item.price}";
-        _effectTmp.text = item.effect;
-        _descriptionTmp.text = item.description;
+        _iconImg.sprite = itemSlot.Item.icon;
+        _typeTmp.text = itemSlot.Item.Type;
+        _nameTmp.text = itemSlot.Item.name;
+        _priceTmp.text = $"$ {itemSlot.Item.price}";
+        _effectTmp.text = itemSlot.Item.effect;
+        _descriptionTmp.text = itemSlot.Item.description;
         _canvasGroup.alpha = 1;
+        _purchaseBtnObject.SetActive(itemSlot is ShopSlot);
     }
 
 

@@ -31,6 +31,7 @@ public class InventorySystem : PersistentSingleton<InventorySystem>
 
     public void Purchase(Item item)
     {
+        _money -= item.price;
         _nonPurchasedItemSet.Remove(item);
         _purchasedItemSet.Add(item);
     }
@@ -49,13 +50,15 @@ public class InventorySystem : PersistentSingleton<InventorySystem>
 
 
 
-    public void ConstructPassiveSlots(SlotEntry slotEntry)
+    public void ConstructPassiveSlots(SlotEntry slotEntry, out List<ItemSlot> itemSlots)
     {
+        itemSlots = new List<ItemSlot>();
         foreach (var item in _purchasedItemSet)
         {
             if (item is PassiveItem == false) continue;
             GameObject slotObject = Instantiate(slotEntry.prefab, slotEntry.parent);
             ItemSlot itemSlot = slotObject.GetComponent<ItemSlot>();
+            itemSlots.Add(itemSlot);
             itemSlot.SetItem(item);
         }
     }

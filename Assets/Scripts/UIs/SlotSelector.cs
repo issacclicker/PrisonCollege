@@ -8,6 +8,7 @@ public class SlotSelector : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Image _targetImage;
     [SerializeField] private Color _selectedColor;
     private Color _originColor;
+    private ItemSlot _itemSlot;
 
     [HideInInspector] public UnityEvent<SlotSelector> PointerClickEvent = new();
 
@@ -15,12 +16,14 @@ public class SlotSelector : MonoBehaviour, IPointerClickHandler
     private void Awake()
     {
         _originColor = _targetImage.color;
+        _itemSlot = GetComponent<ItemSlot>();
     }
 
 
 
     public void OnPointerClick(PointerEventData eventData)
     {
+        if (_itemSlot.Item == null) return;
         PointerClickEvent?.Invoke(this);
     }
 

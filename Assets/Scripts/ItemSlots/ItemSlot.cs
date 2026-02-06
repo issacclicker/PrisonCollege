@@ -5,6 +5,7 @@ using static UnityEditor.Progress;
 public abstract class ItemSlot : MonoBehaviour
 {
     protected Item _item;
+    public Item Item => _item;
 
 
 
