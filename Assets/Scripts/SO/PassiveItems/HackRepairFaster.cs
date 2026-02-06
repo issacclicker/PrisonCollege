@@ -3,12 +3,12 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewHackRepairFaster", menuName = "Item/HackRepairFaster")]
 public class HackRepairFaster : PassiveItem
 {
-    public float hackRepairTimePercent;
+    public float hackBlockChanceFlat;
 
 
 
     public override void Activate()
     {
-        AttributeSystem.Instance.HackRepairSpeedMod.AddPercent(hackRepairTimePercent);
+        AttributeSystem.Instance.HackBlockChanceMod.AddPercent(hackBlockChanceFlat);
     }
 }

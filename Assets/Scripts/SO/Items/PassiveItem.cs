@@ -4,6 +4,9 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewPassiveItem", menuName = "Item/PassiveItem")]
 public class PassiveItem : Item
 {
+    public override string Type => "ÆÐ½Ãºê";
+
+
     public virtual void Activate()
     {
         

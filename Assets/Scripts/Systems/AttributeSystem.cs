@@ -9,4 +9,5 @@ public class AttributeSystem : PersistentSingleton<AttributeSystem>
     public AttributeModifier BarricadeInstallSpeedMod { private set; get; } = new AttributeModifier();
     public AttributeModifier HackRepairSpeedMod { private set; get; } = new AttributeModifier();
     public AttributeModifier WeaponSupplyTimeMod { private set; get; } = new AttributeModifier();
+    public AttributeModifier HackBlockChanceMod { private set; get; } = new AttributeModifier();
 }
