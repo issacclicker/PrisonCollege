@@ -23,20 +23,8 @@ public class WeaponController : MonoBehaviour
     private bool isHiding = false;
     public bool IsHiding => isHiding;
 
-    // void Start()
-    // {
-    //     // 시작 시 모든 무기 비활성화 후 1번 무기만 활성화
-    //     for (int i = 0; i < _weapons.Length; i++)
-    //     {
-    //         _weapons[i].gameObject.SetActive(false);
-    //     }
-    //     Equip(0);
-    // }
 
-    // void Update()
-    // {
-    //     HandleInput();
-    // }
+
     public void EquipWeapon(int startingIndex, GameObject owner)
     {
         // 시작 시 모든 무기 비활성화 후 1번 무기만 활성화

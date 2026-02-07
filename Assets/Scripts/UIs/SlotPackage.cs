@@ -3,6 +3,7 @@ using System.Linq;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class SlotPackage : MonoBehaviour
 {
@@ -142,6 +143,13 @@ public class SlotPackage : MonoBehaviour
             }
         }
         return null;
+    }
+
+
+    public void DoNextWave()
+    {
+        Time.timeScale = 1;
+        SceneManager.LoadScene("Level2_Store");
     }
 }
 
