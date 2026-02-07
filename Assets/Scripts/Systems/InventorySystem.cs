@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices.WindowsRuntime;
 using UnityEngine;
 
 public class InventorySystem : PersistentSingleton<InventorySystem>
@@ -17,12 +18,14 @@ public class InventorySystem : PersistentSingleton<InventorySystem>
 
     public int Money => _money;
     public List<PassiveItem> PassiveItemList => _passiveItemList;
+    public List<WeaponItem> EquipedItemList => _equipedItemList;
 
 
 
     protected override void Awake()
     {
         base.Awake();
+        if (_totalItemList == null) return;
         foreach (var item in _totalItemList)
         {
             _nonPurchasedItemSet.Add(item);
@@ -31,6 +34,7 @@ public class InventorySystem : PersistentSingleton<InventorySystem>
         _equipedItemList = new List<WeaponItem>(new WeaponItem[_equipLimit]);
         for (int i = 0; i < _defaultEquipedItemList.Count; i++)
         {
+            _purchasedItemSet.Add(_defaultEquipedItemList[i]);
             _equipedItemList[i] = _defaultEquipedItemList[i];
         }
     }
@@ -87,6 +91,8 @@ public class InventorySystem : PersistentSingleton<InventorySystem>
     {
         ClearItemSlots(itemSlots);
         List<WeaponItem> weaponItemList = _purchasedItemSet.OfType<WeaponItem>().ToList();
+        weaponItemList.RemoveAll(item => _equipedItemList.Contains(item));
+
         for (int i = 0; i < weaponItemList.Count; ++i)
         {
             Item weaponItem = weaponItemList[i];
@@ -128,5 +134,12 @@ public class InventorySystem : PersistentSingleton<InventorySystem>
                 _equipedItemList[i] = null;
             }
         }
+    }
+
+
+
+    public void SetMoney(int money)
+    {
+        _money = money;
     }
 }

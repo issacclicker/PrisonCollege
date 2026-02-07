@@ -13,10 +13,10 @@ MonoBehaviour:
   m_Name: 6_AKM
   m_EditorClassIdentifier: Assembly-CSharp::WeaponItem
   id: 0
-  name: AKM
+  name: "BB\uD0C4 \uCD1D"
   icon: {fileID: 21300000, guid: 4d687f88841e743438762dac23e28a98, type: 3}
   price: 500
   effect: 
   description: 
   rarity: 0
-  _inStageIndex: 5
+  inStageIndex: 5

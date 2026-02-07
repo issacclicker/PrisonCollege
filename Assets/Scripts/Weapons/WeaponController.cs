@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class WeaponController : MonoBehaviour
@@ -9,6 +10,7 @@ public class WeaponController : MonoBehaviour
     public FirstPersonController FirstPersonController => _firstPersonController;
 
     [Header("무기 목록 (번호순)")]
+    [SerializeField] private WeaponBase[] _weaponPresets;
     [SerializeField] private WeaponBase[] _weapons; 
     private int _currentIdx = 0;
 
@@ -25,17 +27,58 @@ public class WeaponController : MonoBehaviour
 
 
 
+    //public void EquipWeapon(int startingIndex, GameObject owner)
+    //{
+    //    // 시작 시 모든 무기 비활성화 후 1번 무기만 활성화
+    //    Owner = owner;
+    //    for (int i = 0; i < _weapons.Length; i++)
+    //    {
+    //        _weapons[i].gameObject.SetActive(false);
+    //        _weapons[i].InfoUpdateEvent.AddListener(OnWeaponInfoUpdated);
+    //    }
+    //    Equip(startingIndex);
+    //}
+
+
     public void EquipWeapon(int startingIndex, GameObject owner)
     {
-        // 시작 시 모든 무기 비활성화 후 1번 무기만 활성화
-        Owner = owner;
-        for (int i = 0; i < _weapons.Length; i++)
+        foreach (var weaponPreset in _weaponPresets)
         {
-            _weapons[i].gameObject.SetActive(false);
-            _weapons[i].InfoUpdateEvent.AddListener(OnWeaponInfoUpdated);
+            weaponPreset.gameObject.SetActive(false);
         }
+
+        Owner = owner;
+        if (InventorySystem.Instance == null || InventorySystem.Instance.EquipedItemList == null)
+        {
+            _weapons = new WeaponBase[_weaponPresets.Length];
+            for (int i = 0; i < _weapons.Length; i++)
+            {
+                _weapons[i] = _weaponPresets[i];
+                _weapons[i].InfoUpdateEvent.AddListener(OnWeaponInfoUpdated);
+            }
+        }
+        else
+        {
+            List<WeaponItem> invenEquipList = InventorySystem.Instance.EquipedItemList;
+            _weapons = new WeaponBase[invenEquipList.Count];
+            for (int i = 0; i < invenEquipList.Count; i++)
+            {
+                if (invenEquipList[i] == null)
+                {
+                    _weapons[i] = _weaponPresets[_weaponPresets.Length - 1];
+                }
+                else
+                {
+                    _weapons[i] = _weaponPresets[invenEquipList[i].inStageIndex];
+                    _weapons[i].InfoUpdateEvent.AddListener(OnWeaponInfoUpdated);
+                }
+            }
+        }
+
         Equip(startingIndex);
     }
+
+
 
     public void Hide()
     {

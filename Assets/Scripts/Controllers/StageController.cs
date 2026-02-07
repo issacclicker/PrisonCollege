@@ -73,6 +73,8 @@ public class StageController : SceneSingleton<StageController>
         _escapeStat.MaxReachEvent.AddListener(() => GameOver(false));
         _projectStat.MaxReachEvent.AddListener(OnProjectSuccessed);
 
+        _money = InventorySystem.Instance.Money;
+
         //SetStudentList();
 
         //foreach (var student in _studentList)
@@ -101,6 +103,15 @@ public class StageController : SceneSingleton<StageController>
     {
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+
+
+    public void GoStore()
+    {
+        Time.timeScale = 1;
+        InventorySystem.Instance.SetMoney(_money); 
+        SceneManager.LoadScene("Store");
     }
 
 
@@ -226,7 +237,7 @@ public class StageController : SceneSingleton<StageController>
 
         _escapeTmp.text = $"{_escapeStat.Current.ToString("F0")} / {_escapeStat.Max.ToString("F0")}";
 
-        _moneyTmp.text = _money.ToString();
+        _moneyTmp.text = _money.ToString("N0");
 
         _workingTmp.text = $"{_workingStudCount.ToString()}명 작업중";
 

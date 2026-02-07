@@ -19,4 +19,4 @@ MonoBehaviour:
   effect: 
   description: 
   rarity: 0
-  _inStageIndex: 2
+  inStageIndex: 2
