@@ -1721,10 +1721,14 @@ MonoBehaviour:
   - {fileID: 11400000, guid: e8ebb7bc37cf1864689df003ef786ea8, type: 2}
   - {fileID: 11400000, guid: bb2da80a9d489b249b4820ef6c5a3c79, type: 2}
   - {fileID: 11400000, guid: dbdf3f58d9e31654cb37b1873788f28d, type: 2}
+  - {fileID: 11400000, guid: 4a4e646680bf16f4db87692341dc59c6, type: 2}
   _defaultEquipedItemList:
-  - {fileID: 11400000, guid: bb2da80a9d489b249b4820ef6c5a3c79, type: 2}
+  - {fileID: 11400000, guid: 654c235f5557bd34f81ffcef5de76243, type: 2}
+  - {fileID: 11400000, guid: 349002a57e48f62439f268876d8d7c39, type: 2}
+  - {fileID: 11400000, guid: f142abbb6aee09c40b9b1cce2b2d7f9a, type: 2}
   _equipLimit: 4
   _money: 5000
+  _equipedItemList: []
 --- !u!4 &230819599
 Transform:
   m_ObjectHideFlags: 0

@@ -10,12 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a062497ac069cf94a8a57a5a0d1d7610, type: 3}
-  m_Name: MarkerPen
+  m_Name: 6_AKM
   m_EditorClassIdentifier: Assembly-CSharp::WeaponItem
   id: 0
-  name: "\uB9C8\uCEE4\uD39C"
-  icon: {fileID: 21300000, guid: 77993de3854843547b5e36661ddb6357, type: 3}
-  price: 50
+  name: AKM
+  icon: {fileID: 21300000, guid: 4d687f88841e743438762dac23e28a98, type: 3}
+  price: 500
   effect: 
   description: 
   rarity: 0
+  _inStageIndex: 5
