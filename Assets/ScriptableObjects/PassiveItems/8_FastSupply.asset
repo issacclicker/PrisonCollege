@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7bc98a6f1adbd5542adc3aa375fb11e3, type: 3}
-  m_Name: RechargeReducer
+  m_Name: 8_FastSupply
   m_EditorClassIdentifier: Assembly-CSharp::WeaponSupplyFaster
   id: 0
-  name: "\uAE09\uC18D\uBCF4\uAE09 \uADA4\uB3C4"
-  icon: {fileID: 21300000, guid: 9a03925a341bcee4682074e3966e2acd, type: 3}
+  name: "\uAE09\uC18D \uBCF4\uAE09 \uCC45\uC7A5"
+  icon: {fileID: 21300000, guid: f253ad2775ed18345b07e9ea648fdb00, type: 3}
   price: 70
   effect: 
   description: 

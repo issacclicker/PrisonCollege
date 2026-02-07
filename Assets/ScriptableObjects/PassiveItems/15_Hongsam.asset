@@ -9,14 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3b5aa7eecad822438ea1ab5aadbfc9f, type: 3}
-  m_Name: RepairFaster
-  m_EditorClassIdentifier: Assembly-CSharp::HackRepairFaster
+  m_Script: {fileID: 11500000, guid: c6f1a997d8377bf419254b8c7ec6ea70, type: 3}
+  m_Name: 15_Hongsam
+  m_EditorClassIdentifier: Assembly-CSharp::HongsamJuice
   id: 0
-  name: "\uACE0\uAE09\uC218\uB9AC \uD0A4\uD2B8"
-  icon: {fileID: 21300000, guid: 0c5aec87b99287547af812a9c00a264d, type: 3}
+  name: "\uD64D\uC0BC \uC8FC\uC2A4"
+  icon: {fileID: 21300000, guid: 7029d2c0e45bd1c449c13ae5647c1bfe, type: 3}
   price: 120
   effect: 
   description: 
   rarity: 0
-  hackBlockChanceFlat: 0

@@ -47,6 +47,11 @@ public class SlotPackage : MonoBehaviour
         foreach (var slot in _slotSelectorList)
         {
             slot.PointerClickEvent.AddListener(SlotPointerClicked);
+            DragItem dragItem = slot.GetComponentInChildren<DragItem>();
+            if (dragItem)
+            {
+                dragItem.ItemDropEvent.AddListener(OnWeaponDroped);
+            }
         }
     }
 
@@ -70,6 +75,23 @@ public class SlotPackage : MonoBehaviour
 
 
 
+    private void OnWeaponDroped()
+    {
+        InventorySystem.Instance.UpdateEquipState(_equipSlotList.ToArray());
+        ResetSelectedSlot();
+    }
+
+
+
+    private void ResetSelectedSlot()
+    {
+        _selectedSlot?.Darken();
+        _itemInfoPanel.HidePanel();
+        _selectedSlot = null;
+    }
+
+
+
     public void Purchase()
     {
         if (_selectedSlot == null) return;
@@ -78,17 +100,18 @@ public class SlotPackage : MonoBehaviour
         if (selectedItem.price > InventorySystem.Instance.Money) return;
         InventorySystem.Instance.Purchase(selectedItem);
         _moneyTmp.text = InventorySystem.Instance.Money.ToString("N0");
-        //Destroy(_selectedSlot.gameObject);
+        ResetSelectedSlot();
+
         if (selectedItem is PassiveItem)
         {
-            _selectedSlot = AddPassiveItemSlot(selectedItem);
+            AddPassiveItemSlot(selectedItem);
         }
         else if (selectedItem is WeaponItem)
         {
-            _selectedSlot = AddWeaponItemSlot(selectedItem);
+             AddWeaponItemSlot(selectedItem);
         }
-        _selectedSlot.HighLight();
-        _itemInfoPanel.ShowPanel(_selectedSlot.GetComponent<ItemSlot>());
+        //_selectedSlot.HighLight();
+        //_itemInfoPanel.ShowPanel(_selectedSlot.GetComponent<ItemSlot>());
         Destroy(prevSlotObject);
     }
 

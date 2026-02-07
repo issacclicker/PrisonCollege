@@ -5,10 +5,12 @@ using UnityEngine;
 public class InventorySystem : PersistentSingleton<InventorySystem>
 {
     [SerializeField] private List<Item> _totalItemList;
+    [SerializeField] private List<WeaponItem> _defaultEquipedItemList;
+    [SerializeField] private int _equipLimit = 4;
     [SerializeField] private int _money;
     private HashSet<Item> _nonPurchasedItemSet = new();
     private HashSet<Item> _purchasedItemSet = new();
-    private List<WeaponItem> _equipedItemList = new();
+    [SerializeField] private List<WeaponItem> _equipedItemList;
 
     private List<PassiveItem> _passiveItemList;
 
@@ -24,6 +26,12 @@ public class InventorySystem : PersistentSingleton<InventorySystem>
         foreach (var item in _totalItemList)
         {
             _nonPurchasedItemSet.Add(item);
+        }
+
+        _equipedItemList = new List<WeaponItem>(new WeaponItem[_equipLimit]);
+        for (int i = 0; i < _defaultEquipedItemList.Count; i++)
+        {
+            _equipedItemList[i] = _defaultEquipedItemList[i];
         }
     }
 
@@ -94,8 +102,31 @@ public class InventorySystem : PersistentSingleton<InventorySystem>
         for (int i = 0; i < _equipedItemList.Count; ++i)
         {
             Item equipedItem = _equipedItemList[i];
-            if (equipedItem is WeaponItem == false) continue;
-            itemSlots[i].SetItem(equipedItem);
+            if (equipedItem == null)
+            {
+                itemSlots[i].ClearItem();
+            }
+            else
+            {
+                itemSlots[i].SetItem(equipedItem);
+            }
+        }
+    }
+
+
+
+    public void UpdateEquipState(ItemSlot[] equipSlots)
+    {
+        for(int i = 0; i < equipSlots.Length; ++i)
+        {
+            if (equipSlots[i] != null)
+            {
+                _equipedItemList[i] = equipSlots[i].Item as WeaponItem;
+            }
+            else
+            {
+                _equipedItemList[i] = null;
+            }
         }
     }
 }

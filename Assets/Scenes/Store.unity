@@ -1698,15 +1698,32 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::InventorySystem
   _totalItemList:
-  - {fileID: 11400000, guid: 6911b6e1f0f547a4d90477b2ca4dbaeb, type: 2}
-  - {fileID: 11400000, guid: e0f65aff8c8c4ad4db4d5012642d5fbe, type: 2}
-  - {fileID: 11400000, guid: bf9ba92797a297e4299e24f59329c2a9, type: 2}
-  - {fileID: 11400000, guid: 0f0eb3ac07bbde9479ef3ebfbdff51f5, type: 2}
-  - {fileID: 11400000, guid: 99d88529b3ddc014fab1811bfe2d86f5, type: 2}
   - {fileID: 11400000, guid: 0d9408d439cd69145af579605e1b06e3, type: 2}
+  - {fileID: 11400000, guid: 6911b6e1f0f547a4d90477b2ca4dbaeb, type: 2}
   - {fileID: 11400000, guid: 15eda05f9f6c23946892e95f597162db, type: 2}
   - {fileID: 11400000, guid: c225c312f795a9e42b277334d2ceafd2, type: 2}
+  - {fileID: 11400000, guid: e0f65aff8c8c4ad4db4d5012642d5fbe, type: 2}
+  - {fileID: 11400000, guid: 99d88529b3ddc014fab1811bfe2d86f5, type: 2}
+  - {fileID: 11400000, guid: bf9ba92797a297e4299e24f59329c2a9, type: 2}
+  - {fileID: 11400000, guid: 0f0eb3ac07bbde9479ef3ebfbdff51f5, type: 2}
+  - {fileID: 11400000, guid: 83f75e27bdd2f7c428719e433246ec65, type: 2}
+  - {fileID: 11400000, guid: bd130a0e3b83bbc48b218b07f72ed720, type: 2}
+  - {fileID: 11400000, guid: c6acb52c44ec71844b0e5fe22c3ac970, type: 2}
+  - {fileID: 11400000, guid: 490389b9c2f1ed1419a83896cb981560, type: 2}
+  - {fileID: 11400000, guid: 2dcdcfbbeeb3b5c40b2fb999e96af4f9, type: 2}
+  - {fileID: 11400000, guid: 2dcdcfbbeeb3b5c40b2fb999e96af4f9, type: 2}
+  - {fileID: 11400000, guid: e720dd3b7658e494a8a469f02381e5a9, type: 2}
+  - {fileID: 11400000, guid: e0a7b3bd3cf9c8a4db0d65ef97182985, type: 2}
+  - {fileID: 11400000, guid: 62bd158ef7a9dea42b346ed333c11342, type: 2}
+  - {fileID: 11400000, guid: 909f385d676358647b771d34a05a20e4, type: 2}
+  - {fileID: 11400000, guid: 0928fb33fa1499948b21924ee88555e5, type: 2}
   - {fileID: 11400000, guid: 4276aaf366d97554598baa8fb4fa474f, type: 2}
+  - {fileID: 11400000, guid: e8ebb7bc37cf1864689df003ef786ea8, type: 2}
+  - {fileID: 11400000, guid: bb2da80a9d489b249b4820ef6c5a3c79, type: 2}
+  - {fileID: 11400000, guid: dbdf3f58d9e31654cb37b1873788f28d, type: 2}
+  _defaultEquipedItemList:
+  - {fileID: 11400000, guid: bb2da80a9d489b249b4820ef6c5a3c79, type: 2}
+  _equipLimit: 4
   _money: 5000
 --- !u!4 &230819599
 Transform:
@@ -4699,7 +4716,6 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1866823405}
-  - {fileID: 1930497615}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -18405,95 +18421,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1914898304}
   m_CullTransparentMesh: 1
---- !u!1 &1930497614
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1930497615}
-  - component: {fileID: 1930497618}
-  - component: {fileID: 1930497617}
-  - component: {fileID: 1930497616}
-  m_Layer: 5
-  m_Name: DragItem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &1930497615
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1930497614}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 537916813}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1930497616
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1930497614}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 956fe792dbec5054a97a3bfbbe5adf3e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DragItem
-  item: {fileID: 0}
---- !u!114 &1930497617
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1930497614}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_Sprite: {fileID: 0}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1930497618
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1930497614}
-  m_CullTransparentMesh: 1
 --- !u!1 &1931477286
 GameObject:
   m_ObjectHideFlags: 0
@@ -21141,10 +21068,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1535459089620415966}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &487454061218189005
 MonoBehaviour:
@@ -21394,7 +21321,6 @@ GameObject:
   - component: {fileID: 4654808744656958755}
   - component: {fileID: 2593194688710204503}
   - component: {fileID: 928856086340569038}
-  - component: {fileID: 5593769733777016627}
   m_Layer: 5
   m_Name: Slot (3)
   m_TagString: Untagged
@@ -21521,6 +21447,7 @@ GameObject:
   - component: {fileID: 5109884008005569076}
   - component: {fileID: 2999351221692539008}
   - component: {fileID: 8839083624038589737}
+  - component: {fileID: 8839083624038589738}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
@@ -21581,8 +21508,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5367135507416261929}
-  - {fileID: 456382253151083102}
   - {fileID: 2486635216399330092}
+  - {fileID: 456382253151083102}
   m_Father: {fileID: 191892873}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -21601,6 +21528,7 @@ GameObject:
   - component: {fileID: 4821970062117690528}
   - component: {fileID: 3286843075423827476}
   - component: {fileID: 9126645726187762621}
+  - component: {fileID: 9126645726187762622}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
@@ -22140,7 +22068,6 @@ GameObject:
   - component: {fileID: 7324572435801696185}
   - component: {fileID: 487454061218189005}
   - component: {fileID: 3016529421733533012}
-  - component: {fileID: 7538506640235386281}
   m_Layer: 5
   m_Name: Slot
   m_TagString: Untagged
@@ -22392,8 +22319,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7588440553356380807}
-  - {fileID: 2693449485468284400}
   - {fileID: 123328617661990018}
+  - {fileID: 2693449485468284400}
   m_Father: {fileID: 191892873}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -23069,18 +22996,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &5593769733777016627
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 986290294114110849}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 775fe38e9833dda40b2697967a4b47d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DragSlot
 --- !u!222 &5645999624978168182
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -23193,8 +23108,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1064419933467026391}
-  - {fileID: 4821970062117690528}
   - {fileID: 7366829649742949842}
+  - {fileID: 4821970062117690528}
   m_Father: {fileID: 191892873}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -23226,6 +23141,7 @@ GameObject:
   - component: {fileID: 456382253151083102}
   - component: {fileID: 7575977442152411370}
   - component: {fileID: 4185580088911803715}
+  - component: {fileID: 7575977442152411371}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
@@ -23246,7 +23162,6 @@ GameObject:
   - component: {fileID: 2166940154000088928}
   - component: {fileID: 9040791150467495444}
   - component: {fileID: 5938069512830479757}
-  - component: {fileID: 9040791150467495445}
   m_Layer: 5
   m_Name: Slot (1)
   m_TagString: Untagged
@@ -23287,8 +23202,8 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 776717131074860355}
-  - {fileID: 5109884008005569076}
   - {fileID: 7079338513052121926}
+  - {fileID: 5109884008005569076}
   m_Father: {fileID: 191892873}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -23499,6 +23414,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DragItem
   item: {fileID: 0}
+  ItemDropEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!222 &7014584781668444789
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -23585,6 +23503,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DragItem
   item: {fileID: 0}
+  ItemDropEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!222 &7303202410703207649
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -23726,18 +23647,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &7538506640235386281
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2922600839844290331}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 775fe38e9833dda40b2697967a4b47d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DragSlot
 --- !u!222 &7575977442152411370
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -23746,6 +23655,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5942677070197172512}
   m_CullTransparentMesh: 1
+--- !u!114 &7575977442152411371
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5942677070197172512}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 956fe792dbec5054a97a3bfbbe5adf3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DragItem
+  item: {fileID: 0}
+  ItemDropEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!224 &7588440553356380807
 RectTransform:
   m_ObjectHideFlags: 0
@@ -23914,6 +23839,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DragItem
   item: {fileID: 0}
+  ItemDropEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!222 &8073204119645560319
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -23933,6 +23861,7 @@ GameObject:
   - component: {fileID: 2693449485468284400}
   - component: {fileID: 5338784728605171524}
   - component: {fileID: 1811082424908405485}
+  - component: {fileID: 8164122857884960399}
   m_Layer: 5
   m_Name: Icon
   m_TagString: Untagged
@@ -23940,6 +23869,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &8164122857884960399
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8164122857884960398}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 956fe792dbec5054a97a3bfbbe5adf3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DragItem
+  item: {fileID: 0}
+  ItemDropEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &8215664877930343490
 GameObject:
   m_ObjectHideFlags: 0
@@ -23953,7 +23898,6 @@ GameObject:
   - component: {fileID: 4551685142934869216}
   - component: {fileID: 6651542553112280468}
   - component: {fileID: 8309163104649651725}
-  - component: {fileID: 8309163104649651726}
   m_Layer: 5
   m_Name: Slot (2)
   m_TagString: Untagged
@@ -23992,18 +23936,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IconSlot
   _iconImg: {fileID: 2163684486900093094}
---- !u!114 &8309163104649651726
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8215664877930343490}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 775fe38e9833dda40b2697967a4b47d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DragSlot
 --- !u!1 &8546823272746345035
 GameObject:
   m_ObjectHideFlags: 0
@@ -24037,6 +23969,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DragItem
   item: {fileID: 0}
+  ItemDropEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &8839083624038589737
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24067,6 +24002,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &8839083624038589738
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1352258685265901898}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 956fe792dbec5054a97a3bfbbe5adf3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DragItem
+  item: {fileID: 0}
+  ItemDropEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &8908274838467085803
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24213,18 +24164,6 @@ MonoBehaviour:
   PointerClickEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &9040791150467495445
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5997588259290097602}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 775fe38e9833dda40b2697967a4b47d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DragSlot
 --- !u!114 &9054288077331393124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24253,6 +24192,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DragItem
   item: {fileID: 0}
+  ItemDropEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &9126645726187762621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -24283,6 +24225,22 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &9126645726187762622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1641228137872043998}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 956fe792dbec5054a97a3bfbbe5adf3e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DragItem
+  item: {fileID: 0}
+  ItemDropEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &9134931451077833897
 GameObject:
   m_ObjectHideFlags: 0
@@ -24296,7 +24254,6 @@ GameObject:
   - component: {fileID: 3741640171267230731}
   - component: {fileID: 5803216706358715775}
   - component: {fileID: 9193605770553720550}
-  - component: {fileID: 9193605770553720551}
   m_Layer: 5
   m_Name: Slot (4)
   m_TagString: Untagged
@@ -24317,18 +24274,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IconSlot
   _iconImg: {fileID: 1351326175863851085}
---- !u!114 &9193605770553720551
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 9134931451077833897}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 775fe38e9833dda40b2697967a4b47d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DragSlot
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

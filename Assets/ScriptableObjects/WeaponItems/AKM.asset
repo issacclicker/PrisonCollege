@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a062497ac069cf94a8a57a5a0d1d7610, type: 3}
+  m_Name: AKM
+  m_EditorClassIdentifier: Assembly-CSharp::WeaponItem
+  id: 0
+  name: AKM
+  icon: {fileID: 21300000, guid: 4d687f88841e743438762dac23e28a98, type: 3}
+  price: 500
+  effect: 
+  description: 
+  rarity: 0

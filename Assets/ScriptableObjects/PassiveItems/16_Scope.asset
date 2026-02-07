@@ -9,14 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8ac4f4c0196682646a587c4c7d08bd23, type: 3}
-  m_Name: StudBaldHead
-  m_EditorClassIdentifier: Assembly-CSharp::StudBaldHead
+  m_Script: {fileID: 11500000, guid: 4fb0ab5f27dce4541ae17072cb175775, type: 3}
+  m_Name: 16_Scope
+  m_EditorClassIdentifier: Assembly-CSharp::Scope
   id: 0
-  name: "\uD0C8\uBAA8\uBE54"
-  icon: {fileID: 21300000, guid: 224df99b442fa204896d3611cef3d304, type: 3}
-  price: 640
+  name: "\uC870\uC900\uACBD"
+  icon: {fileID: 21300000, guid: d931e9c3a4f144f479cd6f7760fcdd3a, type: 3}
+  price: 200
   effect: 
   description: 
   rarity: 0
-  isBald: 1

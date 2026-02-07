@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
@@ -6,9 +7,16 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
 {
     private GameObject dragIcon;
     private Image sourceImage;
-    public Item item; // 이 스크립트가 들고 있는 아이템 데이터
+    public Item item; // 이 스크립트가 들고 있는 아이템 데이터 
+    private ItemSlot _itemSlot;
 
-    void Awake() => sourceImage = GetComponent<Image>();
+    public UnityEvent ItemDropEvent = new();
+
+    private void Awake()
+    {
+        sourceImage = GetComponent<Image>();
+        _itemSlot = GetComponentInParent<ItemSlot>();
+    }
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -53,10 +61,17 @@ public class DragItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
             if (targetSlot != null && targetSlot.gameObject != transform.parent.gameObject)
             {
                 // 새 슬롯에 아이템 설정
+                Item targetSlotItem = targetSlot.Item;
                 targetSlot.SetItem(this.item);
-
-                // 이전 슬롯(부모) 초기화
-                transform.GetComponentInParent<IconSlot>().ClearItem();
+                if (targetSlotItem != null)
+                {
+                    _itemSlot.SetItem(targetSlotItem);
+                }
+                else
+                {
+                    _itemSlot.ClearItem();
+                }
+                ItemDropEvent?.Invoke();
             }
         }
     }
