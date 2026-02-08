@@ -19,4 +19,4 @@ MonoBehaviour:
   effect: 
   description: 
   rarity: 0
-  profMoveSpeedPercent: 0
+  profMoveSpeedPercent: 0.4

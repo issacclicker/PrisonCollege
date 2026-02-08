@@ -19,3 +19,5 @@ MonoBehaviour:
   effect: 
   description: 
   rarity: 0
+  studMoveSpeedPercent: -0.4
+  isTiedShackle: 1

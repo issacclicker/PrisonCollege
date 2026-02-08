@@ -19,3 +19,5 @@ MonoBehaviour:
   effect: 
   description: 
   rarity: 0
+  studHeadScale: 1.75
+  taskPercent: 1

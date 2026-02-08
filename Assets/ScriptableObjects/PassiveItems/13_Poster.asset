@@ -19,3 +19,5 @@ MonoBehaviour:
   effect: 
   description: 
   rarity: 0
+  chaosDecreasePercent: 1
+  isPoster: 1

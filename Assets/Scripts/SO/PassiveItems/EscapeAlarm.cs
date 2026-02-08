@@ -3,13 +3,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewEscapeAlarm", menuName = "Item/EscapeAlarm")]
 public class EscapeAlarm : PassiveItem
 {
-    public GameObject exitDefectorPrefab;
+    public bool isExitAlarm;
 
 
 
 
     public override void Activate()
     {
-
+        AttributeSystem.Instance.IsExitAlarm = isExitAlarm;
     }
 }

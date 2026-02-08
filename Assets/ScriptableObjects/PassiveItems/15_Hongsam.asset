@@ -19,3 +19,4 @@ MonoBehaviour:
   effect: 
   description: 
   rarity: 0
+  staminaCostPercent: -0.5

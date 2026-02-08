@@ -11,7 +11,7 @@ public class AttributeModifier
     public AttributeModifier()
     {
         _flat = 0;
-        _percent = 0;
+        _percent = 1;
     }
 
 

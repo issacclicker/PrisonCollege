@@ -19,3 +19,6 @@ MonoBehaviour:
   effect: 
   description: 
   rarity: 0
+  turtleNeckDistance: 0.3
+  escapeChancePercent: -0.5
+  studDamagePercent: -0.2

@@ -9,14 +9,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3b5aa7eecad822438ea1ab5aadbfc9f, type: 3}
+  m_Script: {fileID: 11500000, guid: 3cb7993819c982f42b7037a502d26243, type: 3}
   m_Name: 6_ToolKit
-  m_EditorClassIdentifier: Assembly-CSharp::HackRepairFaster
+  m_EditorClassIdentifier: Assembly-CSharp::BarricadeFaster
   id: 0
-  name: "\uACE0\uAE09 \uC218\uB9AC \uD0A4\uD2B8"
-  icon: {fileID: 21300000, guid: 0c5aec87b99287547af812a9c00a264d, type: 3}
-  price: 120
+  name: 
+  icon: {fileID: 0}
+  price: 0
   effect: 
   description: 
   rarity: 0
-  hackBlockChanceFlat: 0
+  repairSpeedPercent: -0.5

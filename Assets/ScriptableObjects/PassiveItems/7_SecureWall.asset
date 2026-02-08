@@ -19,4 +19,4 @@ MonoBehaviour:
   effect: 
   description: 
   rarity: 0
-  hackBlockChanceFlat: 0
+  hackDefenseFlat: 1

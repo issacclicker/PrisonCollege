@@ -4,12 +4,14 @@ using UnityEngine;
 public class StudBaldHead : PassiveItem
 {
     public bool isBald = true;
+    public bool isOutline = true;
 
 
 
 
     public override void Activate()
     {
-
+        AttributeSystem.Instance.IsStudBald = isBald;
+        AttributeSystem.Instance.IsStudOutline = isOutline;
     }
 }

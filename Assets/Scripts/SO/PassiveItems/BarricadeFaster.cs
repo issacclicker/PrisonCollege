@@ -3,12 +3,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewRepairFaster", menuName = "Item/RepairFaster")]
 public class BarricadeFaster : PassiveItem
 {
-    public float barricadeTimePercent;
+    public float repairSpeedPercent;
 
 
 
     public override void Activate()
     {
-        AttributeSystem.Instance.BarricadeInstallSpeedMod.AddPercent(barricadeTimePercent);
+        AttributeSystem.Instance.BarricadeInstallTimeMod.AddPercent(repairSpeedPercent);
+        AttributeSystem.Instance.HackRepairTimeMod.AddPercent(repairSpeedPercent);
     }
 }

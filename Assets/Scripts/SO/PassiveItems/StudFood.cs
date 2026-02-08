@@ -5,13 +5,15 @@ public class StudFood : PassiveItem
 {
     public float studMoveSpeedPercent;
     public float studStomachScale;
-    public GameObject deskFoodPrefab;
+    public bool isDeskFood;
 
 
 
 
     public override void Activate()
     {
-        AttributeSystem.Instance.StudMoveSpeedMod.AddFlat(studMoveSpeedPercent);
+        AttributeSystem.Instance.StudMoveSpeedMod.AddPercent(studMoveSpeedPercent);
+        AttributeSystem.Instance.StudStomachScaleMod.AddPercent(studStomachScale);
+        AttributeSystem.Instance.IsDeskFood = isDeskFood;
     }
 }

@@ -19,4 +19,4 @@ MonoBehaviour:
   effect: 
   description: 
   rarity: 0
-  exitDefectorPrefab: {fileID: 0}
+  isExitAlarm: 1

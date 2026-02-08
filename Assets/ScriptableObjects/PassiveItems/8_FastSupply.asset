@@ -19,4 +19,4 @@ MonoBehaviour:
   effect: 
   description: 
   rarity: 0
-  supplyTimePercent: 0
+  supplyTimePercent: -0.5

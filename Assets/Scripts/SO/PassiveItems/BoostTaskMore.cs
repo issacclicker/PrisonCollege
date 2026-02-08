@@ -4,12 +4,13 @@ using UnityEngine;
 public class BoostTaskMore : PassiveItem
 {
     public float boostTaskChanceFlat;
-    public GameObject deskCoffeePrefab;
+    public bool isDeskCoffee;
 
 
 
     public override void Activate()
     {
         AttributeSystem.Instance.BoostTaskChanceMod.AddFlat(boostTaskChanceFlat);
+        AttributeSystem.Instance.IsDeskCoffee = isDeskCoffee;
     }
 }

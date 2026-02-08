@@ -19,6 +19,6 @@ MonoBehaviour:
   effect: 
   description: 
   rarity: 0
-  studMoveSpeedPercent: 0
-  studStomachScale: 0
-  deskFoodPrefab: {fileID: 0}
+  studMoveSpeedPercent: -0.2
+  studStomachScale: 1.5
+  isDeskFood: 1

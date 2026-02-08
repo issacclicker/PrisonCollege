@@ -19,5 +19,5 @@ MonoBehaviour:
   effect: 
   description: 
   rarity: 0
-  boostTaskChanceFlat: 0
-  deskCoffeePrefab: {fileID: 0}
+  boostTaskChanceFlat: 0.2
+  isDeskCoffee: 1
