@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AttributeSystem : PersistentSingleton<AttributeSystem>
+public class AttributeSystem : SceneSingleton<AttributeSystem>
 {
     public AttributeModifier StudMoveSpeedMod { private set; get; } = new AttributeModifier();
     public AttributeModifier ProfMoveSpeedMod { private set; get; } = new AttributeModifier();

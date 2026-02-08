@@ -74,6 +74,7 @@ public class StageController : SceneSingleton<StageController>
         _projectStat.MaxReachEvent.AddListener(OnProjectSuccessed);
 
         _money = InventorySystem.Instance.Money;
+        InventorySystem.Instance.ActivatePassiveItems();
 
         //SetStudentList();
 

@@ -41,6 +41,17 @@ public class InventorySystem : PersistentSingleton<InventorySystem>
 
 
 
+    public void ActivatePassiveItems()
+    {
+        List<PassiveItem> passiveItemList = _purchasedItemSet.OfType<PassiveItem>().ToList();
+        foreach (var item in passiveItemList)
+        {
+            item.Activate();
+        }
+    }
+
+
+
     public void Purchase(Item item)
     {
         _money -= item.price;
