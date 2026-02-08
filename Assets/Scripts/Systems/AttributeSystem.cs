@@ -22,6 +22,7 @@ public class AttributeSystem : SceneSingleton<AttributeSystem>
     public AttributeModifier ShotSpreadMod { private set; get; } = new AttributeModifier();
     public AttributeModifier MutinyMoneyMod { private set; get; } = new AttributeModifier();
     public AttributeModifier StudHairScaleMod { private set; get; } = new AttributeModifier();
+    public AttributeModifier BarricadeHitAmountMod { private set; get; } = new AttributeModifier();
 
 
     public bool IsDeskCoffee { set; get; }

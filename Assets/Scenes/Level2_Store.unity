@@ -646,6 +646,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _barricadeParent: {fileID: 731720188}
   _barricadePrefab: {fileID: 6917073365472557711, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
+  _reinforcedBarricadePrefab: {fileID: 9189554302231827804, guid: 71f9adbeb460ef7419c34f8e4d43372f, type: 3}
   _isbarricadeEnabled: 1
   _windowPanelPrefab: {fileID: 454933394021031062, guid: ab21d600c42507149a8328957064cd31, type: 3}
   _spawnPoint: {fileID: 556871789}
@@ -661,7 +662,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 14098312}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -7.613, y: 1.921, z: -4.947}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -669,7 +670,7 @@ Transform:
   - {fileID: 556871789}
   - {fileID: 1636401808}
   - {fileID: 731720188}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1768032324}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &16751118
 GameObject:
@@ -21061,6 +21062,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _barricadeParent: {fileID: 1517116416}
   _barricadePrefab: {fileID: 6917073365472557711, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
+  _reinforcedBarricadePrefab: {fileID: 9189554302231827804, guid: 71f9adbeb460ef7419c34f8e4d43372f, type: 3}
   _isbarricadeEnabled: 1
   _windowPanelPrefab: {fileID: 454933394021031062, guid: ab21d600c42507149a8328957064cd31, type: 3}
   _spawnPoint: {fileID: 894902402}
@@ -21076,7 +21078,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 38117954}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 2.447, y: 1.921, z: -4.947}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -21084,7 +21086,7 @@ Transform:
   - {fileID: 894902402}
   - {fileID: 381279102}
   - {fileID: 1517116416}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1768032324}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &41883411
 GameObject:
@@ -43184,6 +43186,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _barricadeParent: {fileID: 1412753775}
   _barricadePrefab: {fileID: 6917073365472557711, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
+  _reinforcedBarricadePrefab: {fileID: 9189554302231827804, guid: 71f9adbeb460ef7419c34f8e4d43372f, type: 3}
   _isbarricadeEnabled: 1
   _windowPanelPrefab: {fileID: 454933394021031062, guid: ab21d600c42507149a8328957064cd31, type: 3}
   _spawnPoint: {fileID: 379902129}
@@ -43199,7 +43202,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 328091743}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -2.5, y: 1.921, z: -4.947}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -43207,7 +43210,7 @@ Transform:
   - {fileID: 379902129}
   - {fileID: 1052654940}
   - {fileID: 1412753775}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1768032324}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &331621549
 GameObject:
@@ -113995,6 +113998,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _barricadeParent: {fileID: 1501195147}
   _barricadePrefab: {fileID: 6917073365472557711, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
+  _reinforcedBarricadePrefab: {fileID: 9189554302231827804, guid: 71f9adbeb460ef7419c34f8e4d43372f, type: 3}
   _isbarricadeEnabled: 1
   _windowPanelPrefab: {fileID: 454933394021031062, guid: ab21d600c42507149a8328957064cd31, type: 3}
   _spawnPoint: {fileID: 130610693}
@@ -114010,7 +114014,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 816659238}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -12.541, y: 1.921, z: -4.947}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -114018,7 +114022,7 @@ Transform:
   - {fileID: 130610693}
   - {fileID: 929745584}
   - {fileID: 1501195147}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1768032324}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &822511146
 GameObject:
@@ -175911,6 +175915,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DoorGate
   _barricadeParent: {fileID: 89046723}
   _barricadePrefab: {fileID: 6917073365472557711, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
+  _reinforcedBarricadePrefab: {fileID: 9189554302231827804, guid: 71f9adbeb460ef7419c34f8e4d43372f, type: 3}
   _isbarricadeEnabled: 0
   _doorPanel: {fileID: 1193677401}
   _isOpened: 0
@@ -211302,6 +211307,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DoorGate
   _barricadeParent: {fileID: 1369236985}
   _barricadePrefab: {fileID: 6917073365472557711, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
+  _reinforcedBarricadePrefab: {fileID: 9189554302231827804, guid: 71f9adbeb460ef7419c34f8e4d43372f, type: 3}
   _isbarricadeEnabled: 1
   _doorPanel: {fileID: 1439102309}
   _isOpened: 0
@@ -223629,6 +223635,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DoorGate
   _barricadeParent: {fileID: 596195106}
   _barricadePrefab: {fileID: 6917073365472557711, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
+  _reinforcedBarricadePrefab: {fileID: 9189554302231827804, guid: 71f9adbeb460ef7419c34f8e4d43372f, type: 3}
   _isbarricadeEnabled: 1
   _doorPanel: {fileID: 1537958989}
   _isOpened: 0
@@ -258009,6 +258016,42 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1767746663}
   m_CullTransparentMesh: 0
+--- !u!1 &1768032323
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1768032324}
+  m_Layer: 0
+  m_Name: WindowExits
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1768032324
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1768032323}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 38117963}
+  - {fileID: 328091752}
+  - {fileID: 14098321}
+  - {fileID: 816659247}
+  - {fileID: 2040705157}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1770934291
 GameObject:
   m_ObjectHideFlags: 0
@@ -314174,6 +314217,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _barricadeParent: {fileID: 1558204823}
   _barricadePrefab: {fileID: 6917073365472557711, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
+  _reinforcedBarricadePrefab: {fileID: 9189554302231827804, guid: 71f9adbeb460ef7419c34f8e4d43372f, type: 3}
   _isbarricadeEnabled: 1
   _windowPanelPrefab: {fileID: 454933394021031062, guid: ab21d600c42507149a8328957064cd31, type: 3}
   _spawnPoint: {fileID: 986798191}
@@ -314189,7 +314233,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2040705148}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -9.998, y: 1.921, z: 17.953}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -314197,7 +314241,7 @@ Transform:
   - {fileID: 986798191}
   - {fileID: 1287225148}
   - {fileID: 1558204823}
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1768032324}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2052834288
 PrefabInstance:
@@ -325859,6 +325903,7 @@ SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 105088195}
+  - {fileID: 1768032324}
   - {fileID: 2026990916}
   - {fileID: 865510206}
   - {fileID: 727526853}
@@ -325877,11 +325922,6 @@ SceneRoots:
   - {fileID: 2137830733}
   - {fileID: 1874519807}
   - {fileID: 1783431665}
-  - {fileID: 38117963}
-  - {fileID: 328091752}
-  - {fileID: 14098321}
-  - {fileID: 816659247}
-  - {fileID: 2040705157}
   - {fileID: 222006282}
   - {fileID: 1588544103}
   - {fileID: 1940267423}

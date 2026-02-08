@@ -4,8 +4,10 @@ using UnityEngine;
 public class MetalBarri : PassiveItem
 {
     public bool isMetalBarricade;
+    public float damageRatePercent;
     public override void Activate()
     {
         AttributeSystem.Instance.IsMetalBarricade = isMetalBarricade;
+        AttributeSystem.Instance.BarricadeHitAmountMod.AddPercent(damageRatePercent);
     }
 }

@@ -10,14 +10,14 @@ public class StatRecovery : MonoBehaviour
 
     public bool CanRecover { get; set; } = true;
     private AttributeModifier _attributeModifier;
-    private bool IsPLayerHealthRecovery => GetComponent<Professor>() != null && _targetStat is Health;
+    private bool IsPlayerHealthRecovery => GetComponent<Professor>() != null && _targetStat is Health;
 
 
 
     private void Awake()
     {
         _targetStat.DecreaseEvent.AddListener(_ => OnStatDecreased());
-        if (IsPLayerHealthRecovery)
+        if (IsPlayerHealthRecovery)
         {
             _attributeModifier = AttributeSystem.Instance.HealDelaySpeedMod;
         }
@@ -28,7 +28,14 @@ public class StatRecovery : MonoBehaviour
     private void Update()
     {
         if (!CanRecover) return;
-        _statDecreaseElapsed += Time.deltaTime * _attributeModifier.GetFinalValue();
+        if (IsPlayerHealthRecovery)
+        {
+            _statDecreaseElapsed += Time.deltaTime * _attributeModifier.GetFinalValue();
+        }
+        else
+        {
+            _statDecreaseElapsed += Time.deltaTime;
+        }
         if (_statDecreaseElapsed >= _recoveryDelay && !_targetStat.IsMax)
         {
             _targetStat.Increase(_recoverySpeed * Time.deltaTime);

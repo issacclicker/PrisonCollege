@@ -20,3 +20,4 @@ MonoBehaviour:
   description: 
   rarity: 0
   isMetalBarricade: 1
+  damageRatePercent: -0.5

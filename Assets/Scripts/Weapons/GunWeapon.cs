@@ -83,7 +83,7 @@ public class GunWeapon : WeaponBase
                     HitInfo hitInfo = new HitInfo(
                         contactPoint,
                         Quaternion.LookRotation(safeNormal),
-                        this.gameObject,
+                        _owner,
                         _weaponData.hitImpulse
                     );
                     receiver.TakeEffect(_weaponData.effect, hitInfo);
