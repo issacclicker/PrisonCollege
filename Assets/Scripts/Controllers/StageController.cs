@@ -60,6 +60,7 @@ public class StageController : SceneSingleton<StageController>
     public StageSpots StageSpots => _stageSpots;
 
     private AttributeModifier _studTaskModifier;
+    private AttributeModifier _chaosDecreaseModifier;
 
 
 
@@ -86,6 +87,7 @@ public class StageController : SceneSingleton<StageController>
         //    student.EscapeEvent.AddListener(OnStudentEscaped);
         //}
         _studTaskModifier = AttributeSystem.Instance.TaskEfficiencyMod;
+        _chaosDecreaseModifier = AttributeSystem.Instance.ChaosDecreaseMod;
     }
 
 
@@ -188,6 +190,13 @@ public class StageController : SceneSingleton<StageController>
 
 
 
+    public void Earn(int money)
+    {
+        _money += money;
+    }
+
+
+
     private void ProgressProject_T()
     {
         _isProfWorking = Input.GetKey(KeyCode.Escape);
@@ -266,7 +275,7 @@ public class StageController : SceneSingleton<StageController>
         }
         else
         {
-            _chaosStat.Decrease(_defaultReduction * Time.deltaTime);
+            _chaosStat.Decrease(_defaultReduction * Time.deltaTime * _chaosDecreaseModifier.GetFinalValue());
         }
     }
 

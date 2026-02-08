@@ -13,6 +13,14 @@ public class AnimAttack : MonoBehaviour
 
 
 
+    private void Start()
+    {
+        _damageData = Utils.DeepCopyByJson(_damageData);
+        _damageData.value =  AttributeSystem.Instance.StudDamageMod.GetFinalValue(_damageData.value);
+    }
+
+
+
     public void OnAttackHit()
     {
         // 1. 캐릭터 정면 방향으로 SphereCastAll 실행

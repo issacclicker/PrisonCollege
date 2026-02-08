@@ -19,6 +19,7 @@ public class MeleeWeapon : WeaponBase
     protected override void Awake()
     {
         base.Awake();
+        _weaponData = Utils.DeepCopyByJson(_weaponData);
         _originalDamage = _weaponData.effect.value;
     }
 

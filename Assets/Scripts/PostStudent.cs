@@ -1,16 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Animations;
 using UnityEngine.Events;
-using UnityEngine.Experimental.GlobalIllumination;
 using static Global;
-using static UnityEditor.Experimental.GraphView.GraphView;
+using static Utils;
 
 public class PostStudent : MonoBehaviour
 {
@@ -118,6 +113,8 @@ public class PostStudent : MonoBehaviour
 
     private void Start()
     {
+        _behaviorWeightSet = DeepCopyByJson(_behaviorWeightSet);
+        _behaviorWeightSet.ModifyChance(BehaviorType.Escape, AttributeSystem.Instance.StudEscapeChanceMod.GetFinalValue());
         HideAllAnimAttachments();
         StopAllOverlapAttackers();
         _characterRagdoll.UnTriggerRagdoll();
@@ -653,6 +650,12 @@ public class PostStudent : MonoBehaviour
     private void OnDie(HitInfo hitInfo)
     {
         DieEvent?.Invoke(this, hitInfo);
+
+        GameObject playerObject = _blackboard.Player.gameObject;
+        if (_blackboard.targetObject == playerObject && hitInfo.attacker == playerObject)
+        {
+            StageController.Instance.Earn((int)AttributeSystem.Instance.MutinyMoneyMod.GetFinalValue(0));
+        }
 
         _root = null;
         _agent.speed = 0;

@@ -6,6 +6,6 @@ public class VitaminJelly : PassiveItem
     public float healDelayPercent;
     public override void Activate()
     {
-        AttributeSystem.Instance.HealDelayTimeMod.AddPercent(healDelayPercent);
+        AttributeSystem.Instance.HealDelaySpeedMod.AddPercent(healDelayPercent);
     }
 }

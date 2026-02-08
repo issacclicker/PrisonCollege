@@ -17,7 +17,7 @@ public class AttributeSystem : SceneSingleton<AttributeSystem>
     public AttributeModifier StudEscapeChanceMod { private set; get; } = new AttributeModifier();
     public AttributeModifier StudDamageMod { private set; get; } = new AttributeModifier();
     public AttributeModifier ChaosDecreaseMod { private set; get; } = new AttributeModifier();
-    public AttributeModifier HealDelayTimeMod { private set; get; } = new AttributeModifier();
+    public AttributeModifier HealDelaySpeedMod { private set; get; } = new AttributeModifier();
     public AttributeModifier StaminaCostMod { private set; get; } = new AttributeModifier();
     public AttributeModifier ShotSpreadMod { private set; get; } = new AttributeModifier();
     public AttributeModifier MutinyMoneyMod { private set; get; } = new AttributeModifier();
