@@ -10,7 +10,7 @@ public class HeadBigger : PassiveItem
 
     public override void Activate()
     {
-        AttributeSystem.Instance.TaskEfficiencyMod.AddPercent(studHeadScale);
-        AttributeSystem.Instance.StudHeadScaleMod.AddPercent(taskPercent);
+        AttributeSystem.Instance.TaskEfficiencyMod.AddPercent(taskPercent);
+        AttributeSystem.Instance.StudHeadScaleMod.AddPercent(studHeadScale);
     }
 }

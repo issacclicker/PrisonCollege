@@ -11,7 +11,8 @@ public class StudBaldHead : PassiveItem
 
     public override void Activate()
     {
-        AttributeSystem.Instance.IsStudBald = isBald;
+        if (isBald)
+            AttributeSystem.Instance.StudHairScaleMod.AddPercent(-1);
         AttributeSystem.Instance.IsStudOutline = isOutline;
     }
 }

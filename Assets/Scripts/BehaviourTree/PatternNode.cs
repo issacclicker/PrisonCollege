@@ -704,7 +704,18 @@ public class WorkPattern : PatternNode
             {
                 (_bb.destSpot as MonitorSpot)?.ResumeMonitor();
                 if (_bb.destBehavior == BehaviorType.Hack)
-                    LabLightSystem.Instance.TurnOff();
+                {
+                    float defenseProb = AttributeSystem.Instance.HackBlockChanceMod.GetFinalValue(0);
+                    float rand = UnityEngine.Random.Range(0f, 1f);
+                    if (rand < defenseProb)
+                    {
+                        LabLightSystem.Instance.HackDefensed();
+                    }
+                    else
+                    {
+                        LabLightSystem.Instance.TurnOff();
+                    }
+                }
             }),
             //new Delay(() => 4f),
             new DelayRange(4, 5),

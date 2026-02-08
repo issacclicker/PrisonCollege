@@ -6,9 +6,9 @@ public class AttributeSystem : SceneSingleton<AttributeSystem>
     public AttributeModifier ProfMoveSpeedMod { private set; get; } = new AttributeModifier();
     public AttributeModifier TaskEfficiencyMod { private set; get; } = new AttributeModifier();
     public AttributeModifier BoostTaskChanceMod { private set; get; } = new AttributeModifier();
-    public AttributeModifier BarricadeInstallTimeMod { private set; get; } = new AttributeModifier();
-    public AttributeModifier HackRepairTimeMod { private set; get; } = new AttributeModifier();
-    public AttributeModifier WeaponSupplyTimeMod { private set; get; } = new AttributeModifier();
+    public AttributeModifier BarricadeInstallSpeedMod { private set; get; } = new AttributeModifier();
+    public AttributeModifier HackRepairSpeedMod { private set; get; } = new AttributeModifier();
+    public AttributeModifier WeaponSupplySpeedMod { private set; get; } = new AttributeModifier();
     public AttributeModifier HackBlockChanceMod { private set; get; } = new AttributeModifier();
     public AttributeModifier StudStomachScaleMod { private set; get; } = new AttributeModifier();
     public AttributeModifier StudHeadScaleMod { private set; get; } = new AttributeModifier();
@@ -21,10 +21,11 @@ public class AttributeSystem : SceneSingleton<AttributeSystem>
     public AttributeModifier StaminaCostMod { private set; get; } = new AttributeModifier();
     public AttributeModifier ShotSpreadMod { private set; get; } = new AttributeModifier();
     public AttributeModifier MutinyMoneyMod { private set; get; } = new AttributeModifier();
+    public AttributeModifier StudHairScaleMod { private set; get; } = new AttributeModifier();
 
 
     public bool IsDeskCoffee { set; get; }
-    public bool IsStudBald { set; get; }
+    //public bool IsStudBald { set; get; }
     public bool IsStudOutline { set; get; }
     public bool IsDeskFood { set; get; }
     public bool IsExitAlarm { set; get; }

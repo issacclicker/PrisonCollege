@@ -140,10 +140,13 @@ public class FirstPersonController : MonoBehaviour
     public bool IsWalking => isWalking;
     public bool IsSprinting => isSprinting;
 
+    private AttributeModifier moveSpeedMod;
+    public bool IsGrounded => isGrounded;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-
+        moveSpeedMod = AttributeSystem.Instance.ProfMoveSpeedMod;
         crosshairObject = GetComponentInChildren<Image>();
 
         // Set internal variables
@@ -443,7 +446,7 @@ public class FirstPersonController : MonoBehaviour
             Vector3 moveDir = transform.TransformDirection(inputDir);
 
             // 최종 이동 벡터 (속도 * 시간)
-            Vector3 movement = moveDir * currentSpeed * Time.fixedDeltaTime;
+            Vector3 movement = moveDir * currentSpeed * Time.fixedDeltaTime * moveSpeedMod.GetFinalValue(1);
 
             float floodFillRatio = FireSuppressionSystem.Instance != null ? FireSuppressionSystem.Instance.FloodFillRatio : 0f;
             float speedRatio = Mathf.Lerp(1, 0.3f, floodFillRatio);

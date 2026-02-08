@@ -188,7 +188,7 @@ public class WeaponController : MonoBehaviour
     public List<WeaponBase> GetDamageWeapons()
     {
         List<WeaponBase> damageWeapons = new List<WeaponBase>();
-        foreach (var weapon in _weapons)
+        foreach (var weapon in _weaponPresets)
         {
             if (weapon.EffectData is DamageData)
             {
@@ -203,7 +203,7 @@ public class WeaponController : MonoBehaviour
     public List<WeaponBase> GetBoostWeapons()
     {
         List<WeaponBase> boostWeapons = new List<WeaponBase>();
-        foreach (var weapon in _weapons)
+        foreach (var weapon in _weaponPresets)
         {
             if (weapon.EffectData is BoostData)
             {

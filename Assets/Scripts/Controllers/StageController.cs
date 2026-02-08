@@ -59,6 +59,8 @@ public class StageController : SceneSingleton<StageController>
     public Professor Player => _player;
     public StageSpots StageSpots => _stageSpots;
 
+    private AttributeModifier _studTaskModifier;
+
 
 
     protected override void Awake()
@@ -83,6 +85,7 @@ public class StageController : SceneSingleton<StageController>
         //    student.DieEvent.AddListener(OnStudentDied);
         //    student.EscapeEvent.AddListener(OnStudentEscaped);
         //}
+        _studTaskModifier = AttributeSystem.Instance.TaskEfficiencyMod;
     }
 
 
@@ -178,7 +181,7 @@ public class StageController : SceneSingleton<StageController>
 
     private void ProgressProject()
     {
-        float studTotalProgress = _workingStudCount * _studTaskProgress * Time.deltaTime;
+        float studTotalProgress = _workingStudCount * _studTaskProgress * Time.deltaTime * _studTaskModifier.GetFinalValue(1);
         float profTotalProgress = _isProfWorking ? _profTaskProgress * Time.deltaTime : 0;
         _projectStat.Increase(studTotalProgress + profTotalProgress);
     }

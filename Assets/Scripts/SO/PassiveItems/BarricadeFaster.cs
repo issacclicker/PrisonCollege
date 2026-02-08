@@ -9,7 +9,7 @@ public class BarricadeFaster : PassiveItem
 
     public override void Activate()
     {
-        AttributeSystem.Instance.BarricadeInstallTimeMod.AddPercent(repairSpeedPercent);
-        AttributeSystem.Instance.HackRepairTimeMod.AddPercent(repairSpeedPercent);
+        AttributeSystem.Instance.BarricadeInstallSpeedMod.AddPercent(repairSpeedPercent);
+        AttributeSystem.Instance.HackRepairSpeedMod.AddPercent(repairSpeedPercent);
     }
 }
