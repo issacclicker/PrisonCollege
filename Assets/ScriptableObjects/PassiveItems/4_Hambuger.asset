@@ -20,5 +20,5 @@ MonoBehaviour:
   description: 
   rarity: 0
   studMoveSpeedPercent: -0.2
-  studStomachScale: 0.75
+  studStomachScale: 0.5
   isDeskFood: 1

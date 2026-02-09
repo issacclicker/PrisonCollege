@@ -126,7 +126,8 @@ public class PostStudent : MonoBehaviour
         _boostReceiver.CanEffectChecker = () => _root != null && _blackboard != null && _blackboard.targetObject == null;
         _damageReceiver.CanEffectChecker = () => _blackboard != null && _blackboard.isEscaping == false;
         float moveSpeedScale = AttributeSystem.Instance.StudMoveSpeedMod.GetFinalValue();
-        _anim.SetFloat("MoveSpeedScale", moveSpeedScale);
+        float scaleDiff = moveSpeedScale - 1;
+        _anim.SetFloat("MoveSpeedScale", 1 + scaleDiff / 3f);
     }
 
 

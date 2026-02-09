@@ -20,4 +20,5 @@ MonoBehaviour:
   description: 
   rarity: 0
   studMoveSpeedPercent: -0.4
+  studDamagePercent: 0.5
   isTiedShackle: 1
