@@ -8,6 +8,12 @@ public class Shackles : MonoBehaviour
 
     private void Start()
     {
+        bool hasToActivate = AttributeSystem.Instance.IsStudShackle;
+        if (hasToActivate == false)
+        {
+            Destroy(gameObject);
+            return;
+        }
         _chain.SetParent(null);
         _weight.SetParent(null);
     }
