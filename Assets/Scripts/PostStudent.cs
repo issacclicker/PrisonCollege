@@ -684,6 +684,14 @@ public class PostStudent : MonoBehaviour
 
     private void OnStandUpStart()
     {
+        bool originAgentEnabled = _agent.enabled;
+        bool originAgentUpdatePos = _agent.updatePosition;
+        _agent.enabled = true;
+        _agent.updatePosition = true;
+        _agent.Warp(SampleNavMesh(transform.position, 100f));
+        _agent.enabled = originAgentEnabled;
+        _agent.updatePosition = originAgentUpdatePos;
+
         _damageReceiver.SetStatFull();
     }
 
