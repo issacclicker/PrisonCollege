@@ -22,12 +22,19 @@ public class Stat : MonoBehaviour
 
     //protected virtual void Awake() => Initialize();
 
+    private bool IsPlayerStamina => GetComponent<Professor>() != null && this is Stamina;
+    private AttributeModifier _attributeModifier;
+
 
 
     public virtual void Initialize(bool issetToZero = false)
     {
         _currentStat = issetToZero ? 0 : _maxStat;
         ResetEvent?.Invoke(_currentStat);
+        if (IsPlayerStamina)
+        {
+            _attributeModifier = AttributeSystem.Instance.StaminaCostMod;
+        }
     }
 
 
@@ -35,6 +42,10 @@ public class Stat : MonoBehaviour
     public void Decrease(float amount)
     {
         if (IsDepleted) return;
+        if (IsPlayerStamina)
+        {
+            amount *= _attributeModifier.GetFinalValue();
+        }
         _currentStat = Mathf.Max(0, _currentStat - amount);
         DecreaseEvent?.Invoke(amount);
         if (IsDepleted)

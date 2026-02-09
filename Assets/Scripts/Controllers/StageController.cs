@@ -59,6 +59,9 @@ public class StageController : SceneSingleton<StageController>
     public Professor Player => _player;
     public StageSpots StageSpots => _stageSpots;
 
+    private AttributeModifier _studTaskModifier;
+    private AttributeModifier _chaosDecreaseModifier;
+
 
 
     protected override void Awake()
@@ -73,6 +76,9 @@ public class StageController : SceneSingleton<StageController>
         _escapeStat.MaxReachEvent.AddListener(() => GameOver(false));
         _projectStat.MaxReachEvent.AddListener(OnProjectSuccessed);
 
+        _money = InventorySystem.Instance.Money;
+        InventorySystem.Instance.ActivatePassiveItems();
+
         //SetStudentList();
 
         //foreach (var student in _studentList)
@@ -80,6 +86,8 @@ public class StageController : SceneSingleton<StageController>
         //    student.DieEvent.AddListener(OnStudentDied);
         //    student.EscapeEvent.AddListener(OnStudentEscaped);
         //}
+        _studTaskModifier = AttributeSystem.Instance.TaskEfficiencyMod;
+        _chaosDecreaseModifier = AttributeSystem.Instance.ChaosDecreaseMod;
     }
 
 
@@ -101,6 +109,15 @@ public class StageController : SceneSingleton<StageController>
     {
         Time.timeScale = 1;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+
+
+    public void GoStore()
+    {
+        Time.timeScale = 1;
+        InventorySystem.Instance.SetMoney(_money); 
+        SceneManager.LoadScene("Store");
     }
 
 
@@ -166,9 +183,16 @@ public class StageController : SceneSingleton<StageController>
 
     private void ProgressProject()
     {
-        float studTotalProgress = _workingStudCount * _studTaskProgress * Time.deltaTime;
+        float studTotalProgress = _workingStudCount * _studTaskProgress * Time.deltaTime * _studTaskModifier.GetFinalValue(1);
         float profTotalProgress = _isProfWorking ? _profTaskProgress * Time.deltaTime : 0;
         _projectStat.Increase(studTotalProgress + profTotalProgress);
+    }
+
+
+
+    public void Earn(int money)
+    {
+        _money += money;
     }
 
 
@@ -226,7 +250,7 @@ public class StageController : SceneSingleton<StageController>
 
         _escapeTmp.text = $"{_escapeStat.Current.ToString("F0")} / {_escapeStat.Max.ToString("F0")}";
 
-        _moneyTmp.text = _money.ToString();
+        _moneyTmp.text = _money.ToString("N0");
 
         _workingTmp.text = $"{_workingStudCount.ToString()}명 작업중";
 
@@ -251,7 +275,7 @@ public class StageController : SceneSingleton<StageController>
         }
         else
         {
-            _chaosStat.Decrease(_defaultReduction * Time.deltaTime);
+            _chaosStat.Decrease(_defaultReduction * Time.deltaTime * _chaosDecreaseModifier.GetFinalValue());
         }
     }
 

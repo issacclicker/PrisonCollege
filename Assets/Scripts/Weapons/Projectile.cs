@@ -7,12 +7,18 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float _minImpactThreshold = 5.0f;
     [SerializeField] private float _lifeTime = 5.0f;
     [SerializeField] private bool _destroyOnHit = false;
+    private Rigidbody _rigidbody;
 
     public WeaponData WeaponData { get; set; }
     public GameObject Owner { get; set; }
 
     // 중복 충돌을 방지하기 위한 셋 (오브젝트 참조 저장)
     private HashSet<GameObject> _hitObjects = new HashSet<GameObject>();
+
+    private void Awake()
+    {
+        _rigidbody = GetComponent<Rigidbody>();
+    }
 
     protected virtual void Start()
     {
@@ -21,6 +27,8 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log($"[Projectile] {collision.gameObject.name}");
+        Debug.Log($"[Projectile] {WeaponData}");
         // 1. 레이어 체크 및 주인 제외
         if (collision.gameObject.IsInLayerMask(Global.STUDENT_LAYER_NAME) == false) return;
         if (collision.gameObject == Owner) return;
@@ -31,9 +39,9 @@ public class Projectile : MonoBehaviour
         float impactVelocity = collision.relativeVelocity.magnitude;
         // 3. 충격량 체크
         float impactForce = collision.impulse.magnitude / Time.fixedDeltaTime;
-        if (impactVelocity < _minImpactThreshold)
+        if (_rigidbody.linearVelocity.magnitude < _minImpactThreshold)
         {
-            Debug.Log($"충격이 너무 약함 ({impactForce:F2}), 무시합니다.");
+            Debug.Log($"[Projectile] 충격이 너무 약함 ({_rigidbody.linearVelocity.magnitude:F2}),  무시합니다.");
             return;
         }
 

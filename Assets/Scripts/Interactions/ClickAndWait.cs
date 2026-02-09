@@ -18,6 +18,8 @@ public class ClickAndWait : MonoBehaviour, IPlayerInteractable
     public UnityEvent ProgressCancelEvent = new UnityEvent();
     public UnityEvent ProgressCompleteEvent = new UnityEvent();
 
+    private AttributeModifier _attributeModifier;
+
 
 
     private void Awake()
@@ -25,6 +27,15 @@ public class ClickAndWait : MonoBehaviour, IPlayerInteractable
         _progress = GetComponent<Progress>();
         _progress.Initialize(true);
         _progress.MaxReachEvent.AddListener(() => ProgressCompleteEvent?.Invoke());
+
+        if (gameObject.GetComponent<ExitGate>() != null)
+        {
+            _attributeModifier = AttributeSystem.Instance.BarricadeInstallSpeedMod;
+        }
+        else if (gameObject.GetComponent<FuseBox>() != null)
+        {
+            _attributeModifier = AttributeSystem.Instance.HackRepairSpeedMod;
+        }
     }
 
 
@@ -33,7 +44,14 @@ public class ClickAndWait : MonoBehaviour, IPlayerInteractable
     {
         if (_isInteracting)
         {
-            _progress.Increase(Time.deltaTime);
+            if (_attributeModifier != null)
+            {
+                _progress.Increase(Time.deltaTime * _attributeModifier.GetFinalValue(1));
+            }
+            else
+            {
+                _progress.Increase(Time.deltaTime);
+            }
         }
     }
 

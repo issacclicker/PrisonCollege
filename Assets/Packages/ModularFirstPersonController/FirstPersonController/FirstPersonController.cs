@@ -140,10 +140,13 @@ public class FirstPersonController : MonoBehaviour
     public bool IsWalking => isWalking;
     public bool IsSprinting => isSprinting;
 
+    private AttributeModifier moveSpeedMod;
+    public bool IsGrounded => isGrounded;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-
+        moveSpeedMod = AttributeSystem.Instance.ProfMoveSpeedMod;
         crosshairObject = GetComponentInChildren<Image>();
 
         // Set internal variables
@@ -249,14 +252,14 @@ public class FirstPersonController : MonoBehaviour
             }
 
             // Lerps camera.fieldOfView to allow for a smooth transistion
-            if (isZoomed)
-            {
-                playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, zoomFOV, zoomStepTime * Time.deltaTime);
-            }
-            else if (!isZoomed && !isSprinting)
-            {
-                playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, fov, zoomStepTime * Time.deltaTime);
-            }
+            //if (isZoomed)
+            //{
+            //    playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, zoomFOV, zoomStepTime * Time.deltaTime);
+            //}
+            //else if (!isZoomed && !isSprinting)
+            //{
+            //    playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, fov, zoomStepTime * Time.deltaTime);
+            //}
         }
         #endregion
         #endregion
@@ -294,6 +297,7 @@ public class FirstPersonController : MonoBehaviour
             {
                 // Regain sprint while not sprinting
                 sprintRemaining = Mathf.Clamp(sprintRemaining += 1 * Time.deltaTime, 0, sprintDuration);
+                playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, fov, sprintFOVStepTime * Time.deltaTime);
                 //sprintRemaining = GetComponent<Stamina>().Current;
             }
 
@@ -443,7 +447,7 @@ public class FirstPersonController : MonoBehaviour
             Vector3 moveDir = transform.TransformDirection(inputDir);
 
             // 최종 이동 벡터 (속도 * 시간)
-            Vector3 movement = moveDir * currentSpeed * Time.fixedDeltaTime;
+            Vector3 movement = moveDir * currentSpeed * Time.fixedDeltaTime * moveSpeedMod.GetFinalValue(1);
 
             float floodFillRatio = FireSuppressionSystem.Instance != null ? FireSuppressionSystem.Instance.FloodFillRatio : 0f;
             float speedRatio = Mathf.Lerp(1, 0.3f, floodFillRatio);

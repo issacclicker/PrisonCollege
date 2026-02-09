@@ -153,4 +153,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _minImpactThreshold: 0.1
-  _lifeTime: 20
+  _lifeTime: 10
+  _destroyOnHit: 0

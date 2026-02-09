@@ -9,7 +9,9 @@ public class ExitGate : MonoBehaviour
 {
     [SerializeField] private Transform _barricadeParent;
     [SerializeField] private GameObject _barricadePrefab;
+    [SerializeField] private GameObject _reinforcedBarricadePrefab;
     [SerializeField] private bool _isbarricadeEnabled;
+    private GameObject _targetBarricadePrefab;
 
     protected DamageReceiver _damageReceiver;
     protected ClickAndWait _interaction;
@@ -42,6 +44,7 @@ public class ExitGate : MonoBehaviour
 
     private void Start()
     {
+        _targetBarricadePrefab = AttributeSystem.Instance.IsMetalBarricade ? _reinforcedBarricadePrefab : _barricadePrefab;
         if (_isbarricadeEnabled)
             PlaceBarricade();
         else
@@ -63,7 +66,7 @@ public class ExitGate : MonoBehaviour
     protected virtual void PlaceBarricade()
     {
         _interaction.SetInteractable(false);
-        _barricadePlaced = Instantiate(_barricadePrefab, _barricadeParent);
+        _barricadePlaced = Instantiate(_targetBarricadePrefab, _barricadeParent);
         _damageReceiver.SetStatFull();
         _statRecovery.CanRecover = true;
     }

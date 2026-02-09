@@ -7,11 +7,20 @@ public class BoostReceiver : EffectReceiver
     public UnityEvent WorkTriggerEvent = new();
     public UnityEvent FrenzyTriggerEvent = new();
 
+    private AttributeModifier boostTaskChanceMod;
+
+
+
+    private void Awake()
+    {
+        boostTaskChanceMod = AttributeSystem.Instance.BoostTaskChanceMod;
+    }
+
     protected override void ApplyEffect(EffectData data, HitInfo hitInfo)
     {
         BoostData boostData = data as BoostData;
         if (boostData == null) return;
-        float workChance = boostData.potency.workProbability;
+        float workChance = boostTaskChanceMod.GetFinalValue(boostData.potency.workProbability);
         float frenzyChance = boostData.potency.frenzyProbability;
 
         float totalWeight = workChance + frenzyChance;

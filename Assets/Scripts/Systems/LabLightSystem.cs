@@ -42,4 +42,11 @@ public class LabLightSystem : SceneSingleton<LabLightSystem>
         _toggleableLightGroup.SetActive(true);
         LightsOnEvent?.Invoke();
     }
+
+
+
+    public void HackDefensed()
+    {
+
+    }
 }

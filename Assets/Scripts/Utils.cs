@@ -165,4 +165,14 @@ public static class Utils
 
     // 도우미 메서드: 위험 행동인지 바로 확인
     public static bool IsHazard(this BehaviorType type) => GetSafety(type) == BehaviorSafety.Hazard;
+
+
+
+    public static T DeepCopyByJson<T>(T source) where T : ScriptableObject
+    {
+        string json = JsonUtility.ToJson(source);
+        T copy = ScriptableObject.CreateInstance<T>();
+        JsonUtility.FromJsonOverwrite(json, copy);
+        return copy;
+    }
 }

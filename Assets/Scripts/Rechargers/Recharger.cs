@@ -10,6 +10,8 @@ public abstract class Recharger : MonoBehaviour
     private Stat _supplyProgress;
     private bool _canRecharge = false;
 
+    private AttributeModifier _attributeModifier;
+
 
 
     private void Awake()
@@ -21,6 +23,7 @@ public abstract class Recharger : MonoBehaviour
         _supplyProgress.Initialize(true);
         _supplyProgress.MaxReachEvent.AddListener(() => _canRecharge = true);
         _interaction.ClickEvent.AddListener(RechargeWeapons);
+        _attributeModifier = AttributeSystem.Instance.WeaponSupplySpeedMod;
     }
 
 
@@ -29,7 +32,7 @@ public abstract class Recharger : MonoBehaviour
     {
         if (!_canRecharge)
         {
-            _supplyProgress.Increase(Time.deltaTime);
+            _supplyProgress.Increase(Time.deltaTime * _attributeModifier.GetFinalValue(1));
         }
         _interaction.FillAmount = _supplyProgress.Ratio;
     }

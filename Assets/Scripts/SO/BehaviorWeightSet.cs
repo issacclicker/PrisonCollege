@@ -7,6 +7,14 @@ using System.Reflection;
 [CreateAssetMenu(fileName = "NewBehaviorWeightSet", menuName = "Combat/Behavior Weight Set")]
 public class BehaviorWeightSet : WeightedSetSO<BehaviorType, BehaviorChance>
 {
+    public void ModifyChance(BehaviorType behaviorType, float multiply)
+    {
+        foreach (BehaviorChance behaviorChance in WeightedElements)
+        {
+            if (behaviorChance.Value != behaviorType) continue;
+            behaviorChance.MultiplyChance(multiply);
+        }
+    }
 }
 
 
@@ -18,6 +26,8 @@ public class BehaviorChance : IWeightedEntry<BehaviorType>
     public BehaviorType Value => _behaviorType;
     [SerializeField] private float _chance;
     public float Chance => _chance;
+
+    public void MultiplyChance(float multiplier) => _chance *= multiplier;
 }
 
 

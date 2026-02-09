@@ -433,10 +433,12 @@ public class Delay : BT_Node
 public class SetSpeed : BT_Node
 {
     private Func<float> _getSpeedFunc;
+    private AttributeModifier _speedModifier;
 
     public SetSpeed(Func<float> getSpeedFunc)
     {
         _getSpeedFunc = getSpeedFunc;
+        _speedModifier = AttributeSystem.Instance.StudMoveSpeedMod;
     }
 
     public override NodeState Evaluate()
@@ -444,7 +446,7 @@ public class SetSpeed : BT_Node
         if (_getSpeedFunc == null) return NodeState.Failure;
 
         float speed = _getSpeedFunc();
-        _bb.Agent.speed = speed;
+        _bb.Agent.speed = speed * _speedModifier.GetFinalValue(1);
         return NodeState.Success;
     }
 }
