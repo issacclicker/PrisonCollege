@@ -26,7 +26,7 @@ public class AttributeSystem : SceneSingleton<AttributeSystem>
 
 
     public bool IsDeskCoffee { set; get; }
-    //public bool IsStudBald { set; get; }
+    public bool IsStudBald { set; get; }
     public bool IsStudOutline { set; get; }
     public bool IsDeskFood { set; get; }
     public bool IsExitAlarm { set; get; }

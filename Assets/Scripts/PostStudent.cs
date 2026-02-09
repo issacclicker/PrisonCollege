@@ -151,6 +151,7 @@ public class PostStudent : MonoBehaviour
 
     private void OnWorkTriggered()
     {
+        if (_blackboard.isEscaping) return;
         Debug.Log("OnWorkTriggered");
         _blackboard.isForceBehavior = false;
         _blackboard.hasToWork = true;
@@ -160,6 +161,7 @@ public class PostStudent : MonoBehaviour
 
     private void OnFrenzyTriggered()
     {
+        if (_blackboard.isEscaping) return;
         Debug.Log("OnFrenzyTriggered");
         _blackboard.hasToFrenzy = true;
     }
@@ -642,10 +644,12 @@ public class PostStudent : MonoBehaviour
 
 
 
-    private void OnEscaped()
+    public void OnEscaped()
     {
         EscapeEvent?.Invoke(this);
+        _blackboard.destSpot?.Release(this);
         gameObject.SetActive(false);
+        _root = null;
     }
 
 

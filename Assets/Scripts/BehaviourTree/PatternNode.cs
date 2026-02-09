@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -431,8 +432,8 @@ public class RushThroughPattern : PatternNode
             new StopAndDisableAgentUpdate(),
             new SetAnimRootMotion(true),
             new SetAnimBool("Rush", true),
-            new Delay(() => 1.1f),
-            //new DelayRange(3, 5),
+            //new Delay(() => 1.1f),
+            new DelayRange(3, 5),
             //new SetAnimRootMotion(true),
             new ActionNode(() => {
                 var attacker = _bb.Avatar.GetComponent<PostStudent>().GetOverlapAttacker(OverlapAttackType.BodySlam);
@@ -870,6 +871,7 @@ public class EscapeGiveUpReactivePattern : PatternNode
         {
             new ConditionDecorator(() =>
                 _bb.destBehavior == BehaviorType.Escape
+                && _bb.isEscaping == false
                 && GetDistance() <= 5
                 && _isTriedGiveUp == false // 1. 여기서 걸러줌
                 && _bb.Anim.GetLayerWeight(STRIKE_LAYER_INDEX) >= 0.99f
@@ -1020,9 +1022,10 @@ public class TryEscapePattern : PatternNode
                        {
                            ExitSpot exitGate = _bb.destSpot as ExitSpot;
                            exitGate.OpenGate();
+                           DOVirtual.DelayedCall(0.5f, () => _bb.Avatar.GetComponent<PostStudent>().OnEscaped());
                        }, NodeState.Success),
                        new EscapeTypeSelectPattern(),
-                       new ActionNode(() => _bb.EscapeSuccessEvent?.Invoke()),
+                       //new ActionNode(() => _bb.EscapeSuccessEvent?.Invoke()),
                        new ActionNode(null, NodeState.Running),
                        new ActionNode(() => _bb.isEscaping = false),
                    })
