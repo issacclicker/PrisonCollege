@@ -9,7 +9,7 @@ public abstract class ItemDecorator : MonoBehaviour
 
 
 
-    private void Start()
+    protected virtual void Start()
     {
         _hasToDecorate = GetItemActivation();
         if (_hasToDecorate == false) return;
