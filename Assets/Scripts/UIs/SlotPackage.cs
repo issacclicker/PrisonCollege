@@ -149,7 +149,7 @@ public class SlotPackage : MonoBehaviour
     public void DoNextWave()
     {
         Time.timeScale = 1;
-        SceneManager.LoadScene("Level2_Store");
+        SceneManager.LoadScene("Level2_Range");
     }
 }
 

@@ -58,7 +58,7 @@ public class ThrowWeapon2 : RangedWeapon
         Vector3 targetPoint;
         if (Physics.Raycast(ray, out RaycastHit hit, _maxDistance))
         {
-            targetPoint = hit.point;
+            targetPoint = hit.point + -ray.direction * 1f;
         }
         else
         {

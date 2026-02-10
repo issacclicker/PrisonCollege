@@ -11,7 +11,7 @@ public abstract class RangedWeapon : WeaponBase
 
     public override string TypeName => "¿ø°Å¸®";
     public override bool CanAttack => base.CanAttack && !_magazine.IsDepleted;
-    public float SpreadIntensity => _spreadIntensity;
+    public float SpreadIntensity => _spreadIntensity * AttributeSystem.Instance.ShotSpreadMod.GetFinalValue();
 
 
 
@@ -20,6 +20,12 @@ public abstract class RangedWeapon : WeaponBase
         base.Awake();
         _magazine = GetComponent<Stat>();
         _magazine.Initialize();
+    }
+
+
+
+    private void Start()
+    {
     }
 
 
@@ -36,7 +42,7 @@ public abstract class RangedWeapon : WeaponBase
 
     private Vector3 GetRandomViewportPoint()
     {
-        Vector2 spreadOffset = Random.insideUnitCircle * _spreadIntensity;
+        Vector2 spreadOffset = Random.insideUnitCircle * SpreadIntensity;
         Vector3 viewportPoint = new Vector3(0.5f + spreadOffset.x, 0.5f + spreadOffset.y, 0);
         return viewportPoint;
     }
