@@ -10,7 +10,7 @@ using static Utils;
 public class PostStudent : MonoBehaviour
 {
     private static float _idleSpeed = 0;
-    public static float _walkSpeed = 1.45f;
+    public static float _walkSpeed = 6.75f;
     public static float _jogSpeed = 2.43f;
     public static float _slowRunSpeed = 3.49f;
     public static float _mediumRunSpeed = 4.17f;
@@ -510,6 +510,8 @@ public class PostStudent : MonoBehaviour
                 {
                     new ActionNode(HideAllAnimAttachments),
                     new ActionNode(StopAllOverlapAttackers),
+                    new EnableAgentUpdate(),
+                    new ResetAnimParameters(),
                     new ClearDestSpot(),
                     new TacklePattern(),
                     //new ClearDestBehavior(),

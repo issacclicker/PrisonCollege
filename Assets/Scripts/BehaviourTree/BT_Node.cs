@@ -220,8 +220,7 @@ public class MoveToSpot : BT_Node
             _bb.Anim.SetFloat("MoveSpeed", 0);
             return NodeState.Success;
         }
-
-        float currentSpeed = _bb.Agent.velocity.magnitude / _speedModifier.GetFinalValue();
+        float currentSpeed = _bb.Agent.speed / _speedModifier.GetFinalValue();
         _bb.Anim.SetFloat("MoveSpeed", currentSpeed);
         return NodeState.Running; // 아직 가는 중
     }
@@ -255,7 +254,7 @@ public class MoveToTarget : BT_Node
             return NodeState.Success;
         }
 
-        float currentSpeed = _bb.Agent.velocity.magnitude / _speedModifier.GetFinalValue();
+        float currentSpeed = _bb.Agent.speed / _speedModifier.GetFinalValue();
         _bb.Anim.SetFloat("MoveSpeed", currentSpeed);
         return NodeState.Running; // 아직 가는 중
     }
@@ -289,7 +288,7 @@ public class MoveToPlayer : BT_Node
             return NodeState.Success;
         }
 
-        float currentSpeed = _bb.Agent.velocity.magnitude / _speedModifier.GetFinalValue();
+        float currentSpeed = _bb.Agent.speed / _speedModifier.GetFinalValue();
         _bb.Anim.SetFloat("MoveSpeed", currentSpeed);
         return NodeState.Running; // 아직 가는 중
     }

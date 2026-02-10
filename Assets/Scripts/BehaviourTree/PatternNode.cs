@@ -123,7 +123,7 @@ public class CombatApproachPattern : PatternNode
                     new SetSpeed(() => 6.75f),
                     new ParallelNode(new List<BT_Node>
                     {
-                        new LerpLayerWeight(COMBAT_LAYER_INDEX, 0f, 10f),
+                        new LerpLayerWeight(COMBAT_LAYER_INDEX, 0f, 5f),
                         new MoveToTarget(),
                         //new RotateToTarget()
                     }),
@@ -137,8 +137,8 @@ public class CombatApproachPattern : PatternNode
                 // --- [공격 단계] ---
                 //new ActionNode(() => _bb.Anim.SetLayerWeight(COMBAT_LAYER_INDEX, 1), NodeState.Success),
                 new SetAnimRootMotion(true),
-                new LerpLayerWeight(STRIKE_LAYER_INDEX, 0f, 10f),
-                new LerpLayerWeight(COMBAT_LAYER_INDEX, 1f, 10f),
+                new LerpLayerWeight(STRIKE_LAYER_INDEX, 0f, 5f),
+                new LerpLayerWeight(COMBAT_LAYER_INDEX, 1f, 5f),
                 new StopNode(),
                 //new Delay(() => UnityEngine.Random.Range(1f, 2f)),
                 new DelayRange(1, 2),
@@ -880,7 +880,7 @@ public class EscapeGiveUpReactivePattern : PatternNode
                 new Sequence(new List<BT_Node>
                 {
                     new ResetAnimParameters(),
-                    new LerpLayerWeight(STRIKE_LAYER_INDEX, 0, 10),
+                    new LerpLayerWeight(STRIKE_LAYER_INDEX, 0, 5),
                     new ClearDestBehavior(),
                     new ClearDestSpot(),
                     new ActionNode(() => _isTriedGiveUp = true, NodeState.Success)
@@ -1044,8 +1044,8 @@ public class TryEscapePattern : PatternNode
                 {
                     new RotateToSpot(), 
                     // --- [공격 단계] ---
-                    new LerpLayerWeight(COMBAT_LAYER_INDEX, 0, 10),
-                    new LerpLayerWeight(STRIKE_LAYER_INDEX, 1, 10),
+                    new LerpLayerWeight(COMBAT_LAYER_INDEX, 0, 5),
+                    new LerpLayerWeight(STRIKE_LAYER_INDEX, 1, 5),
                     //new ActionNode(() => _bb.Anim.SetLayerWeight(STRIKE_LAYER_INDEX, 1), NodeState.Success),
                     new StopAndDisableAgentUpdate(),
                     new SetAnimRootMotion(true),
