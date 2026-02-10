@@ -149,6 +149,19 @@ public class PostStudent : MonoBehaviour
 
 
 
+    //void OnAnimatorMove()
+    //{
+    //    // 1. 현재 프레임에서 애니메이션이 이동해야 할 거리(Delta)를 가져옴
+    //    // 2. 여기에 사용자가 원하는 % (multiplier)를 곱함
+    //    Vector3 desiredVelocity = (_anim.deltaPosition / Time.deltaTime);// * movementMultiplier;
+
+    //    // 3. 에이전트에게 "이 속도로 움직여라"라고 직접 명령
+    //    // 이렇게 하면 애니메이션 재생 속도에 맞춰 에이전트가 움직이므로 싱크가 절대 깨지지 않음
+    //    _agent.velocity = desiredVelocity;
+    //}
+
+
+
     private void OnWorkTriggered()
     {
         if (_blackboard.isEscaping) return;

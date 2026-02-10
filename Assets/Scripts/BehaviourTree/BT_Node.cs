@@ -1395,6 +1395,10 @@ public class EnableAgentUpdate : BT_Node
     {
         _bb.Agent.updatePosition = true;
         _bb.Agent.updateRotation = true;
+        if (!_bb.Agent.isOnNavMesh)
+        {
+            _bb.Agent.Warp(Utils.SampleNavMesh(_bb.Avatar.position, 500f));
+        }
         _bb.Agent.isStopped = false;
         return NodeState.Success;
     }
