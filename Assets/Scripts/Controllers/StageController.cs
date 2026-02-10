@@ -298,6 +298,16 @@ public class StageController : SceneSingleton<StageController>
 
 
 
+    public float GetChaosEffectedWeight(float originWeight, float maxFactor)
+    {
+        float chaosRatio = _chaosStat.Ratio;
+        float factor = (maxFactor - 1) / (1 - _minDelayFactor);
+        float weightFactor = factor * (-_delayFuncFactor * chaosRatio * chaosRatio - (_minDelayFactor - 1 - _delayFuncFactor) * chaosRatio) + 1;
+        return originWeight * weightFactor;
+    }
+
+
+
     public void GunShoot()
     {
         _chaosStat.Increase(_gunShotPenalty);

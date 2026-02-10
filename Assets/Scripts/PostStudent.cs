@@ -10,7 +10,7 @@ using static Utils;
 public class PostStudent : MonoBehaviour
 {
     private static float _idleSpeed = 0;
-    public static float _walkSpeed = 6.75f;
+    public static float _walkSpeed = 2.34f;
     public static float _jogSpeed = 2.43f;
     public static float _slowRunSpeed = 3.49f;
     public static float _mediumRunSpeed = 4.17f;
@@ -215,7 +215,7 @@ public class PostStudent : MonoBehaviour
                 new SetSpeed(() => _fastRunSpeed),
                 new SetSpeed(() => _sprintSpeed),
             },
-            new List<System.Func<int>> { 
+            new List<System.Func<float>> { 
                 () => 40, // Walk 확률 40%
                 () => 25, // Jog 확률 25%
                 () => 15, // SlowRun 15%
