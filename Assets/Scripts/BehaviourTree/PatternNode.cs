@@ -1242,13 +1242,21 @@ public class SetRandomSpeedPattern : PatternNode
                 new SetSpeed(() => PostStudent._fastRunSpeed),
                 new SetSpeed(() => PostStudent._sprintSpeed),
             },
+            //new List<System.Func<int>> {
+            //    () => 40, // Walk 확률 40%
+            //    () => 25, // Jog 확률 25%
+            //    () => 15, // SlowRun 15%
+            //    () => 10, // MedRun 10%
+            //    () => 7,  // FastRun 7%
+            //    () => 3   // Sprint 3%
+            //}
             new List<System.Func<int>> {
-                () => 40, // Walk 확률 40%
-                () => 25, // Jog 확률 25%
-                () => 15, // SlowRun 15%
-                () => 10, // MedRun 10%
-                () => 7,  // FastRun 7%
-                () => 3   // Sprint 3%
+                () => 1, // Walk 확률 40%
+                () => 0, // Jog 확률 25%
+                () => 0, // SlowRun 15%
+                () => 0, // MedRun 10%
+                () => 0,  // FastRun 7%
+                () => 0   // Sprint 3%
             }
         );
     }

@@ -10,7 +10,7 @@ using static Utils;
 public class PostStudent : MonoBehaviour
 {
     private static float _idleSpeed = 0;
-    public static float _walkSpeed = 1.44f;
+    public static float _walkSpeed = 1.45f;
     public static float _jogSpeed = 2.43f;
     public static float _slowRunSpeed = 3.49f;
     public static float _mediumRunSpeed = 4.17f;
@@ -78,6 +78,7 @@ public class PostStudent : MonoBehaviour
 
     public MonitorSpot SeatSpot {  get; set; }
     //public BehaviorWeightSet BehaviorWeightSet { get; set; }
+    private AttributeModifier _moveSpeedModifier;
 
 
     private void Awake()
@@ -125,9 +126,8 @@ public class PostStudent : MonoBehaviour
         _root.SetBlackboard(_blackboard);
         _boostReceiver.CanEffectChecker = () => _root != null && _blackboard != null && _blackboard.targetObject == null;
         _damageReceiver.CanEffectChecker = () => _blackboard != null && _blackboard.isEscaping == false;
-        float moveSpeedScale = AttributeSystem.Instance.StudMoveSpeedMod.GetFinalValue();
-        float scaleDiff = moveSpeedScale - 1;
-        _anim.SetFloat("MoveSpeedScale", 1 + scaleDiff / 3f);
+        _moveSpeedModifier = AttributeSystem.Instance.StudMoveSpeedMod;
+        _anim.SetFloat("MoveSpeedScale", _moveSpeedModifier.GetFinalValue());
     }
 
 
@@ -726,6 +726,7 @@ public class PostStudent : MonoBehaviour
         _agent.updatePosition = true;    // 에이전트가 트랜스폼을 움직이도록 허용
         _agent.updateRotation = true;    // 회전도 허용
         _anim.applyRootMotion = false;
+        _anim.SetFloat("MoveSpeedScale", _moveSpeedModifier.GetFinalValue());
         _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots, _player.gameObject);
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
