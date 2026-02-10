@@ -49,9 +49,13 @@ public abstract class Recharger : MonoBehaviour
         bool recharged = false;
         foreach (var weapon in _targetWeapons)
         {
-            GunWeapon gunWeapon = weapon as GunWeapon;
-            ThrowWeapon throwWeapon = weapon as ThrowWeapon;
-            recharged |= (throwWeapon?.Fill() ?? false) || (gunWeapon?.Fill() ?? false);
+            //GunWeapon gunWeapon = weapon as GunWeapon;
+            //ThrowWeapon throwWeapon = weapon as ThrowWeapon;
+            //recharged |= (throwWeapon?.Fill() ?? false) || (gunWeapon?.Fill() ?? false);
+            RangedWeapon rangedWeapon = weapon as RangedWeapon;
+            if (rangedWeapon == null) continue;
+            recharged |= rangedWeapon?.Fill() ?? false;
+
         }
 
         if (recharged)

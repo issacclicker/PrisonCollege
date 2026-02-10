@@ -18,6 +18,7 @@ public class WeaponBase : MonoBehaviour
     public virtual string TypeName => "¹«±â";
     public string Name => _name;
     public EffectData EffectData => _weaponData.effect;
+    protected AudioSource _audioSource;
 
 
     public UnityEvent<WeaponBase> InfoUpdateEvent = new();
@@ -25,6 +26,7 @@ public class WeaponBase : MonoBehaviour
 
     protected virtual void Awake()
     {
+        _audioSource = GetComponent<AudioSource>();
         _owner = GetComponentInParent<WeaponController>().FirstPersonController.gameObject;
         _animator = GetComponent<WeaponAnimator>();
     }

@@ -7,6 +7,7 @@ public class WeaponPanel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _typeTmp;
     [SerializeField] private TextMeshProUGUI _curBulletTmp;
     [SerializeField] private TextMeshProUGUI _maxBulletTmp;
+    [SerializeField] private Crosshair _crosshair;
 
 
 
@@ -25,6 +26,16 @@ public class WeaponPanel : MonoBehaviour
         {
             _curBulletTmp.text = $"{weaponBullet.Current.ToString("F0")} / {weaponBullet.Max.ToString("F0")}";
             //_maxBulletTmp.text = $"/ {weaponBullet.Max.ToString()}";
+        }
+
+        RangedWeapon rangedWeapon = weapon as RangedWeapon;
+        if (rangedWeapon != null)
+        {
+            _crosshair.ShowRanged(rangedWeapon.SpreadIntensity);
+        }
+        else
+        {
+            _crosshair.HideRanged();
         }
     }
 }

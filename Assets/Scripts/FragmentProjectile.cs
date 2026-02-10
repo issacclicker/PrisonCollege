@@ -10,13 +10,12 @@ public class FragmentProjectile : Projectile
     [SerializeField] private ParticleSystem _fregmentParticle;
     [SerializeField] private Stat _fragmentDistanceStat;
     private Vector3 _lastPosition;
-    private Rigidbody _rigidbody;
 
 
 
-    private void Awake()
+    protected override void Awake()
     {
-        _rigidbody = GetComponent<Rigidbody>();
+        base.Awake();
         _fragmentDistanceStat.Initialize(true);
         _fragmentDistanceStat.MaxReachEvent.AddListener(Fragment);
         _lastPosition = transform.position;

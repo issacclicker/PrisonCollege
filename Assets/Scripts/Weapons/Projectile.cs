@@ -1,13 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 public class Projectile : MonoBehaviour
 {
     [SerializeField] private float _minImpactThreshold = 5.0f;
     [SerializeField] private float _lifeTime = 5.0f;
     [SerializeField] private bool _destroyOnHit = false;
-    private Rigidbody _rigidbody;
+    protected Rigidbody _rigidbody;
 
     public WeaponData WeaponData { get; set; }
     public GameObject Owner { get; set; }
@@ -15,7 +16,7 @@ public class Projectile : MonoBehaviour
     // 중복 충돌을 방지하기 위한 셋 (오브젝트 참조 저장)
     private HashSet<GameObject> _hitObjects = new HashSet<GameObject>();
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _rigidbody = GetComponent<Rigidbody>();
     }
@@ -65,5 +66,27 @@ public class Projectile : MonoBehaviour
             if (_destroyOnHit)
                 Destroy(gameObject); 
         }
+    }
+
+
+
+    public void ResetForce()
+    {
+        _rigidbody.linearVelocity = Vector3.zero;
+        _rigidbody.maxAngularVelocity = 1000f;
+    }
+
+
+    public void AddVelocityForce(Vector3 direction, float speed)
+    {
+        // ForceMode.VelocityChange이므로 질량을 무시하고 즉시 speed만큼의 속도가 붙습니다.
+        _rigidbody.AddForce(direction * speed, ForceMode.VelocityChange);
+    }
+
+    // 2. 회전 추가 (축 * 회전량)
+    public void AddTorqueForce(Vector3 torqueAxis, float torqueAmount)
+    {
+        // 직접 대입 방식이므로 직관적으로 축과 양을 곱해 더해줍니다.
+        _rigidbody.angularVelocity += torqueAxis * torqueAmount;
     }
 }
