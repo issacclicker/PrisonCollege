@@ -29,10 +29,10 @@ public class CameraShaker : SceneSingleton<CameraShaker>
     {
         _mainCamera.transform.DOComplete();
         _weaponCamera.transform.DOComplete();
-        _mainCamera.transform.DOShakePosition(0.1f, amount * _recoilShakePosAmount, 40, 90).SetRelative(true);
-        _mainCamera.transform.DOShakeRotation(0.1f, amount * _recoilShakeRotAmount, 40, 90);
-        _weaponCamera.transform.DOShakePosition(0.1f, amount * _recoilShakePosAmount * 0.05f, 40, 90).SetRelative(true);
-        _weaponCamera.transform.DOShakeRotation(0.1f, amount * _recoilShakeRotAmount * 0.05f, 40, 90);
+        _mainCamera.transform.DOShakePosition(0.1f, amount * _recoilShakePosAmount, 80, 90).SetRelative(true);
+        _mainCamera.transform.DOShakeRotation(0.1f, amount * _recoilShakeRotAmount, 80, 90);
+        _weaponCamera.transform.DOShakePosition(0.1f, amount * _recoilShakePosAmount * 0.05f, 80, 90).SetRelative(true);
+        _weaponCamera.transform.DOShakeRotation(0.1f, amount * _recoilShakeRotAmount * 0.05f, 80, 90);
     }
 
 

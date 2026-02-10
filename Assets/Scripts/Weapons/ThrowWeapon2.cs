@@ -8,6 +8,8 @@ public class ThrowWeapon2 : RangedWeapon
     [SerializeField] private float _torqueRandomness;
     private ThrowAnimator _throwAnimator;
 
+    public override string TypeName => "≈ı√¥";
+
 
 
     protected override void Awake()
@@ -20,8 +22,6 @@ public class ThrowWeapon2 : RangedWeapon
     protected override void Shot(Vector3 viewportPoint)
     {
         Vector3 shotDestination = GetShotDestination(viewportPoint);
-        //Debug.DrawRay(shotDestination, Vector3.up * 0.5f, Color.green, 1.0f);
-        //Debug.DrawRay(shotDestination, Vector3.right * 0.5f, Color.green, 1.0f);
         Vector3 shotDirection = (shotDestination - _spawnPoint.position).normalized;
         Quaternion projectileRot = Camera.main.transform.rotation * _spawnPoint.localRotation;
         GameObject projectileSpawned = Instantiate(_projectilePrefab, _spawnPoint.position, projectileRot);
@@ -29,17 +29,24 @@ public class ThrowWeapon2 : RangedWeapon
         Projectile projectile = projectileSpawned.GetComponent<Projectile>();
         projectile.WeaponData = _weaponData;
         projectile.Owner = _owner;
-
         projectile.ResetForce();
         projectile.AddVelocityForce(shotDirection, _throwVelocity);
+        projectile.AddTorqueForce(GetRandomTorgue(), _flipVelocity);
 
+        //Debug.DrawRay(shotDestination, Vector3.up * 0.5f, Color.green, 1.0f);
+        //Debug.DrawRay(shotDestination, Vector3.right * 0.5f, Color.green, 1.0f);
+    }
+
+
+
+    private Vector3 GetRandomTorgue()
+    {
         Vector3 randomTorque = new Vector3(
                 Random.Range(-_torqueRandomness, _torqueRandomness),
                 Random.Range(-_torqueRandomness, _torqueRandomness),
                 Random.Range(-_torqueRandomness, _torqueRandomness)
             );
-
-        projectile.AddTorqueForce(Camera.main.transform.right + randomTorque, _flipVelocity);
+        return randomTorque + Camera.main.transform.right;
     }
 
 
