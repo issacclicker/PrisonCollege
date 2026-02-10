@@ -290,14 +290,16 @@ public class PostStudent : MonoBehaviour
         {
             //new SetRandomBehaveSpot(_prowlSpots),
             new ActionNode(() => Debug.Log("prowlSequence")),
-            _speedSelector,
+            new SetRandomSpeedPattern(),
+            //_speedSelector,
             new MoveToSpot()
             //new PlayLoopAnim("LookAround", 5)
         });
         Sequence restSequence = new Sequence(new List<BT_Node>
         {
             //new SetRandomBehaveSpot(_restSpots),
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new PlayOnceAnim("LookAround", "LookAround")
             //new PlayLoopAnim("LookAround", 5)
@@ -305,7 +307,8 @@ public class PostStudent : MonoBehaviour
         Sequence smokeSequence = new Sequence(new List<BT_Node>
         {
             //new SetRandomBehaveSpot(_restSpots),
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new PlayOnceAnim("Smoke", "Smoke"),
             //new Delay(() => 2f),
@@ -321,7 +324,8 @@ public class PostStudent : MonoBehaviour
         Sequence microwaveSequence = new Sequence(new List<BT_Node>
         {
             //new SetRandomBehaveSpot(_microwaveSpots),
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new SetAnimBool("Carrying", true),
             new MoveToSpot(),
             new SetAnimBool("Carrying", false),
@@ -397,7 +401,8 @@ public class PostStudent : MonoBehaviour
 
         Sequence danceSequence = new Sequence(new List<BT_Node>
         {
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new SetAnimBool("Dancing", true),
             //new Delay(() => 5f),
@@ -406,7 +411,8 @@ public class PostStudent : MonoBehaviour
 
         Sequence worshipSequence = new Sequence(new List<BT_Node>
         {
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new RotateToSpot(),
             new SetAnimBool("Praying", true),
@@ -416,7 +422,8 @@ public class PostStudent : MonoBehaviour
 
         Sequence sportsSequence = new Sequence(new List<BT_Node>
         {
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new SetAnimBool("Burpeeing", true),
             //new Delay(() => 5f),
@@ -425,7 +432,8 @@ public class PostStudent : MonoBehaviour
 
         Sequence sleepSequence = new Sequence(new List<BT_Node>
         {
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new SetAnimBool("Sleeping", true),
             //new Delay(() => 5f),
@@ -434,7 +442,8 @@ public class PostStudent : MonoBehaviour
 
         Sequence sitFloorSequence = new Sequence(new List<BT_Node>
         {
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new SetAnimBool("SittingFloor", true),
             //new Delay(() => 5f),
@@ -443,7 +452,8 @@ public class PostStudent : MonoBehaviour
 
         Sequence sitChairSequence = new Sequence(new List<BT_Node>
         {
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new RotateToSpot(),
             new SetAnimBool("SittingChair", true),
@@ -453,7 +463,8 @@ public class PostStudent : MonoBehaviour
 
         Sequence singSequence = new Sequence(new List<BT_Node>
         {
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new StopAndDisableAgentUpdate(),
             new SetAnimRootMotion(true),
@@ -697,13 +708,13 @@ public class PostStudent : MonoBehaviour
 
     private void OnStandUpStart()
     {
-        bool originAgentEnabled = _agent.enabled;
-        bool originAgentUpdatePos = _agent.updatePosition;
-        _agent.enabled = true;
-        _agent.updatePosition = true;
-        _agent.Warp(SampleNavMesh(transform.position, 100f));
-        _agent.enabled = originAgentEnabled;
-        _agent.updatePosition = originAgentUpdatePos;
+        //bool originAgentEnabled = _agent.enabled;
+        //bool originAgentUpdatePos = _agent.updatePosition;
+        //_agent.enabled = true;
+        //_agent.updatePosition = true;
+        //_agent.Warp(SampleNavMesh(transform.position, 100f));
+        //_agent.enabled = originAgentEnabled;
+        //_agent.updatePosition = originAgentUpdatePos;
 
         _damageReceiver.SetStatFull();
     }
