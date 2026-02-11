@@ -146,9 +146,9 @@ public class StageController : SceneSingleton<StageController>
         CountWorkingStudents();
         CheckProfessorProgressing();
         ProgressProject();
-        IncreaseChaos();
+        float chaosChanged = IncreaseChaos();
         DecreaseStats();
-        UpdateUIs();
+        UpdateUIs(chaosChanged);
     }
 
 
@@ -243,7 +243,7 @@ public class StageController : SceneSingleton<StageController>
 
 
 
-    private void UpdateUIs()
+    private void UpdateUIs(float chaosChanged)
     {
         int minutes = Mathf.FloorToInt(_timerStat.Current / 60f);
         int seconds = Mathf.FloorToInt(_timerStat.Current % 60f);
@@ -258,11 +258,23 @@ public class StageController : SceneSingleton<StageController>
         _workingTmp.text = $"{_workingStudCount.ToString()}명 작업중";
 
         _projectProgressBar.fillAmount = _projectStat.Ratio;
+
+        if (Mathf.Approximately(chaosChanged, 0)) return;
+        string addChoasText;
+        if (chaosChanged > 0)
+        {
+            addChoasText = $"<size=70%> <color=red>(+{chaosChanged.ToString("F0")}/ s)</color></size>";
+        }
+        else
+        {
+            addChoasText = $"<size=70%> <color=green>({chaosChanged.ToString("F0")}/ s)</color></size>";
+        }
+        _chaosTmp.text += addChoasText;
     }
 
 
 
-    private void IncreaseChaos()
+    private float IncreaseChaos()
     {
         int chaosCauseCount = 0;
         foreach (PostStudent student in _studentList)
@@ -272,14 +284,19 @@ public class StageController : SceneSingleton<StageController>
                 chaosCauseCount++;
             }
         }
+        float chaosChanged = 0; ;
         if (chaosCauseCount > 0)
         {
-            _chaosStat.Increase(chaosCauseCount * _increasePerStud * Time.deltaTime);
+            chaosChanged = chaosCauseCount * _increasePerStud;
+            _chaosStat.Increase(chaosChanged * Time.deltaTime);
         }
         else
         {
-            _chaosStat.Decrease(_defaultReduction * Time.deltaTime * _chaosDecreaseModifier.GetFinalValue());
+            chaosChanged = _defaultReduction * _chaosDecreaseModifier.GetFinalValue();
+            _chaosStat.Decrease(chaosChanged * Time.deltaTime);
+            chaosChanged = -chaosChanged;
         }
+        return chaosChanged;
     }
 
 
