@@ -95,6 +95,7 @@ public class StageController : SceneSingleton<StageController>
 
     private void Start()
     {
+        WaveSystem.Instance.NewWaveEntered();
         _studentList = _studentSpawner.SpawnStudents();
 
         foreach (var student in _studentList)
@@ -186,7 +187,8 @@ public class StageController : SceneSingleton<StageController>
     {
         float studTotalProgress = _workingStudCount * _studTaskProgress * Time.deltaTime * _studTaskModifier.GetFinalValue(1);
         float profTotalProgress = _isProfWorking ? _profTaskProgress * Time.deltaTime : 0;
-        _projectStat.Increase(studTotalProgress + profTotalProgress);
+        float finalProgress = (studTotalProgress + profTotalProgress) * WaveSystem.Instance.ProjectFactor;
+        _projectStat.Increase(finalProgress);
     }
 
 
@@ -217,8 +219,9 @@ public class StageController : SceneSingleton<StageController>
 
     private void OnStudentEscaped(PostStudent student)
     {
-        _chaosStat.Increase(_studEscapedPenalty);
-        PopupChaosWarning(new EscapedChaos(_studEscapedPenalty));
+        float chaosIncrease = _studEscapedPenalty * WaveSystem.Instance.ChaosFactor;
+        _chaosStat.Increase(chaosIncrease);
+        PopupChaosWarning(new EscapedChaos(chaosIncrease));
         _escapeStat.Increase(1);
     }
 
@@ -228,8 +231,9 @@ public class StageController : SceneSingleton<StageController>
     {
         if (student.IsDoingHazardBehavior == false && hitInfo.attacker == Player.gameObject)
         {
-            _chaosStat.Increase(_innocentKillPenalty);
-            PopupChaosWarning(new InnocentKillChaos(_innocentKillPenalty));
+            float chaosIncrease = _innocentKillPenalty * WaveSystem.Instance.ChaosFactor;
+            _chaosStat.Increase(chaosIncrease);
+            PopupChaosWarning(new InnocentKillChaos(chaosIncrease));
         }
     }
 
@@ -281,13 +285,14 @@ public class StageController : SceneSingleton<StageController>
         {
             if (student.IsCausingChaos)
             {
+                Debug.Log($"[IsCausingChaos] : {student.gameObject.name}");
                 chaosCauseCount++;
             }
         }
-        float chaosChanged = 0; ;
+        float chaosChanged = 0;
         if (chaosCauseCount > 0)
         {
-            chaosChanged = chaosCauseCount * _increasePerStud;
+            chaosChanged = chaosCauseCount * _increasePerStud * WaveSystem.Instance.ChaosFactor;
             _chaosStat.Increase(chaosChanged * Time.deltaTime);
         }
         else
@@ -337,14 +342,16 @@ public class StageController : SceneSingleton<StageController>
 
     public void GunShoot()
     {
-        _chaosStat.Increase(_gunShotPenalty);
+        float chaosIncrease = _gunShotPenalty * WaveSystem.Instance.ChaosFactor;
+        _chaosStat.Increase(chaosIncrease);
     }
 
 
 
     public void NormalFoodRemoved()
     {
-        _chaosStat.Increase(_normalFoodRemovedPenalty);
-        PopupChaosWarning(new NormalFoodRemovedChaos(_normalFoodRemovedPenalty));
+        float chaosIncrease = _normalFoodRemovedPenalty * WaveSystem.Instance.ChaosFactor;
+        _chaosStat.Increase(chaosIncrease);
+        PopupChaosWarning(new NormalFoodRemovedChaos(chaosIncrease));
     }
 }

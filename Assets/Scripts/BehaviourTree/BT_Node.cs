@@ -949,7 +949,7 @@ public class OverrideAttackTarget : BT_Node
                 _currentTargetDR = dr;
 
                 // 타겟이 파괴(사망)되면 실행될 로직 등록
-                dr.DepletedEvent.AddListener(_ => OnTargetDepleted());
+                dr.DepletedEvent.AddListener(_ => _bb.Avatar.GetComponent<PostStudent>().Invoke(nameof(OnTargetDepleted), Time.deltaTime));
             }
             else
             {
