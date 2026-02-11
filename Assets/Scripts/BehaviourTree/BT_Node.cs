@@ -198,6 +198,16 @@ public class WaitUntilCondition : BT_Node
 
 public class MoveToSpot : BT_Node
 {
+    private AttributeModifier _speedModifier;
+
+
+
+    public MoveToSpot()
+    {
+        _speedModifier = AttributeSystem.Instance.StudMoveSpeedMod;
+    }
+
+
     public override NodeState Evaluate()
     {
         //Debug.Log(_bb.destSpot);
@@ -210,8 +220,7 @@ public class MoveToSpot : BT_Node
             _bb.Anim.SetFloat("MoveSpeed", 0);
             return NodeState.Success;
         }
-
-        float currentSpeed = _bb.Agent.velocity.magnitude;
+        float currentSpeed = _bb.Agent.speed / _speedModifier.GetFinalValue();
         _bb.Anim.SetFloat("MoveSpeed", currentSpeed);
         return NodeState.Running; // 아직 가는 중
     }
@@ -221,6 +230,18 @@ public class MoveToSpot : BT_Node
 
 public class MoveToTarget : BT_Node
 {
+    private AttributeModifier _speedModifier;
+
+
+
+    public MoveToTarget()
+    {
+        _speedModifier = AttributeSystem.Instance.StudMoveSpeedMod;
+    }
+
+
+
+
     public override NodeState Evaluate()
     {
         _bb.Agent.SetSampleDestination(_bb.targetDamageable.Position, 2);
@@ -233,7 +254,7 @@ public class MoveToTarget : BT_Node
             return NodeState.Success;
         }
 
-        float currentSpeed = _bb.Agent.velocity.magnitude;
+        float currentSpeed = _bb.Agent.speed / _speedModifier.GetFinalValue();
         _bb.Anim.SetFloat("MoveSpeed", currentSpeed);
         return NodeState.Running; // 아직 가는 중
     }
@@ -243,6 +264,18 @@ public class MoveToTarget : BT_Node
 
 public class MoveToPlayer : BT_Node
 {
+    private AttributeModifier _speedModifier;
+
+
+
+    public MoveToPlayer()
+    {
+        _speedModifier = AttributeSystem.Instance.StudMoveSpeedMod;
+    }
+
+
+
+
     public override NodeState Evaluate()
     {
         _bb.Agent.SetSampleDestination(_bb.Player.transform.position, 2);
@@ -255,7 +288,7 @@ public class MoveToPlayer : BT_Node
             return NodeState.Success;
         }
 
-        float currentSpeed = _bb.Agent.velocity.magnitude;
+        float currentSpeed = _bb.Agent.speed / _speedModifier.GetFinalValue();
         _bb.Anim.SetFloat("MoveSpeed", currentSpeed);
         return NodeState.Running; // 아직 가는 중
     }
@@ -1395,6 +1428,10 @@ public class EnableAgentUpdate : BT_Node
     {
         _bb.Agent.updatePosition = true;
         _bb.Agent.updateRotation = true;
+        if (!_bb.Agent.isOnNavMesh)
+        {
+            _bb.Agent.Warp(Utils.SampleNavMesh(_bb.Avatar.position, 500f));
+        }
         _bb.Agent.isStopped = false;
         return NodeState.Success;
     }

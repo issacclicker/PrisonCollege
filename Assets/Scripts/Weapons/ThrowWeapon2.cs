@@ -1,4 +1,5 @@
 using DigitalRuby.RainMaker;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ThrowWeapon2 : RangedWeapon
@@ -58,14 +59,17 @@ public class ThrowWeapon2 : RangedWeapon
         Vector3 targetPoint;
         if (Physics.Raycast(ray, out RaycastHit hit, _maxDistance))
         {
-            if (Vector3.Distance(_spawnPoint.position, hit.point) > 1f)
-            {
-                targetPoint = hit.point + -ray.direction * 1f;
-            }
-            else
-            {
-                targetPoint = hit.point;
-            }
+            float throwDistance = Vector3.Distance(_spawnPoint.position, hit.point);
+            //targetPoint = hit.point + -ray.direction * Mathf.InverseLerp(1f, 5f, throwDistance);
+            targetPoint = hit.point + -ray.direction * throwDistance * 0.15f;
+            //if (Vector3.Distance(_spawnPoint.position, hit.point) > 3f)
+            //{
+            //    targetPoint = hit.point + -ray.direction * 1f;
+            //}
+            //else
+            //{
+            //    targetPoint = hit.point;
+            //}
         }
         else
         {

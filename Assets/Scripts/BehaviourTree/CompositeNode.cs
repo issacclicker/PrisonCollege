@@ -121,10 +121,10 @@ public class Selector : CompositeNode
 
 public class RandomSelector : CompositeNode
 {
-    private List<System.Func<int>> _weights;
+    private List<System.Func<float>> _weights;
     private BT_Node _selectedChild; // 현재 선택되어 실행 중인 자식
 
-    public RandomSelector(List<BT_Node> children, List<System.Func<int>> weights) : base(children)
+    public RandomSelector(List<BT_Node> children, List<System.Func<float>> weights) : base(children)
     {
         _weights = weights;
     }
@@ -132,7 +132,7 @@ public class RandomSelector : CompositeNode
 
     public RandomSelector(List<BT_Node> children) : base(children)
     {
-        _weights = new List<System.Func<int>>();
+        _weights = new List<System.Func<float>>();
         for (int i = 0; i < children.Count; i++)
         {
             _weights.Add(() => 1); // 모든 자식이 동일한 1의 가중치를 가짐
@@ -146,12 +146,12 @@ public class RandomSelector : CompositeNode
         // 1. 선택된 자식이 없다면 새로 뽑기
         if (_selectedChild == null)
         {
-            int totalWeight = 0;
+            float totalWeight = 0;
             foreach (var w in _weights) totalWeight += Mathf.Max(0, w());
             if (totalWeight <= 0) return NodeState.Failure;
 
-            int roll = UnityEngine.Random.Range(0, totalWeight);
-            int cursor = 0;
+            float roll = UnityEngine.Random.Range(0, totalWeight);
+            float cursor = 0;
 
             for (int i = 0; i < children.Count; i++)
             {

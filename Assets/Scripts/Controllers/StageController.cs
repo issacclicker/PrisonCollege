@@ -48,6 +48,7 @@ public class StageController : SceneSingleton<StageController>
     [SerializeField] private StageSpots _stageSpots;
     [SerializeField] private StudentSpawner _studentSpawner;
     [SerializeField] private StageOver _stageOver;
+    [SerializeField] private ChaosUI _chaosUi;
     [SerializeField] private bool _isTestMode = true;
 
     private int _money = 0;
@@ -145,9 +146,9 @@ public class StageController : SceneSingleton<StageController>
         CountWorkingStudents();
         CheckProfessorProgressing();
         ProgressProject();
-        IncreaseChaos();
+        float chaosChanged = IncreaseChaos();
         DecreaseStats();
-        UpdateUIs();
+        UpdateUIs(chaosChanged);
     }
 
 
@@ -217,6 +218,7 @@ public class StageController : SceneSingleton<StageController>
     private void OnStudentEscaped(PostStudent student)
     {
         _chaosStat.Increase(_studEscapedPenalty);
+        PopupChaosWarning(new EscapedChaos(_studEscapedPenalty));
         _escapeStat.Increase(1);
     }
 
@@ -227,6 +229,7 @@ public class StageController : SceneSingleton<StageController>
         if (student.IsDoingHazardBehavior == false && hitInfo.attacker == Player.gameObject)
         {
             _chaosStat.Increase(_innocentKillPenalty);
+            PopupChaosWarning(new InnocentKillChaos(_innocentKillPenalty));
         }
     }
 
@@ -240,7 +243,7 @@ public class StageController : SceneSingleton<StageController>
 
 
 
-    private void UpdateUIs()
+    private void UpdateUIs(float chaosChanged)
     {
         int minutes = Mathf.FloorToInt(_timerStat.Current / 60f);
         int seconds = Mathf.FloorToInt(_timerStat.Current % 60f);
@@ -255,11 +258,23 @@ public class StageController : SceneSingleton<StageController>
         _workingTmp.text = $"{_workingStudCount.ToString()}명 작업중";
 
         _projectProgressBar.fillAmount = _projectStat.Ratio;
+
+        if (Mathf.Approximately(chaosChanged, 0)) return;
+        string addChoasText;
+        if (chaosChanged > 0)
+        {
+            addChoasText = $"<size=70%> <color=red>(+{chaosChanged.ToString("F0")}/ s)</color></size>";
+        }
+        else
+        {
+            addChoasText = $"<size=70%> <color=green>({chaosChanged.ToString("F0")}/ s)</color></size>";
+        }
+        _chaosTmp.text += addChoasText;
     }
 
 
 
-    private void IncreaseChaos()
+    private float IncreaseChaos()
     {
         int chaosCauseCount = 0;
         foreach (PostStudent student in _studentList)
@@ -269,14 +284,19 @@ public class StageController : SceneSingleton<StageController>
                 chaosCauseCount++;
             }
         }
+        float chaosChanged = 0; ;
         if (chaosCauseCount > 0)
         {
-            _chaosStat.Increase(chaosCauseCount * _increasePerStud * Time.deltaTime);
+            chaosChanged = chaosCauseCount * _increasePerStud;
+            _chaosStat.Increase(chaosChanged * Time.deltaTime);
         }
         else
         {
-            _chaosStat.Decrease(_defaultReduction * Time.deltaTime * _chaosDecreaseModifier.GetFinalValue());
+            chaosChanged = _defaultReduction * _chaosDecreaseModifier.GetFinalValue();
+            _chaosStat.Decrease(chaosChanged * Time.deltaTime);
+            chaosChanged = -chaosChanged;
         }
+        return chaosChanged;
     }
 
 
@@ -298,6 +318,23 @@ public class StageController : SceneSingleton<StageController>
 
 
 
+    public float GetChaosEffectedWeight(float originWeight, float maxFactor)
+    {
+        float chaosRatio = _chaosStat.Ratio;
+        float factor = (maxFactor - 1) / (1 - _minDelayFactor);
+        float weightFactor = factor * (-_delayFuncFactor * chaosRatio * chaosRatio - (_minDelayFactor - 1 - _delayFuncFactor) * chaosRatio) + 1;
+        return originWeight * weightFactor;
+    }
+
+
+
+    private void PopupChaosWarning(ChaosInfo choasInfo)
+    {
+        _chaosUi.SpawnWarningPanel(choasInfo);
+    }
+
+
+
     public void GunShoot()
     {
         _chaosStat.Increase(_gunShotPenalty);
@@ -308,5 +345,6 @@ public class StageController : SceneSingleton<StageController>
     public void NormalFoodRemoved()
     {
         _chaosStat.Increase(_normalFoodRemovedPenalty);
+        PopupChaosWarning(new NormalFoodRemovedChaos(_normalFoodRemovedPenalty));
     }
 }

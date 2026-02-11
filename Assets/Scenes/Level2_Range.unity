@@ -26876,7 +26876,6 @@ MonoBehaviour:
   _strength: 0.15
   _vibrato: 50
   _randomness: 90
-  _audioSource: {fileID: 65865532}
   _shotSound: {fileID: 8300000, guid: 5f2ff987b25b6e74d9f6aeea804f7872, type: 3}
   _volume: 0.7
   _pitchRandomness: 0.05
@@ -52757,7 +52756,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 25
+  m_text: 25<size=70%> <color=red>(+5/s)</color></size>
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 00fec740f35c6424a80b04759476dd17, type: 2}
   m_sharedMaterial: {fileID: 3196442768583695492, guid: 00fec740f35c6424a80b04759476dd17, type: 2}
@@ -91065,6 +91064,7 @@ GameObject:
   - component: {fileID: 646407191}
   - component: {fileID: 646407190}
   - component: {fileID: 646407189}
+  - component: {fileID: 646407195}
   m_Layer: 0
   m_Name: StageController
   m_TagString: Untagged
@@ -91219,7 +91219,7 @@ MonoBehaviour:
   _studTaskProgress: 5
   _profTaskProgress: 20
   _progectReward: 50
-  _minDelayFactor: 0.25
+  _minDelayFactor: 0.2
   _delayFuncFactor: 0.5
   _professorTasks:
   - {fileID: 1351610177}
@@ -91227,6 +91227,7 @@ MonoBehaviour:
   _stageSpots: {fileID: 1783431664}
   _studentSpawner: {fileID: 1319218804}
   _stageOver: {fileID: 1398401389}
+  _chaosUi: {fileID: 646407195}
   _isTestMode: 0
 --- !u!4 &646407194
 Transform:
@@ -91243,6 +91244,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &646407195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 646407188}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0a57b2e8db6920b41a7b809d9ab3176d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ChaosUI
+  _waringParent: {fileID: 35883231}
+  _waringPrefab: {fileID: 5228861189700509259, guid: 99254ec74d131474490b1dd95cb11aac, type: 3}
+  _spawnPosition: {x: 0, y: -100, z: 0}
+  _velocity: 30
+  _duration: 3
 --- !u!1001 &647660898
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -351951,6 +351969,7 @@ MonoBehaviour:
   - {fileID: 593873524}
   - {fileID: 1387526559}
   - {fileID: 206072982}
+  - {fileID: 1020846588}
   _weapons: []
   _swapDuration: 0.15
 --- !u!1001 &2082381905

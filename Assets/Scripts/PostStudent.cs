@@ -10,7 +10,7 @@ using static Utils;
 public class PostStudent : MonoBehaviour
 {
     private static float _idleSpeed = 0;
-    public static float _walkSpeed = 1.44f;
+    public static float _walkSpeed = 2.34f;
     public static float _jogSpeed = 2.43f;
     public static float _slowRunSpeed = 3.49f;
     public static float _mediumRunSpeed = 4.17f;
@@ -78,6 +78,7 @@ public class PostStudent : MonoBehaviour
 
     public MonitorSpot SeatSpot {  get; set; }
     //public BehaviorWeightSet BehaviorWeightSet { get; set; }
+    private AttributeModifier _moveSpeedModifier;
 
 
     private void Awake()
@@ -125,9 +126,8 @@ public class PostStudent : MonoBehaviour
         _root.SetBlackboard(_blackboard);
         _boostReceiver.CanEffectChecker = () => _root != null && _blackboard != null && _blackboard.targetObject == null;
         _damageReceiver.CanEffectChecker = () => _blackboard != null && _blackboard.isEscaping == false;
-        float moveSpeedScale = AttributeSystem.Instance.StudMoveSpeedMod.GetFinalValue();
-        float scaleDiff = moveSpeedScale - 1;
-        _anim.SetFloat("MoveSpeedScale", 1 + scaleDiff / 3f);
+        _moveSpeedModifier = AttributeSystem.Instance.StudMoveSpeedMod;
+        _anim.SetFloat("MoveSpeedScale", _moveSpeedModifier.GetFinalValue());
     }
 
 
@@ -146,6 +146,19 @@ public class PostStudent : MonoBehaviour
             _root.Evaluate();
         }
     }
+
+
+
+    //void OnAnimatorMove()
+    //{
+    //    // 1. 현재 프레임에서 애니메이션이 이동해야 할 거리(Delta)를 가져옴
+    //    // 2. 여기에 사용자가 원하는 % (multiplier)를 곱함
+    //    Vector3 desiredVelocity = (_anim.deltaPosition / Time.deltaTime);// * movementMultiplier;
+
+    //    // 3. 에이전트에게 "이 속도로 움직여라"라고 직접 명령
+    //    // 이렇게 하면 애니메이션 재생 속도에 맞춰 에이전트가 움직이므로 싱크가 절대 깨지지 않음
+    //    _agent.velocity = desiredVelocity;
+    //}
 
 
 
@@ -202,7 +215,7 @@ public class PostStudent : MonoBehaviour
                 new SetSpeed(() => _fastRunSpeed),
                 new SetSpeed(() => _sprintSpeed),
             },
-            new List<System.Func<int>> { 
+            new List<System.Func<float>> { 
                 () => 40, // Walk 확률 40%
                 () => 25, // Jog 확률 25%
                 () => 15, // SlowRun 15%
@@ -277,14 +290,16 @@ public class PostStudent : MonoBehaviour
         {
             //new SetRandomBehaveSpot(_prowlSpots),
             new ActionNode(() => Debug.Log("prowlSequence")),
-            _speedSelector,
+            new SetRandomSpeedPattern(),
+            //_speedSelector,
             new MoveToSpot()
             //new PlayLoopAnim("LookAround", 5)
         });
         Sequence restSequence = new Sequence(new List<BT_Node>
         {
             //new SetRandomBehaveSpot(_restSpots),
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new PlayOnceAnim("LookAround", "LookAround")
             //new PlayLoopAnim("LookAround", 5)
@@ -292,7 +307,8 @@ public class PostStudent : MonoBehaviour
         Sequence smokeSequence = new Sequence(new List<BT_Node>
         {
             //new SetRandomBehaveSpot(_restSpots),
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new PlayOnceAnim("Smoke", "Smoke"),
             //new Delay(() => 2f),
@@ -308,7 +324,8 @@ public class PostStudent : MonoBehaviour
         Sequence microwaveSequence = new Sequence(new List<BT_Node>
         {
             //new SetRandomBehaveSpot(_microwaveSpots),
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new SetAnimBool("Carrying", true),
             new MoveToSpot(),
             new SetAnimBool("Carrying", false),
@@ -384,7 +401,8 @@ public class PostStudent : MonoBehaviour
 
         Sequence danceSequence = new Sequence(new List<BT_Node>
         {
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new SetAnimBool("Dancing", true),
             //new Delay(() => 5f),
@@ -393,7 +411,8 @@ public class PostStudent : MonoBehaviour
 
         Sequence worshipSequence = new Sequence(new List<BT_Node>
         {
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new RotateToSpot(),
             new SetAnimBool("Praying", true),
@@ -403,7 +422,8 @@ public class PostStudent : MonoBehaviour
 
         Sequence sportsSequence = new Sequence(new List<BT_Node>
         {
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new SetAnimBool("Burpeeing", true),
             //new Delay(() => 5f),
@@ -412,7 +432,8 @@ public class PostStudent : MonoBehaviour
 
         Sequence sleepSequence = new Sequence(new List<BT_Node>
         {
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new SetAnimBool("Sleeping", true),
             //new Delay(() => 5f),
@@ -421,7 +442,8 @@ public class PostStudent : MonoBehaviour
 
         Sequence sitFloorSequence = new Sequence(new List<BT_Node>
         {
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new SetAnimBool("SittingFloor", true),
             //new Delay(() => 5f),
@@ -430,7 +452,8 @@ public class PostStudent : MonoBehaviour
 
         Sequence sitChairSequence = new Sequence(new List<BT_Node>
         {
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new RotateToSpot(),
             new SetAnimBool("SittingChair", true),
@@ -440,7 +463,8 @@ public class PostStudent : MonoBehaviour
 
         Sequence singSequence = new Sequence(new List<BT_Node>
         {
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new StopAndDisableAgentUpdate(),
             new SetAnimRootMotion(true),
@@ -486,6 +510,8 @@ public class PostStudent : MonoBehaviour
                 {
                     new ActionNode(HideAllAnimAttachments),
                     new ActionNode(StopAllOverlapAttackers),
+                    new EnableAgentUpdate(),
+                    new ResetAnimParameters(),
                     new ClearDestSpot(),
                     new TacklePattern(),
                     //new ClearDestBehavior(),
@@ -684,13 +710,13 @@ public class PostStudent : MonoBehaviour
 
     private void OnStandUpStart()
     {
-        bool originAgentEnabled = _agent.enabled;
-        bool originAgentUpdatePos = _agent.updatePosition;
-        _agent.enabled = true;
-        _agent.updatePosition = true;
-        _agent.Warp(SampleNavMesh(transform.position, 100f));
-        _agent.enabled = originAgentEnabled;
-        _agent.updatePosition = originAgentUpdatePos;
+        //bool originAgentEnabled = _agent.enabled;
+        //bool originAgentUpdatePos = _agent.updatePosition;
+        //_agent.enabled = true;
+        //_agent.updatePosition = true;
+        //_agent.Warp(SampleNavMesh(transform.position, 100f));
+        //_agent.enabled = originAgentEnabled;
+        //_agent.updatePosition = originAgentUpdatePos;
 
         _damageReceiver.SetStatFull();
     }
@@ -702,6 +728,7 @@ public class PostStudent : MonoBehaviour
         _agent.updatePosition = true;    // 에이전트가 트랜스폼을 움직이도록 허용
         _agent.updateRotation = true;    // 회전도 허용
         _anim.applyRootMotion = false;
+        _anim.SetFloat("MoveSpeedScale", _moveSpeedModifier.GetFinalValue());
         _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots, _player.gameObject);
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);

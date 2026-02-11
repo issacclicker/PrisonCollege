@@ -17,4 +17,12 @@ public class Shackles : MonoBehaviour
         _chain.SetParent(null);
         _weight.SetParent(null);
     }
+
+
+
+    private void OnDisable()
+    {
+        if (_chain != null) _chain.gameObject.SetActive(false);
+        if (_weight != null) _weight.gameObject.SetActive(false);
+    }
 }
