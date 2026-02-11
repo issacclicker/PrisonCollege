@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class StageController : SceneSingleton<StageController>
 {
     [Header("UI Bindings")]
+    [SerializeField] private TextMeshProUGUI _waveTmp;
     [SerializeField] private TextMeshProUGUI _timerTmp;
     [SerializeField] private TextMeshProUGUI _chaosTmp;
     [SerializeField] private TextMeshProUGUI _escapeTmp;
@@ -96,6 +97,7 @@ public class StageController : SceneSingleton<StageController>
     private void Start()
     {
         WaveSystem.Instance.NewWaveEntered();
+        _waveTmp.text = $"¿þÀÌºê {WaveSystem.Instance.CurrentWave}";
         _studentList = _studentSpawner.SpawnStudents(WaveSystem.Instance.BehaviorWeightSet);
 
         foreach (var student in _studentList)
