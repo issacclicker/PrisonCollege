@@ -48,6 +48,7 @@ public class StageController : SceneSingleton<StageController>
     [SerializeField] private StageSpots _stageSpots;
     [SerializeField] private StudentSpawner _studentSpawner;
     [SerializeField] private StageOver _stageOver;
+    [SerializeField] private ChaosUI _chaosUi;
     [SerializeField] private bool _isTestMode = true;
 
     private int _money = 0;
@@ -217,6 +218,7 @@ public class StageController : SceneSingleton<StageController>
     private void OnStudentEscaped(PostStudent student)
     {
         _chaosStat.Increase(_studEscapedPenalty);
+        PopupChaosWarning(new EscapedChaos(_studEscapedPenalty));
         _escapeStat.Increase(1);
     }
 
@@ -227,6 +229,7 @@ public class StageController : SceneSingleton<StageController>
         if (student.IsDoingHazardBehavior == false && hitInfo.attacker == Player.gameObject)
         {
             _chaosStat.Increase(_innocentKillPenalty);
+            PopupChaosWarning(new InnocentKillChaos(_innocentKillPenalty));
         }
     }
 
@@ -308,6 +311,13 @@ public class StageController : SceneSingleton<StageController>
 
 
 
+    private void PopupChaosWarning(ChaosInfo choasInfo)
+    {
+        _chaosUi.SpawnWarningPanel(choasInfo);
+    }
+
+
+
     public void GunShoot()
     {
         _chaosStat.Increase(_gunShotPenalty);
@@ -318,5 +328,6 @@ public class StageController : SceneSingleton<StageController>
     public void NormalFoodRemoved()
     {
         _chaosStat.Increase(_normalFoodRemovedPenalty);
+        PopupChaosWarning(new NormalFoodRemovedChaos(_normalFoodRemovedPenalty));
     }
 }
