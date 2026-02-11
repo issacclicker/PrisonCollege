@@ -8,13 +8,28 @@ public class WaveSystem : PersistentSingleton<WaveSystem>
         Night,
     }
 
+    [System.Serializable]
+    public struct WaveEntry
+    {
+        public BehaviorWeightSet behaviorWeightSet;
+        public DayState dayState;
+    }
+
+    [Header("Skybox")]
     [SerializeField] private Material _daySkybox;
     [SerializeField] private Material _nightSkybox;
-    private DayState _currentDayState;
+    [Header("Wave Info Entries")]
+    [SerializeField] private WaveEntry[] waveEntries;
+    [Header("Stat Factors")]
+    [SerializeField] private float _nightChaosFactor;
+    [SerializeField] private float _nightProjectFactor;
+
     private int _currentWave = 0;
+    private DayState _currentDayState;
     private float _chaosFactor = 0;
     private float _projectFactor = 0;
 
+    public BehaviorWeightSet BehaviorWeightSet => waveEntries[_currentWave - 1].behaviorWeightSet;
     public float ChaosFactor => _chaosFactor;
     public float ProjectFactor => _projectFactor;
 
@@ -23,19 +38,18 @@ public class WaveSystem : PersistentSingleton<WaveSystem>
     public void NewWaveEntered()
     {
         _currentWave++;
-        if (_currentWave % 2 == 1)
+        _currentDayState = waveEntries[_currentWave - 1].dayState;
+        if (_currentDayState == DayState.Day)
         {
-            _currentDayState = DayState.Day;
             RenderSettings.skybox = _daySkybox;
             _chaosFactor = 1;
             _projectFactor = 1;
         }
         else
         {
-            _currentDayState = DayState.Night;
             RenderSettings.skybox = _nightSkybox;
-            _chaosFactor = 1.5f;
-            _projectFactor = 2f;
+            _chaosFactor = _nightChaosFactor;
+            _projectFactor = _nightProjectFactor;
         }
         DynamicGI.UpdateEnvironment();
     }

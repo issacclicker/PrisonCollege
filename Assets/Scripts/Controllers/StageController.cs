@@ -96,7 +96,7 @@ public class StageController : SceneSingleton<StageController>
     private void Start()
     {
         WaveSystem.Instance.NewWaveEntered();
-        _studentList = _studentSpawner.SpawnStudents();
+        _studentList = _studentSpawner.SpawnStudents(WaveSystem.Instance.BehaviorWeightSet);
 
         foreach (var student in _studentList)
         {

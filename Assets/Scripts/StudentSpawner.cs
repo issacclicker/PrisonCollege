@@ -8,7 +8,7 @@ public class StudentSpawner : MonoBehaviour
 
 
 
-    public List<PostStudent> SpawnStudents()
+    public List<PostStudent> SpawnStudents(BehaviorWeightSet behaviorWeightSet)
     {
         int index = 0;
         List<PostStudent> studentList = new();
@@ -16,6 +16,7 @@ public class StudentSpawner : MonoBehaviour
         {
             PostStudent student = Instantiate(entry.studentPrefab, entry.spawnTransform.position, entry.spawnTransform.rotation).GetComponent<PostStudent>();
             student.name = "Student" + ++index;
+            student.BehaviorWeightSet = behaviorWeightSet;
             student.SeatSpot = entry.seatSpot;
             studentList.Add(student);
         }
