@@ -110,8 +110,16 @@ public class CombatApproachPattern : PatternNode
                 {
                     new SetAnimRootMotion(true),
                     new WaitUntilCondition(() => !_bb.isDamaged),
-                    new Delay(() => UnityEngine.Random.Range(0f, 1f)),
+                    //new Delay(() => UnityEngine.Random.Range(0f, 1f)),
                     //new DelayRange(0, 1),
+                    new Delay(() =>
+                    {
+                        if (_bb.targetObject == _bb.Player)
+                        {
+                            return UnityEngine.Random.Range(0f, 0.5f);
+                        }
+                        return UnityEngine.Random.Range(0f, 1f);
+                    }),
                     new ActionNode(() => _bb.isStunned = false, NodeState.Success),
                 })
             ),
