@@ -134,6 +134,10 @@ public class FirstPersonController : MonoBehaviour
     // Internal Variables
     private Vector3 jointOriginalPos;
     private float timer = 0;
+    private Stamina stamina;
+    private Professor professor;
+    private float jumpStamina;
+    private AttributeModifier staminaCostMod;
 
     #endregion
 
@@ -143,8 +147,14 @@ public class FirstPersonController : MonoBehaviour
     private AttributeModifier moveSpeedMod;
     public bool IsGrounded => isGrounded;
 
+
+
     private void Awake()
     {
+        staminaCostMod = AttributeSystem.Instance.StaminaCostMod;
+        professor = GetComponent<Professor>();
+        jumpStamina = professor.JumpStamina;
+        stamina = GetComponent<Stamina>();
         rb = GetComponent<Rigidbody>();
         moveSpeedMod = AttributeSystem.Instance.ProfMoveSpeedMod;
         crosshairObject = GetComponentInChildren<Image>();
@@ -163,6 +173,7 @@ public class FirstPersonController : MonoBehaviour
 
     void Start()
     {
+        jumpStamina *= AttributeSystem.Instance.JumpStaminaMod.GetFinalValue(1) * staminaCostMod.GetFinalValue(1);
         if (lockCursor)
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -285,8 +296,9 @@ public class FirstPersonController : MonoBehaviour
                 {
                     sprintRemaining -= 1 * Time.deltaTime;
                     //if (sprintRemaining <= 0)
-                    if (GetComponent<Stamina>().IsDepleted)
+                    if (stamina.IsDepleted)
                     {
+                        professor.StaminaRunout();
                         isSprinting = false;
                         isSprintCooldown = true;
                         // [ADD] 스태미너가 다 달면 토글 상태도 해제
@@ -434,7 +446,7 @@ public class FirstPersonController : MonoBehaviour
 
             // 스프린트 조건 체크
             // (Vertical > 0f 조건은 위에서 이미 체크했지만, 안전을 위해 유지)
-            if (enableSprint && sprintInput && !GetComponent<Stamina>().IsDepleted && !isSprintCooldown && Input.GetAxisRaw("Vertical") > 0f)
+            if (enableSprint && sprintInput && !stamina.IsDepleted && !isSprintCooldown && Input.GetAxisRaw("Vertical") > 0f)
             {
                 currentSpeed = sprintSpeed;
                 isSprinting = true;
@@ -495,10 +507,15 @@ public class FirstPersonController : MonoBehaviour
     private void Jump()
     {
         // Adds force to the player rigidbody to jump
-        if (isGrounded)
+        if (isGrounded && stamina.Current >= jumpStamina)
         {
             rb.AddForce(0f, jumpPower * rb.mass, 0f, ForceMode.Impulse);
+            stamina.Decrease(jumpStamina);
             isGrounded = false;
+        }
+        else if (stamina.Current < jumpStamina)
+        {
+            professor.StaminaRunout();
         }
 
         // When crouched and using toggle system, will uncrouch for a jump
