@@ -1,11 +1,17 @@
+using System.Collections.Generic;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class MenuPanel : MonoBehaviour, IEscapeControllable
 {
+    [SerializeField] private TextMeshProUGUI _titleTmp;
     [SerializeField] private SlotEntry _passiveSlotsEntry;
     [SerializeField] private SettingPanel _settingPanel;
     [SerializeField] private SimplePanel _restartCheckPanel;
     [SerializeField] private SimplePanel _exitCheckPanel;
+    [SerializeField] private ItemInfoPanel _itemInfoPanel;
+    private SlotSelector _selectedSlot;
     private CanvasGroup _canvasGroup;
     private bool _isActive = false;
 
@@ -21,10 +27,35 @@ public class MenuPanel : MonoBehaviour, IEscapeControllable
 
 
 
-    private void Start()
+    public void Init()
     {
-        InventorySystem.Instance.ConstructShopSlots(_passiveSlotsEntry);
+        _itemInfoPanel.HidePanel();
+        InventorySystem.Instance.ConstructPassiveSlots(_passiveSlotsEntry, out List<ItemSlot> _passiveSlotList);
         Hide();
+        _titleTmp.text = $"스테이지 {StageController.Instance.StageNumber}\n<size=70%>웨이브 {WaveSystem.Instance.CurrentWave}</size>";
+
+        foreach (ItemSlot slot in _passiveSlotList)
+        {
+            slot.GetComponent<SlotSelector>().PointerClickEvent.AddListener(SlotPointerClicked);
+        }
+    }
+
+
+
+    private void SlotPointerClicked(SlotSelector targetSlot)
+    {
+        _selectedSlot?.Darken();
+        if (_selectedSlot == targetSlot)
+        {
+            _selectedSlot = null;
+            _itemInfoPanel.HidePanel();
+        }
+        else
+        {
+            _selectedSlot = targetSlot;
+            _itemInfoPanel.ShowPanel(_selectedSlot.GetComponent<ItemSlot>());
+        }
+        _selectedSlot?.HighLight();
     }
 
 
@@ -49,6 +80,8 @@ public class MenuPanel : MonoBehaviour, IEscapeControllable
     public void Show()
     {
         _isActive = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
         Time.timeScale = 0;
         _canvasGroup.alpha = 1;
         _canvasGroup.interactable = true;
@@ -60,6 +93,9 @@ public class MenuPanel : MonoBehaviour, IEscapeControllable
     public void Hide()
     {
         _isActive = false;
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = true;
         Time.timeScale = 1;
         _canvasGroup.alpha = 0;
         _canvasGroup.interactable = false;

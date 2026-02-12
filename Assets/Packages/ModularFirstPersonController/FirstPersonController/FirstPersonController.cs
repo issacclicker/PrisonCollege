@@ -215,6 +215,7 @@ public class FirstPersonController : MonoBehaviour
 
     private void Update()
     {
+        if (Time.timeScale == 0) return;
         #region Camera
 
         // (Camera Code omitted for brevity, logic remains same)
@@ -374,6 +375,7 @@ public class FirstPersonController : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (Time.timeScale == 0) return;
         if (cameraCanMove)
         {
             yaw = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * mouseSensitivity;
@@ -403,6 +405,7 @@ public class FirstPersonController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (Time.timeScale == 0) return;
         #region Movement
 
         if (playerCanMove)

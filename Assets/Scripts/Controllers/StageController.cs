@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class StageController : SceneSingleton<StageController>
 {
+    [Header("Stage")]
+    [SerializeField] private int _stageNumber = 0;
     [Header("UI Bindings")]
     [SerializeField] private TextMeshProUGUI _waveTmp;
     [SerializeField] private TextMeshProUGUI _timerTmp;
@@ -15,6 +17,7 @@ public class StageController : SceneSingleton<StageController>
     [SerializeField] private TextMeshProUGUI _workingTmp;
     [SerializeField] private Image _projectProgressBar;
     [SerializeField] private List<ItemSlot> _equipSlotList;
+    [SerializeField] private MenuPanel _menuPanel;
     [Header("Stats")]
     [SerializeField] private Stat _timerStat;
     [SerializeField] private Stat _chaosStat;
@@ -65,6 +68,7 @@ public class StageController : SceneSingleton<StageController>
 
     private AttributeModifier _studTaskModifier;
     private AttributeModifier _chaosDecreaseModifier;
+    public int StageNumber => _stageNumber;
 
 
 
@@ -105,6 +109,7 @@ public class StageController : SceneSingleton<StageController>
     private void Start()
     {
         WaveSystem.Instance.NewWaveEntered();
+        _menuPanel.Init();
         _waveTmp.text = $"¿þÀÌºê {WaveSystem.Instance.CurrentWave}";
         InventorySystem.Instance.FillEquipSlots(_equipSlotList);
 

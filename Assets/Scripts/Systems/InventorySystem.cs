@@ -116,6 +116,7 @@ public class InventorySystem : PersistentSingleton<InventorySystem>
     public void FillEquipSlots(List<ItemSlot> itemSlots)
     {
         ClearItemSlots(itemSlots);
+        if (_equipedItemList == null) return;
         for (int i = 0; i < _equipedItemList.Count; ++i)
         {
             Item equipedItem = _equipedItemList[i];

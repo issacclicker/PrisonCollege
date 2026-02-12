@@ -73,6 +73,7 @@ public class Professor : MonoBehaviour, IAttackable
         // {
         //     attackAnimator.PlayMeleeSwing(Attack);
         // }
+        if (Time.timeScale == 0) return;
         if (_health.IsDepleted) return;
         HandleSprintStamina();
         HandleWeaponAttack();

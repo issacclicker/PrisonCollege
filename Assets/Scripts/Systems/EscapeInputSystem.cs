@@ -14,6 +14,7 @@ public class EscapeInputSystem : SceneSingleton<EscapeInputSystem>
         base.Awake();
         if (_defaultEscapePanelObj != null)
         {
+            _defaultEscapePanelObj.SetActive(true);
             _defaultEscapeControllerable = _defaultEscapePanelObj.GetComponent<IEscapeControllable>();
         }
     }
