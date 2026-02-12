@@ -376,6 +376,7 @@ public class StageController : SceneSingleton<StageController>
 
     public void WeaponEquiped(int index)
     {
+        if (index >= _equipInfos.Length) return;
         for (int i = 0; i < _equipInfos.Length; i++)
         {
             if (index == i) continue;
