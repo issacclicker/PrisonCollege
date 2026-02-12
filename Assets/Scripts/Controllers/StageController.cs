@@ -14,6 +14,7 @@ public class StageController : SceneSingleton<StageController>
     [SerializeField] private TextMeshProUGUI _moneyTmp;
     [SerializeField] private TextMeshProUGUI _workingTmp;
     [SerializeField] private Image _projectProgressBar;
+    [SerializeField] private List<ItemSlot> _equipSlotList;
     [Header("Stats")]
     [SerializeField] private Stat _timerStat;
     [SerializeField] private Stat _chaosStat;
@@ -52,6 +53,7 @@ public class StageController : SceneSingleton<StageController>
     [SerializeField] private ChaosUI _chaosUi;
     [SerializeField] private bool _isTestMode = true;
 
+    private EquipInfo[] _equipInfos;
     private int _money = 0;
     private int _workingStudCount = 0;
     private bool _isProfWorking = false;
@@ -90,6 +92,12 @@ public class StageController : SceneSingleton<StageController>
         //}
         _studTaskModifier = AttributeSystem.Instance.TaskEfficiencyMod;
         _chaosDecreaseModifier = AttributeSystem.Instance.ChaosDecreaseMod;
+
+        _equipInfos = new EquipInfo[_equipSlotList.Count];
+        for (int i = 0; i< _equipSlotList.Count; i++)
+        {
+            _equipInfos[i] = _equipSlotList[i].GetComponent<EquipInfo>();
+        }
     }
 
 
@@ -98,6 +106,8 @@ public class StageController : SceneSingleton<StageController>
     {
         WaveSystem.Instance.NewWaveEntered();
         _waveTmp.text = $"¿þÀÌºê {WaveSystem.Instance.CurrentWave}";
+        InventorySystem.Instance.FillEquipSlots(_equipSlotList);
+
         _studentList = _studentSpawner.SpawnStudents(WaveSystem.Instance.BehaviorWeightSet);
 
         foreach (var student in _studentList)
@@ -355,5 +365,31 @@ public class StageController : SceneSingleton<StageController>
         float chaosIncrease = _normalFoodRemovedPenalty * WaveSystem.Instance.ChaosFactor;
         _chaosStat.Increase(chaosIncrease);
         PopupChaosWarning(new NormalFoodRemovedChaos(chaosIncrease));
+    }
+
+
+
+    public void WeaponEquiped(int index)
+    {
+        for (int i = 0; i < _equipInfos.Length; i++)
+        {
+            if (index == i) continue;
+            _equipInfos[i].Unequiped();
+        }
+        _equipInfos[index].Equiped();
+    }
+
+
+
+    public void WeaponBulletFilled(int index)
+    {
+        _equipInfos[index].BulletFilled();
+    }
+
+
+
+    public void WeaponBulletDepleted(int index)
+    {
+        _equipInfos[index].BulletDepleted();
     }
 }

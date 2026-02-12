@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -55,6 +56,7 @@ public class WeaponController : MonoBehaviour
             {
                 _weapons[i] = _weaponPresets[i];
                 _weapons[i].InfoUpdateEvent.AddListener(OnWeaponInfoUpdated);
+                AddRangedWeaponListener(_weapons[i], i);
             }
         }
         else
@@ -71,11 +73,23 @@ public class WeaponController : MonoBehaviour
                 {
                     _weapons[i] = _weaponPresets[invenEquipList[i].inStageIndex];
                     _weapons[i].InfoUpdateEvent.AddListener(OnWeaponInfoUpdated);
+                    AddRangedWeaponListener(_weapons[i], i);
                 }
             }
         }
 
         Equip(startingIndex);
+    }
+
+
+
+    private void AddRangedWeaponListener(WeaponBase weapon, int index)
+    {
+        RangedWeapon rangedWeapon = weapon as RangedWeapon;
+        if (rangedWeapon == null) return;
+        rangedWeapon.BulletDepleteEvent.AddListener(() => OnWeaponBulletDepleted(index));
+        rangedWeapon.BulletFillEvent.AddListener(() => OnWeaponBulletFilled(index));
+
     }
 
 
@@ -100,6 +114,23 @@ public class WeaponController : MonoBehaviour
         if (weapon != CurrentWeapon) return;
         _weaponPanel.ShowInfo(CurrentWeapon);
     }
+
+
+
+    private void OnWeaponBulletFilled(int index)
+    {
+        StageController.Instance.WeaponBulletFilled(index);
+    }
+
+
+
+    private void OnWeaponBulletDepleted(int index)
+    {
+        StageController.Instance.WeaponBulletDepleted(index);
+    }
+
+
+    
 
     public bool TryAttack()
     {
@@ -137,7 +168,7 @@ public class WeaponController : MonoBehaviour
     public void ChangeWeapon(int nextIdx)
     {
         if (nextIdx == _currentIdx || _isSwapping || CurrentWeapon.IsPlayingAttackAnim) return;
-
+        StageController.Instance.WeaponEquiped(nextIdx);
         StartCoroutine(SwapRoutine(nextIdx));
     }
 
@@ -180,6 +211,7 @@ public class WeaponController : MonoBehaviour
         _currentIdx = idx;
         _weaponPanel.ShowInfo(CurrentWeapon);
         CurrentWeapon.gameObject.SetActive(true);
+        StageController.Instance.WeaponEquiped(idx);
         // 즉시 장착은 애니메이션 없이 위치만 고정
     }
 
