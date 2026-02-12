@@ -15,6 +15,7 @@ public class SettingPanel : MonoBehaviour, IEscapeControllable
 
     private void Start()
     {
+        gameObject.SetActive(true);
         Hide();
     }
 

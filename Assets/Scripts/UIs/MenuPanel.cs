@@ -14,6 +14,9 @@ public class MenuPanel : MonoBehaviour, IEscapeControllable
     private void Awake()
     {
         _canvasGroup = GetComponent<CanvasGroup>();
+        _settingPanel.gameObject.SetActive(true);
+        _restartCheckPanel.gameObject.SetActive(true);
+        _exitCheckPanel.gameObject.SetActive(true);
     }
 
 
