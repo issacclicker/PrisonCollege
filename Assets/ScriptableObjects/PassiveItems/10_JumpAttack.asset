@@ -20,3 +20,4 @@ MonoBehaviour:
   description: 
   rarity: 0
   jumpDamageScale: 1.5
+  isZeroJumpStamina: 1

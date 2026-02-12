@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public abstract class RangedWeapon : WeaponBase
 {
@@ -12,6 +13,9 @@ public abstract class RangedWeapon : WeaponBase
     public override string TypeName => "¿ø°Å¸®";
     public override bool CanAttack => base.CanAttack && !_magazine.IsDepleted;
     public float SpreadIntensity => _spreadIntensity * AttributeSystem.Instance.ShotSpreadMod.GetFinalValue();
+
+    public UnityEvent BulletDepleteEvent = new();
+    public UnityEvent BulletFillEvent = new();
 
 
 
@@ -36,6 +40,10 @@ public abstract class RangedWeapon : WeaponBase
         _magazine.Decrease(1);
         CheckBullet();
         InfoUpdateEvent?.Invoke(this);
+        if (_magazine.IsDepleted)
+        {
+            BulletDepleteEvent?.Invoke();
+        }
     }
 
 
@@ -61,7 +69,9 @@ public abstract class RangedWeapon : WeaponBase
     public bool Fill()
     {
         int fillAmount = (int)(_magazine.Max - _magazine.Current);
-        return Acquire(fillAmount);
+        bool isAcquired = Acquire(fillAmount);
+        BulletFillEvent?.Invoke();
+        return isAcquired;
     }
 
 

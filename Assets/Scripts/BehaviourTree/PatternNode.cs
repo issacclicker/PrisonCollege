@@ -110,8 +110,8 @@ public class CombatApproachPattern : PatternNode
                 {
                     new SetAnimRootMotion(true),
                     new WaitUntilCondition(() => !_bb.isDamaged),
-                    //new Delay(() => UnityEngine.Random.Range(0f, 1f)),
-                    new DelayRange(0, 1),
+                    new Delay(() => UnityEngine.Random.Range(0f, 1f)),
+                    //new DelayRange(0, 1),
                     new ActionNode(() => _bb.isStunned = false, NodeState.Success),
                 })
             ),
@@ -141,7 +141,15 @@ public class CombatApproachPattern : PatternNode
                 new LerpLayerWeight(COMBAT_LAYER_INDEX, 1f, 5f),
                 new StopNode(),
                 //new Delay(() => UnityEngine.Random.Range(1f, 2f)),
-                new DelayRange(1, 2),
+                //new DelayRange(1, 2f),
+                new Delay(() =>
+                {
+                    if (_bb.targetObject == _bb.Player)
+                    {
+                        return UnityEngine.Random.Range(0f, 0.2f);
+                    }
+                    return UnityEngine.Random.Range(1f, 2f);
+                }),
                 new ActionNode(() => _isAttacking = true, NodeState.Success), // 플래그 ON
 
                 new MeleeAttackPattern(), // 실제 주먹 휘두르는 동안
@@ -152,7 +160,15 @@ public class CombatApproachPattern : PatternNode
                 // 이제 _isAttacking이 false이므로, 
                 // 딜레이 도중 플레이어가 멀어지면 상위 Selector가 1번(추격)으로 즉시 갈아탑니다.
                 //new Delay(() => UnityEngine.Random.Range(0f, 1f)),
-                new DelayRange(0, 0.5f),
+                //new DelayRange(0, 0.1f),
+                new Delay(() =>
+                {
+                    if (_bb.targetObject == _bb.Player)
+                    {
+                        return UnityEngine.Random.Range(0f, 0.1f);
+                    }
+                    return UnityEngine.Random.Range(0f, 1f);
+                }),
                 new SetAnimRootMotion(false),
             })
         });

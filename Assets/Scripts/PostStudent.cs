@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
@@ -36,7 +37,7 @@ public class PostStudent : MonoBehaviour
     //[SerializeField] private SpotGroup _prowlSpots;
 
     //[SerializeField] private Professor _player;
-    [SerializeField] private BehaviorWeightSet _behaviorWeightSet;
+    public BehaviorWeightSet BehaviorWeightSet { get; set; }
     //[SerializeField] private StageSpots _stageSpots;
 
     //private bool _isDamaged = false;
@@ -66,7 +67,7 @@ public class PostStudent : MonoBehaviour
     public bool IsDoingHazardBehavior => (
         Blackboard.destBehavior.IsHazard()
         || (Blackboard.destBehavior == BehaviorType.UseMicrowave && _plateAttacher.CurrentFood != null && _plateAttacher.CurrentFood.isCauseFire)
-        || Blackboard.targetObject != null
+        || Blackboard.targetDamageable != null
         || (Blackboard.destBehavior == BehaviorType.Sing && _singAttacher.IsBad));
 
     public bool IsCausingChaos => _damageReceiver.CanEffect && Blackboard.targetDamageable != null || (Blackboard.destBehavior == BehaviorType.Sing && _singAttacher.IsBad);
@@ -114,13 +115,13 @@ public class PostStudent : MonoBehaviour
 
     private void Start()
     {
-        _behaviorWeightSet = DeepCopyByJson(_behaviorWeightSet);
-        _behaviorWeightSet.ModifyChance(BehaviorType.Escape, AttributeSystem.Instance.StudEscapeChanceMod.GetFinalValue());
+        BehaviorWeightSet = DeepCopyByJson(BehaviorWeightSet);
+        BehaviorWeightSet.ModifyChance(BehaviorType.Escape, AttributeSystem.Instance.StudEscapeChanceMod.GetFinalValue());
         HideAllAnimAttachments();
         StopAllOverlapAttackers();
         _characterRagdoll.UnTriggerRagdoll();
         _speedSelector = ConstructSpeedSelector();
-        _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots, _player.gameObject);
+        _blackboard = new Blackboard(gameObject, BehaviorWeightSet, _stageSpots, _player.gameObject);
         _blackboard.EscapeSuccessEvent.AddListener(OnEscaped);
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
@@ -696,6 +697,9 @@ public class PostStudent : MonoBehaviour
         _anim.enabled = false;
         _characterCollider.enabled = false;
         _blackboard.destSpot?.Release(this);
+        _blackboard.destBehavior = BehaviorType.None;
+        _blackboard.targetDamageable = null;
+        _blackboard.targetObject = null;
         StopAllCoroutines();
         StopAllOverlapAttackers();
         HideAllAnimAttachments();
@@ -729,7 +733,7 @@ public class PostStudent : MonoBehaviour
         _agent.updateRotation = true;    // 회전도 허용
         _anim.applyRootMotion = false;
         _anim.SetFloat("MoveSpeedScale", _moveSpeedModifier.GetFinalValue());
-        _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots, _player.gameObject);
+        _blackboard = new Blackboard(gameObject, BehaviorWeightSet, _stageSpots, _player.gameObject);
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
         OnWorkTriggered();

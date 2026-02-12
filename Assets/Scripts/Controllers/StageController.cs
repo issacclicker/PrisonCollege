@@ -6,13 +6,18 @@ using UnityEngine.UI;
 
 public class StageController : SceneSingleton<StageController>
 {
+    [Header("Stage")]
+    [SerializeField] private int _stageNumber = 0;
     [Header("UI Bindings")]
+    [SerializeField] private TextMeshProUGUI _waveTmp;
     [SerializeField] private TextMeshProUGUI _timerTmp;
     [SerializeField] private TextMeshProUGUI _chaosTmp;
     [SerializeField] private TextMeshProUGUI _escapeTmp;
     [SerializeField] private TextMeshProUGUI _moneyTmp;
     [SerializeField] private TextMeshProUGUI _workingTmp;
     [SerializeField] private Image _projectProgressBar;
+    [SerializeField] private List<ItemSlot> _equipSlotList;
+    [SerializeField] private MenuPanel _menuPanel;
     [Header("Stats")]
     [SerializeField] private Stat _timerStat;
     [SerializeField] private Stat _chaosStat;
@@ -51,6 +56,7 @@ public class StageController : SceneSingleton<StageController>
     [SerializeField] private ChaosUI _chaosUi;
     [SerializeField] private bool _isTestMode = true;
 
+    private EquipInfo[] _equipInfos;
     private int _money = 0;
     private int _workingStudCount = 0;
     private bool _isProfWorking = false;
@@ -62,6 +68,7 @@ public class StageController : SceneSingleton<StageController>
 
     private AttributeModifier _studTaskModifier;
     private AttributeModifier _chaosDecreaseModifier;
+    public int StageNumber => _stageNumber;
 
 
 
@@ -89,13 +96,24 @@ public class StageController : SceneSingleton<StageController>
         //}
         _studTaskModifier = AttributeSystem.Instance.TaskEfficiencyMod;
         _chaosDecreaseModifier = AttributeSystem.Instance.ChaosDecreaseMod;
+
+        _equipInfos = new EquipInfo[_equipSlotList.Count];
+        for (int i = 0; i< _equipSlotList.Count; i++)
+        {
+            _equipInfos[i] = _equipSlotList[i].GetComponent<EquipInfo>();
+        }
     }
 
 
 
     private void Start()
     {
-        _studentList = _studentSpawner.SpawnStudents();
+        WaveSystem.Instance.NewWaveEntered();
+        _menuPanel.Init();
+        _waveTmp.text = $"¿þÀÌºê {WaveSystem.Instance.CurrentWave}";
+        InventorySystem.Instance.FillEquipSlots(_equipSlotList);
+
+        _studentList = _studentSpawner.SpawnStudents(WaveSystem.Instance.BehaviorWeightSet);
 
         foreach (var student in _studentList)
         {
@@ -186,7 +204,8 @@ public class StageController : SceneSingleton<StageController>
     {
         float studTotalProgress = _workingStudCount * _studTaskProgress * Time.deltaTime * _studTaskModifier.GetFinalValue(1);
         float profTotalProgress = _isProfWorking ? _profTaskProgress * Time.deltaTime : 0;
-        _projectStat.Increase(studTotalProgress + profTotalProgress);
+        float finalProgress = (studTotalProgress + profTotalProgress) * WaveSystem.Instance.ProjectFactor;
+        _projectStat.Increase(finalProgress);
     }
 
 
@@ -217,8 +236,9 @@ public class StageController : SceneSingleton<StageController>
 
     private void OnStudentEscaped(PostStudent student)
     {
-        _chaosStat.Increase(_studEscapedPenalty);
-        PopupChaosWarning(new EscapedChaos(_studEscapedPenalty));
+        float chaosIncrease = _studEscapedPenalty * WaveSystem.Instance.ChaosFactor;
+        _chaosStat.Increase(chaosIncrease);
+        PopupChaosWarning(new EscapedChaos(chaosIncrease));
         _escapeStat.Increase(1);
     }
 
@@ -228,8 +248,9 @@ public class StageController : SceneSingleton<StageController>
     {
         if (student.IsDoingHazardBehavior == false && hitInfo.attacker == Player.gameObject)
         {
-            _chaosStat.Increase(_innocentKillPenalty);
-            PopupChaosWarning(new InnocentKillChaos(_innocentKillPenalty));
+            float chaosIncrease = _innocentKillPenalty * WaveSystem.Instance.ChaosFactor;
+            _chaosStat.Increase(chaosIncrease);
+            PopupChaosWarning(new InnocentKillChaos(chaosIncrease));
         }
     }
 
@@ -281,13 +302,14 @@ public class StageController : SceneSingleton<StageController>
         {
             if (student.IsCausingChaos)
             {
+                Debug.Log($"[IsCausingChaos] : {student.gameObject.name}");
                 chaosCauseCount++;
             }
         }
-        float chaosChanged = 0; ;
+        float chaosChanged = 0;
         if (chaosCauseCount > 0)
         {
-            chaosChanged = chaosCauseCount * _increasePerStud;
+            chaosChanged = chaosCauseCount * _increasePerStud * WaveSystem.Instance.ChaosFactor;
             _chaosStat.Increase(chaosChanged * Time.deltaTime);
         }
         else
@@ -337,14 +359,43 @@ public class StageController : SceneSingleton<StageController>
 
     public void GunShoot()
     {
-        _chaosStat.Increase(_gunShotPenalty);
+        float chaosIncrease = _gunShotPenalty * WaveSystem.Instance.ChaosFactor;
+        _chaosStat.Increase(chaosIncrease);
     }
 
 
 
     public void NormalFoodRemoved()
     {
-        _chaosStat.Increase(_normalFoodRemovedPenalty);
-        PopupChaosWarning(new NormalFoodRemovedChaos(_normalFoodRemovedPenalty));
+        float chaosIncrease = _normalFoodRemovedPenalty * WaveSystem.Instance.ChaosFactor;
+        _chaosStat.Increase(chaosIncrease);
+        PopupChaosWarning(new NormalFoodRemovedChaos(chaosIncrease));
+    }
+
+
+
+    public void WeaponEquiped(int index)
+    {
+        if (index >= _equipInfos.Length) return;
+        for (int i = 0; i < _equipInfos.Length; i++)
+        {
+            if (index == i) continue;
+            _equipInfos[i].Unequiped();
+        }
+        _equipInfos[index].Equiped();
+    }
+
+
+
+    public void WeaponBulletFilled(int index)
+    {
+        _equipInfos[index].BulletFilled();
+    }
+
+
+
+    public void WeaponBulletDepleted(int index)
+    {
+        _equipInfos[index].BulletDepleted();
     }
 }

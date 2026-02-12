@@ -153,6 +153,7 @@ public class CoopBehaviorPlace : MonoBehaviour
             Debug.Log($"[Coop] {actor.name} 이탈로 인해 협동이 파기되었습니다.");
 
             // 누군가 한 명이라도 나갔다면 즉시 전체 해산 로직 실행
+            //Invoke("BreakUpCoop", 2f);
             BreakUpCoop();
         }
     }
