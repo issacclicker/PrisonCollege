@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class StageLayout : MonoBehaviour
 {
+    [SerializeField] private GameObject _stageSlotObjPrefab;
     [SerializeField] private SimplePanel _stageSelectPanel;
     private StageSlot[] _stageSlots;
     private StageSlot _selectedStage;
@@ -10,12 +11,35 @@ public class StageLayout : MonoBehaviour
 
     private void Awake()
     {
-        _stageSlots = GetComponentsInChildren<StageSlot>(true);
-        foreach (var slot in _stageSlots)
-        {
-            slot.MouseClickEvent.AddListener(OnSlotMouseClicked);
-        }
+        //_stageSlots = GetComponentsInChildren<StageSlot>(true);
+        //foreach (var slot in _stageSlots)
+        //{
+        //    slot.MouseClickEvent.AddListener(OnSlotMouseClicked);
+        //}
         _stageSelectPanel.DeactivateEvent.AddListener(UnselectStage);
+    }
+
+
+
+    private void Start()
+    {
+        MakeStageSlots();
+    }
+
+
+
+    private void MakeStageSlots()
+    {
+        StageInfo[] stageInfos = GameManager.Instance.StageEntries;
+        _stageSlots = new StageSlot[stageInfos.Length];
+        for (int i = 0; i < stageInfos.Length; i++)
+        {
+            GameObject stageSlotObj = Instantiate(_stageSlotObjPrefab, transform);
+            StageSlot stageSlot = stageSlotObj.GetComponent<StageSlot>();
+            stageSlot.Init(stageInfos[i]);
+            stageSlot.MouseClickEvent.AddListener(OnSlotMouseClicked);
+            _stageSlots[i] = stageSlot;
+        }
     }
 
 
