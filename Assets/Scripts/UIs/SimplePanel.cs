@@ -1,8 +1,11 @@
+using NUnit.Framework.Constraints;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SimplePanel : MonoBehaviour, IEscapeControllable
 {
     private CanvasGroup _canvasGroup;
+    public UnityEvent DeactivateEvent = new();
 
 
 
@@ -52,5 +55,6 @@ public class SimplePanel : MonoBehaviour, IEscapeControllable
     public void Deactivate()
     {
         Hide();
+        DeactivateEvent?.Invoke();
     }
 }
