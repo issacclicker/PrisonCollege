@@ -23,8 +23,9 @@ public class TaskCameraRotator : MonoBehaviour
 
     void Update()
     {
+        //if (Time.timeScale <= 0) return;
         // 마우스 버튼을 누르고 있을 때만 각도 누적
-        if (Input.GetMouseButton(1))
+        if (Input.GetMouseButton(1) && Time.timeScale > 0)
         {
             _rotationY += Input.GetAxis("Mouse X") * sensitivity;
             _rotationX -= Input.GetAxis("Mouse Y") * sensitivity;

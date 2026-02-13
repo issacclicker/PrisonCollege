@@ -5,13 +5,16 @@ using UnityEngine.SceneManagement;
 public class GameManager : PersistentSingleton<GameManager>
 {
     [Header("Dev Only")]
+    [SerializeField] private int _stageNumber;
     [SerializeField] private StageInfo[] _stageEntries;
     [Header("Scene Names")]
     [SerializeField] private string _mainScreen;
     [SerializeField] private string _stagePrepare;
     [SerializeField] private string _stagePrefix;
+    [SerializeField] private string _store;
     private StageInfo _currentStage;
     private DifficultyLevel _currentDifficulty;
+    public bool hasToStageSelect = false;
 
 
     public StageInfo[] StageEntries => _stageEntries;
@@ -26,6 +29,12 @@ public class GameManager : PersistentSingleton<GameManager>
         {
             _currentStage = new StageInfo();
             _currentStage.number = StageController.Instance.StageNumber;
+        }
+        if (_stageNumber > 0)
+        {
+            _currentStage = _stageEntries[_stageNumber - 1];
+            InventorySystem.Instance.ResetInventory(false);
+            WaveSystem.Instance.ResetWave();
         }
         //ShowMainScreen();
     }
@@ -47,11 +56,10 @@ public class GameManager : PersistentSingleton<GameManager>
 
 
 
-    public void StageCleared(int stageNum, DifficultyLevel difficultyLevel)
+    public void StageCleared()
     {
-        StageInfo targetStage = _stageEntries[stageNum - 1];
-        DifficultyLevel maxDifficulty = (DifficultyLevel)Mathf.Max((int)difficultyLevel, (int)targetStage.maxClearDifficulty);
-        _stageEntries[stageNum - 1].maxClearDifficulty = maxDifficulty;
+        DifficultyLevel maxDifficulty = (DifficultyLevel)Mathf.Max((int)_currentDifficulty, (int)_currentStage.maxClearDifficulty);
+        _currentStage.maxClearDifficulty = maxDifficulty;
     }
 
 
@@ -59,9 +67,24 @@ public class GameManager : PersistentSingleton<GameManager>
     public void PrepareStage(int stageNum, DifficultyLevel difficultyLevel)
     {
         WaveSystem.Instance.ResetWave();
+        InventorySystem.Instance.ResetInventory();
         _currentStage = _stageEntries[stageNum - 1];
         _currentDifficulty = difficultyLevel;
         SceneManager.LoadScene(_stagePrepare);
+    }
+
+
+
+    public void Restart()
+    {
+        PrepareStage(_currentStage.number, _currentDifficulty);
+    }
+
+
+
+    public void GoStore()
+    {
+        SceneManager.LoadScene(_store);
     }
 
 
@@ -71,6 +94,14 @@ public class GameManager : PersistentSingleton<GameManager>
         SceneManager.LoadScene(_mainScreen);
         _currentStage = null;
         _currentDifficulty = DifficultyLevel.None;
+    }
+
+
+
+    public void ShowStageSelect()
+    {
+        hasToStageSelect = true;
+        ShowMainScreen();
     }
 
 

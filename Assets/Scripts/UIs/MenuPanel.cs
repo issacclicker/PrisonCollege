@@ -14,6 +14,8 @@ public class MenuPanel : MonoBehaviour, IEscapeControllable
     private SlotSelector _selectedSlot;
     private CanvasGroup _canvasGroup;
     private bool _isActive = false;
+    private float _originTimeScale = 1;
+    private bool _originCursorVisible = false;
 
 
 
@@ -23,6 +25,15 @@ public class MenuPanel : MonoBehaviour, IEscapeControllable
         _settingPanel.gameObject.SetActive(true);
         _restartCheckPanel.gameObject.SetActive(true);
         _exitCheckPanel.gameObject.SetActive(true);
+    }
+
+
+
+    private void Start()
+    {
+        _settingPanel.Hide();
+        _restartCheckPanel.Hide();
+        _exitCheckPanel.Hide();
     }
 
 
@@ -80,8 +91,10 @@ public class MenuPanel : MonoBehaviour, IEscapeControllable
     public void Show()
     {
         _isActive = true;
+        _originCursorVisible = Cursor.visible;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        _originTimeScale = Time.timeScale;
         Time.timeScale = 0;
         _canvasGroup.alpha = 1;
         _canvasGroup.interactable = true;
@@ -93,10 +106,9 @@ public class MenuPanel : MonoBehaviour, IEscapeControllable
     public void Hide()
     {
         _isActive = false;
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = true;
-        Time.timeScale = 1;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = _originCursorVisible;
+        Time.timeScale = _originTimeScale;
         _canvasGroup.alpha = 0;
         _canvasGroup.interactable = false;
         _canvasGroup.blocksRaycasts = false;

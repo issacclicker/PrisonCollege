@@ -6325,7 +6325,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1043300932}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1577444717}
+        m_TargetAssemblyTypeName: SimplePanel, Assembly-CSharp
+        m_MethodName: Exit_Btn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1043300932
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12143,6 +12155,8 @@ MonoBehaviour:
   _mainScreen: MainScene
   _stagePrepare: StagePrepare
   _stagePrefix: Stage
+  _store: Store
+  hasToStageSelect: 0
 --- !u!222 &127650146712147129
 CanvasRenderer:
   m_ObjectHideFlags: 0

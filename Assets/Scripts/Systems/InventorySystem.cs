@@ -13,11 +13,8 @@ public class InventorySystem : PersistentSingleton<InventorySystem>
     private HashSet<Item> _purchasedItemSet = new();
     [SerializeField] private List<WeaponItem> _equipedItemList;
 
-    private List<PassiveItem> _passiveItemList;
-
 
     public int Money => _money;
-    public List<PassiveItem> PassiveItemList => _passiveItemList;
     public List<WeaponItem> EquipedItemList => _equipedItemList;
 
 
@@ -25,7 +22,28 @@ public class InventorySystem : PersistentSingleton<InventorySystem>
     protected override void Awake()
     {
         base.Awake();
-        if (_totalItemList == null) return;
+        //if (_totalItemList == null) return;
+        //foreach (var item in _totalItemList)
+        //{
+        //    _nonPurchasedItemSet.Add(item);
+        //}
+
+        //_equipedItemList = new List<WeaponItem>(new WeaponItem[_equipLimit]);
+        //for (int i = 0; i < _defaultEquipedItemList.Count; i++)
+        //{
+        //    _purchasedItemSet.Add(_defaultEquipedItemList[i]);
+        //    _equipedItemList[i] = _defaultEquipedItemList[i];
+        //}
+    }
+
+
+
+    public void ResetInventory(bool resetMoney = true)
+    {
+        if (resetMoney)
+            _money = 0;
+        _nonPurchasedItemSet.Clear();
+        _purchasedItemSet.Clear();
         foreach (var item in _totalItemList)
         {
             _nonPurchasedItemSet.Add(item);

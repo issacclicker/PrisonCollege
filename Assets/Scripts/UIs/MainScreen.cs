@@ -19,6 +19,22 @@ public class MainScreen : MonoBehaviour
 
 
 
+    private void Start()
+    {
+        _stageSelectPanel.Hide();
+        _settingPanel.Hide();
+        _membersPanel.Hide();
+        _exitCheckPanel.Hide();
+
+        if (GameManager.Instance.hasToStageSelect == true)
+        {
+            GameManager.Instance.hasToStageSelect = false;
+            EscapeInputSystem.Instance.EnablePanel(_stageSelectPanel);
+        }
+    }
+
+
+
     public void Start_Btn()
     {
         EscapeInputSystem.Instance.EnablePanel(_stageSelectPanel);

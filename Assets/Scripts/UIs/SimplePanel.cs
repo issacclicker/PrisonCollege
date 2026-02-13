@@ -18,7 +18,7 @@ public class SimplePanel : MonoBehaviour, IEscapeControllable
 
     private void Start()
     {
-        Hide();
+        //Hide(); 
     }
 
 
@@ -45,6 +45,11 @@ public class SimplePanel : MonoBehaviour, IEscapeControllable
     {
         Hide();
         EscapeInputSystem.Instance.DisablePanel(this);
+    }
+
+    public void Exit_Btn()
+    {
+        GameManager.Instance.ExitGame();
     }
 
     public void Activate()

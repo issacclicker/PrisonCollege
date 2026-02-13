@@ -29,12 +29,14 @@ public class WaveSystem : PersistentSingleton<WaveSystem>
     private float _chaosFactor = 0;
     private float _projectFactor = 0;
 
-    public float CurrentWave => _currentWave;
+    public int CurrentWave => _currentWave;
     public BehaviorWeightSet BehaviorWeightSet => waveEntries[_currentWave - 1].behaviorWeightSet;
     public float ChaosFactor => _chaosFactor;
     public float ProjectFactor => _projectFactor;
+    public bool IsLastWave => _currentWave >= waveEntries.Length;
 
-     
+
+
 
     public void NewWaveEntered()
     {
@@ -42,15 +44,27 @@ public class WaveSystem : PersistentSingleton<WaveSystem>
         _currentDayState = waveEntries[_currentWave - 1].dayState;
         if (_currentDayState == DayState.Day)
         {
-            RenderSettings.skybox = _daySkybox;
             _chaosFactor = 1;
             _projectFactor = 1;
         }
         else
         {
-            RenderSettings.skybox = _nightSkybox;
             _chaosFactor = _nightChaosFactor;
             _projectFactor = _nightProjectFactor;
+        }
+    }
+
+
+
+    public void ApplySkybox()
+    {
+        if(_currentDayState == DayState.Day)
+        {
+            RenderSettings.skybox = _daySkybox;
+        }
+        else
+        {
+            RenderSettings.skybox = _nightSkybox;
         }
         DynamicGI.UpdateEnvironment();
     }
