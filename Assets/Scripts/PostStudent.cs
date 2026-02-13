@@ -70,7 +70,7 @@ public class PostStudent : MonoBehaviour
         || Blackboard.targetDamageable != null
         || (Blackboard.destBehavior == BehaviorType.Sing && _singAttacher.IsBad));
 
-    public bool IsCausingChaos => _damageReceiver.CanEffect && Blackboard.targetDamageable != null || (Blackboard.destBehavior == BehaviorType.Sing && _singAttacher.IsBad);
+    public bool IsCausingChaos => _damageReceiver != null && Blackboard != null && _singAttacher != null && _damageReceiver.CanEffect && (Blackboard.targetDamageable != null || (Blackboard.destBehavior == BehaviorType.Sing && _singAttacher.IsBad));
     public bool IsComputerBehavior =>
         Blackboard.destBehavior == BehaviorType.Work
         || Blackboard.destBehavior == BehaviorType.Game

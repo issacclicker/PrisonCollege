@@ -1,8 +1,11 @@
+using NUnit.Framework.Constraints;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class SimplePanel : MonoBehaviour, IEscapeControllable
 {
     private CanvasGroup _canvasGroup;
+    public UnityEvent DeactivateEvent = new();
 
 
 
@@ -15,7 +18,7 @@ public class SimplePanel : MonoBehaviour, IEscapeControllable
 
     private void Start()
     {
-        Hide();
+        //Hide(); 
     }
 
 
@@ -44,6 +47,11 @@ public class SimplePanel : MonoBehaviour, IEscapeControllable
         EscapeInputSystem.Instance.DisablePanel(this);
     }
 
+    public void Exit_Btn()
+    {
+        GameManager.Instance.ExitGame();
+    }
+
     public void Activate()
     {
         Show();
@@ -52,5 +60,6 @@ public class SimplePanel : MonoBehaviour, IEscapeControllable
     public void Deactivate()
     {
         Hide();
+        DeactivateEvent?.Invoke();
     }
 }

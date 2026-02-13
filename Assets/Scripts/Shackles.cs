@@ -1,9 +1,11 @@
 using UnityEngine;
+using System.Linq;
 
 public class Shackles : MonoBehaviour
 {
     [SerializeField] private Transform _chain;
     [SerializeField] private Transform _weight;
+    [SerializeField] private Transform _chainParent;
 
 
     private void Start()
@@ -14,8 +16,20 @@ public class Shackles : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+        //DisaableChainTriggers();
         _chain.SetParent(null);
         _weight.SetParent(null);
+    }
+
+
+
+    private void DisaableChainTriggers()
+    {
+        Collider[] chainColliders = _chainParent.GetComponentsInChildren<Collider>();
+        foreach (Collider collider in chainColliders.Reverse())
+        {
+            collider.isTrigger = false;
+        }
     }
 
 

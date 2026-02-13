@@ -14,6 +14,8 @@ public class MenuPanel : MonoBehaviour, IEscapeControllable
     private SlotSelector _selectedSlot;
     private CanvasGroup _canvasGroup;
     private bool _isActive = false;
+    private float _originTimeScale = 1;
+    private bool _originCursorVisible = false;
 
 
 
@@ -27,12 +29,21 @@ public class MenuPanel : MonoBehaviour, IEscapeControllable
 
 
 
+    private void Start()
+    {
+        _settingPanel.Hide();
+        _restartCheckPanel.Hide();
+        _exitCheckPanel.Hide();
+    }
+
+
+
     public void Init()
     {
         _itemInfoPanel.HidePanel();
         InventorySystem.Instance.ConstructPassiveSlots(_passiveSlotsEntry, out List<ItemSlot> _passiveSlotList);
         Hide();
-        _titleTmp.text = $"스테이지 {StageController.Instance.StageNumber}\n<size=70%>웨이브 {WaveSystem.Instance.CurrentWave}</size>";
+        _titleTmp.text = $"{GameManager.Instance.StageTitle}\r\n<size=70%>웨이브 {WaveSystem.Instance.CurrentWave}</size>";
 
         foreach (ItemSlot slot in _passiveSlotList)
         {
@@ -80,8 +91,10 @@ public class MenuPanel : MonoBehaviour, IEscapeControllable
     public void Show()
     {
         _isActive = true;
+        _originCursorVisible = Cursor.visible;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        _originTimeScale = Time.timeScale;
         Time.timeScale = 0;
         _canvasGroup.alpha = 1;
         _canvasGroup.interactable = true;
@@ -93,10 +106,9 @@ public class MenuPanel : MonoBehaviour, IEscapeControllable
     public void Hide()
     {
         _isActive = false;
-        Cursor.visible = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = true;
-        Time.timeScale = 1;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = _originCursorVisible;
+        Time.timeScale = _originTimeScale;
         _canvasGroup.alpha = 0;
         _canvasGroup.interactable = false;
         _canvasGroup.blocksRaycasts = false;

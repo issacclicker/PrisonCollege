@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -6,7 +7,7 @@ using UnityEngine.UI;
 
 public class StageController : SceneSingleton<StageController>
 {
-    [Header("Stage")]
+    [Header("Dev Only")]
     [SerializeField] private int _stageNumber = 0;
     [Header("UI Bindings")]
     [SerializeField] private TextMeshProUGUI _waveTmp;
@@ -69,6 +70,7 @@ public class StageController : SceneSingleton<StageController>
     private AttributeModifier _studTaskModifier;
     private AttributeModifier _chaosDecreaseModifier;
     public int StageNumber => _stageNumber;
+    private int _originMoney;
 
 
 
@@ -84,7 +86,7 @@ public class StageController : SceneSingleton<StageController>
         _escapeStat.MaxReachEvent.AddListener(() => GameOver(false));
         _projectStat.MaxReachEvent.AddListener(OnProjectSuccessed);
 
-        _money = InventorySystem.Instance.Money;
+        _originMoney =_money = InventorySystem.Instance.Money;
         InventorySystem.Instance.ActivatePassiveItems();
 
         //SetStudentList();
@@ -108,7 +110,9 @@ public class StageController : SceneSingleton<StageController>
 
     private void Start()
     {
-        WaveSystem.Instance.NewWaveEntered();
+        WaveSystem.Instance.ApplySkybox();
+        //if (WaveSystem.Instance.CurrentWave <= 0)
+        //    WaveSystem.Instance.NewWaveEntered();
         _menuPanel.Init();
         _waveTmp.text = $"¿þÀÌºê {WaveSystem.Instance.CurrentWave}";
         InventorySystem.Instance.FillEquipSlots(_equipSlotList);
@@ -230,7 +234,21 @@ public class StageController : SceneSingleton<StageController>
         Player.DisableController();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
-        _stageOver.ShowOverPanel(isSuccess);
+
+        if (!isSuccess)
+        {
+            _stageOver.ShowStageOverPanel(false);
+        }
+        else if (WaveSystem.Instance.IsLastWave)
+        {
+            GameManager.Instance.StageCleared();
+            _stageOver.ShowStageOverPanel(true);
+        }
+        else
+        {
+            InventorySystem.Instance.SetMoney(_money);
+            _stageOver.ShowWaveOverPanel(_money - _originMoney);
+        }
     }
 
 

@@ -25594,7 +25594,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _name: "\uC774\uB8E8\uB9AC"
-  _behaviorWeightSet: {fileID: 11400000, guid: 1591aace07a5be841b34c0f1bf14467d, type: 2}
   _bodyOverlapAttacker: {fileID: 6042109257675916524}
   _tackleOverlapAttacker: {fileID: 6843810854157803772}
   DieEvent:
@@ -54720,6 +54719,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Shackles
   _chain: {fileID: 4952357372160990070}
   _weight: {fileID: 5862665408860673506}
+  _chainParent: {fileID: 1942938738225510078}
 --- !u!1 &7025528726012130844
 GameObject:
   m_ObjectHideFlags: 0
