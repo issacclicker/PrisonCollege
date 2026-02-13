@@ -111,6 +111,10 @@ public class StageController : SceneSingleton<StageController>
     private void Start()
     {
         WaveSystem.Instance.ApplySkybox();
+        if (GameManager.Instance.Difficulty == DifficultyLevel.Hard)
+        {
+            _chaosStat.Increase(100);
+        }
         //if (WaveSystem.Instance.CurrentWave <= 0)
         //    WaveSystem.Instance.NewWaveEntered();
         _menuPanel.Init();
@@ -298,15 +302,18 @@ public class StageController : SceneSingleton<StageController>
 
         _projectProgressBar.fillAmount = _projectStat.Ratio;
 
-        if (Mathf.Approximately(chaosChanged, 0)) return;
         string addChoasText;
-        if (chaosChanged > 0)
+        if (Mathf.Approximately(chaosChanged, 0))
         {
-            addChoasText = $"<size=70%> <color=red>(+{chaosChanged.ToString("F0")}/ s)</color></size>";
+            addChoasText = $"<size=70%> <color=white>(--)</color></size>";
+        }
+        else if (chaosChanged > 0)
+        {
+            addChoasText = $"<size=70%> <color=red>(+{chaosChanged.ToString("F0")}/s)</color></size>";
         }
         else
         {
-            addChoasText = $"<size=70%> <color=green>({chaosChanged.ToString("F0")}/ s)</color></size>";
+            addChoasText = $"<size=70%> <color=green>({chaosChanged.ToString("F0")}/s)</color></size>";
         }
         _chaosTmp.text += addChoasText;
     }
@@ -330,11 +337,14 @@ public class StageController : SceneSingleton<StageController>
             chaosChanged = chaosCauseCount * _increasePerStud * WaveSystem.Instance.ChaosFactor;
             _chaosStat.Increase(chaosChanged * Time.deltaTime);
         }
-        else
+        else if (!_chaosStat.IsDepleted)
         {
-            chaosChanged = _defaultReduction * _chaosDecreaseModifier.GetFinalValue();
-            _chaosStat.Decrease(chaosChanged * Time.deltaTime);
-            chaosChanged = -chaosChanged;
+            if (GameManager.Instance.Difficulty != DifficultyLevel.Hard || _chaosStat.Current > 100)
+            {
+                chaosChanged = _defaultReduction * _chaosDecreaseModifier.GetFinalValue();
+                _chaosStat.Decrease(chaosChanged * Time.deltaTime);
+                chaosChanged = -chaosChanged;
+            }
         }
         return chaosChanged;
     }

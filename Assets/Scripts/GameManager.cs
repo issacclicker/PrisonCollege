@@ -13,12 +13,13 @@ public class GameManager : PersistentSingleton<GameManager>
     [SerializeField] private string _stagePrefix;
     [SerializeField] private string _store;
     private StageInfo _currentStage;
-    private DifficultyLevel _currentDifficulty;
+    [SerializeField] private DifficultyLevel _currentDifficulty;
     public bool hasToStageSelect = false;
 
 
     public StageInfo[] StageEntries => _stageEntries;
     public string StageTitle => $"{_currentStage.number}. {_currentStage.name}";
+    public DifficultyLevel Difficulty => _currentDifficulty;
 
 
 
