@@ -15944,6 +15944,7 @@ MonoBehaviour:
   _stagePrepare: StagePrepare
   _stagePrefix: Stage
   _store: Store
+  _currentDifficulty: 2
   hasToStageSelect: 0
 --- !u!4 &1606769379
 Transform:
