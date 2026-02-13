@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 public class StageController : SceneSingleton<StageController>
 {
-    [Header("Stage")]
+    [Header("Dev Only")]
     [SerializeField] private int _stageNumber = 0;
     [Header("UI Bindings")]
     [SerializeField] private TextMeshProUGUI _waveTmp;
@@ -108,7 +108,8 @@ public class StageController : SceneSingleton<StageController>
 
     private void Start()
     {
-        WaveSystem.Instance.NewWaveEntered();
+        //if (WaveSystem.Instance.CurrentWave <= 0)
+        //    WaveSystem.Instance.NewWaveEntered();
         _menuPanel.Init();
         _waveTmp.text = $"¿þÀÌºê {WaveSystem.Instance.CurrentWave}";
         InventorySystem.Instance.FillEquipSlots(_equipSlotList);

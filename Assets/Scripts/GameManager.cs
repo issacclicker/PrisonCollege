@@ -8,16 +8,40 @@ public class GameManager : PersistentSingleton<GameManager>
     [SerializeField] private StageInfo[] _stageEntries;
     [Header("Scene Names")]
     [SerializeField] private string _mainScreen;
-    [SerializeField] private string _stageStart;
+    [SerializeField] private string _stagePrepare;
+    [SerializeField] private string _stagePrefix;
+    private StageInfo _currentStage;
+    private DifficultyLevel _currentDifficulty;
 
 
     public StageInfo[] StageEntries => _stageEntries;
+    public string StageTitle => $"{_currentStage.number}. {_currentStage.name}";
 
 
 
     protected override void Awake()
     {
         base.Awake();
+        if (_stageEntries == null)
+        {
+            _currentStage = new StageInfo();
+            _currentStage.number = StageController.Instance.StageNumber;
+        }
+        //ShowMainScreen();
+    }
+
+
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        ResetGlobalControlStats();
+    }
+
+
+
+    public void StartStage()
+    {
+        SceneManager.LoadScene($"{_stagePrefix}{_currentStage.number}");
     }
 
 
@@ -32,18 +56,21 @@ public class GameManager : PersistentSingleton<GameManager>
 
 
 
-    public void StartStage(int stageNum, DifficultyLevel difficultyLevel)
+    public void PrepareStage(int stageNum, DifficultyLevel difficultyLevel)
     {
-        ResetGlobalControlStats();
-        SceneManager.LoadScene(_stageStart);
+        WaveSystem.Instance.ResetWave();
+        _currentStage = _stageEntries[stageNum - 1];
+        _currentDifficulty = difficultyLevel;
+        SceneManager.LoadScene(_stagePrepare);
     }
 
 
 
     public void ShowMainScreen()
     {
-        ResetGlobalControlStats();
         SceneManager.LoadScene(_mainScreen);
+        _currentStage = null;
+        _currentDifficulty = DifficultyLevel.None;
     }
 
 

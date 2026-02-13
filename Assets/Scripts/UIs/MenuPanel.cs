@@ -32,7 +32,7 @@ public class MenuPanel : MonoBehaviour, IEscapeControllable
         _itemInfoPanel.HidePanel();
         InventorySystem.Instance.ConstructPassiveSlots(_passiveSlotsEntry, out List<ItemSlot> _passiveSlotList);
         Hide();
-        _titleTmp.text = $"스테이지 {StageController.Instance.StageNumber}\n<size=70%>웨이브 {WaveSystem.Instance.CurrentWave}</size>";
+        _titleTmp.text = $"{GameManager.Instance.StageTitle}\r\n<size=70%>웨이브 {WaveSystem.Instance.CurrentWave}</size>";
 
         foreach (ItemSlot slot in _passiveSlotList)
         {

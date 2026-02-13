@@ -7,6 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class SlotPackage : MonoBehaviour
 {
+    [SerializeField] private TextMeshProUGUI _titleTmp;
     [SerializeField] private SlotEntry _shopSlotEntry;
     [SerializeField] private SlotEntry _passiveSlotEntry;
     [SerializeField] private List<ItemSlot> _weaponSlotList;
@@ -38,6 +39,7 @@ public class SlotPackage : MonoBehaviour
         //        _slotList.Add(slotSelector);
         //    }
         //}
+        WaveSystem.Instance.NewWaveEntered();
         _itemInfoPanel.HidePanel();
         _moneyTmp.text = InventorySystem.Instance.Money.ToString("N0");
         InventorySystem.Instance.ConstructShopSlots(_shopSlotEntry);
@@ -54,6 +56,7 @@ public class SlotPackage : MonoBehaviour
                 dragItem.ItemDropEvent.AddListener(OnWeaponDroped);
             }
         }
+        _titleTmp.text = $"{GameManager.Instance.StageTitle}\r\n<size=80%>¿þÀÌºê {WaveSystem.Instance.CurrentWave}</size>";
     }
 
 
@@ -146,10 +149,10 @@ public class SlotPackage : MonoBehaviour
     }
 
 
-    public void DoNextWave()
+    public void StartWave_Btn()
     {
-        Time.timeScale = 1;
-        SceneManager.LoadScene("Level2_Range");
+        //SceneManager.LoadScene("Level2_Range");
+        GameManager.Instance.StartStage();
     }
 }
 

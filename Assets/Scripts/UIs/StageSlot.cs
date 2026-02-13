@@ -141,14 +141,14 @@ public class StageSlot : MonoBehaviour, IPointerClickHandler
 
     public void Normal_Btn()
     {
-        GameManager.Instance.StartStage(_stageInfo.number, DifficultyLevel.Normal);
+        GameManager.Instance.PrepareStage(_stageInfo.number, DifficultyLevel.Normal);
     }
 
 
 
     public void Hard_Btn()
     {
-        GameManager.Instance.StartStage(_stageInfo.number, DifficultyLevel.Hard);
+        GameManager.Instance.PrepareStage(_stageInfo.number, DifficultyLevel.Hard);
     }
 }
 

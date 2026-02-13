@@ -24,7 +24,7 @@ public class WaveSystem : PersistentSingleton<WaveSystem>
     [SerializeField] private float _nightChaosFactor;
     [SerializeField] private float _nightProjectFactor;
 
-    private int _currentWave = 0;
+    [SerializeField] private int _currentWave = 0;
     private DayState _currentDayState;
     private float _chaosFactor = 0;
     private float _projectFactor = 0;
@@ -53,5 +53,12 @@ public class WaveSystem : PersistentSingleton<WaveSystem>
             _projectFactor = _nightProjectFactor;
         }
         DynamicGI.UpdateEnvironment();
+    }
+
+
+
+    public void ResetWave()
+    {
+        _currentWave = 0;
     }
 }
