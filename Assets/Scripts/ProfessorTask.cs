@@ -5,6 +5,8 @@ public class ProfessorTask : MonoBehaviour
 {
     [SerializeField] private Monitor _monitor;
     [SerializeField] private Transform _cameraSocket;
+    [SerializeField] private GameObject _taskInfoPanel;
+    [SerializeField] private GameObject _crosshairPanel;
     private Click _interaction;
     private Professor _professor;
     private bool _isTasking = false;
@@ -14,6 +16,7 @@ public class ProfessorTask : MonoBehaviour
 
     private void Awake()
     {
+        _taskInfoPanel.SetActive(false);
         _professor = StageController.Instance.Player;
         _interaction = GetComponent<Click>();
         _interaction.ActionName = "프로젝트 진행";
@@ -83,6 +86,10 @@ public class ProfessorTask : MonoBehaviour
     {
         if (!IsTasking) return;
         _isTasking = false;
+        _interaction.FillAmount = 0;
+        _taskInfoPanel.SetActive(false);
+        _crosshairPanel.SetActive(true);
+        _professor.gameObject.transform.parent = null;
         _monitor.ChangeDisplay(DisplayState.Off);
     }
 
@@ -91,6 +98,8 @@ public class ProfessorTask : MonoBehaviour
     private void DoTask()
     {
         _isTasking = true;
+        _taskInfoPanel.SetActive(true);
+        _crosshairPanel.SetActive(false);
         AttachProp(_professor.gameObject, _cameraSocket);
         _professor.SetTaskPose();
         _monitor.ChangeDisplay(DisplayState.Working);
@@ -101,7 +110,10 @@ public class ProfessorTask : MonoBehaviour
     private void StopTask()
     {
         _interaction.FillAmount = 0;
+        _taskInfoPanel.SetActive(false);
+        _crosshairPanel.SetActive(true);
         _isTasking = false;
+        _professor.gameObject.transform.parent = null;
         _professor.UnsetTaskPose();
         _monitor.ChangeDisplay(DisplayState.Off);
     }
