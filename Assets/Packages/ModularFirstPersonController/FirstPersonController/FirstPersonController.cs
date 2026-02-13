@@ -151,6 +151,7 @@ public class FirstPersonController : MonoBehaviour
 
     private void Awake()
     {
+        ApplyControlSettings();
         staminaCostMod = AttributeSystem.Instance.StaminaCostMod;
         professor = GetComponent<Professor>();
         jumpStamina = professor.JumpStamina;
@@ -158,6 +159,7 @@ public class FirstPersonController : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         moveSpeedMod = AttributeSystem.Instance.ProfMoveSpeedMod;
         crosshairObject = GetComponentInChildren<Image>();
+        GameManager.Instance.ControlSettingChangeEvent.AddListener(ApplyControlSettings);
 
         // Set internal variables
         playerCamera.fieldOfView = fov;
@@ -472,6 +474,14 @@ public class FirstPersonController : MonoBehaviour
             rb.MovePosition(rb.position + movement);
         }
         #endregion
+    }
+
+
+
+    private void ApplyControlSettings()
+    {
+        mouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity", 3.0f);
+        holdToSprint = PlayerPrefs.GetInt("SprintMode", 1) == 0;
     }
 
     public void StopSprinting()

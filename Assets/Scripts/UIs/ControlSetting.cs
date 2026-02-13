@@ -71,6 +71,7 @@ public class ControlSetting : MonoBehaviour
     {
         PlayerPrefs.SetFloat("MouseSensitivity", value);
         UpdateSensitivityText(value);
+        GameManager.Instance.ControlSettingChanged();
     }
 
     private void OnSprintModeChanged(int modeIndex)
@@ -78,6 +79,7 @@ public class ControlSetting : MonoBehaviour
         // 0은 홀드, 1은 토글로 정의하여 저장
         PlayerPrefs.SetInt("SprintMode", modeIndex);
         Debug.Log(modeIndex == 1 ? "달리기 방식: 토글" : "달리기 방식: 홀드");
+        GameManager.Instance.ControlSettingChanged();
     }
 
     private void UpdateSensitivityText(float value)
