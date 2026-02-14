@@ -13076,6 +13076,7 @@ MonoBehaviour:
   _effectTmp: {fileID: 1657715695}
   _descriptionTmp: {fileID: 243264522}
   _purchaseBtnObject: {fileID: 63988082}
+  _purchaseBtnTmp: {fileID: 71306698}
 --- !u!1 &1129128961
 GameObject:
   m_ObjectHideFlags: 0
@@ -20388,11 +20389,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SlotPackage
   _titleTmp: {fileID: 862748420}
   _shopSlotEntry:
-    parent: {fileID: 1239154498}
-    prefab: {fileID: 8264880320349448889, guid: f62aad2caaa068a48b2fae3737f437a0, type: 3}
+    parent: {fileID: 0}
+    prefab: {fileID: 0}
   _passiveSlotEntry:
-    parent: {fileID: 697283800}
-    prefab: {fileID: 2902638696606142299, guid: 221203bb7f0da9c4ba8a049ad458060f, type: 3}
+    parent: {fileID: 0}
+    prefab: {fileID: 0}
   _weaponSlotList:
   - {fileID: 3016529421733533012}
   - {fileID: 5938069512830479757}

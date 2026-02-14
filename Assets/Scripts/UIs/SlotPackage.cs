@@ -42,8 +42,10 @@ public class SlotPackage : MonoBehaviour
         WaveSystem.Instance.NewWaveEntered();
         _itemInfoPanel.HidePanel();
         _moneyTmp.text = InventorySystem.Instance.Money.ToString("N0");
-        InventorySystem.Instance.ConstructShopSlots(_shopSlotEntry);
-        InventorySystem.Instance.ConstructPassiveSlots(_passiveSlotEntry, out _passiveSlotList);
+        if (_shopSlotEntry.parent != null)
+            InventorySystem.Instance.ConstructShopSlots(_shopSlotEntry);
+        if (_passiveSlotEntry.parent != null)
+            InventorySystem.Instance.ConstructPassiveSlots(_passiveSlotEntry, out _passiveSlotList);
         InventorySystem.Instance.FillWeaponSlots(_weaponSlotList);
         InventorySystem.Instance.FillEquipSlots(_equipSlotList);
         _slotSelectorList = Object.FindObjectsByType<SlotSelector>(FindObjectsSortMode.None).ToList();
