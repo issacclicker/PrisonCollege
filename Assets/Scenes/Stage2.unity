@@ -223321,24 +223321,9 @@ MonoBehaviour:
   - studentPrefab: {fileID: 4739142842488691258, guid: 56d90e59d731f3a4b84940a15c3070ae, type: 3}
     seatSpot: {fileID: 351914360}
     spawnTransform: {fileID: 1993249138}
-  - studentPrefab: {fileID: 4739142842488691258, guid: 56d90e59d731f3a4b84940a15c3070ae, type: 3}
+  - studentPrefab: {fileID: 3421210988914458179, guid: 114cd1dcc1bce1e4ab048c17f552663e, type: 3}
     seatSpot: {fileID: 2094842679}
     spawnTransform: {fileID: 1993249138}
-  - studentPrefab: {fileID: 4739142842488691258, guid: 56d90e59d731f3a4b84940a15c3070ae, type: 3}
-    seatSpot: {fileID: 596062455}
-    spawnTransform: {fileID: 1417338085}
-  - studentPrefab: {fileID: 4739142842488691258, guid: 56d90e59d731f3a4b84940a15c3070ae, type: 3}
-    seatSpot: {fileID: 1443251128}
-    spawnTransform: {fileID: 801422040}
-  - studentPrefab: {fileID: 4739142842488691258, guid: 56d90e59d731f3a4b84940a15c3070ae, type: 3}
-    seatSpot: {fileID: 1953398966}
-    spawnTransform: {fileID: 150842039}
-  - studentPrefab: {fileID: 4739142842488691258, guid: 56d90e59d731f3a4b84940a15c3070ae, type: 3}
-    seatSpot: {fileID: 677309253}
-    spawnTransform: {fileID: 856405010}
-  - studentPrefab: {fileID: 4739142842488691258, guid: 56d90e59d731f3a4b84940a15c3070ae, type: 3}
-    seatSpot: {fileID: 840494496}
-    spawnTransform: {fileID: 1840439038}
 --- !u!4 &1319218805
 Transform:
   m_ObjectHideFlags: 0
