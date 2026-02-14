@@ -1044,6 +1044,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8917015005771551811}
   - component: {fileID: 4132309554006852585}
+  - component: {fileID: 7945323466400903624}
   m_Layer: 5
   m_Name: Stage1
   m_TagString: Untagged
@@ -1088,7 +1089,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d1ab243e686fd354cbd6422b20251e02, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StageSlot
-  _stageNumber: 1
   _mainImg: {fileID: 3963872326241906611}
   _borderImg: {fileID: 2686989094994856816}
   _titleTmp: {fileID: 859557556104993752}
@@ -1103,6 +1103,25 @@ MonoBehaviour:
   MouseClickEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &7945323466400903624
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4861389902745686223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 244aa38be1eb7b04081eb641a9e630b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Hover
+  _colorChangeEntries:
+  - graphic: {fileID: 3963872326241906611}
+    hoverColor: {r: 0.39215687, g: 0.39215687, b: 0.39215687, a: 1}
+  - graphic: {fileID: 3301938869226583321}
+    hoverColor: {r: 1, g: 1, b: 1, a: 1}
+  - graphic: {fileID: 859557556104993752}
+    hoverColor: {r: 0, g: 0, b: 0, a: 1}
 --- !u!1 &5333910416977794655
 GameObject:
   m_ObjectHideFlags: 0

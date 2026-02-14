@@ -28,6 +28,7 @@ public class StageSlot : MonoBehaviour, IPointerClickHandler
     //[SerializeField] private DifficultyLevel _clearState = DifficultyLevel.None;
     private Color _originBorderColor;
     private StageInfo _stageInfo;
+    private Hover _hover;
 
     //public DifficultyLevel ClearState { set { _clearState = (DifficultyLevel)Mathf.Max((int)_clearState, (int)value); } }
     [HideInInspector] public UnityEvent<StageSlot> MouseClickEvent = new();
@@ -37,6 +38,7 @@ public class StageSlot : MonoBehaviour, IPointerClickHandler
 
     private void Awake()
     {
+        _hover = GetComponent<Hover>();
         _originBorderColor = _borderImg.color;
         _focusGroup.gameObject.SetActive(true);
         _lockGroup.gameObject.SetActive(true);
@@ -95,6 +97,7 @@ public class StageSlot : MonoBehaviour, IPointerClickHandler
 
     private void SetLockUI()
     {
+        _hover.enabled = !_stageInfo.isLocked;
         if (_stageInfo.isLocked)
         {
             _lockGroup.alpha = 1;
