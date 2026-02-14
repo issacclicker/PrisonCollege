@@ -158,7 +158,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: -150}
-  m_SizeDelta: {x: 560.1, y: 315}
+  m_SizeDelta: {x: 560.1, y: 350}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &17899253
 MonoBehaviour:
@@ -20916,7 +20916,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC7A5\uCC29"
+  m_text: "\uC7A5\uCC29 \uBB34\uAE30"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 00fec740f35c6424a80b04759476dd17, type: 2}
   m_sharedMaterial: {fileID: 3196442768583695492, guid: 00fec740f35c6424a80b04759476dd17, type: 2}
@@ -22380,10 +22380,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "WASD : \uC774\uB3D9\nShift : \uB2EC\uB9AC\uAE30\nLMB : \uACF5\uACA9\n1~4,\uB9C8\uC6B0\uC2A4\uD720
-    : \uBB34\uAE30 \uC2A4\uC651"
+    : \uBB34\uAE30 \uC2A4\uC651\nF : \uC0C1\uD638\uC791\uC6A9"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 5c4138cd3e447954b824ee4bb6036417, type: 2}
-  m_sharedMaterial: {fileID: 6674366100730392943, guid: 5c4138cd3e447954b824ee4bb6036417, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 00fec740f35c6424a80b04759476dd17, type: 2}
+  m_sharedMaterial: {fileID: 3196442768583695492, guid: 00fec740f35c6424a80b04759476dd17, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -22419,7 +22419,7 @@ MonoBehaviour:
   m_textAlignment: 65535
   m_characterSpacing: -4
   m_wordSpacing: 0
-  m_lineSpacing: 60
+  m_lineSpacing: 30
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0

@@ -12208,7 +12208,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 349002a57e48f62439f268876d8d7c39, type: 2}
   - {fileID: 11400000, guid: f142abbb6aee09c40b9b1cce2b2d7f9a, type: 2}
   _equipLimit: 4
-  _money: 100
+  _money: 5000
   _equipedItemList: []
 --- !u!4 &656744284
 Transform:
@@ -16163,7 +16163,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uD328\uC2DC\uBE0C"
+  m_text: "\uD328\uC2DC\uBE0C <size=80%>(\uAE30\uBCF8 \uC7A5\uCC29)</size>"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 00fec740f35c6424a80b04759476dd17, type: 2}
   m_sharedMaterial: {fileID: 3196442768583695492, guid: 00fec740f35c6424a80b04759476dd17, type: 2}
@@ -34885,7 +34885,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC7A5\uCC29"
+  m_text: "\uC7A5\uCC29 \uBB34\uAE30"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 00fec740f35c6424a80b04759476dd17, type: 2}
   m_sharedMaterial: {fileID: 3196442768583695492, guid: 00fec740f35c6424a80b04759476dd17, type: 2}
