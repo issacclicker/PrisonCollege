@@ -56,7 +56,15 @@ public class SlotPackage : MonoBehaviour
                 dragItem.ItemDropEvent.AddListener(OnWeaponDroped);
             }
         }
-        _titleTmp.text = $"{GameManager.Instance.StageTitle}\r\n<size=80%>웨이브 {WaveSystem.Instance.CurrentWave}</size>";
+        _titleTmp.text = $"{GameManager.Instance.StageTitle}\r\n";
+        if (GameManager.Instance.Difficulty == DifficultyLevel.Hard)
+        {
+            _titleTmp.text += $"<size=80%><color=red>웨이브 {WaveSystem.Instance.CurrentWave}</color></size>";
+        }
+        else
+        {
+            _titleTmp.text += $"<size=80%>웨이브 {WaveSystem.Instance.CurrentWave}</size>";
+        }
     }
 
 
@@ -153,6 +161,22 @@ public class SlotPackage : MonoBehaviour
     {
         //SceneManager.LoadScene("Level2_Range");
         GameManager.Instance.StartStage();
+    }
+
+
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            GameManager.Instance.ShowStageSelect();
+        }
+    }
+
+
+    public void MainScreen_Btn()
+    {
+        GameManager.Instance.ShowStageSelect();
     }
 }
 
