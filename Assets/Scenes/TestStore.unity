@@ -37197,7 +37197,7 @@ MonoBehaviour:
   _titleTmp: {fileID: 2115659449}
   _shopSlotEntry:
     parent: {fileID: 1051733978}
-    prefab: {fileID: 8805591899485258927, guid: d210abd6db410ce4899c9d7e707ed027, type: 3}
+    prefab: {fileID: 8805591899485258927, guid: 9ca904180ee1fad4a94f421e3bc6af2a, type: 3}
   _passiveSlotEntry:
     parent: {fileID: 43581662}
     prefab: {fileID: 2902638696606142299, guid: 221203bb7f0da9c4ba8a049ad458060f, type: 3}
