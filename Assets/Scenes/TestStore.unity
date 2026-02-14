@@ -37200,7 +37200,7 @@ MonoBehaviour:
     prefab: {fileID: 8805591899485258927, guid: 9ca904180ee1fad4a94f421e3bc6af2a, type: 3}
   _passiveSlotEntry:
     parent: {fileID: 43581662}
-    prefab: {fileID: 2902638696606142299, guid: 221203bb7f0da9c4ba8a049ad458060f, type: 3}
+    prefab: {fileID: 3474531231185518060, guid: 2beb289226b0d1340b97b7b337526e3e, type: 3}
   _weaponSlotList:
   - {fileID: 1020531054}
   - {fileID: 642715901}
@@ -37216,7 +37216,7 @@ MonoBehaviour:
   - {fileID: 826044955}
   - {fileID: 1714151419}
   _itemInfoPanel: {fileID: 1022843486}
-  _moneyTmp: {fileID: 1275017594}
+  _moneyTmp: {fileID: 174960669}
 --- !u!1 &1884123162
 GameObject:
   m_ObjectHideFlags: 0
