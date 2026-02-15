@@ -238167,10 +238167,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StudentSpawner
   spawnEntries:
-  - studentPrefab: {fileID: 4739142842488691258, guid: 56d90e59d731f3a4b84940a15c3070ae, type: 3}
+  - studentPrefab: {fileID: 1656791591194506806, guid: 3b15b448b5bb27547904e2e700b04a51, type: 3}
     seatSpot: {fileID: 351914360}
     spawnTransform: {fileID: 1993249138}
-  - studentPrefab: {fileID: 4739142842488691258, guid: 56d90e59d731f3a4b84940a15c3070ae, type: 3}
+  - studentPrefab: {fileID: 2561369457695134935, guid: eed92bd1aa356c9409a12221a009e3cb, type: 3}
     seatSpot: {fileID: 2094842679}
     spawnTransform: {fileID: 1417338085}
 --- !u!4 &1319218805
