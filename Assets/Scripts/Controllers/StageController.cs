@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
@@ -19,8 +20,12 @@ public class StageController : SceneSingleton<StageController>
     [SerializeField] private Image _projectProgressBar;
     [SerializeField] private List<ItemSlot> _equipSlotList;
     [SerializeField] private MenuPanel _menuPanel;
+    [SerializeField] private TextMeshProUGUI _prepareTimerTmp;
+    [SerializeField] private CanvasGroup _preparePanelGroup;
+    [SerializeField] private CanvasGroup _topPanelGroup;
     [Header("Stats")]
     [SerializeField] private Stat _timerStat;
+    [SerializeField] private Stat _prepareTimeStat;
     [SerializeField] private Stat _chaosStat;
     [SerializeField] private Stat _escapeStat;
     [SerializeField] private Stat _projectStat;
@@ -71,6 +76,8 @@ public class StageController : SceneSingleton<StageController>
     private AttributeModifier _chaosDecreaseModifier;
     public int StageNumber => _stageNumber;
     private int _originMoney;
+    private bool _isPreparing;
+    public UnityEvent StageStartEvent = new();
 
 
 
@@ -78,11 +85,13 @@ public class StageController : SceneSingleton<StageController>
     {
         base.Awake();
         _timerStat.Initialize();
+        _prepareTimeStat.Initialize();
         _chaosStat.Initialize(true);
         _escapeStat.Initialize(true);
         _projectStat.Initialize(true);
 
         _timerStat.DepletedEvent.AddListener(() => GameOver(true));
+        _prepareTimeStat.DepletedEvent.AddListener(InitStage);
         _escapeStat.MaxReachEvent.AddListener(() => GameOver(false));
         _projectStat.MaxReachEvent.AddListener(OnProjectSuccessed);
 
@@ -110,6 +119,7 @@ public class StageController : SceneSingleton<StageController>
 
     private void Start()
     {
+        StartPrepare();
         WaveSystem.Instance.ApplySkybox();
         if (GameManager.Instance.Difficulty == DifficultyLevel.Hard)
         {
@@ -128,6 +138,49 @@ public class StageController : SceneSingleton<StageController>
             student.DieEvent.AddListener(OnStudentDied);
             student.EscapeEvent.AddListener(OnStudentEscaped);
         }
+    }
+
+
+
+    private void Update()
+    {
+        if ((Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter) && _isPreparing))
+        {
+            InitStage();
+        }
+        if (!_isPreparing)
+        {
+            CountWorkingStudents();
+            CheckProfessorProgressing();
+            ProgressProject();
+            DecreaseTime();
+        }
+        else
+        {
+            _prepareTimeStat.Decrease(Time.deltaTime);
+            _prepareTimerTmp.text = _prepareTimeStat.Current.ToString("F0");
+        }
+        float chaosChanged = IncreaseChaos();
+        UpdateUIs(chaosChanged);
+    }
+
+
+
+    private void StartPrepare()
+    {
+        _isPreparing = true;
+        _preparePanelGroup.alpha = 1;
+        _topPanelGroup.alpha = 0.2f;
+    }
+
+
+
+    private void InitStage()
+    {
+        _isPreparing = false;
+        _preparePanelGroup.alpha = 0;
+        _topPanelGroup.alpha = 1f;
+        StageStartEvent?.Invoke();
     }
 
 
@@ -159,22 +212,6 @@ public class StageController : SceneSingleton<StageController>
             if (student == null) continue;
             _studentList.Add(student);
         }
-    }
-
-
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            //_chaosStat.Increase(20);
-        }
-        CountWorkingStudents();
-        CheckProfessorProgressing();
-        ProgressProject();
-        float chaosChanged = IncreaseChaos();
-        DecreaseStats();
-        UpdateUIs(chaosChanged);
     }
 
 
@@ -351,7 +388,7 @@ public class StageController : SceneSingleton<StageController>
 
 
 
-    private void DecreaseStats()
+    private void DecreaseTime()
     {
         _timerStat.Decrease(Time.deltaTime);
         //_chaosStat.Decrease(_defaultReduction * Time.deltaTime);
