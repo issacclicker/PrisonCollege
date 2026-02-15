@@ -238173,6 +238173,12 @@ MonoBehaviour:
   - studentPrefab: {fileID: 2561369457695134935, guid: eed92bd1aa356c9409a12221a009e3cb, type: 3}
     seatSpot: {fileID: 2094842679}
     spawnTransform: {fileID: 1417338085}
+  - studentPrefab: {fileID: 7671508781335489845, guid: 3c5b5df75cd8c65408171222a30525ef, type: 3}
+    seatSpot: {fileID: 596062455}
+    spawnTransform: {fileID: 801422040}
+  - studentPrefab: {fileID: 6902459354513429030, guid: 379e98733ec5f2646b772875c1bbb7aa, type: 3}
+    seatSpot: {fileID: 1443251128}
+    spawnTransform: {fileID: 150842039}
 --- !u!4 &1319218805
 Transform:
   m_ObjectHideFlags: 0

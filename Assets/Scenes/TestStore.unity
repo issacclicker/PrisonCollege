@@ -26165,7 +26165,7 @@ MonoBehaviour:
   - behaviorWeightSet: {fileID: 11400000, guid: 1591aace07a5be841b34c0f1bf14467d, type: 2}
     dayState: 0
     explanation: 
-    enforceProb: 1
+    enforceProb: 0.5
   - behaviorWeightSet: {fileID: 11400000, guid: ce046bb6febef6142b878691527993c1, type: 2}
     dayState: 1
     explanation: 
@@ -27751,7 +27751,7 @@ MonoBehaviour:
   _stagePrepare: StagePrepare
   _stagePrefix: Stage
   _store: Store
-  _currentDifficulty: 2
+  _currentDifficulty: 1
   hasToStageSelect: 0
   ControlSettingChangeEvent:
     m_PersistentCalls:
