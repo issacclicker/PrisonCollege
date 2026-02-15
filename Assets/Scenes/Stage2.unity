@@ -101637,7 +101637,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2832918e06c9a04488e97af97613ad69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
-  _maxStat: 121
+  _maxStat: 20
   _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
@@ -101754,7 +101754,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2832918e06c9a04488e97af97613ad69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
-  _maxStat: 20
+  _maxStat: 21
   _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
@@ -238172,7 +238172,7 @@ MonoBehaviour:
     spawnTransform: {fileID: 1993249138}
   - studentPrefab: {fileID: 4739142842488691258, guid: 56d90e59d731f3a4b84940a15c3070ae, type: 3}
     seatSpot: {fileID: 2094842679}
-    spawnTransform: {fileID: 1993249138}
+    spawnTransform: {fileID: 1417338085}
 --- !u!4 &1319218805
 Transform:
   m_ObjectHideFlags: 0

@@ -80,9 +80,20 @@ public class Professor : MonoBehaviour, IAttackable
         // }
         if (Time.timeScale == 0) return;
         if (_health.IsDepleted) return;
+        CheckFallDown();
         HandleSprintStamina();
         HandleWeaponAttack();
         HandleWeaponSwap();
+    }
+
+
+
+    private void CheckFallDown()
+    {
+        if (transform.position.y < -50)
+        {
+            transform.position = _taskEndTransform.position;
+        }
     }
 
 
