@@ -26165,15 +26165,19 @@ MonoBehaviour:
   - behaviorWeightSet: {fileID: 11400000, guid: 1591aace07a5be841b34c0f1bf14467d, type: 2}
     dayState: 0
     explanation: 
+    enforceProb: 1
   - behaviorWeightSet: {fileID: 11400000, guid: ce046bb6febef6142b878691527993c1, type: 2}
     dayState: 1
     explanation: 
+    enforceProb: 0
   - behaviorWeightSet: {fileID: 11400000, guid: 1591aace07a5be841b34c0f1bf14467d, type: 2}
     dayState: 0
     explanation: 
+    enforceProb: 0
   - behaviorWeightSet: {fileID: 11400000, guid: ce046bb6febef6142b878691527993c1, type: 2}
     dayState: 1
     explanation: 
+    enforceProb: 0
   _nightChaosFactor: 1.5
   _nightProjectFactor: 2
   _currentWave: 0

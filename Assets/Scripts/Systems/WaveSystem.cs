@@ -14,6 +14,7 @@ public class WaveSystem : PersistentSingleton<WaveSystem>
         public BehaviorWeightSet behaviorWeightSet;
         public DayState dayState;
         public string explanation;
+        [Range(0, 1)] public float enforceProb;
     }
 
     [Header("Skybox")]
@@ -35,7 +36,9 @@ public class WaveSystem : PersistentSingleton<WaveSystem>
     public float ChaosFactor => _chaosFactor;
     public float ProjectFactor => _projectFactor;
     public bool IsLastWave => _currentWave >= waveEntries.Length;
-    public string WaveInfoExplanation { get 
+    public string WaveInfoExplanation
+    { 
+        get 
         {
             string explanation;
             if (_currentDayState == DayState.Night)
@@ -49,6 +52,15 @@ public class WaveSystem : PersistentSingleton<WaveSystem>
             explanation += waveEntries[_currentWave - 1].explanation;
             return explanation;
         } 
+    }
+
+    public bool HasToEnforce
+    {
+        get
+        {
+            float randValue = UnityEngine.Random.value;
+            return randValue < waveEntries[_currentWave - 1].enforceProb;
+        }
     }
 
 

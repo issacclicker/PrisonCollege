@@ -25404,7 +25404,8 @@ GameObject:
   - component: {fileID: 4556037887649560766}
   - component: {fileID: 7350580280741711662}
   - component: {fileID: 1417591996075885035}
-  - component: {fileID: 1221698579541005805}
+  - component: {fileID: 67614065562401482}
+  - component: {fileID: 4704472742255851908}
   - component: {fileID: 5844197381090792540}
   - component: {fileID: 5992663085186407334}
   - component: {fileID: 6100255323019171480}
@@ -25631,7 +25632,7 @@ MonoBehaviour:
   ResetEvent:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1221698579541005805
+--- !u!114 &67614065562401482
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -25640,9 +25641,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 4739142842488691258}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4661984bce66cd3469ca62a93d69154e, type: 3}
+  m_Script: {fileID: 11500000, guid: fbc7ffc1838b5b2488388bd7a41458c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxStat: 200
+  _currentStat: 0
+  IncreaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DecreaseEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  DepletedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  MaxReachEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  ResetEvent:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &4704472742255851908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4739142842488691258}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7da2099491a62c7489e5fa361ae5bcc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnforceableDamageReceiver
   StatUpEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -25655,6 +25685,9 @@ MonoBehaviour:
   MaxReachEvent:
     m_PersistentCalls:
       m_Calls: []
+  _defaultHealth: {fileID: 1417591996075885035}
+  _enforcedHealth: {fileID: 67614065562401482}
+  _enforceObject: {fileID: 3559615263008113821}
 --- !u!114 &5844197381090792540
 MonoBehaviour:
   m_ObjectHideFlags: 0

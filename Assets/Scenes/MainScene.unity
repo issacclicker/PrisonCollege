@@ -4545,17 +4545,21 @@ MonoBehaviour:
   - behaviorWeightSet: {fileID: 11400000, guid: 1591aace07a5be841b34c0f1bf14467d, type: 2}
     dayState: 0
     explanation: 
+    enforceProb: 0.5
   - behaviorWeightSet: {fileID: 11400000, guid: ce046bb6febef6142b878691527993c1, type: 2}
     dayState: 1
     explanation: "\uCD94\uAC00 \uD589\uB3D9: \uD654\uC7AC \uC720\uBC1C <size=80%>(\uB2F4\uBC30,
       \uC804\uC790\uB80C\uC9C0)</size>"
+    enforceProb: 0
   - behaviorWeightSet: {fileID: 11400000, guid: 1591aace07a5be841b34c0f1bf14467d, type: 2}
     dayState: 0
     explanation: "\uCD94\uAC00 \uD589\uB3D9: \uD63C\uB780 \uC720\uBC1C <size=80%>(\uD0DC\uD074,
       \uBC0E\uC9F1)</size>"
+    enforceProb: 0
   - behaviorWeightSet: {fileID: 11400000, guid: ce046bb6febef6142b878691527993c1, type: 2}
     dayState: 1
     explanation: "\uB300\uD559\uC6D0\uC0DD\uBCC4 \uBB34\uC7A5 \uD655\uB960 20% <size=80%></size>"
+    enforceProb: 0
   _nightChaosFactor: 2
   _nightProjectFactor: 2
   _currentWave: 0
