@@ -14,6 +14,7 @@ public class SlotPackage : MonoBehaviour
     [SerializeField] private List<ItemSlot> _equipSlotList;
     [SerializeField] private ItemInfoPanel _itemInfoPanel;
     [SerializeField] private TextMeshProUGUI _moneyTmp;
+    [SerializeField] private TextMeshProUGUI _waveExplanation;
     private List<ItemSlot> _passiveSlotList;
     private List<SlotSelector> _slotSelectorList = new();
     private SlotSelector _selectedSlot;
@@ -67,6 +68,7 @@ public class SlotPackage : MonoBehaviour
         {
             _titleTmp.text += $"<size=80%>¿þÀÌºê {WaveSystem.Instance.CurrentWave}</size>";
         }
+        _waveExplanation.text = WaveSystem.Instance.WaveInfoExplanation;
     }
 
 

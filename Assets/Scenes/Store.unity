@@ -14750,6 +14750,7 @@ MonoBehaviour:
   - {fileID: 1212528679}
   _itemInfoPanel: {fileID: 313664052}
   _moneyTmp: {fileID: 212453351}
+  _waveExplanation: {fileID: 661911921}
 --- !u!1 &946702641
 GameObject:
   m_ObjectHideFlags: 0

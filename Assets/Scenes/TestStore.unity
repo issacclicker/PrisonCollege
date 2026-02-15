@@ -26164,12 +26164,16 @@ MonoBehaviour:
   waveEntries:
   - behaviorWeightSet: {fileID: 11400000, guid: 1591aace07a5be841b34c0f1bf14467d, type: 2}
     dayState: 0
+    explanation: 
   - behaviorWeightSet: {fileID: 11400000, guid: ce046bb6febef6142b878691527993c1, type: 2}
     dayState: 1
+    explanation: 
   - behaviorWeightSet: {fileID: 11400000, guid: 1591aace07a5be841b34c0f1bf14467d, type: 2}
     dayState: 0
+    explanation: 
   - behaviorWeightSet: {fileID: 11400000, guid: ce046bb6febef6142b878691527993c1, type: 2}
     dayState: 1
+    explanation: 
   _nightChaosFactor: 1.5
   _nightProjectFactor: 2
   _currentWave: 0
@@ -31910,6 +31914,7 @@ MonoBehaviour:
   - {fileID: 1714151419}
   _itemInfoPanel: {fileID: 1022843486}
   _moneyTmp: {fileID: 174960669}
+  _waveExplanation: {fileID: 969994432}
 --- !u!1 &1884123162
 GameObject:
   m_ObjectHideFlags: 0
