@@ -15301,7 +15301,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0.5, y: 0.5, z: 0.5, w: 0.5}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1000, y: 1000, z: 1000}
+  m_LocalScale: {x: 820, y: 820, z: 820}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 4534488319665933096}
@@ -31223,7 +31223,7 @@ Transform:
   m_GameObject: {fileID: 3450080580286140545}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.003, y: 1.83, z: -0.796}
+  m_LocalPosition: {x: -0.003, y: 1.83, z: -0.66}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -53024,7 +53024,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 886212a0a9179e44caad35c77a21f739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: "\uD55C\uC601\uC218"
+  _name: "\uD669\uC601\uC218"
   _bodyOverlapAttacker: {fileID: 5016185983513283566}
   _tackleOverlapAttacker: {fileID: 4950408406987494817}
   DieEvent:
@@ -62932,7 +62932,7 @@ Transform:
   m_GameObject: {fileID: 8799343030967451324}
   serializedVersion: 2
   m_LocalRotation: {x: 0.7071068, y: -0, z: 0.7071068, w: 0}
-  m_LocalPosition: {x: -0.017, y: 1.675, z: -0.795}
+  m_LocalPosition: {x: -0.017, y: 1.675, z: -0.659}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
