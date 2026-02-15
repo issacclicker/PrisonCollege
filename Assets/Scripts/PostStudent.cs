@@ -108,6 +108,8 @@ public class PostStudent : MonoBehaviour
         _player.DieEvent.AddListener(_ => UnFocusProfessorAttack());
 
         _stageSpots = StageController.Instance.StageSpots;
+
+        StageController.Instance.StageStartEvent.AddListener(Wakeup);
     }
 
 
@@ -121,14 +123,30 @@ public class PostStudent : MonoBehaviour
         StopAllOverlapAttackers();
         _characterRagdoll.UnTriggerRagdoll();
         _speedSelector = ConstructSpeedSelector();
-        _blackboard = new Blackboard(gameObject, BehaviorWeightSet, _stageSpots, _player.gameObject);
-        _blackboard.EscapeSuccessEvent.AddListener(OnEscaped);
-        _root = ConstructBehaviorTree();
-        _root.SetBlackboard(_blackboard);
         _boostReceiver.CanEffectChecker = () => _root != null && _blackboard != null && _blackboard.targetObject == null;
         _damageReceiver.CanEffectChecker = () => _blackboard != null && _blackboard.isEscaping == false;
         _moveSpeedModifier = AttributeSystem.Instance.StudMoveSpeedMod;
         _anim.SetFloat("MoveSpeedScale", _moveSpeedModifier.GetFinalValue());
+        _characterCollider.enabled = false;
+        _anim.SetBool("Laying", true);
+    }
+
+
+
+    private void Wakeup()
+    {
+        _anim.SetBool("Laying", false);
+    }
+
+
+
+    private void StartBehavior()
+    {
+        _characterCollider.enabled = true;
+        _blackboard = new Blackboard(gameObject, BehaviorWeightSet, _stageSpots, _player.gameObject);
+        _blackboard.EscapeSuccessEvent.AddListener(OnEscaped);
+        _root = ConstructBehaviorTree();
+        _root.SetBlackboard(_blackboard);
     }
 
 
