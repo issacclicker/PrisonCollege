@@ -11,6 +11,7 @@ public class ItemInfoPanel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _effectTmp;
     [SerializeField] private TextMeshProUGUI _descriptionTmp;
     [SerializeField] private GameObject _purchaseBtnObject;
+    [SerializeField] private TextMeshProUGUI _purchaseBtnTmp;
     private CanvasGroup _canvasGroup;
 
 
@@ -32,6 +33,7 @@ public class ItemInfoPanel : MonoBehaviour
         _effectTmp.text = itemSlot.Item.effect;
         _descriptionTmp.text = itemSlot.Item.description;
         _canvasGroup.alpha = 1;
+        _purchaseBtnTmp.text = $"±¸¸Å <size=80%>${itemSlot.Item.price}</size>";
         _purchaseBtnObject.SetActive(itemSlot is ShopSlot);
     }
 

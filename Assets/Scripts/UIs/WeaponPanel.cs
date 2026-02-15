@@ -1,3 +1,4 @@
+using System.Drawing;
 using TMPro;
 using UnityEngine;
 
@@ -24,8 +25,8 @@ public class WeaponPanel : MonoBehaviour
         }
         else
         {
-            _curBulletTmp.text = $"{weaponBullet.Current.ToString("F0")} / {weaponBullet.Max.ToString("F0")}";
-            //_maxBulletTmp.text = $"/ {weaponBullet.Max.ToString()}";
+            //_curBulletTmp.text = $"{weaponBullet.Current.ToString("F0")} / {weaponBullet.Max.ToString("F0")}";
+            _curBulletTmp.text = $"{weaponBullet.Current.ToString("F0")} <size=70%>/  {weaponBullet.Max.ToString("F0")}</size>";
         }
 
         RangedWeapon rangedWeapon = weapon as RangedWeapon;

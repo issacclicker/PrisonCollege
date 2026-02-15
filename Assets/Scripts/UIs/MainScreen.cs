@@ -58,6 +58,7 @@ public class MainScreen : MonoBehaviour
 
     public void Exit_Btn()
     {
-        EscapeInputSystem.Instance.EnablePanel(_exitCheckPanel);
+        //EscapeInputSystem.Instance.EnablePanel(_exitCheckPanel);
+        GameManager.Instance.ExitGame();
     }
 }

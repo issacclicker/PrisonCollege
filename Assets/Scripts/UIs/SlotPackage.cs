@@ -14,6 +14,7 @@ public class SlotPackage : MonoBehaviour
     [SerializeField] private List<ItemSlot> _equipSlotList;
     [SerializeField] private ItemInfoPanel _itemInfoPanel;
     [SerializeField] private TextMeshProUGUI _moneyTmp;
+    [SerializeField] private TextMeshProUGUI _waveExplanation;
     private List<ItemSlot> _passiveSlotList;
     private List<SlotSelector> _slotSelectorList = new();
     private SlotSelector _selectedSlot;
@@ -42,8 +43,10 @@ public class SlotPackage : MonoBehaviour
         WaveSystem.Instance.NewWaveEntered();
         _itemInfoPanel.HidePanel();
         _moneyTmp.text = InventorySystem.Instance.Money.ToString("N0");
-        InventorySystem.Instance.ConstructShopSlots(_shopSlotEntry);
-        InventorySystem.Instance.ConstructPassiveSlots(_passiveSlotEntry, out _passiveSlotList);
+        if (_shopSlotEntry.parent != null)
+            InventorySystem.Instance.ConstructShopSlots(_shopSlotEntry);
+        if (_passiveSlotEntry.parent != null)
+            InventorySystem.Instance.ConstructPassiveSlots(_passiveSlotEntry, out _passiveSlotList);
         InventorySystem.Instance.FillWeaponSlots(_weaponSlotList);
         InventorySystem.Instance.FillEquipSlots(_equipSlotList);
         _slotSelectorList = Object.FindObjectsByType<SlotSelector>(FindObjectsSortMode.None).ToList();
@@ -56,7 +59,16 @@ public class SlotPackage : MonoBehaviour
                 dragItem.ItemDropEvent.AddListener(OnWeaponDroped);
             }
         }
-        _titleTmp.text = $"{GameManager.Instance.StageTitle}\r\n<size=80%>웨이브 {WaveSystem.Instance.CurrentWave}</size>";
+        _titleTmp.text = $"{GameManager.Instance.StageTitle}\r\n";
+        if (GameManager.Instance.Difficulty == DifficultyLevel.Hard)
+        {
+            _titleTmp.text += $"<size=80%><color=red>웨이브 {WaveSystem.Instance.CurrentWave}</color></size>";
+        }
+        else
+        {
+            _titleTmp.text += $"<size=80%>웨이브 {WaveSystem.Instance.CurrentWave}</size>";
+        }
+        _waveExplanation.text = WaveSystem.Instance.WaveInfoExplanation;
     }
 
 
@@ -153,6 +165,22 @@ public class SlotPackage : MonoBehaviour
     {
         //SceneManager.LoadScene("Level2_Range");
         GameManager.Instance.StartStage();
+    }
+
+
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            GameManager.Instance.ShowStageSelect();
+        }
+    }
+
+
+    public void MainScreen_Btn()
+    {
+        GameManager.Instance.ShowStageSelect();
     }
 }
 

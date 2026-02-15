@@ -32,7 +32,7 @@ public class StudentInfo : MonoBehaviour
     {
         _currentStudent = student;
         nameTmp.text = student.Name;
-        _healthBar.SetTarget(student.GetComponent<Health>());
+        _healthBar.SetTarget(student.GetComponent<DamageReceiver>().Health);
         _canvasGroup.alpha = 1f;
     }
 

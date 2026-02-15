@@ -43,12 +43,20 @@ public class MenuPanel : MonoBehaviour, IEscapeControllable
         _itemInfoPanel.HidePanel();
         InventorySystem.Instance.ConstructPassiveSlots(_passiveSlotsEntry, out List<ItemSlot> _passiveSlotList);
         Hide();
-        _titleTmp.text = $"{GameManager.Instance.StageTitle}\r\n<size=70%>웨이브 {WaveSystem.Instance.CurrentWave}</size>";
-
-        foreach (ItemSlot slot in _passiveSlotList)
+        _titleTmp.text = $"{GameManager.Instance.StageTitle}\r\n";
+        if (GameManager.Instance.Difficulty == DifficultyLevel.Hard)
         {
-            slot.GetComponent<SlotSelector>().PointerClickEvent.AddListener(SlotPointerClicked);
+            _titleTmp.text += $"<size=70%><color=red>웨이브 {WaveSystem.Instance.CurrentWave}</color></size>";
         }
+        else
+        {
+            _titleTmp.text += $"<size=70%>웨이브 {WaveSystem.Instance.CurrentWave}</size>";
+        }
+
+            foreach (ItemSlot slot in _passiveSlotList)
+            {
+                slot.GetComponent<SlotSelector>().PointerClickEvent.AddListener(SlotPointerClicked);
+            }
     }
 
 

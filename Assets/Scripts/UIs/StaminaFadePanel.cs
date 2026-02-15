@@ -30,7 +30,7 @@ public class StaminaFadePanel : MonoBehaviour
         _targetImg.DOKill();
         _targetImg.color = _originColor;
         _targetImg.DOFade(0f, _fadeoutDuration)
-            .SetEase(Ease.OutQuad) // 부드러운 가속도 추가
+            .SetEase(Ease.InQuad) // 부드러운 가속도 추가
             .OnComplete(() => {
             });
     }

@@ -13,7 +13,7 @@ public class SlotSelector : MonoBehaviour, IPointerClickHandler
     [HideInInspector] public UnityEvent<SlotSelector> PointerClickEvent = new();
 
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _originColor = _targetImage.color;
         _itemSlot = GetComponent<ItemSlot>();
@@ -29,14 +29,14 @@ public class SlotSelector : MonoBehaviour, IPointerClickHandler
 
 
 
-    public void HighLight()
+    public virtual void HighLight()
     {
         _targetImage.color = _selectedColor;
     }
 
 
 
-    public void Darken()
+    public virtual void Darken()
     {
         _targetImage.color = _originColor;
     }
