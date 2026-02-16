@@ -1,5 +1,6 @@
 using DG.Tweening;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
@@ -20,6 +21,7 @@ public class BettingHelper : MonoBehaviour
     private Color _originalLeftColor;
     private Color _originalRightColor;
     private SelectedSide _selectedSide = SelectedSide.None;
+    private bool _isStarted = false;
 
     public UnityEvent<SelectedSide> FightStartEvent = new();
     public UnityEvent<SelectedSide> SelectEvent = new();
@@ -41,10 +43,19 @@ public class BettingHelper : MonoBehaviour
 
 
 
+    public void WriteButtonNameTmp(string leftName, string rightName)
+    {
+        _leftBtnTmp.text = leftName;
+        _rightBtnTmp.text = rightName;
+    }
+
+
+
     private void Update()
     {
         if ((Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)) && _selectedSide != SelectedSide.None)
         {
+            _isStarted = true;
             FightStartEvent?.Invoke(_selectedSide);
             gameObject.SetActive(false);
         }
@@ -55,6 +66,7 @@ public class BettingHelper : MonoBehaviour
     public void LeftSelected_Btn()
     {
         if (_selectedSide == SelectedSide.Left) return;
+        if (_isStarted) return;
         _selectedSide = SelectedSide.Left;
         SelectEvent?.Invoke(_selectedSide);
         UpdateUIs();
@@ -65,6 +77,7 @@ public class BettingHelper : MonoBehaviour
     public void RightSelected_Btn()
     {
         if (_selectedSide == SelectedSide.Right) return;
+        if (_isStarted) return;
         _selectedSide = SelectedSide.Right;
         SelectEvent?.Invoke(_selectedSide);
         UpdateUIs();

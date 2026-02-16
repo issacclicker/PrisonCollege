@@ -33,6 +33,7 @@ public class FighterSpawner : MonoBehaviour
     [SerializeField] private StatBar _rightHealthBar;
     [Header("MainPanel UIs")]
     //[SerializeField] private TextMeshProUGUI _timerTmp;
+    [SerializeField] private BettingHelper _bettingHelper;
     [Header("Helmet & Gloves")]
     [SerializeField] private GameObject _leftGlovePrefab;
     [SerializeField] private GameObject _rightGlovePrefab;
@@ -226,6 +227,7 @@ public class FighterSpawner : MonoBehaviour
         SpawnTwoFighters(fighterEntries[0], fighterEntries[1]);
         SpawnSpectators(spectatorEntries);
         BindFightersInfo(fighterEntries[0], fighterEntries[1]);
+        _bettingHelper.WriteButtonNameTmp(fighterEntries[0].koreanName, fighterEntries[1].koreanName);
     }
 
 
