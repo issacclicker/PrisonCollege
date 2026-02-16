@@ -63,14 +63,23 @@ public class Spectator : MonoBehaviour
         (
             new ParallelOR(new List<BT_Node>
             {
-                new RandomSelector(new List<BT_Node>
-                {
-                    new PlayOnceAnim("Cheer_S", "Cheer_S"),
-                    new PlayOnceAnim("Rally_S", "Rally_S"),
-                    new PlayOnceAnim("Clap_S", "Clap_S"),
-                    new PlayOnceAnim("Punch_S", "Punch_S"),
-                    new PlayOnceAnim("Jab_S", "Jab_S"),
-                }),
+                new RandomSelector(
+                    new List<BT_Node>
+                    {
+                        new PlayOnceAnim("Cheer_S", "Cheer_S"),
+                        new PlayOnceAnim("Rally_S", "Rally_S"),
+                        new PlayOnceAnim("Clap_S", "Clap_S"),
+                        new PlayOnceAnim("Punch_S", "Punch_S"),
+                        new PlayOnceAnim("Jab_S", "Jab_S"),
+                    },
+                    new List<System.Func<float>>
+                    {
+                        () => 2, 
+                        () => 2,
+                        () => 2,
+                        () => 1,
+                        () => 1,
+                    }),
                 new RotateToPoint(_fightFocusPoint),
             })
         );

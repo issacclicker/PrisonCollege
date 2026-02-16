@@ -14,7 +14,8 @@ public class Fighter : MonoBehaviour
     private Animator _anim;
     private Collider _characterCollider;
 
-    public UnityEvent<Fighter> DieEvent;
+    public UnityEvent<Fighter> DamageEvent = new();
+    public UnityEvent<Fighter> DieEvent = new();
 
     private GameObject _enemyObject;
 
@@ -85,6 +86,7 @@ public class Fighter : MonoBehaviour
 
     private void OnDamaged(HitInfo hitInfo, float hitAmount)
     {
+        DamageEvent?.Invoke(this);
         _blackboard.isDamaged = true;
         _blackboard.isStunned = true;
     }
