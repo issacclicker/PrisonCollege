@@ -42,6 +42,7 @@ public class FighterSpawner : MonoBehaviour
     [SerializeField] private Material _blueMat;
     private bool _isFighting = false;
     private bool _isWinnerDetermined = false;
+    private int _bettedMoney = 0;
 
 
 
@@ -90,9 +91,10 @@ public class FighterSpawner : MonoBehaviour
     }
 
 
-    public void ChooseAndStartFight(SelectedSide selectedSide)
+    public void ChooseAndStartFight(SelectedSide selectedSide, int bettedMoney)
     {
         _isFighting = true;
+        _bettedMoney = bettedMoney;
         _fighter1.mainComp.StartFight(_fighter2.mainComp.gameObject);
         _fighter2.mainComp.StartFight(_fighter1.mainComp.gameObject);
         FighterInfo choosedFighter = selectedSide == SelectedSide.Left ? _fighter1 : _fighter2;
@@ -202,14 +204,18 @@ public class FighterSpawner : MonoBehaviour
 
     private void GainMoney()
     {
-
+        int currentMoney = InventorySystem.Instance.Money;
+        InventorySystem.Instance.SetMoney(currentMoney + _bettedMoney * 2);
+        _bettingHelper.UpdateTotalMoneyUI();
     }
 
 
 
     private void LoseMoney()
     {
-
+        int currentMoney = InventorySystem.Instance.Money;
+        InventorySystem.Instance.SetMoney(currentMoney - _bettedMoney);
+        _bettingHelper.UpdateTotalMoneyUI();
     }
 
 

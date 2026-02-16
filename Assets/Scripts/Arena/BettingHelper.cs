@@ -17,21 +17,29 @@ public class BettingHelper : MonoBehaviour
     [SerializeField] private Color _rightHightlightColor;
     [SerializeField] private GameObject _rightChooseBorder;
 
+    [SerializeField] private int _betAmount = 50;
     [SerializeField] private GameObject _continueTmpObj;
+    [SerializeField] private TextMeshProUGUI _totalMoneyTmp;
+    [SerializeField] private TextMeshProUGUI _betMoneyTmp;
     private Color _originalLeftColor;
     private Color _originalRightColor;
     private SelectedSide _selectedSide = SelectedSide.None;
     private bool _isStarted = false;
 
-    public UnityEvent<SelectedSide> FightStartEvent = new();
+    public UnityEvent<SelectedSide, int> FightStartEvent = new();
     public UnityEvent<SelectedSide> SelectEvent = new();
+
+    private int _totalMoney;
+    private int _betMoney;
 
 
 
     private void Awake()
     {
+        _betMoney = 0;
         _originalLeftColor = _leftBtnBackImg.color;
         _originalRightColor = _rightBtnBackImg.color;
+        _totalMoney = InventorySystem.Instance.Money;
     }
 
 
@@ -39,6 +47,8 @@ public class BettingHelper : MonoBehaviour
     private void Start()
     {
         UpdateUIs();
+        _totalMoneyTmp.text = $"รั ฑÝพื\r\n{_totalMoney.ToString("N0")}";
+
     }
 
 
@@ -56,9 +66,38 @@ public class BettingHelper : MonoBehaviour
         if ((Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter)) && _selectedSide != SelectedSide.None)
         {
             _isStarted = true;
-            FightStartEvent?.Invoke(_selectedSide);
+            FightStartEvent?.Invoke(_selectedSide, _betMoney);
             gameObject.SetActive(false);
         }
+    }
+
+
+
+    public void UpdateTotalMoneyUI()
+    {
+        _totalMoney = InventorySystem.Instance.Money;
+        _totalMoneyTmp.text = $"รั ฑÝพื\r\n{_totalMoney.ToString("N0")}";
+    }
+
+
+
+    public void IncreaseBet()
+    {
+        //if (_selectedSide == SelectedSide.None) return;
+        if (_isStarted) return;
+        _betMoney = Mathf.Min(_totalMoney, _betMoney + _betAmount);
+        _betMoneyTmp.text = _betMoney.ToString("N0");
+    }
+
+
+
+    public void DecreaseBet()
+    {
+        //if (_selectedSide == SelectedSide.None) return;
+        if (_isStarted) return;
+        int decreaseAmount = _betMoney % _betAmount == 0 ? _betAmount : _betMoney % _betAmount;
+        _betMoney = Mathf.Max(0, _betMoney - decreaseAmount);
+        _betMoneyTmp.text = _betMoney.ToString("N0");
     }
 
 
