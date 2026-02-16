@@ -17568,7 +17568,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 886212a0a9179e44caad35c77a21f739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: "\uC774\uB8E8\uB9AC"
   _bodyOverlapAttacker: {fileID: 9066124253362334407}
   _tackleOverlapAttacker: {fileID: 2579223267279184606}
   DieEvent:

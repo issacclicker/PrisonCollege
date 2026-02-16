@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using UnityEngine;
 using UnityEngine.AI;
@@ -14,7 +16,7 @@ public static class Utils
     public static Vector3 SampleNavMesh(Vector3 targetPos, float range)
     {
         NavMeshHit hit;
-        
+
         // NavMesh.SamplePosition(검색 시작점, 결과 저장 변수, 검색 반경, 레이어 마스크)
         if (NavMesh.SamplePosition(targetPos, out hit, range, NavMesh.AllAreas))
         {
@@ -109,7 +111,7 @@ public static class Utils
             return default;
         }
 
-        return array[Random.Range(0, array.Length)];
+        return array[UnityEngine.Random.Range(0, array.Length)];
     }
 
     /// <summary>
@@ -123,7 +125,7 @@ public static class Utils
             return default;
         }
 
-        return list[Random.Range(0, list.Count)];
+        return list[UnityEngine.Random.Range(0, list.Count)];
     }
 
 
@@ -183,8 +185,8 @@ public static class Utils
         T component = go.GetComponent<T>();
         if (component != null)
         {
-            if (immediate) Object.DestroyImmediate(component);
-            else Object.Destroy(component);
+            if (immediate) UnityEngine.Object.DestroyImmediate(component);
+            else UnityEngine.Object.Destroy(component);
         }
     }
 
@@ -200,11 +202,11 @@ public static class Utils
         {
             if (immediate)
             {
-                Object.DestroyImmediate(components[i]);
+                UnityEngine.Object.DestroyImmediate(components[i]);
             }
             else
             {
-                Object.Destroy(components[i]);
+                UnityEngine.Object.Destroy(components[i]);
             }
         }
     }
@@ -221,11 +223,11 @@ public static class Utils
         {
             if (immediate)
             {
-                Object.DestroyImmediate(components[i]);
+                UnityEngine.Object.DestroyImmediate(components[i]);
             }
             else
             {
-                Object.Destroy(components[i]);
+                UnityEngine.Object.Destroy(components[i]);
             }
         }
     }
@@ -245,12 +247,38 @@ public static class Utils
 
             if (immediate)
             {
-                Object.DestroyImmediate(targets[i].gameObject);
+                UnityEngine.Object.DestroyImmediate(targets[i].gameObject);
             }
             else
             {
-                Object.Destroy(targets[i].gameObject);
+                UnityEngine.Object.Destroy(targets[i].gameObject);
             }
         }
+    }
+
+
+
+    private static System.Random _rng = new System.Random();
+    public static T[] GetRandomElements<T>(this IEnumerable<T> source, int n)
+    {
+        if (source == null) throw new ArgumentNullException(nameof(source));
+
+        List<T> list = source.ToList();
+        int count = list.Count;
+
+        // 뽑으려는 개수가 전체보다 많으면 전체를 반환하거나 예외 처리
+        n = Math.Min(n, count);
+
+        // 피셔-예이츠 셔플 응용 (n번만 수행)
+        for (int i = 0; i < n; i++)
+        {
+            int randomIndex = _rng.Next(i, count);
+            T temp = list[i];
+            list[i] = list[randomIndex];
+            list[randomIndex] = temp;
+        }
+
+        // 섞인 앞부분 n개만 잘라서 반환
+        return list.GetRange(0, n).ToArray();
     }
 }
