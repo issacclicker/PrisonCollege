@@ -4503,6 +4503,7 @@ MonoBehaviour:
   _rightNameTmp: {fileID: 554256285}
   _rightHealthBar: {fileID: 1314459108}
   _bettingHelper: {fileID: 1720190395}
+  _focusCamera: {fileID: 1837839131}
   _leftGlovePrefab: {fileID: 5660511902273526902, guid: 6c0ec7d9e22d70e4298998d7206fee8f, type: 3}
   _rightGlovePrefab: {fileID: 3416533469384491825, guid: 02c38e7c746244246963e68db75f9eff, type: 3}
   _helmetPrefab: {fileID: 1981937831077423691, guid: 87100224fbf6dc347b8b689addf5c729, type: 3}
@@ -5234,6 +5235,7 @@ GameObject:
   - component: {fileID: 1837839128}
   - component: {fileID: 1837839127}
   - component: {fileID: 1837839130}
+  - component: {fileID: 1837839131}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -5359,6 +5361,20 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &1837839131
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1837839126}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0d86275c2ffeaf4468c84f6fd1b85731, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FightFocusCamera
+  target: {fileID: 0}
+  rotationSpeed: 5
 --- !u!1 &1898708357
 GameObject:
   m_ObjectHideFlags: 0

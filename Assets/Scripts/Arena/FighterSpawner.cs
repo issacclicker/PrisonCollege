@@ -34,6 +34,7 @@ public class FighterSpawner : MonoBehaviour
     [Header("MainPanel UIs")]
     //[SerializeField] private TextMeshProUGUI _timerTmp;
     [SerializeField] private BettingHelper _bettingHelper;
+    [SerializeField] private FightFocusCamera _focusCamera;
     [Header("Helmet & Gloves")]
     [SerializeField] private GameObject _leftGlovePrefab;
     [SerializeField] private GameObject _rightGlovePrefab;
@@ -58,6 +59,7 @@ public class FighterSpawner : MonoBehaviour
     {
         _focusPoint = new GameObject().transform;
         _focusPoint.position = (_startPoint1.transform.position + _startPoint2.transform.position) * 0.5f + Vector3.up;
+        _focusCamera.target = _focusPoint;
         SpawnFightersAndSpectators();
         AttachHelmetAndGloves();
         _fighter1.mainComp.DamageEvent.AddListener(OnFighterDamaged);
@@ -79,7 +81,11 @@ public class FighterSpawner : MonoBehaviour
         //{
 
         //}
-        _focusPoint.position = (_fighter2.mainComp.transform.position + _fighter2.mainComp.transform.position) * 0.5f + Vector3.up;
+        if (_fighter2.isDead && _fighter2.isDead) return;
+        Vector3 _focusPosition = Vector3.zero + Vector3.up;
+        _focusPosition += _fighter1.isDead ? Vector3.zero : _fighter1.mainComp.transform.position * 0.5f;
+        _focusPosition += _fighter2.isDead ? Vector3.zero : _fighter2.mainComp.transform.position * 0.5f;
+        _focusPoint.position = _focusPosition;
     }
 
 
@@ -263,7 +269,8 @@ public class FighterSpawner : MonoBehaviour
         Transform[] spots = _spectatorSpots.GetRandomElements(spectatorEntries.Length);
         for (int i = 0; i < spots.Length; i++)
         {
-            Spectator spectator = SpawnAndModifyToSpectator(spectatorEntries[i].prefab, spots[i].transform.position, spots[i].transform.forward);
+            Vector3 lookDir = _focusPoint.position - spots[i].position;
+            Spectator spectator = SpawnAndModifyToSpectator(spectatorEntries[i].prefab, spots[i].transform.position, lookDir);
             spectator.StartCheer(_focusPoint);
         }
     }
