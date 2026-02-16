@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using UnityEngine.UI;
 
 public class Fighter : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class Fighter : MonoBehaviour
     private GameObject _enemyObject;
 
     private AttributeModifier _moveSpeedModifier;
+    private Outline[] _outlines;
 
     private readonly Vector3 RIGHT_GLOVE_POS = new Vector3(0.01f, 0.02f, 0.004f);
     private readonly Vector3 LEFT_GLOVE_POS = new Vector3(-0.01f, -0.02f, -0.004f);
@@ -31,6 +33,7 @@ public class Fighter : MonoBehaviour
 
     private void Awake()
     {
+        _outlines = GetComponentsInChildren<Outline>();
         _anim = GetComponent<Animator>();
         _agent = GetComponent<NavMeshAgent>();
         _characterCollider = GetComponent<Collider>();
@@ -44,6 +47,11 @@ public class Fighter : MonoBehaviour
 
     private void Start()
     {
+        foreach (var outline in _outlines)
+        {
+            outline.OutlineWidth = 2f;
+        }
+        SetOutlines(false);
         _moveSpeedModifier = AttributeSystem.Instance.StudMoveSpeedMod;
         _anim.SetFloat("MoveSpeedScale", _moveSpeedModifier.GetFinalValue());
         _agent.acceleration = 100f;
@@ -105,6 +113,16 @@ public class Fighter : MonoBehaviour
         _enemyObject = enemyObject;
         _root = ConstructBehavior();
         _root.SetBlackboard(_blackboard);
+    }
+
+
+
+    public void SetOutlines(bool active)
+    {
+        foreach (Outline outline in _outlines)
+        {
+            outline.enabled = active;
+        }
     }
 
 

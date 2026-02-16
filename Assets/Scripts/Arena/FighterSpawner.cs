@@ -6,15 +6,23 @@ using DG.Tweening;
 
 public class FighterSpawner : MonoBehaviour
 {
+    [System.Serializable]
+    public class FighterInfo
+    {
+        public Fighter mainComp;
+        public bool isDead;
+        public bool isBetted;
+    }
+
     [SerializeField] private DamageData _fightData;
     [SerializeField] private Transform _startPoint1;
     [SerializeField] private Transform _startPoint2;
     [SerializeField] private Transform[] _spectatorSpots;
-    private Fighter _fighter1;
-    private Fighter _fighter2;
+    private FighterInfo _fighter1;
+    private FighterInfo _fighter2;
     private Transform _focusPoint;
 
-    [Header("UI Bindings")]
+    [Header("StudentInfo UIs")]
     [SerializeField] private RectTransform _leftPanel;
     [SerializeField] private Image _leftProfileImg;
     [SerializeField] private TextMeshProUGUI _leftNameTmp;
@@ -23,12 +31,24 @@ public class FighterSpawner : MonoBehaviour
     [SerializeField] private Image _rightProfileImg;
     [SerializeField] private TextMeshProUGUI _rightNameTmp;
     [SerializeField] private StatBar _rightHealthBar;
+    [Header("MainPanel UIs")]
+    //[SerializeField] private TextMeshProUGUI _timerTmp;
     [Header("Helmet & Gloves")]
     [SerializeField] private GameObject _leftGlovePrefab;
     [SerializeField] private GameObject _rightGlovePrefab;
     [SerializeField] private GameObject _helmetPrefab;
     [SerializeField] private Material _redMat;
     [SerializeField] private Material _blueMat;
+    private bool _isFighting = false;
+    private bool _isWinnerDetermined = false;
+
+
+
+    private void Awake()
+    {
+        _fighter1 = new FighterInfo();
+        _fighter2 = new FighterInfo();
+    }
 
 
 
@@ -38,17 +58,51 @@ public class FighterSpawner : MonoBehaviour
         _focusPoint.position = (_startPoint1.transform.position + _startPoint2.transform.position) * 0.5f + Vector3.up;
         SpawnFightersAndSpectators();
         AttachHelmetAndGloves();
-        _fighter1.DamageEvent.AddListener(OnFighterDamaged);
-        _fighter2.DamageEvent.AddListener(OnFighterDamaged);
-        _fighter1.DieEvent.AddListener(OnFighterDead);
-        _fighter2.DieEvent.AddListener(OnFighterDead);
+        _fighter1.mainComp.DamageEvent.AddListener(OnFighterDamaged);
+        _fighter2.mainComp.DamageEvent.AddListener(OnFighterDamaged);
+        _fighter1.mainComp.DieEvent.AddListener(OnFighterDead);
+        _fighter2.mainComp.DieEvent.AddListener(OnFighterDead);
+    }
+
+
+    private void Update()
+    {
+        //if (!_isFighting && Input.GetKeyDown(KeyCode.Space))
+        //{
+        //    _isFighting = true;
+        //    _fighter1.mainComp.StartFight(_fighter2.mainComp.gameObject);
+        //    _fighter2.mainComp.StartFight(_fighter1.mainComp.gameObject);
+        //}
+        //if (_isFighting)
+        //{
+
+        //}
+        _focusPoint.position = (_fighter2.mainComp.transform.position + _fighter2.mainComp.transform.position) * 0.5f + Vector3.up;
+    }
+
+
+
+    public void OnFighterSelected(SelectedSide selectedSide)
+    {
+        _fighter1.mainComp.SetOutlines(selectedSide == SelectedSide.Left);
+        _fighter2.mainComp.SetOutlines(selectedSide == SelectedSide.Right);
+    }
+
+
+    public void ChooseAndStartFight(SelectedSide selectedSide)
+    {
+        _isFighting = true;
+        _fighter1.mainComp.StartFight(_fighter2.mainComp.gameObject);
+        _fighter2.mainComp.StartFight(_fighter1.mainComp.gameObject);
+        FighterInfo choosedFighter = selectedSide == SelectedSide.Left ? _fighter1 : _fighter2;
+        choosedFighter.isBetted = true;
     }
 
 
 
     private void OnFighterDamaged(Fighter fighter)
     {
-        RectTransform targetPanel = fighter == _fighter1 ? _leftPanel : _rightPanel;
+        RectTransform targetPanel = fighter == _fighter1.mainComp ? _leftPanel : _rightPanel;
         targetPanel.DOShakeAnchorPos(0.5f, 20f, 10, 90f);
     }
 
@@ -72,22 +126,96 @@ public class FighterSpawner : MonoBehaviour
         rightGlove2.GetComponentInChildren<Renderer>().material = _blueMat;
         helmet2.GetComponent<Renderer>().material = _blueMat;
 
-        _fighter1.AttachLeftGlove(leftGlove1);
-        _fighter1.AttachRightGlove(rightGlove1);
-        _fighter1.AttachHelmet(helmet1);
+        _fighter1.mainComp.AttachLeftGlove(leftGlove1);
+        _fighter1.mainComp.AttachRightGlove(rightGlove1);
+        _fighter1.mainComp.AttachHelmet(helmet1);
 
-        _fighter2.AttachLeftGlove(leftGlove2);
-        _fighter2.AttachRightGlove(rightGlove2);
-        _fighter2.AttachHelmet(helmet2);
+        _fighter2.mainComp.AttachLeftGlove(leftGlove2);
+        _fighter2.mainComp.AttachRightGlove(rightGlove2);
+        _fighter2.mainComp.AttachHelmet(helmet2);
     }
 
 
 
     private void OnFighterDead(Fighter fighter)
     {
-        RectTransform targetPanel = fighter == _fighter1 ? _leftPanel : _rightPanel;
+        RectTransform targetPanel = fighter == _fighter1.mainComp ? _leftPanel : _rightPanel;
         targetPanel.DOShakeAnchorPos(0.4f, 30f, 20);
         targetPanel.DOShakeRotation(0.4f, 10f);
+
+        FighterInfo deadFighter = fighter == _fighter1.mainComp ? _fighter1 : _fighter2;
+        deadFighter.isDead = true;
+        Invoke(nameof(DetermineWinner), 0.5f);
+    }
+
+
+
+    private void StopFighting()
+    {
+        if (_isFighting == false) return;
+        _isFighting = false;
+    }
+
+
+
+    private void DetermineWinner()
+    {
+        if (_isWinnerDetermined) return;
+        _isWinnerDetermined = true;
+        CancelInvoke(nameof(DetermineWinner));
+
+        if (_fighter1.isDead == _fighter2.isDead)
+        {
+            //公铰何
+            ShowResult(WinSide.None);
+        }
+        else if (_fighter2.isDead)
+        {
+            //哭率 铰府
+            if (_fighter1.isBetted)
+            {
+                GainMoney();
+            }
+            else
+            {
+                LoseMoney();
+            }
+            ShowResult(WinSide.Left);
+        }
+        else
+        {
+            //坷弗率 铰府
+            if (_fighter2.isBetted)
+            {
+                GainMoney();
+            }
+            else
+            {
+                LoseMoney();
+            }
+            ShowResult(WinSide.Right);
+        }
+    }
+
+
+
+    private void GainMoney()
+    {
+
+    }
+
+
+
+    private void LoseMoney()
+    {
+
+    }
+
+
+
+    private void ShowResult(WinSide winSide)
+    {
+
     }
 
 
@@ -105,19 +233,19 @@ public class FighterSpawner : MonoBehaviour
     {
         _leftProfileImg.sprite = leftFighterEntry.profile;
         _leftNameTmp.text = $"{leftFighterEntry.koreanName}  <size=60%>{leftFighterEntry.course}</size>";
-        _leftHealthBar.SetTarget(_fighter1.GetComponent<Health>());
+        _leftHealthBar.SetTarget(_fighter1.mainComp.GetComponent<Health>());
 
         _rightProfileImg.sprite = rightFighterEntry.profile;
         _rightNameTmp.text = $"<size=60%>{rightFighterEntry.course}</size>  {rightFighterEntry.koreanName}";
-        _rightHealthBar.SetTarget(_fighter2.GetComponent<Health>());
+        _rightHealthBar.SetTarget(_fighter2.mainComp.GetComponent<Health>());
     }
 
 
 
     public void SpawnTwoFighters(StudentEntry entry1, StudentEntry entry2)
     {
-        _fighter1 = SpawnAndModifyToFighter(entry1.prefab, _startPoint1.position, _startPoint2.position);
-        _fighter2 = SpawnAndModifyToFighter(entry2.prefab, _startPoint2.position, _startPoint1.position);
+        _fighter1.mainComp = SpawnAndModifyToFighter(entry1.prefab, _startPoint1.position, _startPoint2.position);
+        _fighter2.mainComp = SpawnAndModifyToFighter(entry2.prefab, _startPoint2.position, _startPoint1.position);
     }
 
 
@@ -136,19 +264,8 @@ public class FighterSpawner : MonoBehaviour
 
     public void SpawnTwoFighters(GameObject prefab1, GameObject prefab2)
     {
-        _fighter1 = SpawnAndModifyToFighter(prefab1, _startPoint1.position, _startPoint2.position);
-        _fighter2 = SpawnAndModifyToFighter(prefab2, _startPoint2.position, _startPoint1.position);
-    }
-
-
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            _fighter1.StartFight(_fighter2.gameObject);
-            _fighter2.StartFight(_fighter1.gameObject);
-        }
-        _focusPoint.position = (_fighter2.transform.position + _fighter2.transform.position) * 0.5f + Vector3.up;
+        _fighter1.mainComp = SpawnAndModifyToFighter(prefab1, _startPoint1.position, _startPoint2.position);
+        _fighter2.mainComp = SpawnAndModifyToFighter(prefab2, _startPoint2.position, _startPoint1.position);
     }
 
 
@@ -196,7 +313,7 @@ public class FighterSpawner : MonoBehaviour
         studentObj.RemoveComponent<DamageReceiver>(true);
         RemoveHealthCompsNotHundred(studentObj);
         studentObj.RemoveComponent<BaldOutlines>(true);
-        studentObj.RemoveComponentsInChildren<Outline>(true, true);
+        //studentObj.RemoveComponentsInChildren<Outline>(true, true);
         studentObj.RemoveComponentsInChildren<Fire>(true, true);
         studentObj.RemoveGameObjectsWithComponent<OverlapAttacker>(true, true);
 
@@ -227,5 +344,11 @@ public class FighterSpawner : MonoBehaviour
                 DestroyImmediate(health);
             }
         }
+    }
+
+
+    public enum WinSide
+    {
+        None, Left, Right
     }
 }

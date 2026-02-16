@@ -1112,6 +1112,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7910694840934767667}
+  - component: {fileID: 3950943323977720481}
   m_Layer: 0
   m_Name: upper_cloth
   m_TagString: Untagged
@@ -1135,6 +1136,24 @@ Transform:
   - {fileID: 3195117874553079930}
   m_Father: {fileID: 423295958380844787}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3950943323977720481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 379311322714365671}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 2
+  outlineColor: {r: 1, g: 1, b: 0, a: 1}
+  outlineWidth: 5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &481543255126141834
 GameObject:
   m_ObjectHideFlags: 0
@@ -32101,6 +32120,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5061527784694434513}
+  - component: {fileID: 1669666851529208183}
   m_Layer: 0
   m_Name: footwear
   m_TagString: Untagged
@@ -32124,6 +32144,24 @@ Transform:
   - {fileID: 741546524802449144}
   m_Father: {fileID: 423295958380844787}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1669666851529208183
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5515160610207157503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 2
+  outlineColor: {r: 1, g: 1, b: 0, a: 1}
+  outlineWidth: 5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &5532977454922661362
 GameObject:
   m_ObjectHideFlags: 0
@@ -33189,6 +33227,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1202369443024699842}
+  - component: {fileID: 4997907778530938412}
   m_Layer: 0
   m_Name: lower_cloth
   m_TagString: Untagged
@@ -33212,6 +33251,24 @@ Transform:
   - {fileID: 4163285586233604933}
   m_Father: {fileID: 423295958380844787}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4997907778530938412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6018921616093913952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 2
+  outlineColor: {r: 1, g: 1, b: 0, a: 1}
+  outlineWidth: 5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &6087486319260125614
 GameObject:
   m_ObjectHideFlags: 0
@@ -63054,6 +63111,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 80157103604289810}
+  - component: {fileID: 153020150817344798}
   m_Layer: 0
   m_Name: body
   m_TagString: Untagged
@@ -63077,6 +63135,24 @@ Transform:
   - {fileID: 3510055295676082676}
   m_Father: {fileID: 423295958380844787}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &153020150817344798
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9016677704047149510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 2
+  outlineColor: {r: 1, g: 1, b: 0, a: 1}
+  outlineWidth: 5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &9040110616311091253
 GameObject:
   m_ObjectHideFlags: 0
