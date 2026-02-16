@@ -40,6 +40,7 @@ public class FighterSpawner : MonoBehaviour
     //[SerializeField] private TextMeshProUGUI _timerTmp;
     [SerializeField] private BettingHelper _bettingHelper;
     [SerializeField] private FightFocusCamera _focusCamera;
+    [SerializeField] private BetResultPanel _betResultPanel;
     [Header("Helmet & Gloves")]
     [SerializeField] private GameObject _leftGlovePrefab;
     [SerializeField] private GameObject _rightGlovePrefab;
@@ -62,6 +63,7 @@ public class FighterSpawner : MonoBehaviour
 
     private void Start()
     {
+        _betResultPanel.gameObject.SetActive(false);
         _leftBetPanel.SetActive(false);
         _rightBetPanel.SetActive(false);
         _focusPoint = new GameObject().transform;
@@ -90,10 +92,34 @@ public class FighterSpawner : MonoBehaviour
         //}
         
         if (_fighter2.isDead && _fighter2.isDead) return;
-        Vector3 _focusPosition = Vector3.zero + Vector3.up;
-        _focusPosition += _fighter1.isDead ? Vector3.zero : _fighter1.mainComp.transform.position * 0.5f;
-        _focusPosition += _fighter2.isDead ? Vector3.zero : _fighter2.mainComp.transform.position * 0.5f;
+        Vector3 _focusPosition = Vector3.up * 1.25f; // 기본 높이 보정
+
+        if (!_fighter1.isDead && !_fighter2.isDead)
+        {
+            // 둘 다 살아있을 때: 중간 지점 (0.5 + 0.5)
+            _focusPosition += (_fighter1.mainComp.transform.position + _fighter2.mainComp.transform.position) * 0.5f;
+        }
+        else
+        {
+            // 한 명만 살아있을 때: 살아있는 사람의 위치를 100% 반영
+            _focusPosition += _fighter1.isDead ? _fighter2.mainComp.transform.position : _fighter1.mainComp.transform.position;
+        }
+
         _focusPoint.position = _focusPosition;
+    }
+
+
+    private void OnDrawGizmos()
+    {
+        if (_focusPoint == null) return;
+
+        // 1. 점의 위치를 빨간 구체로 표시
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(_focusPoint.position, 0.3f); // (위치, 반지름)
+
+        // 2. 바닥으로부터의 높이를 알 수 있도록 선 그리기
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawLine(_focusPoint.position, _focusPoint.position - Vector3.up * 2f);
     }
 
 
@@ -164,6 +190,7 @@ public class FighterSpawner : MonoBehaviour
 
         FighterInfo deadFighter = fighter == _fighter1.mainComp ? _fighter1 : _fighter2;
         deadFighter.isDead = true;
+        _focusCamera.ZoomInToTarget();
         Invoke(nameof(DetermineWinner), 0.5f);
     }
 
@@ -183,10 +210,12 @@ public class FighterSpawner : MonoBehaviour
         _isWinnerDetermined = true;
         CancelInvoke(nameof(DetermineWinner));
 
+        int currentMoney = InventorySystem.Instance.Money;
+
         if (_fighter1.isDead == _fighter2.isDead)
         {
             //무승부
-            ShowResult(WinSide.None);
+            _betResultPanel.Show(BetResult.None, currentMoney, 0);
         }
         else if (_fighter2.isDead)
         {
@@ -194,12 +223,13 @@ public class FighterSpawner : MonoBehaviour
             if (_fighter1.isBetted)
             {
                 GainMoney();
+                _betResultPanel.Show(BetResult.Success, currentMoney - _bettedMoney, _bettedMoney * 2);
             }
             else
             {
                 LoseMoney();
+                _betResultPanel.Show(BetResult.Failed, currentMoney - _bettedMoney, 0);
             }
-            ShowResult(WinSide.Left);
         }
         else
         {
@@ -207,12 +237,13 @@ public class FighterSpawner : MonoBehaviour
             if (_fighter2.isBetted)
             {
                 GainMoney();
+                _betResultPanel.Show(BetResult.Success, currentMoney - _bettedMoney, _bettedMoney * 2);
             }
             else
             {
                 LoseMoney();
+                _betResultPanel.Show(BetResult.Failed, currentMoney - _bettedMoney, 0);
             }
-            ShowResult(WinSide.Right);
         }
     }
 
@@ -230,13 +261,6 @@ public class FighterSpawner : MonoBehaviour
     {
         int currentMoney = InventorySystem.Instance.Money;
         InventorySystem.Instance.SetMoney(currentMoney - _bettedMoney);
-    }
-
-
-
-    private void ShowResult(WinSide winSide)
-    {
-
     }
 
 
@@ -374,4 +398,10 @@ public class FighterSpawner : MonoBehaviour
     {
         None, Left, Right
     }
+}
+
+
+public enum BetResult
+{
+    None, Failed, Success
 }
