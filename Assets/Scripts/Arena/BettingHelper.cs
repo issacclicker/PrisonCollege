@@ -18,7 +18,7 @@ public class BettingHelper : MonoBehaviour
     [SerializeField] private GameObject _rightChooseBorder;
 
     [SerializeField] private int _betAmount = 50;
-    [SerializeField] private GameObject _continueTmpObj;
+    [SerializeField] private TextMeshProUGUI _continueTmp;
     [SerializeField] private TextMeshProUGUI _totalMoneyTmp;
     [SerializeField] private TextMeshProUGUI _betMoneyTmp;
     private Color _originalLeftColor;
@@ -47,7 +47,7 @@ public class BettingHelper : MonoBehaviour
     private void Start()
     {
         UpdateUIs();
-        _totalMoneyTmp.text = $"총 금액\r\n{_totalMoney.ToString("N0")}";
+        UpdateReaminedMoneyUI();
 
     }
 
@@ -69,6 +69,14 @@ public class BettingHelper : MonoBehaviour
             FightStartEvent?.Invoke(_selectedSide, _betMoney);
             gameObject.SetActive(false);
         }
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            IncreaseBet();
+        }
+        if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            DecreaseBet();
+        }
     }
 
 
@@ -76,7 +84,7 @@ public class BettingHelper : MonoBehaviour
     public void UpdateTotalMoneyUI()
     {
         _totalMoney = InventorySystem.Instance.Money;
-        _totalMoneyTmp.text = $"총 금액\r\n{_totalMoney.ToString("N0")}";
+        UpdateReaminedMoneyUI();
     }
 
 
@@ -87,6 +95,8 @@ public class BettingHelper : MonoBehaviour
         if (_isStarted) return;
         _betMoney = Mathf.Min(_totalMoney, _betMoney + _betAmount);
         _betMoneyTmp.text = _betMoney.ToString("N0");
+        UpdateReaminedMoneyUI();
+        UpdateContinueTextUI();
     }
 
 
@@ -98,6 +108,8 @@ public class BettingHelper : MonoBehaviour
         int decreaseAmount = _betMoney % _betAmount == 0 ? _betAmount : _betMoney % _betAmount;
         _betMoney = Mathf.Max(0, _betMoney - decreaseAmount);
         _betMoneyTmp.text = _betMoney.ToString("N0");
+        UpdateReaminedMoneyUI();
+        UpdateContinueTextUI();
     }
 
 
@@ -141,7 +153,26 @@ public class BettingHelper : MonoBehaviour
             UnhighlightLeftButton();
             UnhighlightRightButton();
         }
-        _continueTmpObj.SetActive(_selectedSide != SelectedSide.None);
+        UpdateContinueTextUI();
+    }
+
+
+    private void UpdateContinueTextUI()
+    {
+        if (_selectedSide == SelectedSide.None)
+        {
+            _continueTmp.text = "베팅 대상 선택하기";
+            return;
+        }
+        string targetName = _selectedSide == SelectedSide.Left ? _leftBtnTmp.text : _rightBtnTmp.text;
+        _continueTmp.text = $"Enter로 막고라 시작하기\r\n<size=80%>{targetName} 승리 시 : +{(_betMoney * 2).ToString("N0")}";//\r\n{targetName} 패배 시 : -{_betMoney.ToString("N0")}</size>";
+    }
+
+
+
+    private void UpdateReaminedMoneyUI()
+    {
+        _totalMoneyTmp.text = $"잔여 금액\r\n{(_totalMoney - _betMoney).ToString("N0")}";
     }
 
 

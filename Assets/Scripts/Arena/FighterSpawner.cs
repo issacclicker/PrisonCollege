@@ -27,10 +27,15 @@ public class FighterSpawner : MonoBehaviour
     [SerializeField] private Image _leftProfileImg;
     [SerializeField] private TextMeshProUGUI _leftNameTmp;
     [SerializeField] private StatBar _leftHealthBar;
+    [SerializeField] private GameObject _leftBetPanel;
+    [SerializeField] private TextMeshProUGUI _leftBetTmp;
+
     [SerializeField] private RectTransform _rightPanel;
     [SerializeField] private Image _rightProfileImg;
     [SerializeField] private TextMeshProUGUI _rightNameTmp;
     [SerializeField] private StatBar _rightHealthBar;
+    [SerializeField] private GameObject _rightBetPanel;
+    [SerializeField] private TextMeshProUGUI _rightBetTmp;
     [Header("MainPanel UIs")]
     //[SerializeField] private TextMeshProUGUI _timerTmp;
     [SerializeField] private BettingHelper _bettingHelper;
@@ -57,6 +62,8 @@ public class FighterSpawner : MonoBehaviour
 
     private void Start()
     {
+        _leftBetPanel.SetActive(false);
+        _rightBetPanel.SetActive(false);
         _focusPoint = new GameObject().transform;
         _focusPoint.position = (_startPoint1.transform.position + _startPoint2.transform.position) * 0.5f + Vector3.up;
         _focusCamera.target = _focusPoint;
@@ -81,6 +88,7 @@ public class FighterSpawner : MonoBehaviour
         //{
 
         //}
+        
         if (_fighter2.isDead && _fighter2.isDead) return;
         Vector3 _focusPosition = Vector3.zero + Vector3.up;
         _focusPosition += _fighter1.isDead ? Vector3.zero : _fighter1.mainComp.transform.position * 0.5f;
@@ -104,6 +112,8 @@ public class FighterSpawner : MonoBehaviour
         _fighter1.mainComp.StartFight(_fighter2.mainComp.gameObject);
         _fighter2.mainComp.StartFight(_fighter1.mainComp.gameObject);
         FighterInfo choosedFighter = selectedSide == SelectedSide.Left ? _fighter1 : _fighter2;
+        (selectedSide == SelectedSide.Left ? _leftBetPanel : _rightBetPanel).SetActive(true);
+        (selectedSide == SelectedSide.Left ? _leftBetTmp : _rightBetTmp).text = $"${_bettedMoney.ToString("N0")}";
         choosedFighter.isBetted = true;
     }
 
@@ -211,8 +221,7 @@ public class FighterSpawner : MonoBehaviour
     private void GainMoney()
     {
         int currentMoney = InventorySystem.Instance.Money;
-        InventorySystem.Instance.SetMoney(currentMoney + _bettedMoney * 2);
-        _bettingHelper.UpdateTotalMoneyUI();
+        InventorySystem.Instance.SetMoney(currentMoney + _bettedMoney);
     }
 
 
@@ -221,7 +230,6 @@ public class FighterSpawner : MonoBehaviour
     {
         int currentMoney = InventorySystem.Instance.Money;
         InventorySystem.Instance.SetMoney(currentMoney - _bettedMoney);
-        _bettingHelper.UpdateTotalMoneyUI();
     }
 
 
