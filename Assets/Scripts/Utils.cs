@@ -175,4 +175,82 @@ public static class Utils
         JsonUtility.FromJsonOverwrite(json, copy);
         return copy;
     }
+
+
+
+    public static void RemoveComponent<T>(this GameObject go, bool immediate = false) where T : Component
+    {
+        T component = go.GetComponent<T>();
+        if (component != null)
+        {
+            if (immediate) Object.DestroyImmediate(component);
+            else Object.Destroy(component);
+        }
+    }
+
+
+
+    public static void RemoveComponents<T>(this GameObject go, bool immediate = false) where T : Component
+    {
+        // 1. 해당 오브젝트에서만 모든 T 컴포넌트를 가져옴 (자식은 포함 안 함)
+        T[] components = go.GetComponents<T>();
+
+        // 2. 역순으로 순회하며 삭제
+        for (int i = components.Length - 1; i >= 0; i--)
+        {
+            if (immediate)
+            {
+                Object.DestroyImmediate(components[i]);
+            }
+            else
+            {
+                Object.Destroy(components[i]);
+            }
+        }
+    }
+
+
+
+    public static void RemoveComponentsInChildren<T>(this GameObject go, bool includeInactive = true, bool immediate = false) where T : Component
+    {
+        // 1. 모든 자식(본인 포함)에서 해당 컴포넌트들을 배열로 가져옴
+        T[] components = go.GetComponentsInChildren<T>(includeInactive);
+
+        // 2. 루프를 돌며 삭제
+        for (int i = components.Length - 1; i >= 0; i--)
+        {
+            if (immediate)
+            {
+                Object.DestroyImmediate(components[i]);
+            }
+            else
+            {
+                Object.Destroy(components[i]);
+            }
+        }
+    }
+
+
+
+    public static void RemoveGameObjectsWithComponent<T>(this GameObject root, bool includeInactive = true, bool immediate = false) where T : Component
+    {
+        // 1. 해당 컴포넌트가 붙은 모든 객체를 찾음
+        T[] targets = root.GetComponentsInChildren<T>(includeInactive);
+
+        // 2. 루프를 돌며 오브젝트 자체를 삭제
+        for (int i = targets.Length - 1; i >= 0; i--)
+        {
+            // 본인이 root라면 삭제하지 않도록 안전장치 (필요 시)
+            if (targets[i].gameObject == root) continue;
+
+            if (immediate)
+            {
+                Object.DestroyImmediate(targets[i].gameObject);
+            }
+            else
+            {
+                Object.Destroy(targets[i].gameObject);
+            }
+        }
+    }
 }

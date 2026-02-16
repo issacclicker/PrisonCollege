@@ -34,6 +34,8 @@ public class SingAttacher : AnimAttacher
     public override void HideAll()
     {
         _microphone.SetActive(false);
+        if (_audioSource == null)
+            _audioSource = GetComponent<AudioSource>();
         _audioSource.Stop();
         _audioSource.clip = null;
     }
