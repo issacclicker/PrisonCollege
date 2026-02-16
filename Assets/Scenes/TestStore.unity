@@ -20069,6 +20069,105 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1113231933}
   m_CullTransparentMesh: 1
+--- !u!1 &1116179032
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1116179034}
+  - component: {fileID: 1116179033}
+  m_Layer: 0
+  m_Name: StudentDB
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1116179033
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1116179032}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 900a7e7a1e85727469763c173133bfe5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StudentDB
+  _studentEntries:
+  - id: 1
+    koreanName: "\uC774\uB8E8\uB9AC"
+    englishName: Luri Lee
+    prefab: {fileID: 1656791591194506806, guid: 3b15b448b5bb27547904e2e700b04a51, type: 3}
+    profile: {fileID: 21300000, guid: e513f42907b08024cafce261e7aafc5d, type: 3}
+    course: "\uBC15\uC0AC \uC218\uB8CC"
+  - id: 2
+    koreanName: "\uAE40\uBBFC\uC7AC"
+    englishName: Minjae Kim
+    prefab: {fileID: 551984016131512686, guid: d04b88e31cfe20a4bbfa6dd133190066, type: 3}
+    profile: {fileID: 21300000, guid: c13a6be48d3a5c7478db5e2f57ef096e, type: 3}
+    course: "\uBC15\uC0AC \uACFC\uC815"
+  - id: 3
+    koreanName: "\uCD5C\uC11C\uC5F0"
+    englishName: Seoyeon Choi
+    prefab: {fileID: 2561369457695134935, guid: eed92bd1aa356c9409a12221a009e3cb, type: 3}
+    profile: {fileID: 21300000, guid: 3dd979e84eef7684bbb440167eae6dae, type: 3}
+    course: "\uBC15\uC0AC \uACFC\uC815"
+  - id: 4
+    koreanName: "\uC724\uD0DC\uC601"
+    englishName: Taeyong Yoon
+    prefab: {fileID: 4432164928111784220, guid: d4160d2ab77c40e419334f96771e6693, type: 3}
+    profile: {fileID: 21300000, guid: 120ef41ef59ec6b4aa585790f0c83950, type: 3}
+    course: "\uC11D\uBC15\uC0AC \uD1B5\uD569 \uACFC\uC815"
+  - id: 5
+    koreanName: "\uD55C\uC131\uC6B0"
+    englishName: Seongwoo Han
+    prefab: {fileID: 2195728739183673416, guid: 4a3ee715b23de6b439c2eb8a9f010f3d, type: 3}
+    profile: {fileID: 21300000, guid: 848bc8d037da0ee47bfe34381b79a73f, type: 3}
+    course: "\uC11D\uBC15\uC0AC \uD1B5\uD569 \uACFC\uC815"
+  - id: 6
+    koreanName: "\uD669\uC601\uC218"
+    englishName: Youngsoo Hwang
+    prefab: {fileID: 6902459354513429030, guid: 379e98733ec5f2646b772875c1bbb7aa, type: 3}
+    profile: {fileID: 21300000, guid: db59141dc26d474499c2d894488fe498, type: 3}
+    course: "\uC11D\uC0AC \uACFC\uC815"
+  - id: 7
+    koreanName: "\uAC15\uBBFC\uC131"
+    englishName: Minseong Kang
+    prefab: {fileID: 7671508781335489845, guid: 3c5b5df75cd8c65408171222a30525ef, type: 3}
+    profile: {fileID: 21300000, guid: 25d818e870a8f8547b4023e6d05965b4, type: 3}
+    course: "\uC11D\uC0AC \uACFC\uC815"
+  - id: 8
+    koreanName: "\uC784\uC9C4\uC8FC"
+    englishName: Jinju Lim
+    prefab: {fileID: 3907199488372834425, guid: e151bda47c81da6438678cfe153ebf23, type: 3}
+    profile: {fileID: 21300000, guid: 755651e493785f94c95f89751117fab7, type: 3}
+    course: "\uC11D\uC0AC \uACFC\uC815"
+  - id: 9
+    koreanName: "\uB0A8\uAD81\uD6C8"
+    englishName: Hoon Namgoong
+    prefab: {fileID: 3172285161585230076, guid: c56546c3fb042c34592ccb539bac25e7, type: 3}
+    profile: {fileID: 21300000, guid: c5edf1b19abe2f04e9a3a94580fb34ea, type: 3}
+    course: "\uC11D\uC0AC \uACFC\uC815"
+--- !u!4 &1116179034
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1116179032}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1118375347
 GameObject:
   m_ObjectHideFlags: 0
@@ -26165,7 +26264,7 @@ MonoBehaviour:
   - behaviorWeightSet: {fileID: 11400000, guid: 1591aace07a5be841b34c0f1bf14467d, type: 2}
     dayState: 0
     explanation: 
-    enforceProb: 1
+    enforceProb: 0.5
   - behaviorWeightSet: {fileID: 11400000, guid: ce046bb6febef6142b878691527993c1, type: 2}
     dayState: 1
     explanation: 
@@ -27751,7 +27850,7 @@ MonoBehaviour:
   _stagePrepare: StagePrepare
   _stagePrefix: Stage
   _store: Store
-  _currentDifficulty: 2
+  _currentDifficulty: 1
   hasToStageSelect: 0
   ControlSettingChangeEvent:
     m_PersistentCalls:
@@ -36845,3 +36944,4 @@ SceneRoots:
   - {fileID: 1606769379}
   - {fileID: 1485811544}
   - {fileID: 656744284}
+  - {fileID: 1116179034}

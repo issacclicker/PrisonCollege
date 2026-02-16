@@ -25,8 +25,6 @@ public class PostStudent : MonoBehaviour
     private BT_Node _root;
     private Blackboard _blackboard;
     private CapsuleCollider _characterCollider;
-
-    [SerializeField] private string _name;
     [Header("설정")]
     //[SerializeField] private float _changeInterval = 2.0f; // 2초 간격
     //[SerializeField] private Transform _targetDestination; // 이동 목표 지점
@@ -37,6 +35,7 @@ public class PostStudent : MonoBehaviour
     //[SerializeField] private SpotGroup _prowlSpots;
 
     //[SerializeField] private Professor _player;
+    public string Name { get; set; }
     public BehaviorWeightSet BehaviorWeightSet { get; set; }
     //[SerializeField] private StageSpots _stageSpots;
 
@@ -47,7 +46,6 @@ public class PostStudent : MonoBehaviour
     private StageSpots _stageSpots;
 
     public Blackboard Blackboard => _blackboard;
-    public string Name => _name;
 
     private CharacterRagdoll _characterRagdoll;
     private AnimAttacher[] _animAttachers;

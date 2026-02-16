@@ -57,7 +57,7 @@ public class StageController : SceneSingleton<StageController>
     [Header("ETC")]
     [SerializeField] private Professor _player;
     [SerializeField] private StageSpots _stageSpots;
-    [SerializeField] private StudentSpawner _studentSpawner;
+    [SerializeField] private RandomStudentSpawner _studentSpawner;
     [SerializeField] private StageOver _stageOver;
     [SerializeField] private ChaosUI _chaosUi;
     [SerializeField] private bool _isTestMode = true;

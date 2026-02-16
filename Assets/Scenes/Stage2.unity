@@ -101703,7 +101703,7 @@ MonoBehaviour:
   - {fileID: 1351610177}
   _player: {fileID: 727526862}
   _stageSpots: {fileID: 1783431664}
-  _studentSpawner: {fileID: 1319218804}
+  _studentSpawner: {fileID: 1539058982}
   _stageOver: {fileID: 1398401389}
   _chaosUi: {fileID: 646407195}
   _isTestMode: 0
@@ -238153,7 +238153,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1319218804
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -238167,12 +238167,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StudentSpawner
   spawnEntries:
-  - studentPrefab: {fileID: 4739142842488691258, guid: 56d90e59d731f3a4b84940a15c3070ae, type: 3}
+  - studentPrefab: {fileID: 1656791591194506806, guid: 3b15b448b5bb27547904e2e700b04a51, type: 3}
     seatSpot: {fileID: 351914360}
     spawnTransform: {fileID: 1993249138}
-  - studentPrefab: {fileID: 4739142842488691258, guid: 56d90e59d731f3a4b84940a15c3070ae, type: 3}
+  - studentPrefab: {fileID: 2561369457695134935, guid: eed92bd1aa356c9409a12221a009e3cb, type: 3}
     seatSpot: {fileID: 2094842679}
     spawnTransform: {fileID: 1417338085}
+  - studentPrefab: {fileID: 7671508781335489845, guid: 3c5b5df75cd8c65408171222a30525ef, type: 3}
+    seatSpot: {fileID: 596062455}
+    spawnTransform: {fileID: 801422040}
+  - studentPrefab: {fileID: 6902459354513429030, guid: 379e98733ec5f2646b772875c1bbb7aa, type: 3}
+    seatSpot: {fileID: 1443251128}
+    spawnTransform: {fileID: 150842039}
 --- !u!4 &1319218805
 Transform:
   m_ObjectHideFlags: 0
@@ -288367,6 +288373,58 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.96571296, y: 2.0248804, z: 0.0870776}
   m_Center: {x: -0.48285744, y: 1.0079008, z: 0}
+--- !u!1 &1539058981
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1539058983}
+  - component: {fileID: 1539058982}
+  m_Layer: 0
+  m_Name: StudentSpawner2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1539058982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539058981}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 10fd102324102c3479252d05077ce32f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RandomStudentSpawner
+  _seatSpots:
+  - {fileID: 351914360}
+  - {fileID: 2094842679}
+  - {fileID: 596062455}
+  - {fileID: 1443251128}
+  - {fileID: 1953398966}
+  - {fileID: 677309253}
+  - {fileID: 840494496}
+--- !u!4 &1539058983
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1539058981}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1540724009
 GameObject:
   m_ObjectHideFlags: 0
@@ -403976,6 +404034,7 @@ SceneRoots:
   - {fileID: 1050162599}
   - {fileID: 1063378634}
   - {fileID: 1319218805}
+  - {fileID: 1539058983}
   - {fileID: 1966078228}
   - {fileID: 1351610178}
   - {fileID: 1889068934}

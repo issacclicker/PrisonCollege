@@ -14,7 +14,8 @@ public class StudentSpawner : MonoBehaviour
         List<PostStudent> studentList = new();
         foreach (var entry in spawnEntries)
         {
-            PostStudent student = Instantiate(entry.studentPrefab, entry.spawnTransform.position, entry.spawnTransform.rotation).GetComponent<PostStudent>();
+            Quaternion randomYRotation = Quaternion.Euler(0, Random.Range(0, 360f), 0);
+            PostStudent student = Instantiate(entry.studentPrefab, entry.spawnTransform.position, randomYRotation).GetComponent<PostStudent>();
             student.name = "Student" + ++index;
             student.BehaviorWeightSet = behaviorWeightSet;
             student.SeatSpot = entry.seatSpot;
