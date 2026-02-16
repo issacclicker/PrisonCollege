@@ -21,6 +21,12 @@ public class Fighter : MonoBehaviour
 
     private AttributeModifier _moveSpeedModifier;
 
+    private readonly Vector3 RIGHT_GLOVE_POS = new Vector3(0.01f, 0.02f, 0.004f);
+    private readonly Vector3 LEFT_GLOVE_POS = new Vector3(-0.01f, -0.02f, -0.004f);
+    private readonly Quaternion GLOVE_ROT = Quaternion.Euler(new Vector3(0, 10, 80));
+    private readonly Vector3 HELMET_POS = new Vector3(0, -0.1f, 0);
+    private readonly Quaternion HELMET_ROT = Quaternion.Euler(new Vector3(90, 0, 0));
+
 
 
     private void Awake()
@@ -52,6 +58,36 @@ public class Fighter : MonoBehaviour
         {
             _root.Evaluate();
         }
+    }
+
+
+
+    public void AttachHelmet(GameObject helmet)
+    {
+        Transform head = _anim.GetBoneTransform(HumanBodyBones.Head);
+        helmet.transform.SetParent(head);
+        helmet.transform.localPosition = HELMET_POS;
+        helmet.transform.localRotation = HELMET_ROT;
+    }
+
+
+
+    public void AttachLeftGlove(GameObject leftGlove)
+    {
+        Transform leftHand = _anim.GetBoneTransform(HumanBodyBones.LeftHand);
+        leftGlove.transform.SetParent(leftHand);
+        leftGlove.transform.localPosition = LEFT_GLOVE_POS;
+        leftGlove.transform.localRotation = GLOVE_ROT;
+    }
+
+
+
+    public void AttachRightGlove(GameObject rightGlove)
+    {
+        Transform rightHand = _anim.GetBoneTransform(HumanBodyBones.RightHand);
+        rightGlove.transform.SetParent(rightHand);
+        rightGlove.transform.localPosition = RIGHT_GLOVE_POS;
+        rightGlove.transform.localRotation = GLOVE_ROT;
     }
 
 

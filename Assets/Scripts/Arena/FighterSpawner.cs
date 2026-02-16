@@ -23,6 +23,12 @@ public class FighterSpawner : MonoBehaviour
     [SerializeField] private Image _rightProfileImg;
     [SerializeField] private TextMeshProUGUI _rightNameTmp;
     [SerializeField] private StatBar _rightHealthBar;
+    [Header("Helmet & Gloves")]
+    [SerializeField] private GameObject _leftGlovePrefab;
+    [SerializeField] private GameObject _rightGlovePrefab;
+    [SerializeField] private GameObject _helmetPrefab;
+    [SerializeField] private Material _redMat;
+    [SerializeField] private Material _blueMat;
 
 
 
@@ -31,6 +37,7 @@ public class FighterSpawner : MonoBehaviour
         _focusPoint = new GameObject().transform;
         _focusPoint.position = (_startPoint1.transform.position + _startPoint2.transform.position) * 0.5f + Vector3.up;
         SpawnFightersAndSpectators();
+        AttachHelmetAndGloves();
         _fighter1.DamageEvent.AddListener(OnFighterDamaged);
         _fighter2.DamageEvent.AddListener(OnFighterDamaged);
         _fighter1.DieEvent.AddListener(OnFighterDead);
@@ -43,6 +50,35 @@ public class FighterSpawner : MonoBehaviour
     {
         RectTransform targetPanel = fighter == _fighter1 ? _leftPanel : _rightPanel;
         targetPanel.DOShakeAnchorPos(0.5f, 20f, 10, 90f);
+    }
+
+
+
+    private void AttachHelmetAndGloves()
+    {
+        GameObject leftGlove1 = Instantiate(_leftGlovePrefab);
+        GameObject rightGlove1 = Instantiate(_rightGlovePrefab);
+        GameObject helmet1 = Instantiate(_helmetPrefab);
+
+        GameObject leftGlove2 = Instantiate(_leftGlovePrefab);
+        GameObject rightGlove2 = Instantiate(_rightGlovePrefab);
+        GameObject helmet2 = Instantiate(_helmetPrefab);
+
+        leftGlove1.GetComponent<Renderer>().material = _redMat;
+        rightGlove1.GetComponent<Renderer>().material = _redMat;
+        helmet1.GetComponent<Renderer>().material = _redMat;
+
+        leftGlove2.GetComponent<Renderer>().material = _blueMat;
+        rightGlove2.GetComponent<Renderer>().material = _blueMat;
+        helmet2.GetComponent<Renderer>().material = _blueMat;
+
+        _fighter1.AttachLeftGlove(leftGlove1);
+        _fighter1.AttachRightGlove(rightGlove1);
+        _fighter1.AttachHelmet(helmet1);
+
+        _fighter2.AttachLeftGlove(leftGlove2);
+        _fighter2.AttachRightGlove(rightGlove2);
+        _fighter2.AttachHelmet(helmet2);
     }
 
 

@@ -2523,6 +2523,11 @@ MonoBehaviour:
   _rightProfileImg: {fileID: 629653040}
   _rightNameTmp: {fileID: 554256285}
   _rightHealthBar: {fileID: 1314459108}
+  _leftGlovePrefab: {fileID: 7983644020029225497, guid: 44f19ddde71380647a3e4e61f290995b, type: 3}
+  _rightGlovePrefab: {fileID: 2132855119667758506, guid: 0e503c88c099e6f45be1eca1d758012a, type: 3}
+  _helmetPrefab: {fileID: 1981937831077423691, guid: 87100224fbf6dc347b8b689addf5c729, type: 3}
+  _redMat: {fileID: 2100000, guid: c24be60fe825193459111da1cf084e9b, type: 2}
+  _blueMat: {fileID: 2100000, guid: 9459c490b517ff04fa3495493b507618, type: 2}
 --- !u!4 &1532573455
 Transform:
   m_ObjectHideFlags: 0
