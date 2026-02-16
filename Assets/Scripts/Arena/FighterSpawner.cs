@@ -64,12 +64,12 @@ public class FighterSpawner : MonoBehaviour
         GameObject rightGlove2 = Instantiate(_rightGlovePrefab);
         GameObject helmet2 = Instantiate(_helmetPrefab);
 
-        leftGlove1.GetComponent<Renderer>().material = _redMat;
-        rightGlove1.GetComponent<Renderer>().material = _redMat;
+        leftGlove1.GetComponentInChildren<Renderer>().material = _redMat;
+        rightGlove1.GetComponentInChildren<Renderer>().material = _redMat;
         helmet1.GetComponent<Renderer>().material = _redMat;
 
-        leftGlove2.GetComponent<Renderer>().material = _blueMat;
-        rightGlove2.GetComponent<Renderer>().material = _blueMat;
+        leftGlove2.GetComponentInChildren<Renderer>().material = _blueMat;
+        rightGlove2.GetComponentInChildren<Renderer>().material = _blueMat;
         helmet2.GetComponent<Renderer>().material = _blueMat;
 
         _fighter1.AttachLeftGlove(leftGlove1);

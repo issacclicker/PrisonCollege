@@ -66,6 +66,8 @@ public class Fighter : MonoBehaviour
     {
         Transform head = _anim.GetBoneTransform(HumanBodyBones.Head);
         helmet.transform.SetParent(head);
+        //helmet.transform.localPosition = Vector3.zero;
+        //helmet.transform.localRotation = Quaternion.identity;
         helmet.transform.localPosition = HELMET_POS;
         helmet.transform.localRotation = HELMET_ROT;
     }
@@ -76,8 +78,10 @@ public class Fighter : MonoBehaviour
     {
         Transform leftHand = _anim.GetBoneTransform(HumanBodyBones.LeftHand);
         leftGlove.transform.SetParent(leftHand);
-        leftGlove.transform.localPosition = LEFT_GLOVE_POS;
-        leftGlove.transform.localRotation = GLOVE_ROT;
+        leftGlove.transform.localPosition = Vector3.zero;
+        leftGlove.transform.localRotation = Quaternion.identity;
+        //leftGlove.transform.localPosition = LEFT_GLOVE_POS;
+        //leftGlove.transform.localRotation = GLOVE_ROT;
     }
 
 
@@ -86,8 +90,10 @@ public class Fighter : MonoBehaviour
     {
         Transform rightHand = _anim.GetBoneTransform(HumanBodyBones.RightHand);
         rightGlove.transform.SetParent(rightHand);
-        rightGlove.transform.localPosition = RIGHT_GLOVE_POS;
-        rightGlove.transform.localRotation = GLOVE_ROT;
+        rightGlove.transform.localPosition = Vector3.zero;
+        rightGlove.transform.localRotation = Quaternion.identity;
+        //rightGlove.transform.localPosition = RIGHT_GLOVE_POS;
+        //rightGlove.transform.localRotation = GLOVE_ROT;
     }
 
 

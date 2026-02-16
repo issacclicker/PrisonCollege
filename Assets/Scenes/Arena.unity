@@ -754,7 +754,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: -0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: -1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2085363121}
@@ -2523,8 +2523,8 @@ MonoBehaviour:
   _rightProfileImg: {fileID: 629653040}
   _rightNameTmp: {fileID: 554256285}
   _rightHealthBar: {fileID: 1314459108}
-  _leftGlovePrefab: {fileID: 7983644020029225497, guid: 44f19ddde71380647a3e4e61f290995b, type: 3}
-  _rightGlovePrefab: {fileID: 2132855119667758506, guid: 0e503c88c099e6f45be1eca1d758012a, type: 3}
+  _leftGlovePrefab: {fileID: 5660511902273526902, guid: 6c0ec7d9e22d70e4298998d7206fee8f, type: 3}
+  _rightGlovePrefab: {fileID: 3416533469384491825, guid: 02c38e7c746244246963e68db75f9eff, type: 3}
   _helmetPrefab: {fileID: 1981937831077423691, guid: 87100224fbf6dc347b8b689addf5c729, type: 3}
   _redMat: {fileID: 2100000, guid: c24be60fe825193459111da1cf084e9b, type: 2}
   _blueMat: {fileID: 2100000, guid: 9459c490b517ff04fa3495493b507618, type: 2}
@@ -2629,13 +2629,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1837839126}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.38268343, y: 0, z: 0, w: 0.92387956}
-  m_LocalPosition: {x: 0, y: 6, z: -7}
+  m_LocalRotation: {x: 0.2588191, y: 0, z: 0, w: 0.9659258}
+  m_LocalPosition: {x: 0, y: 3, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 45, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: 0, z: 0}
 --- !u!114 &1837839130
 MonoBehaviour:
   m_ObjectHideFlags: 0
