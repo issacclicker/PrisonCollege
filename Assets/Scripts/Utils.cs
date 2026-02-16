@@ -281,4 +281,22 @@ public static class Utils
         // 섞인 앞부분 n개만 잘라서 반환
         return list.GetRange(0, n).ToArray();
     }
+
+
+
+    public static T CopyComponentTo<T>(this T original, GameObject destination) where T : Component
+    {
+        // 대상 오브젝트에 동일한 타입의 컴포넌트 생성
+        Type type = original.GetType();
+        Component copy = destination.AddComponent(type);
+
+        // 리플렉션을 이용해 모든 필드(변수) 값 복사
+        FieldInfo[] fields = type.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.Default);
+        foreach (FieldInfo field in fields)
+        {
+            field.SetValue(copy, field.GetValue(original));
+        }
+
+        return copy as T;
+    }
 }

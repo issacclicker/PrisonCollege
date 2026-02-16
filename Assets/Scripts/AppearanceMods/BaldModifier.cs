@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class BaldModifier : ScaleModifer
 {
+    public GameObject HairObject => _targetPart.gameObject;
     protected override AttributeModifier GetItemAttribute()
     {
         return AttributeSystem.Instance.StudHairScaleMod;

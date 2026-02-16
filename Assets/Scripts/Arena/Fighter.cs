@@ -3,7 +3,9 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
+using static Utils;
 using UnityEngine.UI;
+using System.Linq;
 
 public class Fighter : MonoBehaviour
 {
@@ -21,7 +23,7 @@ public class Fighter : MonoBehaviour
     private GameObject _enemyObject;
 
     private AttributeModifier _moveSpeedModifier;
-    private Outline[] _outlines;
+    private List<Outline> _outlines;
 
     private readonly Vector3 RIGHT_GLOVE_POS = new Vector3(0.01f, 0.02f, 0.004f);
     private readonly Vector3 LEFT_GLOVE_POS = new Vector3(-0.01f, -0.02f, -0.004f);
@@ -33,7 +35,7 @@ public class Fighter : MonoBehaviour
 
     private void Awake()
     {
-        _outlines = GetComponentsInChildren<Outline>();
+        _outlines = GetComponentsInChildren<Outline>().ToList();
         _anim = GetComponent<Animator>();
         _agent = GetComponent<NavMeshAgent>();
         _characterCollider = GetComponent<Collider>();
@@ -41,6 +43,9 @@ public class Fighter : MonoBehaviour
         _damageReceiver = GetComponent<DamageReceiver>();
         _damageReceiver.StatDownEvent?.AddListener(OnDamaged);
         _damageReceiver.DepletedEvent?.AddListener(OnDie);
+        GameObject hairObject = GetComponent<BaldModifier>().HairObject;
+        Outline hairOutline = _outlines[0].CopyComponentTo(hairObject);
+        _outlines.Add(hairOutline);
     }
 
 
@@ -49,7 +54,9 @@ public class Fighter : MonoBehaviour
     {
         foreach (var outline in _outlines)
         {
+            outline.OutlineColor = Color.yellow;
             outline.OutlineWidth = 2f;
+            outline.OutlineMode = Outline.Mode.OutlineAll;
         }
         SetOutlines(false);
         _moveSpeedModifier = AttributeSystem.Instance.StudMoveSpeedMod;
@@ -109,6 +116,7 @@ public class Fighter : MonoBehaviour
     public void StartFight(GameObject enemyObject)
     {
         Debug.Log($"Kill {enemyObject.name}!!");
+        SetOutlines(false);
         _blackboard = new Blackboard(gameObject, null, null, null);
         _enemyObject = enemyObject;
         _root = ConstructBehavior();
