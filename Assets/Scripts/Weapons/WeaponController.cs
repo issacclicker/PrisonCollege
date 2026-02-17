@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour
 {
+    [SerializeField] public bool _isStage = true;
     [SerializeField] private FirstPersonController _firstPersonController;
     [SerializeField] private WeaponPanel _weaponPanel;
     public FirstPersonController FirstPersonController => _firstPersonController;
@@ -43,6 +44,13 @@ public class WeaponController : MonoBehaviour
 
     public void EquipWeapon(int startingIndex, GameObject owner)
     {
+        if (_isStage == false)
+        {
+            _weapons = new WeaponBase[1];
+            _weapons[0] = _weaponPresets[0];
+            Equip(startingIndex);
+            return;
+        }
         foreach (var weaponPreset in _weaponPresets)
         {
             weaponPreset.gameObject.SetActive(false);
@@ -209,9 +217,10 @@ public class WeaponController : MonoBehaviour
     private void Equip(int idx)
     {
         _currentIdx = idx;
-        _weaponPanel.ShowInfo(CurrentWeapon);
+        _weaponPanel?.ShowInfo(CurrentWeapon);
         CurrentWeapon.gameObject.SetActive(true);
-        StageController.Instance.WeaponEquiped(idx);
+        if (_isStage)
+            StageController.Instance.WeaponEquiped(idx);
         // 즉시 장착은 애니메이션 없이 위치만 고정
     }
 

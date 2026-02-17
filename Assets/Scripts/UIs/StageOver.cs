@@ -8,6 +8,8 @@ public class StageOver : MonoBehaviour
     [SerializeField] private CanvasGroup _waveEndCanvas;
     [SerializeField] private TextMeshProUGUI _waveTitleTmp;
     [SerializeField] private TextMeshProUGUI _waveDetailTmp;
+    [SerializeField] private GameObject _storeBtnObj;
+    [SerializeField] private GameObject _arenaBtnObj;
     [Header("Stage End Panel")]
     [SerializeField] private CanvasGroup _stageEndCanvas;
     [SerializeField] private TextMeshProUGUI _stageTitleTmp;
@@ -48,6 +50,9 @@ public class StageOver : MonoBehaviour
         _waveEndCanvas.alpha = 1;
         _waveEndCanvas.interactable = true;
         _waveEndCanvas.blocksRaycasts = true;
+        bool hasToGoArena = WaveSystem.Instance.IsCurrentWaveEndWithArena;
+        _arenaBtnObj.SetActive(hasToGoArena);
+        _storeBtnObj.SetActive(!hasToGoArena);
     }
 
 
@@ -69,5 +74,12 @@ public class StageOver : MonoBehaviour
     public void StageSelect_Btn()
     {
         GameManager.Instance.ShowStageSelect();
+    }
+
+
+
+    public void Arena_Btn()
+    {
+        GameManager.Instance.GoArena();
     }
 }

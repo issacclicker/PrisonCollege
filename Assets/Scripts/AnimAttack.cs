@@ -5,7 +5,7 @@ using static UnityEngine.UI.GridLayoutGroup;
 
 public class AnimAttack : MonoBehaviour
 {
-    [SerializeField] private DamageData _damageData;
+    [SerializeField] public DamageData _damageData;
     [SerializeField] private float _hitImpulse = 100;
     [SerializeField] private float _attackRadius = 1.5f;   // 구체의 반지름
     [SerializeField] private float _attackDistance = 2.0f; // 캐릭터 정면으로 뻗어나갈 거리

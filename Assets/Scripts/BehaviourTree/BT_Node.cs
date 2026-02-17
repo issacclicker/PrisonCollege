@@ -393,6 +393,43 @@ public class RotateToPlayer : BT_Node
 
 
 
+public class RotateToPoint : BT_Node
+{
+    private const float ROTATION_SPEED = 10f; // 회전 속도
+    private const float FINISH_ANGLE = 5.0f;  // 이 각도 이내로 들어오면 완료
+    private Transform lookPoint;
+
+
+
+    public RotateToPoint(Transform lookPoint)
+    {
+        this.lookPoint = lookPoint;
+    }
+
+    public override NodeState Evaluate()
+    {
+        if (lookPoint == null) return NodeState.Failure;
+
+        Vector3 targetDir = lookPoint.position - _bb.Avatar.transform.position;
+        targetDir.y = 0;
+
+        if (targetDir.sqrMagnitude > 0.001f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(targetDir);
+            _bb.Avatar.transform.rotation = Quaternion.Slerp(
+                _bb.Avatar.transform.rotation,
+                targetRotation,
+                Time.deltaTime * 10f // 회전 속도
+            );
+        }
+
+        // ParallelNode 안에서 계속 돌아야 하므로 항상 Running 반환
+        return NodeState.Running;
+    }
+}
+
+
+
 // 중간에 Interrupt 발생시, Timer 초기화 로직 필요
 public class Delay : BT_Node
 {

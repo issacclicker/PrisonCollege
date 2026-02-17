@@ -9,10 +9,11 @@ public abstract class RangedWeapon : WeaponBase
     [SerializeField] protected GameObject _projectilePrefab;
     [SerializeField] protected Transform _spawnPoint;
     protected Stat _magazine;
+    private WeaponController _controller;
 
     public override string TypeName => "¿ø°Å¸®";
     public override bool CanAttack => base.CanAttack && !_magazine.IsDepleted;
-    public float SpreadIntensity => _spreadIntensity * AttributeSystem.Instance.ShotSpreadMod.GetFinalValue();
+    public float SpreadIntensity => _controller._isStage ? _spreadIntensity * AttributeSystem.Instance.ShotSpreadMod.GetFinalValue() : _spreadIntensity;
 
     public UnityEvent BulletDepleteEvent = new();
     public UnityEvent BulletFillEvent = new();
@@ -22,6 +23,7 @@ public abstract class RangedWeapon : WeaponBase
     protected override void Awake()
     {
         base.Awake();
+        _controller = GetComponentInParent<WeaponController>();
         _magazine = GetComponent<Stat>();
         _magazine.Initialize();
     }

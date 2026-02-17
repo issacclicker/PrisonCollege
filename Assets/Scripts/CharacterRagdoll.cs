@@ -23,7 +23,7 @@ public class CharacterRagdoll : MonoBehaviour
     }
 
     [Header("StandUp Settings")]
-    [SerializeField] private bool _isAutoStandUp = true;
+    [SerializeField] public bool _isAutoStandUp = true;
     [SerializeField] private float _velocityThreshold = 0.1f;
     [SerializeField] private float _standUpDelay = 2f;
     [SerializeField] private float _forcedStandUpTime = 10f;

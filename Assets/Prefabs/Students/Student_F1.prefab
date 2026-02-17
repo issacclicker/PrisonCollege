@@ -12728,6 +12728,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8901873257446732570}
+  - component: {fileID: 6389478748309378732}
   m_Layer: 0
   m_Name: upper_cloth
   m_TagString: Untagged
@@ -12751,6 +12752,24 @@ Transform:
   - {fileID: 4016738381441914376}
   m_Father: {fileID: 8853085368736952457}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6389478748309378732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1425059892616343186}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 2
+  outlineColor: {r: 1, g: 1, b: 0, a: 1}
+  outlineWidth: 5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &1446479414595376712
 GameObject:
   m_ObjectHideFlags: 0
@@ -12912,6 +12931,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 289389684308466425}
+  - component: {fileID: 192296382166750236}
   m_Layer: 0
   m_Name: footwear
   m_TagString: Untagged
@@ -12935,6 +12955,24 @@ Transform:
   - {fileID: 4918642266245895415}
   m_Father: {fileID: 8853085368736952457}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &192296382166750236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1455800610066931103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 2
+  outlineColor: {r: 1, g: 1, b: 0, a: 1}
+  outlineWidth: 5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &1461466026186284020
 GameObject:
   m_ObjectHideFlags: 0
@@ -24957,7 +24995,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 886212a0a9179e44caad35c77a21f739, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _name: "\uCD5C\uC11C\uC5F0"
   _bodyOverlapAttacker: {fileID: 8085380116827586271}
   _tackleOverlapAttacker: {fileID: 6225564295150488758}
   DieEvent:
@@ -44922,6 +44959,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5795846317253165280}
+  - component: {fileID: 5968786774237763627}
   m_Layer: 0
   m_Name: body
   m_TagString: Untagged
@@ -44945,6 +44983,24 @@ Transform:
   - {fileID: 7679452933702344435}
   m_Father: {fileID: 8853085368736952457}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5968786774237763627
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5045624955705000563}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 2
+  outlineColor: {r: 1, g: 1, b: 0, a: 1}
+  outlineWidth: 5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &5148824513329350226
 GameObject:
   m_ObjectHideFlags: 0
@@ -50584,6 +50640,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8506400605205799256}
+  - component: {fileID: 1699933800823213712}
   m_Layer: 0
   m_Name: lower_cloth
   m_TagString: Untagged
@@ -50607,6 +50664,24 @@ Transform:
   - {fileID: 4530038679478597583}
   m_Father: {fileID: 8853085368736952457}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1699933800823213712
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5437194928508023422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 2
+  outlineColor: {r: 1, g: 1, b: 0, a: 1}
+  outlineWidth: 5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
 --- !u!1 &5441316876781476321
 GameObject:
   m_ObjectHideFlags: 0
