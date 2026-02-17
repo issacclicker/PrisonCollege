@@ -60,7 +60,7 @@ public class LightMover : MonoBehaviour
     public void OnFightStarted()
     {
         _mainLight.spotAngle = 150;
-        _mainLight.intensity = 10;
+        _mainLight.intensity = 20;
         foreach (Light light in _subLights)
         {
             light.gameObject.SetActive(true);
