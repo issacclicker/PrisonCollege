@@ -9,8 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6049502b3a92ed94caebd61fba21f0ec, type: 3}
-  m_Name: Student_d_fight
+  m_Script: {fileID: 11500000, guid: 0ebb49a6d408a7b40b5b06bdc2bf4d8a, type: 3}
+  m_Name: TA_Egg
   m_EditorClassIdentifier: 
-  value: 15
-  effectVisualPrefab: {fileID: 0}
+  animLength: 0
+  staminaCost: 0
+  hitImpulse: 200
+  dodgeProb: 0
+  effect: {fileID: 11400000, guid: 4e08799b8a44cda409195049394f9feb, type: 2}

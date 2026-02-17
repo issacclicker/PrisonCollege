@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class WeaponController : MonoBehaviour
 {
-    [SerializeField] private bool _isStage = true;
+    [SerializeField] public bool _isStage = true;
     [SerializeField] private FirstPersonController _firstPersonController;
     [SerializeField] private WeaponPanel _weaponPanel;
     public FirstPersonController FirstPersonController => _firstPersonController;
@@ -44,6 +44,13 @@ public class WeaponController : MonoBehaviour
 
     public void EquipWeapon(int startingIndex, GameObject owner)
     {
+        if (_isStage == false)
+        {
+            _weapons = new WeaponBase[1];
+            _weapons[0] = _weaponPresets[0];
+            Equip(startingIndex);
+            return;
+        }
         foreach (var weaponPreset in _weaponPresets)
         {
             weaponPreset.gameObject.SetActive(false);

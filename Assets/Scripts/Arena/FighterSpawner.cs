@@ -195,7 +195,7 @@ public class FighterSpawner : MonoBehaviour
         targetFighter.isDead = true;
         _focusCamera.ZoomInToTarget();
         EndEvent?.Invoke();
-        Invoke(nameof(DetermineWinner), 0.5f);
+        Invoke(nameof(DetermineWinner), 1f);
     }
 
 
