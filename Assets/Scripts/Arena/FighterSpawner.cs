@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using static Utils;
 using DG.Tweening;
+using UnityEngine.AI;
 
 public class FighterSpawner : MonoBehaviour
 {
@@ -41,6 +42,7 @@ public class FighterSpawner : MonoBehaviour
     [SerializeField] private BettingHelper _bettingHelper;
     [SerializeField] private FightFocusCamera _focusCamera;
     [SerializeField] private BetResultPanel _betResultPanel;
+    [SerializeField] private LightMover _lightMover;
     [Header("Helmet & Gloves")]
     [SerializeField] private GameObject _leftGlovePrefab;
     [SerializeField] private GameObject _rightGlovePrefab;
@@ -69,6 +71,7 @@ public class FighterSpawner : MonoBehaviour
         _focusPoint = new GameObject().transform;
         _focusPoint.position = (_startPoint1.transform.position + _startPoint2.transform.position) * 0.5f + Vector3.up;
         _focusCamera.target = _focusPoint;
+        _lightMover.SetTarget(_focusPoint);
         SpawnFightersAndSpectators();
         AttachHelmetAndGloves();
         _fighter1.mainComp.DamageEvent.AddListener(OnFighterDamaged);
@@ -80,19 +83,8 @@ public class FighterSpawner : MonoBehaviour
 
     private void Update()
     {
-        //if (!_isFighting && Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    _isFighting = true;
-        //    _fighter1.mainComp.StartFight(_fighter2.mainComp.gameObject);
-        //    _fighter2.mainComp.StartFight(_fighter1.mainComp.gameObject);
-        //}
-        //if (_isFighting)
-        //{
-
-        //}
-        
-        if (_fighter2.isDead && _fighter2.isDead) return;
-        Vector3 _focusPosition = Vector3.up * 1.25f; // 기본 높이 보정
+        if (_fighter1.isDead && _fighter2.isDead) return;
+        Vector3 _focusPosition = Vector3.up; // 기본 높이 보정
 
         if (!_fighter1.isDead && !_fighter2.isDead)
         {
@@ -103,6 +95,7 @@ public class FighterSpawner : MonoBehaviour
         {
             // 한 명만 살아있을 때: 살아있는 사람의 위치를 100% 반영
             _focusPosition += _fighter1.isDead ? _fighter2.mainComp.transform.position : _fighter1.mainComp.transform.position;
+            _focusPosition += Vector3.up * 0.5f;
         }
 
         _focusPoint.position = _focusPosition;
@@ -140,6 +133,7 @@ public class FighterSpawner : MonoBehaviour
         FighterInfo choosedFighter = selectedSide == SelectedSide.Left ? _fighter1 : _fighter2;
         (selectedSide == SelectedSide.Left ? _leftBetPanel : _rightBetPanel).SetActive(true);
         (selectedSide == SelectedSide.Left ? _leftBetTmp : _rightBetTmp).text = $"${_bettedMoney.ToString("N0")}";
+        _lightMover.OnFightStarted();
         choosedFighter.isBetted = true;
     }
 
@@ -188,8 +182,8 @@ public class FighterSpawner : MonoBehaviour
         targetPanel.DOShakeAnchorPos(0.4f, 30f, 20);
         targetPanel.DOShakeRotation(0.4f, 10f);
 
-        FighterInfo deadFighter = fighter == _fighter1.mainComp ? _fighter1 : _fighter2;
-        deadFighter.isDead = true;
+        FighterInfo targetFighter = fighter == _fighter1.mainComp ? _fighter1 : _fighter2;
+        targetFighter.isDead = true;
         _focusCamera.ZoomInToTarget();
         Invoke(nameof(DetermineWinner), 0.5f);
     }
@@ -324,7 +318,7 @@ public class FighterSpawner : MonoBehaviour
         GameObject studentObj = Instantiate(originalPrefab, spawnPosition, Quaternion.LookRotation(otherPosition));
         originalPrefab.SetActive(originalState);
         studentObj.RemoveComponent<PostStudent>(true);
-        //studentObj.RemoveComponent<CharacterRagdoll>(true);
+        studentObj.RemoveComponent<NavMeshAgent>(true);
         studentObj.RemoveComponent<DamageReceiver>(true);
         RemoveHealthCompsNotHundred(studentObj);
         studentObj.RemoveComponent<BaldOutlines>(true);

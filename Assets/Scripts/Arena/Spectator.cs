@@ -32,7 +32,7 @@ public class Spectator : MonoBehaviour
     private void Start()
     {
         _anim.SetFloat("MoveSpeedScale", 1);
-        _agent.acceleration = 100f;
+        //_agent.acceleration = 100f;
     }
 
 
@@ -98,8 +98,8 @@ public class Spectator : MonoBehaviour
     private void OnDie(HitInfo hitInfo)
     {
         _root = null;
-        _agent.speed = 0;
-        _agent.enabled = false;
+        //_agent.speed = 0;
+        //_agent.enabled = false;
         _anim.enabled = false;
         _characterCollider.enabled = false;
         _blackboard.targetDamageable = null;
