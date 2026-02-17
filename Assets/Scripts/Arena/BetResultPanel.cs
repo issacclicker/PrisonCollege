@@ -39,7 +39,7 @@ public class BetResultPanel : MonoBehaviour
 
 
 
-    private void StartIncreaseAnimation(int targetMoney, float duration = 3.0f, float delay = 3.0f)
+    private void StartIncreaseAnimation(int targetMoney, float duration = 2.5f, float delay = 2.5f)
     {
         DOTween.Kill(this);
         DOTween.To(() => _currentDisplayMoney, x => _currentDisplayMoney = x, targetMoney, duration)

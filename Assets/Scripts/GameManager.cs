@@ -12,6 +12,7 @@ public class GameManager : PersistentSingleton<GameManager>
     [SerializeField] private string _stagePrepare;
     [SerializeField] private string _stagePrefix;
     [SerializeField] private string _store;
+    [SerializeField] private string _arena = "Arena";
     private StageInfo _currentStage;
     [SerializeField] private DifficultyLevel _currentDifficulty;
     public bool hasToStageSelect = false;
@@ -39,6 +40,17 @@ public class GameManager : PersistentSingleton<GameManager>
             WaveSystem.Instance.ResetWave();
         }
         //ShowMainScreen();
+    }
+
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
 
@@ -113,6 +125,13 @@ public class GameManager : PersistentSingleton<GameManager>
         Time.timeScale = 1;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+    }
+
+
+
+    public void GoArena()
+    {
+        SceneManager.LoadScene(_arena);
     }
 
 

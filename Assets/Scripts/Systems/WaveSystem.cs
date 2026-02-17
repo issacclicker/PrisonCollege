@@ -15,6 +15,7 @@ public class WaveSystem : PersistentSingleton<WaveSystem>
         public DayState dayState;
         public string explanation;
         [Range(0, 1)] public float enforceProb;
+        public bool isEndWithArena;
     }
 
     [Header("Skybox")]
@@ -36,6 +37,7 @@ public class WaveSystem : PersistentSingleton<WaveSystem>
     public float ChaosFactor => _chaosFactor;
     public float ProjectFactor => _projectFactor;
     public bool IsLastWave => _currentWave >= waveEntries.Length;
+    public bool IsCurrentWaveEndWithArena => waveEntries[_currentWave - 1].isEndWithArena;
     public string WaveInfoExplanation
     { 
         get 

@@ -606,7 +606,7 @@ Transform:
   m_GameObject: {fileID: 216065609}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.5, y: 0, z: 0}
+  m_LocalPosition: {x: -0.5, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -703,7 +703,7 @@ GameObject:
   - component: {fileID: 250532091}
   - component: {fileID: 250532090}
   m_Layer: 5
-  m_Name: Before
+  m_Name: Store
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -805,9 +805,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SimplePanel, Assembly-CSharp
-        m_MethodName: Back_Btn
+      - m_Target: {fileID: 1532573454}
+        m_TargetAssemblyTypeName: FighterSpawner, Assembly-CSharp
+        m_MethodName: Store_Btn
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1212,82 +1212,6 @@ MonoBehaviour:
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 0}
   m_BuildHeightMesh: 0
---- !u!1 &351734173
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 351734175}
-  - component: {fileID: 351734174}
-  m_Layer: 0
-  m_Name: InventorySystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &351734174
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 351734173}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b361574bd5b9d6249b78c0b7d676c0d3, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InventorySystem
-  _totalItemList:
-  - {fileID: 11400000, guid: 0d9408d439cd69145af579605e1b06e3, type: 2}
-  - {fileID: 11400000, guid: 6911b6e1f0f547a4d90477b2ca4dbaeb, type: 2}
-  - {fileID: 11400000, guid: 15eda05f9f6c23946892e95f597162db, type: 2}
-  - {fileID: 11400000, guid: c225c312f795a9e42b277334d2ceafd2, type: 2}
-  - {fileID: 11400000, guid: e0f65aff8c8c4ad4db4d5012642d5fbe, type: 2}
-  - {fileID: 11400000, guid: 50c009895914536418c26ac2080569df, type: 2}
-  - {fileID: 11400000, guid: bf9ba92797a297e4299e24f59329c2a9, type: 2}
-  - {fileID: 11400000, guid: 0f0eb3ac07bbde9479ef3ebfbdff51f5, type: 2}
-  - {fileID: 11400000, guid: 83f75e27bdd2f7c428719e433246ec65, type: 2}
-  - {fileID: 11400000, guid: bd130a0e3b83bbc48b218b07f72ed720, type: 2}
-  - {fileID: 11400000, guid: c6acb52c44ec71844b0e5fe22c3ac970, type: 2}
-  - {fileID: 11400000, guid: 490389b9c2f1ed1419a83896cb981560, type: 2}
-  - {fileID: 11400000, guid: 2dcdcfbbeeb3b5c40b2fb999e96af4f9, type: 2}
-  - {fileID: 11400000, guid: 2dcdcfbbeeb3b5c40b2fb999e96af4f9, type: 2}
-  - {fileID: 11400000, guid: e720dd3b7658e494a8a469f02381e5a9, type: 2}
-  - {fileID: 11400000, guid: e0a7b3bd3cf9c8a4db0d65ef97182985, type: 2}
-  - {fileID: 11400000, guid: 62bd158ef7a9dea42b346ed333c11342, type: 2}
-  - {fileID: 11400000, guid: 909f385d676358647b771d34a05a20e4, type: 2}
-  - {fileID: 11400000, guid: 0928fb33fa1499948b21924ee88555e5, type: 2}
-  - {fileID: 11400000, guid: 4276aaf366d97554598baa8fb4fa474f, type: 2}
-  - {fileID: 11400000, guid: e8ebb7bc37cf1864689df003ef786ea8, type: 2}
-  - {fileID: 11400000, guid: bb2da80a9d489b249b4820ef6c5a3c79, type: 2}
-  - {fileID: 11400000, guid: dbdf3f58d9e31654cb37b1873788f28d, type: 2}
-  - {fileID: 11400000, guid: 4a4e646680bf16f4db87692341dc59c6, type: 2}
-  _defaultEquipedItemList:
-  - {fileID: 11400000, guid: 654c235f5557bd34f81ffcef5de76243, type: 2}
-  - {fileID: 11400000, guid: 349002a57e48f62439f268876d8d7c39, type: 2}
-  - {fileID: 11400000, guid: f142abbb6aee09c40b9b1cce2b2d7f9a, type: 2}
-  _equipLimit: 4
-  _money: 2000
-  _equipedItemList: []
---- !u!4 &351734175
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 351734173}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &366085744
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6193,7 +6117,7 @@ Transform:
   m_GameObject: {fileID: 1404560854}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0, z: 0}
+  m_LocalPosition: {x: 0.5, y: 2, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -6680,6 +6604,7 @@ MonoBehaviour:
   _focusCamera: {fileID: 1837839131}
   _betResultPanel: {fileID: 641996277}
   _lightMover: {fileID: 1776544988}
+  _groundCollider: {fileID: 1874450916}
   _leftGlovePrefab: {fileID: 5660511902273526902, guid: 6c0ec7d9e22d70e4298998d7206fee8f, type: 3}
   _rightGlovePrefab: {fileID: 3416533469384491825, guid: 02c38e7c746244246963e68db75f9eff, type: 3}
   _helmetPrefab: {fileID: 1981937831077423691, guid: 87100224fbf6dc347b8b689addf5c729, type: 3}
@@ -8018,7 +7943,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
@@ -8796,6 +8721,5 @@ SceneRoots:
   - {fileID: 580746689}
   - {fileID: 914728587}
   - {fileID: 1898708359}
-  - {fileID: 351734175}
   - {fileID: 543450653376078214}
   - {fileID: 1776544989}

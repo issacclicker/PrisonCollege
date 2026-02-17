@@ -43,6 +43,7 @@ public class FighterSpawner : MonoBehaviour
     [SerializeField] private FightFocusCamera _focusCamera;
     [SerializeField] private BetResultPanel _betResultPanel;
     [SerializeField] private LightMover _lightMover;
+    [SerializeField] private Collider _groundCollider;
     [Header("Helmet & Gloves")]
     [SerializeField] private GameObject _leftGlovePrefab;
     [SerializeField] private GameObject _rightGlovePrefab;
@@ -57,6 +58,7 @@ public class FighterSpawner : MonoBehaviour
 
     private void Awake()
     {
+        InventorySystem.Instance.ActivatePassiveItems();
         _fighter1 = new FighterInfo();
         _fighter2 = new FighterInfo();
     }
@@ -65,6 +67,7 @@ public class FighterSpawner : MonoBehaviour
 
     private void Start()
     {
+        _groundCollider.enabled = false;
         _betResultPanel.gameObject.SetActive(false);
         _leftBetPanel.SetActive(false);
         _rightBetPanel.SetActive(false);
@@ -134,6 +137,7 @@ public class FighterSpawner : MonoBehaviour
         (selectedSide == SelectedSide.Left ? _leftBetPanel : _rightBetPanel).SetActive(true);
         (selectedSide == SelectedSide.Left ? _leftBetTmp : _rightBetTmp).text = $"${_bettedMoney.ToString("N0")}";
         _lightMover.OnFightStarted();
+        _groundCollider.enabled = true;
         choosedFighter.isBetted = true;
     }
 
@@ -385,6 +389,13 @@ public class FighterSpawner : MonoBehaviour
                 DestroyImmediate(health);
             }
         }
+    }
+
+
+
+    public void Store_Btn()
+    {
+        GameManager.Instance.GoStore();
     }
 
 

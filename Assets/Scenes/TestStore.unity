@@ -12208,7 +12208,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 349002a57e48f62439f268876d8d7c39, type: 2}
   - {fileID: 11400000, guid: f142abbb6aee09c40b9b1cce2b2d7f9a, type: 2}
   _equipLimit: 4
-  _money: 5000
+  _money: 3200
   _equipedItemList: []
 --- !u!4 &656744284
 Transform:
@@ -26265,18 +26265,22 @@ MonoBehaviour:
     dayState: 0
     explanation: 
     enforceProb: 0.5
+    isEndWithArena: 1
   - behaviorWeightSet: {fileID: 11400000, guid: ce046bb6febef6142b878691527993c1, type: 2}
     dayState: 1
     explanation: 
     enforceProb: 0
+    isEndWithArena: 0
   - behaviorWeightSet: {fileID: 11400000, guid: 1591aace07a5be841b34c0f1bf14467d, type: 2}
     dayState: 0
     explanation: 
     enforceProb: 0
+    isEndWithArena: 1
   - behaviorWeightSet: {fileID: 11400000, guid: ce046bb6febef6142b878691527993c1, type: 2}
     dayState: 1
     explanation: 
     enforceProb: 0
+    isEndWithArena: 0
   _nightChaosFactor: 1.5
   _nightProjectFactor: 2
   _currentWave: 0
@@ -27850,6 +27854,7 @@ MonoBehaviour:
   _stagePrepare: StagePrepare
   _stagePrefix: Stage
   _store: Store
+  _arena: Arena
   _currentDifficulty: 1
   hasToStageSelect: 0
   ControlSettingChangeEvent:
