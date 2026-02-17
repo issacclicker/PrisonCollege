@@ -31,6 +31,7 @@ public class FighterSpawner : MonoBehaviour
     [SerializeField] private StatBar _leftHealthBar;
     [SerializeField] private GameObject _leftBetPanel;
     [SerializeField] private TextMeshProUGUI _leftBetTmp;
+    [SerializeField] private CanvasGroup _leftCanvasGroup;
 
     [SerializeField] private RectTransform _rightPanel;
     [SerializeField] private Image _rightProfileImg;
@@ -38,6 +39,7 @@ public class FighterSpawner : MonoBehaviour
     [SerializeField] private StatBar _rightHealthBar;
     [SerializeField] private GameObject _rightBetPanel;
     [SerializeField] private TextMeshProUGUI _rightBetTmp;
+    [SerializeField] private CanvasGroup _rightCanvasGroup;
     [Header("MainPanel UIs")]
     //[SerializeField] private TextMeshProUGUI _timerTmp;
     [SerializeField] private BettingHelper _bettingHelper;
@@ -193,6 +195,12 @@ public class FighterSpawner : MonoBehaviour
 
         FighterInfo targetFighter = fighter == _fighter1.mainComp ? _fighter1 : _fighter2;
         targetFighter.isDead = true;
+
+        CanvasGroup targetGroup = fighter == _fighter1.mainComp ? _leftCanvasGroup : _rightCanvasGroup;
+        targetGroup.alpha = 0.2f;
+        targetGroup.interactable = false;
+        targetGroup.blocksRaycasts = false;
+
         _focusCamera.ZoomInToTarget();
         EndEvent?.Invoke();
         Invoke(nameof(DetermineWinner), 1f);

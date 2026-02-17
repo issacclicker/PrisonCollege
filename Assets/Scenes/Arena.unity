@@ -3785,6 +3785,7 @@ GameObject:
   - component: {fileID: 843644727}
   - component: {fileID: 843644728}
   - component: {fileID: 843644729}
+  - component: {fileID: 843644730}
   m_Layer: 5
   m_Name: Right
   m_TagString: Untagged
@@ -3881,6 +3882,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!225 &843644730
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 843644726}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &874363314
 GameObject:
   m_ObjectHideFlags: 0
@@ -3892,6 +3905,7 @@ GameObject:
   - component: {fileID: 874363315}
   - component: {fileID: 874363317}
   - component: {fileID: 874363318}
+  - component: {fileID: 874363319}
   m_Layer: 5
   m_Name: Left
   m_TagString: Untagged
@@ -3988,6 +4002,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!225 &874363319
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 874363314}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &880329344
 GameObject:
   m_ObjectHideFlags: 0
@@ -6951,12 +6977,14 @@ MonoBehaviour:
   _leftHealthBar: {fileID: 1343741566}
   _leftBetPanel: {fileID: 830154780}
   _leftBetTmp: {fileID: 1153590131}
+  _leftCanvasGroup: {fileID: 874363319}
   _rightPanel: {fileID: 843644727}
   _rightProfileImg: {fileID: 629653040}
   _rightNameTmp: {fileID: 554256285}
   _rightHealthBar: {fileID: 1314459108}
   _rightBetPanel: {fileID: 762944825}
   _rightBetTmp: {fileID: 307227842}
+  _rightCanvasGroup: {fileID: 843644730}
   _bettingHelper: {fileID: 1720190395}
   _focusCamera: {fileID: 1837839131}
   _betResultPanel: {fileID: 641996277}
