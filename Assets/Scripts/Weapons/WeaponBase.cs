@@ -27,7 +27,7 @@ public class WeaponBase : MonoBehaviour
     protected virtual void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
-        _owner = GetComponentInParent<WeaponController>().FirstPersonController.gameObject;
+        _owner = GetComponentInParent<WeaponController>().FirstPersonController?.gameObject;
         _animator = GetComponent<WeaponAnimator>();
     }
 

@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using static Utils;
 using DG.Tweening;
 using UnityEngine.AI;
+using UnityEngine.Events;
 
 public class FighterSpawner : MonoBehaviour
 {
@@ -53,6 +54,9 @@ public class FighterSpawner : MonoBehaviour
     private bool _isFighting = false;
     private bool _isWinnerDetermined = false;
     private int _bettedMoney = 0;
+
+    public UnityEvent StartEvent = new();
+    public UnityEvent EndEvent = new();
 
 
 
@@ -139,6 +143,7 @@ public class FighterSpawner : MonoBehaviour
         _lightMover.OnFightStarted();
         _groundCollider.enabled = true;
         choosedFighter.isBetted = true;
+        StartEvent?.Invoke();
     }
 
 
@@ -189,6 +194,7 @@ public class FighterSpawner : MonoBehaviour
         FighterInfo targetFighter = fighter == _fighter1.mainComp ? _fighter1 : _fighter2;
         targetFighter.isDead = true;
         _focusCamera.ZoomInToTarget();
+        EndEvent?.Invoke();
         Invoke(nameof(DetermineWinner), 0.5f);
     }
 
