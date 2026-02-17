@@ -30,7 +30,7 @@ public class ControlSetting : MonoBehaviour
     private void Start()
     {
         // 1. 기존 설정값 로드 (0: 홀드, 1: 토글)
-        float savedSens = PlayerPrefs.GetFloat("MouseSensitivity", 1.0f);
+        float savedSens = PlayerPrefs.GetFloat("MouseSensitivity", 3.0f);
         float savedFov = PlayerPrefs.GetFloat("FOV", 80);
         int savedSprintMode = PlayerPrefs.GetInt("SprintMode", 0);
 
