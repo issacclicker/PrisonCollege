@@ -139,6 +139,7 @@ public class PostStudent : MonoBehaviour
 
     private void Wakeup()
     {
+        CancelInvoke(nameof(PlaySleepingSFX));
         _soundBehavior.StopSleeping();
         _anim.SetBool("Laying", false);
     }
