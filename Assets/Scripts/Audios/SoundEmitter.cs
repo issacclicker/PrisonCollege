@@ -1,10 +1,12 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Events;
 
 public class SoundEmitter : MonoBehaviour
 {
     private AudioSource _audioSource;
     private SoundManager _pool;
+    private bool _isPaused;
 
     void Awake()
     {
@@ -12,13 +14,32 @@ public class SoundEmitter : MonoBehaviour
         _audioSource.playOnAwake = false;
     }
 
-    public void Initialize(SoundManager pool) => _pool = pool;
+    public void Initialize(SoundManager pool)
+    {
+        _pool = pool;
+        SoundManager.Instance.OnPauseChanged -= HandlePauseChanged;
+        SoundManager.Instance.OnPauseChanged += HandlePauseChanged;
+        if (SoundManager.Instance.IsPaused)
+        {
+            _audioSource.Pause();
+        }
+    }
+
+
+
+    private void HandlePauseChanged(bool isPaused)
+    {
+        if (isPaused) _audioSource.Pause();
+        else _audioSource.UnPause();
+    }
+
 
     public void Play(AudioClip clip, float pitch, float volume, Vector3 position, bool is3D, bool persistBetweenScenes)
     {
         transform.position = position;
         _audioSource.clip = clip;
         _audioSource.pitch = pitch;
+        _isPaused = false;
 
         // 여기서 개별 볼륨을 설정합니다 (0.0 ~ 1.0)
         _audioSource.volume = volume;
@@ -39,6 +60,22 @@ public class SoundEmitter : MonoBehaviour
 
         _audioSource.Stop();
         transform.SetParent(_pool.transform); // 풀로 돌아갈 땐 다시 매니저 자식으로
+        _pool.ReturnToPool(this);
+    }
+
+
+
+    public void StopAndReturn()
+    {
+        if (SoundManager.Instance != null)
+            SoundManager.Instance.OnPauseChanged -= HandlePauseChanged;
+        StopAllCoroutines(); // 진행 중인 ReturnAfterFinish 코루틴 중단
+        _audioSource.Stop();
+        _audioSource.loop = false;
+        _audioSource.clip = null;
+
+        // 다시 풀로 복귀 (매니저가 관리하는 자식 위치로)
+        transform.SetParent(_pool.transform);
         _pool.ReturnToPool(this);
     }
 }

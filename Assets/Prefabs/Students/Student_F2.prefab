@@ -31958,6 +31958,8 @@ GameObject:
   - component: {fileID: 7237982521386830706}
   - component: {fileID: 2429339882027688425}
   - component: {fileID: 1558521467221382873}
+  - component: {fileID: -5595530016718363726}
+  - component: {fileID: -9041723626745319746}
   m_Layer: 6
   m_Name: Student_F2
   m_TagString: Student
@@ -32520,6 +32522,33 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4200f612e610f8c429cd2b77b5b25272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BaldOutlines
+--- !u!114 &-5595530016718363726
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3907199488372834425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90ec1431d14dc92428b95a75f663b8f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundBehavior
+  _gruntSD: {fileID: 11400000, guid: f51239c100f4481478d05c2f09187131, type: 2}
+  _goodSongSD: {fileID: 11400000, guid: e88ffe948792fe1429c5d433b56a102a, type: 2}
+  _badSongSD: {fileID: 11400000, guid: 5ab7e17986d28b047841a95cb4a0444d, type: 2}
+--- !u!114 &-9041723626745319746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3907199488372834425}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 705af221b274a37478f957ef925dfe4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundEmitterOwner
 --- !u!1 &3923756275885736738
 GameObject:
   m_ObjectHideFlags: 0

@@ -160,6 +160,7 @@ public class CombatApproachPattern : PatternNode
                 }),
                 new ActionNode(() => _isAttacking = true, NodeState.Success), // 플래그 ON
 
+                new ActionNode(() => _bb.soundBehavior.PlayGrunt()),
                 new MeleeAttackPattern(), // 실제 주먹 휘두르는 동안
 
                 new ActionNode(() => _isAttacking = false, NodeState.Success), // 공격 끝나자마자 플래그 OFF
@@ -1075,6 +1076,7 @@ public class TryEscapePattern : PatternNode
                     new StopAndDisableAgentUpdate(),
                     new SetAnimRootMotion(true),
 
+                    new ActionNode(() => _bb.soundBehavior.PlayGrunt()),
                     new ExitAttackPattern(), // 실제 주먹 휘두르는 동안
                     new Delay(() => 0.1f),
                 

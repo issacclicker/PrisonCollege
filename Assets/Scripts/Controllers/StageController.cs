@@ -76,7 +76,8 @@ public class StageController : SceneSingleton<StageController>
     private AttributeModifier _chaosDecreaseModifier;
     public int StageNumber => _stageNumber;
     private int _originMoney;
-    private bool _isPreparing;
+    private bool _isPreparing = true;
+    public bool IsPreparing => _isPreparing;
     public UnityEvent StageStartEvent = new();
 
 

@@ -135,6 +135,7 @@ MonoBehaviour:
   _minImpactThreshold: 0.1
   _lifeTime: 10
   _destroyOnHit: 0
+  _hitSD: {fileID: 11400000, guid: a926fa4456e19504eb8ff3b060d18f92, type: 2}
 --- !u!65 &5645543186306039666
 BoxCollider:
   m_ObjectHideFlags: 0

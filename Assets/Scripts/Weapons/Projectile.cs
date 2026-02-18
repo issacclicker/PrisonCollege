@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] private float _minImpactThreshold = 5.0f;
     [SerializeField] private float _lifeTime = 5.0f;
     [SerializeField] private bool _destroyOnHit = false;
+    [SerializeField] private SoundData _hitSD;
     protected Rigidbody _rigidbody;
 
     public WeaponData WeaponData { get; set; }
@@ -61,6 +62,7 @@ public class Projectile : MonoBehaviour
             HitInfo hitInfo = new HitInfo(hitPoint, Quaternion.LookRotation(hitNormal), Owner, WeaponData.hitImpulse);
 
             receiver.TakeEffect(WeaponData.effect, hitInfo);
+            SoundUtils.PlayScene3DSFX(_hitSD, hitInfo.hitPoint);
 
             // 만약 관통형이 아니라 첫 충돌에 바로 사라져야 한다면 아래 주석 해제
             if (_destroyOnHit)

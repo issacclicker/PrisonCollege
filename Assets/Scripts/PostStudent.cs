@@ -52,6 +52,7 @@ public class PostStudent : MonoBehaviour
     private AnimAttacher[] _animAttachers;
     private PlateAttacher _plateAttacher;
     private SingAttacher _singAttacher;
+    private SoundBehavior _soundBehavior;
 
     [SerializeField] private OverlapAttacker _bodyOverlapAttacker;
     [SerializeField] private OverlapAttacker _tackleOverlapAttacker;
@@ -85,6 +86,7 @@ public class PostStudent : MonoBehaviour
 
     private void Awake()
     {
+        _soundBehavior = GetComponent<SoundBehavior>();
         _characterRagdoll = GetComponent<CharacterRagdoll>();
         _damageReceiver = GetComponent<DamageReceiver>();
         _boostReceiver = GetComponent<BoostReceiver>();
