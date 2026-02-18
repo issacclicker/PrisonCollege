@@ -42,7 +42,7 @@ public class ControlSetting : MonoBehaviour
         UpdateFOVText(savedFov);
 
         // 저장된 값에 따라 버튼 체크 상태 결정
-        if (savedSprintMode == 1) _toggleModeBtn.isOn = true;
+        if (savedSprintMode == 0) _toggleModeBtn.isOn = true;
         else _holdModeBtn.isOn = true;
 
         // 3. 이벤트 연결
@@ -51,8 +51,8 @@ public class ControlSetting : MonoBehaviour
         _fovSlider.onValueChanged.AddListener(OnFOVChanged);
 
         // 토글 버튼들이 켜질 때(isOn == true)만 저장 로직 실행
-        _toggleModeBtn.onValueChanged.AddListener(isOn => { if (isOn) OnSprintModeChanged(1); });
-        _holdModeBtn.onValueChanged.AddListener(isOn => { if (isOn) OnSprintModeChanged(0); });
+        _toggleModeBtn.onValueChanged.AddListener(isOn => { if (isOn) OnSprintModeChanged(0); });
+        _holdModeBtn.onValueChanged.AddListener(isOn => { if (isOn) OnSprintModeChanged(1); });
 
         UpdateToggleVisual(_toggleModeBtn.isOn, _toggleModeBg);
         UpdateToggleVisual(_holdModeBtn.isOn, _holdModeBg);
@@ -60,12 +60,12 @@ public class ControlSetting : MonoBehaviour
         // 이벤트 연결: 값이 바뀔 때마다 시각적 효과 업데이트
         _toggleModeBtn.onValueChanged.AddListener(isOn => {
             UpdateToggleVisual(isOn, _toggleModeBg);
-            if (isOn) OnSprintModeChanged(1);
+            if (isOn) OnSprintModeChanged(0);
         });
 
         _holdModeBtn.onValueChanged.AddListener(isOn => {
             UpdateToggleVisual(isOn, _holdModeBg);
-            if (isOn) OnSprintModeChanged(0);
+            if (isOn) OnSprintModeChanged(1);
         });
     }
 
@@ -113,7 +113,7 @@ public class ControlSetting : MonoBehaviour
     {
         // 0은 홀드, 1은 토글로 정의하여 저장
         PlayerPrefs.SetInt("SprintMode", modeIndex);
-        Debug.Log(modeIndex == 1 ? "달리기 방식: 토글" : "달리기 방식: 홀드");
+        Debug.Log(modeIndex == 0 ? "달리기 방식: 토글" : "달리기 방식: 홀드");
         GameManager.Instance.ControlSettingChanged();
     }
 

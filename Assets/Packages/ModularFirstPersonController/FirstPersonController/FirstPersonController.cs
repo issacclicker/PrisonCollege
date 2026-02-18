@@ -484,7 +484,7 @@ public class FirstPersonController : MonoBehaviour
         fov = PlayerPrefs.GetFloat("FOV", 80f);
         sprintFOV = fov + 15f;
         playerCamera.fieldOfView = fov;
-        holdToSprint = PlayerPrefs.GetInt("SprintMode", 1) == 0;
+        holdToSprint = PlayerPrefs.GetInt("SprintMode", 0) == 1;
     }
 
     public void StopSprinting()
