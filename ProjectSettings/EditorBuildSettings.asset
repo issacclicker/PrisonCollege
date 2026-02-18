@@ -32,5 +32,8 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Arena.unity
     guid: 721f7a15b849f594c94a0e4e50459619
+  - enabled: 1
+    path: Assets/Scenes/Stage1.unity
+    guid: 89d121cda03dd334bb0d3c205201918c
   m_configObjects: {}
   m_UseUCBPForAssetBundles: 0

@@ -1,3 +1,4 @@
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,6 +13,7 @@ public class BaldOutlines : MonoBehaviour
         outlines = GetComponentsInChildren<Outline>();
         LabLightSystem.Instance.LightsOffEvent.AddListener(() => OnLightChanged(false));
         LabLightSystem.Instance.LightsOnEvent.AddListener(() => OnLightChanged(true));
+        StageController.Instance.StageStartEvent.AddListener(() => SetOutlines(_activationState));
     }
 
 
@@ -20,7 +22,7 @@ public class BaldOutlines : MonoBehaviour
     private void Start()
     {
         _activationState = AttributeSystem.Instance.IsStudOutline;
-        SetOutlines(_activationState);
+        SetOutlines(false);
     }
 
 

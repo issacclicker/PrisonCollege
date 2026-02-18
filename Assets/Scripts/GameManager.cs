@@ -39,6 +39,10 @@ public class GameManager : PersistentSingleton<GameManager>
             InventorySystem.Instance.ResetInventory(false);
             WaveSystem.Instance.ResetWave();
         }
+        else
+        {
+            LoadStageProgress();
+        }
         //ShowMainScreen();
     }
 
@@ -69,11 +73,41 @@ public class GameManager : PersistentSingleton<GameManager>
 
 
 
+    private void LoadStageProgress()
+    {
+        int lastClearedStageNum = PlayerPrefs.GetInt("MaxClearStage", 0);
+        int[] stageDifficulties = new int[_stageEntries.Length];
+        for (int i = 0; i < stageDifficulties.Length; i++)
+        {
+            stageDifficulties[i] = PlayerPrefs.GetInt("StageDifficulty_" + (i + 1), 0);
+        }
+
+        for(int i = 0; i < _stageEntries.Length; ++i)
+        {
+            _stageEntries[i].maxClearDifficulty = (DifficultyLevel)stageDifficulties[i];
+            _stageEntries[i].isLocked = _stageEntries[i].number > lastClearedStageNum + 1;
+        }
+    }
+
+
+
+    private void SaveStageProgress(int stageNum, DifficultyLevel difficultyLevel)
+    {
+        int maxClearStage = Mathf.Max(stageNum, PlayerPrefs.GetInt("MaxClearStage", 0));
+        PlayerPrefs.SetInt("MaxClearStage", maxClearStage);
+        PlayerPrefs.SetInt("StageDifficulty_" + stageNum, (int)difficultyLevel);
+        PlayerPrefs.Save();
+    }
+
+
+
 
     public void StageCleared()
     {
         DifficultyLevel maxDifficulty = (DifficultyLevel)Mathf.Max((int)_currentDifficulty, (int)_currentStage.maxClearDifficulty);
         _currentStage.maxClearDifficulty = maxDifficulty;
+        _stageEntries[_currentStage.number].isLocked = false;
+        SaveStageProgress(_currentStage.number, _currentStage.maxClearDifficulty);
     }
 
 
