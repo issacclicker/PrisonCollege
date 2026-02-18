@@ -7,11 +7,13 @@ using DOTweenSeq = DG.Tweening.Sequence;
 
 public class BluntAnimator : WeaponAnimator
 {
+    [SerializeField] private SoundData _swingSD;
     protected override void AddAttackFrames(DOTweenSeq attackAnimSeq, System.Action attackExecution, float attackDuration)
     {
         attackAnimSeq.Append(transform.DOLocalMove(_originPos + new Vector3(0.2f, 0.2f, -0.4f), 0.2f).SetEase(Ease.OutQuad));
         attackAnimSeq.Join(transform.DOLocalRotate(_originRot + new Vector3(-20f, 60f, 0f), 0.2f).SetEase(Ease.OutQuad));
 
+        attackAnimSeq.AppendCallback(() => SoundUtils.PlayScene2DSFX(_swingSD));
         // 2. 휘두르기 (전체의 약 15% - 매우 빠르게)
         attackAnimSeq.Append(transform.DOLocalMove(_originPos + new Vector3(-0.5f, 0f, -0.3f), 0.15f).SetEase(Ease.InExpo));
         attackAnimSeq.Join(transform.DOLocalRotate(_originRot + new Vector3(10f, -90f, -40f), 0.15f).SetEase(Ease.InExpo));

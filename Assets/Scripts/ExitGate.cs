@@ -19,6 +19,7 @@ public class ExitGate : MonoBehaviour
     protected StatRecovery _statRecovery;
     protected ExplosionShacker _explosionShacker;
     private Health _health;
+    public bool IsUpgraded => AttributeSystem.Instance.IsMetalBarricade;
 
     public bool IsBarricadePlaced => _barricadePlaced != null;
     public virtual ExitGateType GateType => ExitGateType.None;

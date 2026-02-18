@@ -7,6 +7,7 @@ using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Events;
 using static CartoonFX.CFXR_Effect;
+using static SoundUtils;
 
 public class Professor : MonoBehaviour, IAttackable
 {

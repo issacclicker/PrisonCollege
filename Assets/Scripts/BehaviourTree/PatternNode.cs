@@ -1344,9 +1344,9 @@ public class SetRandomSpeedPattern : PatternNode
                 () => StageController.Instance.GetChaosEffectedWeight(2, 5),
                 () => StageController.Instance.GetChaosEffectedWeight(2, 5),
 
-                () => StageController.Instance.GetChaosEffectedWeight(3, 50),
-                () => StageController.Instance.GetChaosEffectedWeight(3, 50),
-                () => StageController.Instance.GetChaosEffectedWeight(3, 50),
+                () => StageController.Instance.GetChaosEffectedWeight(1, 50),
+                () => StageController.Instance.GetChaosEffectedWeight(1, 50),
+                () => StageController.Instance.GetChaosEffectedWeight(1, 50),
             }
         );
     }

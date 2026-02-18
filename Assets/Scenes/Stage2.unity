@@ -27431,6 +27431,7 @@ MonoBehaviour:
   _swayAmount: 0.01
   _smoothAmount: 6
   _throwableModel: {fileID: 1933031035}
+  _throwSD: {fileID: 0}
 --- !u!1 &54585764
 GameObject:
   m_ObjectHideFlags: 0
@@ -47946,6 +47947,7 @@ MonoBehaviour:
   _swayAmount: 0.01
   _smoothAmount: 6
   _throwableModel: {fileID: 1345958829}
+  _throwSD: {fileID: 11400000, guid: 4e24fb5bc2487514bb6b2f0baeddd20d, type: 2}
 --- !u!114 &206072982
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74482,6 +74484,7 @@ MonoBehaviour:
   _blockLayer:
     serializedVersion: 2
     m_Bits: 2048
+  _hitSD: {fileID: 11400000, guid: 0fc745dcf95ae5849b2aa10ebd5be928, type: 2}
 --- !u!114 &445978865
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -74500,6 +74503,7 @@ MonoBehaviour:
   _walkBobSpeed: 10
   _swayAmount: 0.01
   _smoothAmount: 6
+  _swingSD: {fileID: 11400000, guid: 3e45e8293d93f99408079a8211f69294, type: 2}
 --- !u!1 &447182899
 GameObject:
   m_ObjectHideFlags: 0
@@ -74953,6 +74957,7 @@ MonoBehaviour:
   _swayAmount: 0.01
   _smoothAmount: 6
   _throwableModel: {fileID: 93947088}
+  _throwSD: {fileID: 11400000, guid: 4e24fb5bc2487514bb6b2f0baeddd20d, type: 2}
 --- !u!1 &458003223
 GameObject:
   m_ObjectHideFlags: 0
@@ -91857,6 +91862,7 @@ MonoBehaviour:
   _bulletHolePrefab: {fileID: 886563218358709779, guid: 0eee7151d7d37224694a205fbc8bdb5e, type: 3}
   _trailPrefab: {fileID: 406013017293586499, guid: bb6cf03e5e5415f4e8f7ae16287b4080, type: 3}
   _recoilShakeStrength: 0.15
+  _gunshotSD: {fileID: 11400000, guid: 74966a04f232fd94883d7be3eee5847d, type: 2}
 --- !u!82 &593873525
 AudioSource:
   m_ObjectHideFlags: 0
@@ -91864,7 +91870,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 593873522}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
@@ -104850,7 +104856,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2832918e06c9a04488e97af97613ad69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
-  _maxStat: 5
+  _maxStat: 121
   _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
@@ -104967,7 +104973,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2832918e06c9a04488e97af97613ad69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
-  _maxStat: 120
+  _maxStat: 3
   _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
@@ -215326,6 +215332,7 @@ MonoBehaviour:
   _swayAmount: 0.01
   _smoothAmount: 6
   _throwableModel: {fileID: 187646729}
+  _throwSD: {fileID: 0}
 --- !u!1 &1139979846
 GameObject:
   m_ObjectHideFlags: 0
@@ -266596,6 +266603,7 @@ MonoBehaviour:
   _swayAmount: 0.01
   _smoothAmount: 6
   _throwableModel: {fileID: 1204279150}
+  _throwSD: {fileID: 11400000, guid: 4e24fb5bc2487514bb6b2f0baeddd20d, type: 2}
 --- !u!114 &1387526559
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -280336,6 +280344,7 @@ MonoBehaviour:
   _swayAmount: 0.01
   _smoothAmount: 6
   _throwableModel: {fileID: 1455879820}
+  _throwSD: {fileID: 0}
 --- !u!1 &1455310024
 GameObject:
   m_ObjectHideFlags: 0
@@ -305476,6 +305485,7 @@ MonoBehaviour:
   _swayAmount: 0.01
   _smoothAmount: 6
   _throwableModel: {fileID: 41883412}
+  _throwSD: {fileID: 0}
 --- !u!1 &1586433184
 GameObject:
   m_ObjectHideFlags: 0
@@ -330710,6 +330720,7 @@ MonoBehaviour:
   _blockLayer:
     serializedVersion: 2
     m_Bits: 2048
+  _hitSD: {fileID: 11400000, guid: 22f5363c3847fc041a5c770a661a2199, type: 2}
 --- !u!114 &1704623533
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -330728,6 +330739,7 @@ MonoBehaviour:
   _walkBobSpeed: 10
   _swayAmount: 0.01
   _smoothAmount: 6
+  _swingSD: {fileID: 11400000, guid: 3e45e8293d93f99408079a8211f69294, type: 2}
 --- !u!1 &1706530169
 GameObject:
   m_ObjectHideFlags: 0
@@ -333358,6 +333370,7 @@ MonoBehaviour:
   _swayAmount: 0.01
   _smoothAmount: 6
   _throwableModel: {fileID: 535856023}
+  _throwSD: {fileID: 0}
 --- !u!1 &1767746663
 GameObject:
   m_ObjectHideFlags: 0
@@ -335334,6 +335347,7 @@ MonoBehaviour:
   _swayAmount: 0.01
   _smoothAmount: 6
   _throwableModel: {fileID: 2038997245}
+  _throwSD: {fileID: 11400000, guid: 4e24fb5bc2487514bb6b2f0baeddd20d, type: 2}
 --- !u!1 &1789697585
 GameObject:
   m_ObjectHideFlags: 0
@@ -389210,6 +389224,7 @@ MonoBehaviour:
   _swayAmount: 0.01
   _smoothAmount: 6
   _throwableModel: {fileID: 389618577}
+  _throwSD: {fileID: 0}
 --- !u!1001 &1992962284
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -390481,6 +390496,7 @@ MonoBehaviour:
   _swayAmount: 0.01
   _smoothAmount: 6
   _throwableModel: {fileID: 9013657628527041106}
+  _throwSD: {fileID: 11400000, guid: 4e24fb5bc2487514bb6b2f0baeddd20d, type: 2}
 --- !u!114 &2008192850
 MonoBehaviour:
   m_ObjectHideFlags: 0

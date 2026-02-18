@@ -7,6 +7,7 @@ using UnityEngine.AI;
 using UnityEngine.Events;
 using static Global;
 using static Utils;
+using static SoundUtils;
 
 public class PostStudent : MonoBehaviour
 {
@@ -57,6 +58,8 @@ public class PostStudent : MonoBehaviour
 
     [HideInInspector] public UnityEvent<PostStudent, HitInfo> DieEvent = new();
     [HideInInspector] public UnityEvent<PostStudent> EscapeEvent = new();
+    [Header("Audios")]
+    [SerializeField] private SoundData _bodyHitSD;
 
     public bool IsWorking => 
         Blackboard != null && Blackboard.destBehavior == BehaviorType.Work
@@ -673,6 +676,7 @@ public class PostStudent : MonoBehaviour
     {
         _blackboard.isDamaged = true;
         _blackboard.isStunned = true;
+        //PlayScene3DSFX(_bodyHitSD, hitInfo.hitPoint);
     }
 
 

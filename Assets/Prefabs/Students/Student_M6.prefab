@@ -53108,6 +53108,7 @@ MonoBehaviour:
   EscapeEvent:
     m_PersistentCalls:
       m_Calls: []
+  _bodyHitSD: {fileID: 11400000, guid: 5a07bd8257767124c8f08acdec6f86d6, type: 2}
 --- !u!114 &6392431812450581098
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53212,6 +53213,9 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 12352
+  _bodyHitSD: {fileID: 11400000, guid: 5a07bd8257767124c8f08acdec6f86d6, type: 2}
+  _woodHitSD: {fileID: 11400000, guid: 392419616b686ad4fa7cfbe51934c685, type: 2}
+  _metalHitSD: {fileID: 11400000, guid: 421f3f5bb5b88f24a8ad324cf1d03fe8, type: 2}
   _drawAttackGizmo: 1
   _gizmoColor: {r: 1, g: 0, b: 0, a: 0.5}
 --- !u!54 &1531437056215601024
