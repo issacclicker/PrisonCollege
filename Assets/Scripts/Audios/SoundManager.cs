@@ -51,7 +51,7 @@ public class SoundManager : PersistentSingleton<SoundManager>
 
 
 
-    public SoundEmitter PlaySFX(AudioClip clip, Vector3 position, float volume = 1.0f, bool is3D = true, bool persist = false, bool isRandomPitch = true)
+    public SoundEmitter PlaySFX(AudioClip clip, Vector3 position, float volume = 1.0f, bool is3D = true, bool persist = false, bool isRandomPitch = true, bool isLoop = false)
     {
         if (clip == null) return null;
         if (_pool.Count == 0) CreateNewEmitter();
@@ -60,7 +60,7 @@ public class SoundManager : PersistentSingleton<SoundManager>
         emitter.gameObject.SetActive(true);
 
         float pitch = isRandomPitch ? Random.Range(0.9f, 1.1f) : 1f;
-        emitter.Play(clip, pitch, volume, position, is3D, persist);
+        emitter.Play(clip, pitch, volume, position, is3D, persist, isLoop);
         return emitter; 
     }
 
@@ -96,50 +96,50 @@ public class SoundManager : PersistentSingleton<SoundManager>
 
 public static class SoundUtils
 {
-    public static void PlayScene3DSFX(AudioClip clip, Vector3 position, float volumeMultiplier = 1f)
+    public static void PlayScene3DSFX(AudioClip clip, Vector3 position, float volumeMultiplier = 1f, bool isLoop = false)
     {
-        SoundManager.Instance.PlaySFX(clip, position, volumeMultiplier, true, false, true);
+        SoundManager.Instance.PlaySFX(clip, position, volumeMultiplier, true, false, true, isLoop);
     }
 
 
 
-    public static void PlayScene3DSFX(SoundData soundData, Vector3 position, float volumeMultiplier = 1f)
+    public static void PlayScene3DSFX(SoundData soundData, Vector3 position, float volumeMultiplier = 1f, bool isLoop = false)
     {
-        SoundManager.Instance.PlaySFX(soundData.GetRandomClip(out float volume), position, volume * volumeMultiplier, true, false, true);
+        SoundManager.Instance.PlaySFX(soundData.GetRandomClip(out float volume), position, volume * volumeMultiplier, true, false, true, isLoop);
     }
 
 
 
-    public static SoundEmitter PlayOwnedScene3DSFX(SoundData soundData, Vector3 position, bool isRandomPitch, float volumeMultiplier = 1f)
+    public static SoundEmitter PlayOwnedScene3DSFX(SoundData soundData, Vector3 position, bool isRandomPitch, float volumeMultiplier = 1f, bool isLoop = false)
     {
-        return SoundManager.Instance.PlaySFX(soundData.GetRandomClip(out float volume), position, volume * volumeMultiplier, true, false, isRandomPitch);
+        return SoundManager.Instance.PlaySFX(soundData.GetRandomClip(out float volume), position, volume * volumeMultiplier, true, false, isRandomPitch, isLoop);
     }
 
 
 
-    public static void PlayScene2DSFX(AudioClip clip, float volumeMultiplier = 1f)
+    public static void PlayScene2DSFX(AudioClip clip, float volumeMultiplier = 1f, bool isLoop = false)
     {
-        SoundManager.Instance.PlaySFX(clip, Vector3.zero, volumeMultiplier, false, false, true);
+        SoundManager.Instance.PlaySFX(clip, Vector3.zero, volumeMultiplier, false, false, true, isLoop);
     }
 
 
 
-    public static SoundEmitter PlayOwnedScene2DSFX(SoundData soundData, bool isRandomPitch, float volumeMultiplier = 1f)
+    public static SoundEmitter PlayOwnedScene2DSFX(SoundData soundData, bool isRandomPitch, float volumeMultiplier = 1f, bool isLoop = false)
     {
-        return SoundManager.Instance.PlaySFX(soundData.GetRandomClip(out float volume), Vector3.zero, volume * volumeMultiplier, false, false, isRandomPitch);
+        return SoundManager.Instance.PlaySFX(soundData.GetRandomClip(out float volume), Vector3.zero, volume * volumeMultiplier, false, false, isRandomPitch, isLoop);
     }
 
 
 
-    public static void PlayScene2DSFX(SoundData soundData, float volumeMultiplier = 1f)
+    public static void PlayScene2DSFX(SoundData soundData, float volumeMultiplier = 1f, bool isLoop = false)
     {
-        SoundManager.Instance.PlaySFX(soundData.GetRandomClip(out float volume), Vector3.zero, volume * volumeMultiplier, false, false, true);
+        SoundManager.Instance.PlaySFX(soundData.GetRandomClip(out float volume), Vector3.zero, volume * volumeMultiplier, false, false, true, isLoop);
     }
 
 
 
-    public static void PlayUISFX(AudioClip clip, float volumeMultiplier = 1f)
+    public static void PlayUISFX(AudioClip clip, float volumeMultiplier = 1f, bool isLoop = false)
     {
-        SoundManager.Instance.PlaySFX(clip, Vector3.zero, volumeMultiplier, false, true, false);
+        SoundManager.Instance.PlaySFX(clip, Vector3.zero, volumeMultiplier, false, true, false, isLoop);
     }
 }

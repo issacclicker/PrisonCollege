@@ -990,6 +990,7 @@ public class TakeHitPattern : PatternNode
     {
         _patternRoot = new Sequence(new List<BT_Node>
         {
+            new ActionNode(() => _bb.soundBehavior.PlayHurt()),
             new RandomSelector(new List<BT_Node>
             {
                 new PlayOnceAnim("OnHit", "OnHit", 5),

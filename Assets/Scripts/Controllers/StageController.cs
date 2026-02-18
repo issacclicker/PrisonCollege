@@ -276,6 +276,7 @@ public class StageController : SceneSingleton<StageController>
         Player.DisableController();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        //Cursor.lockState = CursorLockMode.Locked;
 
         if (!isSuccess)
         {

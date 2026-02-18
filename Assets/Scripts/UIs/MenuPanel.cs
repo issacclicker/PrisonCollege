@@ -102,6 +102,7 @@ public class MenuPanel : MonoBehaviour, IEscapeControllable
         _originCursorVisible = Cursor.visible;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        //Cursor.lockState = CursorLockMode.Locked;
         _originTimeScale = Time.timeScale;
         Time.timeScale = 0;
         _canvasGroup.alpha = 1;
@@ -114,8 +115,9 @@ public class MenuPanel : MonoBehaviour, IEscapeControllable
     public void Hide()
     {
         _isActive = false;
-        Cursor.lockState = CursorLockMode.None;
+        //Cursor.lockState = CursorLockMode.None;
         Cursor.visible = _originCursorVisible;
+        Cursor.lockState = _originCursorVisible ? CursorLockMode.None : CursorLockMode.Locked;
         Time.timeScale = _originTimeScale;
         _canvasGroup.alpha = 0;
         _canvasGroup.interactable = false;

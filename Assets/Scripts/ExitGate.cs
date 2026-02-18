@@ -37,7 +37,7 @@ public class ExitGate : MonoBehaviour
 
         _interaction.ProgressCompleteEvent.AddListener(PlaceBarricade);
         _damageReceiver.StatDownEvent.AddListener((_, decreasion) => OnDamaged(decreasion));
-        _damageReceiver.DepletedEvent.AddListener(_ => BreakBarricade());
+        _damageReceiver.DepletedEvent.AddListener(_ => OnHealthDepleted());
         Close();
     }
 
@@ -60,6 +60,15 @@ public class ExitGate : MonoBehaviour
         {
             _explosionShacker.PlayShake();
         }
+    }
+
+
+
+    private void OnHealthDepleted()
+    {
+        if (_barricadePlaced == null) return;
+        SoundUtils.PlayScene3DSFX(_barricadePlaced.GetComponent<Barricade>().BreakSD, transform.position);
+        PlaceBarricade();
     }
 
 

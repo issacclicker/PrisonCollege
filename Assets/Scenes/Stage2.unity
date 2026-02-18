@@ -104974,7 +104974,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2832918e06c9a04488e97af97613ad69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
-  _maxStat: 3
+  _maxStat: 61
   _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
@@ -132836,7 +132836,7 @@ MonoBehaviour:
   invertCamera: 0
   cameraCanMove: 1
   mouseSensitivity: 3
-  maxLookAngle: 60
+  maxLookAngle: 70
   lockCursor: 1
   crosshair: 1
   crosshairImage: {fileID: 21300000, guid: be4ce60e2c9768c44b9b10b9c5258045, type: 3}

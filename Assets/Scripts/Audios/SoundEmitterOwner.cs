@@ -21,11 +21,10 @@ public class SoundEmitterOwner : MonoBehaviour
     {
         if (data == null) return;
         if (_activeEmitters.ContainsKey(data)) return;
-        SoundEmitter emitter = SoundUtils.PlayOwnedScene3DSFX(data, target.position, isRandomPitch, volumeMultiplier);
+        SoundEmitter emitter = SoundUtils.PlayOwnedScene3DSFX(data, target.position, isRandomPitch, volumeMultiplier, loop);
 
         if (emitter != null)
         {
-            emitter.GetComponent<AudioSource>().loop = loop;
             _activeEmitters.Add(data, (emitter, target));
         }
     }
@@ -36,10 +35,9 @@ public class SoundEmitterOwner : MonoBehaviour
     {
         if (data == null) return;
         if (_activeEmitters.ContainsKey(data)) return;
-        SoundEmitter emitter = SoundUtils.PlayOwnedScene2DSFX(data, isRandomPitch, volumeMultiplier);
+        SoundEmitter emitter = SoundUtils.PlayOwnedScene2DSFX(data, isRandomPitch, volumeMultiplier, loop);
         if (emitter != null)
         {
-            emitter.GetComponent<AudioSource>().loop = loop;
             _activeEmitters.Add(data, (emitter, null));
         }
     }

@@ -6,12 +6,17 @@ public class SoundEmitter : MonoBehaviour
 {
     private AudioSource _audioSource;
     private SoundManager _pool;
-    private bool _isPaused;
+    private static bool _isAppQuitting = false;
 
-    void Awake()
+    private void Awake()
     {
         _audioSource = GetComponent<AudioSource>();
         _audioSource.playOnAwake = false;
+    }
+
+    private void OnApplicationQuit()
+    {
+        _isAppQuitting = true;
     }
 
     public void Initialize(SoundManager pool)
@@ -34,12 +39,12 @@ public class SoundEmitter : MonoBehaviour
     }
 
 
-    public void Play(AudioClip clip, float pitch, float volume, Vector3 position, bool is3D, bool persistBetweenScenes)
+    public void Play(AudioClip clip, float pitch, float volume, Vector3 position, bool is3D, bool persistBetweenScenes, bool isLoop)
     {
         transform.position = position;
         _audioSource.clip = clip;
         _audioSource.pitch = pitch;
-        _isPaused = false;
+        _audioSource.loop = isLoop;
 
         // 여기서 개별 볼륨을 설정합니다 (0.0 ~ 1.0)
         _audioSource.volume = volume;
@@ -50,7 +55,10 @@ public class SoundEmitter : MonoBehaviour
         else transform.SetParent(null);
 
         _audioSource.Play();
-        StartCoroutine(ReturnAfterFinish(clip.length));
+        if (!isLoop)
+        {
+            StartCoroutine(ReturnAfterFinish(clip.length));
+        }
     }
 
     private IEnumerator ReturnAfterFinish(float duration)
@@ -67,6 +75,7 @@ public class SoundEmitter : MonoBehaviour
 
     public void StopAndReturn()
     {
+        if (_isAppQuitting) return;
         if (SoundManager.Instance != null)
             SoundManager.Instance.OnPauseChanged -= HandlePauseChanged;
         StopAllCoroutines(); // 진행 중인 ReturnAfterFinish 코루틴 중단

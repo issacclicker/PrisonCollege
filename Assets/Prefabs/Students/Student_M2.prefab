@@ -5413,6 +5413,8 @@ MonoBehaviour:
   _gruntSD: {fileID: 11400000, guid: 0d4b49dfdf6a5f94fb4d0e57aabfe921, type: 2}
   _goodSongSD: {fileID: 11400000, guid: bb4ddee006bf2ee4db3ad1c107dbf338, type: 2}
   _badSongSD: {fileID: 11400000, guid: 5ab7e17986d28b047841a95cb4a0444d, type: 2}
+  _hurtSD: {fileID: 11400000, guid: cb76c2cd6c9abcf41b1b1cc65929c32a, type: 2}
+  _sleepSD: {fileID: 11400000, guid: cb2237068b7bc8f449fb0bfdf2725bc4, type: 2}
 --- !u!114 &-2350161621942375107
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -25652,6 +25654,7 @@ MonoBehaviour:
   _bothDamageLayer:
     serializedVersion: 2
     m_Bits: 10240
+  _hitSD: {fileID: 11400000, guid: 5a07bd8257767124c8f08acdec6f86d6, type: 2}
 --- !u!54 &2515838460573756101
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -27151,6 +27154,7 @@ MonoBehaviour:
   _bothDamageLayer:
     serializedVersion: 2
     m_Bits: 10240
+  _hitSD: {fileID: 11400000, guid: 5a07bd8257767124c8f08acdec6f86d6, type: 2}
 --- !u!54 &4173838857713535292
 Rigidbody:
   m_ObjectHideFlags: 0
