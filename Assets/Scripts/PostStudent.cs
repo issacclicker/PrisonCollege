@@ -131,7 +131,7 @@ public class PostStudent : MonoBehaviour
         _moveSpeedModifier = AttributeSystem.Instance.StudMoveSpeedMod;
         _anim.SetFloat("MoveSpeedScale", _moveSpeedModifier.GetFinalValue());
         _characterCollider.enabled = false;
-        _soundBehavior.PlaySleeping();
+        Invoke(nameof(PlaySleepingSFX), UnityEngine.Random.Range(0.5f, 2f));
         _anim.SetBool("Laying", true);
     }
 
@@ -139,7 +139,6 @@ public class PostStudent : MonoBehaviour
 
     private void Wakeup()
     {
-        Invoke(nameof(PlaySleepingSFX), UnityEngine.Random.Range(1f, 4f));
         _soundBehavior.StopSleeping();
         _anim.SetBool("Laying", false);
     }
@@ -148,7 +147,7 @@ public class PostStudent : MonoBehaviour
 
     private void PlaySleepingSFX()
     {
-        _soundBehavior.StopSleeping();
+        _soundBehavior.PlaySleeping();
     }
 
 

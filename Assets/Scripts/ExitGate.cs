@@ -68,7 +68,7 @@ public class ExitGate : MonoBehaviour
     {
         if (_barricadePlaced == null) return;
         SoundUtils.PlayScene3DSFX(_barricadePlaced.GetComponent<Barricade>().BreakSD, transform.position);
-        PlaceBarricade();
+        BreakBarricade();
     }
 
 
