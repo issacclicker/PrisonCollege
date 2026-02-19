@@ -12340,6 +12340,8 @@ MonoBehaviour:
   - {fileID: 11400000, guid: bb2da80a9d489b249b4820ef6c5a3c79, type: 2}
   - {fileID: 11400000, guid: dbdf3f58d9e31654cb37b1873788f28d, type: 2}
   - {fileID: 11400000, guid: 4a4e646680bf16f4db87692341dc59c6, type: 2}
+  - {fileID: 11400000, guid: 0fad0b3dcfcc834428522da5fc9dd80b, type: 2}
+  - {fileID: 11400000, guid: a2c290a3e0fd50143ae0de2ffb976490, type: 2}
   _defaultEquipedItemList:
   - {fileID: 11400000, guid: 654c235f5557bd34f81ffcef5de76243, type: 2}
   - {fileID: 11400000, guid: 349002a57e48f62439f268876d8d7c39, type: 2}

@@ -90,6 +90,18 @@ public class Monitor : MonoBehaviour
             _emitter = SoundUtils.PlayOwnedScene3DSFX(_typingSD, transform.position, true, 1, true);
         }
     }
+
+
+
+    private void OnDisable()
+    {
+        _emitter?.StopAndReturn();
+    }
+
+    private void OnDestroy()
+    {
+        _emitter?.StopAndReturn();
+    }
 }
 
 

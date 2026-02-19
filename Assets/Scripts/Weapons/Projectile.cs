@@ -13,6 +13,7 @@ public class Projectile : MonoBehaviour
 
     public WeaponData WeaponData { get; set; }
     public GameObject Owner { get; set; }
+    public bool IsStage { get; set; }
 
     // 중복 충돌을 방지하기 위한 셋 (오브젝트 참조 저장)
     private HashSet<GameObject> _hitObjects = new HashSet<GameObject>();
@@ -24,6 +25,7 @@ public class Projectile : MonoBehaviour
 
     protected virtual void Start()
     {
+        WeaponData = Utils.DeepCopyByJson(WeaponData);
         Destroy(gameObject, _lifeTime);
     }
 
@@ -59,8 +61,10 @@ public class Projectile : MonoBehaviour
             Vector3 hitPoint = contact.point;
             Vector3 hitNormal = contact.normal;
 
-            HitInfo hitInfo = new HitInfo(hitPoint, Quaternion.LookRotation(hitNormal), Owner, WeaponData.hitImpulse);
+            float damageFactor = IsStage ? AttributeSystem.Instance.ThrowDamageMod.GetFinalValue(1) : 1f;
+            HitInfo hitInfo = new HitInfo(hitPoint, Quaternion.LookRotation(hitNormal), Owner, WeaponData.hitImpulse * damageFactor);
 
+            WeaponData.effect.value *= damageFactor;
             receiver.TakeEffect(WeaponData.effect, hitInfo);
             SoundUtils.PlayScene3DSFX(_hitSD, hitInfo.hitPoint);
 

@@ -140,6 +140,7 @@ public class WeaponAnimator : MonoBehaviour
         if (_isPlayAttackAnim) return; // 중복 실행 방지
         _isPlayAttackAnim = true;
 
+        attackDuration /= AttributeSystem.Instance.MeleeAttackSpeedMod.GetFinalValue(1);
         DOTweenSeq attackAnimSeq = DOTween.Sequence();
         AddAttackFrames(attackAnimSeq, attackExecution, attackDuration);
         float defaultDuration = attackAnimSeq.Duration(); // 현재 시퀀스의 기본 시간 합계 (1.0f)

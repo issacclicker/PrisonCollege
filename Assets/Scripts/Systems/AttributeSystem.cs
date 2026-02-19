@@ -25,6 +25,11 @@ public class AttributeSystem : SceneSingleton<AttributeSystem>
     public AttributeModifier BarricadeHitAmountMod { private set; get; } = new AttributeModifier();
     public AttributeModifier JumpStaminaMod { private set; get; } = new AttributeModifier();
 
+    public AttributeModifier ThrowVelocityMod { private set; get; } = new AttributeModifier();
+    public AttributeModifier ThrowDamageMod { private set; get; } = new AttributeModifier();
+    public AttributeModifier MeleeAttackSpeedMod { private set; get; } = new AttributeModifier();
+    public AttributeModifier MeleeDamageMod { private set; get; } = new AttributeModifier();
+
 
     public bool IsDeskCoffee { set; get; }
     public bool IsStudBald { set; get; }
