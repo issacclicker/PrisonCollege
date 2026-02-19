@@ -5,6 +5,7 @@ using UnityEngine;
 public abstract class Recharger : MonoBehaviour
 {
     [SerializeField] protected WeaponController _weaponCtrl;
+    [SerializeField] private SoundData _rechargeSD;
     private List<WeaponBase> _targetWeapons;
     private Click _interaction;
     private Stat _supplyProgress;
@@ -64,6 +65,7 @@ public abstract class Recharger : MonoBehaviour
         {
             _canRecharge = false;
             _supplyProgress.Initialize(true);
+            SoundUtils.PlayScene2DSFX(_rechargeSD);
         }
     }
 }

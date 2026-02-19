@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
@@ -61,6 +62,8 @@ public class StageController : SceneSingleton<StageController>
     [SerializeField] private StageOver _stageOver;
     [SerializeField] private ChaosUI _chaosUi;
     [SerializeField] private bool _isTestMode = true;
+    [Header("Sound Datas")]
+    [SerializeField] private SoundData _moneyGainSD;
 
     private EquipInfo[] _equipInfos;
     private int _money = 0;
@@ -76,7 +79,8 @@ public class StageController : SceneSingleton<StageController>
     private AttributeModifier _chaosDecreaseModifier;
     public int StageNumber => _stageNumber;
     private int _originMoney;
-    private bool _isPreparing;
+    private bool _isPreparing = true;
+    public bool IsPreparing => _isPreparing;
     public UnityEvent StageStartEvent = new();
 
 
@@ -258,6 +262,7 @@ public class StageController : SceneSingleton<StageController>
     public void Earn(int money)
     {
         _money += money;
+        _chaosUi.SpawnWarningPanel(new MutinyMoneyInfo(money));
     }
 
 
@@ -275,6 +280,7 @@ public class StageController : SceneSingleton<StageController>
         Player.DisableController();
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        //Cursor.lockState = CursorLockMode.Locked;
 
         if (!isSuccess)
         {
@@ -319,6 +325,22 @@ public class StageController : SceneSingleton<StageController>
     {
         _projectStat.Initialize(true);
         _money += _progectReward;
+        _chaosUi.SpawnWarningPanel(new ProjectMoneyInfo(_progectReward));
+        //SoundUtils.PlayUISFX(_moneyGainSD);
+    }
+
+
+
+    public void HackBlocked()
+    {
+        _chaosUi.SpawnWarningPanel(new HackBlockInfo());
+    }
+
+
+
+    public void Hacked()
+    {
+        _chaosUi.SpawnWarningPanel(new HackInfo());
     }
 
 

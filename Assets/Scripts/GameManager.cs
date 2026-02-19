@@ -159,6 +159,7 @@ public class GameManager : PersistentSingleton<GameManager>
         Time.timeScale = 1;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        //Cursor.lockState = CursorLockMode.Locked;
     }
 
 

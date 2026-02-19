@@ -17271,6 +17271,7 @@ MonoBehaviour:
   _bothDamageLayer:
     serializedVersion: 2
     m_Bits: 10240
+  _hitSD: {fileID: 11400000, guid: 5a07bd8257767124c8f08acdec6f86d6, type: 2}
 --- !u!54 &6592243611733724989
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -17458,6 +17459,8 @@ GameObject:
   - component: {fileID: 8902866647286585596}
   - component: {fileID: 5474524902937492065}
   - component: {fileID: 5238339852719342789}
+  - component: {fileID: -8250555818129962268}
+  - component: {fileID: -5713210911522938816}
   m_Layer: 6
   m_Name: Student_Master
   m_TagString: Student
@@ -17576,6 +17579,7 @@ MonoBehaviour:
   EscapeEvent:
     m_PersistentCalls:
       m_Calls: []
+  _bodyHitSD: {fileID: 11400000, guid: 5a07bd8257767124c8f08acdec6f86d6, type: 2}
 --- !u!114 &429893154378118229
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17680,6 +17684,9 @@ MonoBehaviour:
   targetLayer:
     serializedVersion: 2
     m_Bits: 12352
+  _bodyHitSD: {fileID: 11400000, guid: 5a07bd8257767124c8f08acdec6f86d6, type: 2}
+  _woodHitSD: {fileID: 11400000, guid: 392419616b686ad4fa7cfbe51934c685, type: 2}
+  _metalHitSD: {fileID: 11400000, guid: 421f3f5bb5b88f24a8ad324cf1d03fe8, type: 2}
   _drawAttackGizmo: 1
   _gizmoColor: {r: 1, g: 0, b: 0, a: 0.5}
 --- !u!54 &341526593717396402
@@ -18016,6 +18023,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4200f612e610f8c429cd2b77b5b25272, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BaldOutlines
+--- !u!114 &-8250555818129962268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656791591194506806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 90ec1431d14dc92428b95a75f663b8f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundBehavior
+  _gruntSD: {fileID: 11400000, guid: 0d4b49dfdf6a5f94fb4d0e57aabfe921, type: 2}
+  _goodSongSD: {fileID: 11400000, guid: bb4ddee006bf2ee4db3ad1c107dbf338, type: 2}
+  _badSongSD: {fileID: 11400000, guid: 5ab7e17986d28b047841a95cb4a0444d, type: 2}
+  _hurtSD: {fileID: 11400000, guid: cb76c2cd6c9abcf41b1b1cc65929c32a, type: 2}
+  _sleepSD: {fileID: 11400000, guid: cb2237068b7bc8f449fb0bfdf2725bc4, type: 2}
+--- !u!114 &-5713210911522938816
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1656791591194506806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 705af221b274a37478f957ef925dfe4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundEmitterOwner
 --- !u!1 &1659854763649967175
 GameObject:
   m_ObjectHideFlags: 0
@@ -29077,6 +29113,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Fire
   _fireParticle: {fileID: 189098256440109741}
+  _fireSD: {fileID: 11400000, guid: bd0d852e0cfc3ff488204fb267b44971, type: 2}
 --- !u!114 &2254696605315330080
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -46849,6 +46886,7 @@ MonoBehaviour:
   _bothDamageLayer:
     serializedVersion: 2
     m_Bits: 10240
+  _hitSD: {fileID: 11400000, guid: 5a07bd8257767124c8f08acdec6f86d6, type: 2}
 --- !u!54 &1384983631016723406
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -46919,7 +46957,6 @@ GameObject:
   - component: {fileID: 8073850080056305039}
   - component: {fileID: 189098256440109741}
   - component: {fileID: 5962840435773111170}
-  - component: {fileID: 6235972708477075229}
   m_Layer: 0
   m_Name: VFX_Fire_01_Small_Smoke
   m_TagString: Untagged
@@ -51752,112 +51789,6 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
---- !u!82 &6235972708477075229
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8107235158649710682}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_Resource: {fileID: 8300000, guid: 94bc8546fe222904c9fd6e0438c1b6fc, type: 3}
-  m_PlayOnAwake: 1
-  m_Volume: 1
-  m_Pitch: 1
-  Loop: 1
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 5
-  Pan2D: 0
-  rolloffMode: 2
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0.2
-      value: 1
-      inSlope: -5.0019917
-      outSlope: -5.0019917
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 0.3788208
-      value: 0.42210388
-      inSlope: -1.2504979
-      outSlope: -1.2504979
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 0.00056762993
-      inSlope: -0.20007975
-      outSlope: -0.20007975
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &8137235080575184860
 GameObject:
   m_ObjectHideFlags: 0

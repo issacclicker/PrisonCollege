@@ -15,6 +15,7 @@ public class SlotPackage : MonoBehaviour
     [SerializeField] private ItemInfoPanel _itemInfoPanel;
     [SerializeField] private TextMeshProUGUI _moneyTmp;
     [SerializeField] private TextMeshProUGUI _waveExplanation;
+    [SerializeField] private SoundData _purchaseSD;
     private List<ItemSlot> _passiveSlotList;
     private List<SlotSelector> _slotSelectorList = new();
     private SlotSelector _selectedSlot;
@@ -114,6 +115,7 @@ public class SlotPackage : MonoBehaviour
         GameObject prevSlotObject = _selectedSlot.gameObject;
         Item selectedItem = _selectedSlot.GetComponent<ItemSlot>().Item;
         if (selectedItem.price > InventorySystem.Instance.Money) return;
+        SoundUtils.PlayUISFX(_purchaseSD);
         InventorySystem.Instance.Purchase(selectedItem);
         _moneyTmp.text = InventorySystem.Instance.Money.ToString("N0");
         ResetSelectedSlot();

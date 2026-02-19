@@ -30,8 +30,10 @@ public class ThrowWeapon2 : RangedWeapon
         Projectile projectile = projectileSpawned.GetComponent<Projectile>();
         projectile.WeaponData = _weaponData;
         projectile.Owner = _owner;
+        projectile.IsStage = _controller._isStage;
         projectile.ResetForce();
-        projectile.AddVelocityForce(shotDirection, _throwVelocity);
+        float velocityFactor = _controller._isStage ? AttributeSystem.Instance.ThrowVelocityMod.GetFinalValue(1) : 1f;
+        projectile.AddVelocityForce(shotDirection, _throwVelocity * velocityFactor);
         projectile.AddTorqueForce(GetRandomTorgue(), _flipVelocity);
 
         //Debug.DrawRay(shotDestination, Vector3.up * 0.5f, Color.green, 1.0f);

@@ -37,8 +37,9 @@ public class ArenaProfessor : MonoBehaviour
 
     public void EnableThrow()
     {
-        Cursor.lockState = CursorLockMode.None;
+        //Cursor.lockState = CursorLockMode.None;
         Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         _weaponController.gameObject.SetActive(true);
         _weaponController.Show();
     }
@@ -49,6 +50,7 @@ public class ArenaProfessor : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        //Cursor.lockState = CursorLockMode.Locked;
         _weaponController.Hide();
     }
 }

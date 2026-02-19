@@ -54,6 +54,7 @@ public class Player : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        //Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void OnFloodFull(bool isFull)

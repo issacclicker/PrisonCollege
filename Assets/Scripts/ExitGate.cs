@@ -19,6 +19,7 @@ public class ExitGate : MonoBehaviour
     protected StatRecovery _statRecovery;
     protected ExplosionShacker _explosionShacker;
     private Health _health;
+    public bool IsUpgraded => AttributeSystem.Instance.IsMetalBarricade;
 
     public bool IsBarricadePlaced => _barricadePlaced != null;
     public virtual ExitGateType GateType => ExitGateType.None;
@@ -36,7 +37,7 @@ public class ExitGate : MonoBehaviour
 
         _interaction.ProgressCompleteEvent.AddListener(PlaceBarricade);
         _damageReceiver.StatDownEvent.AddListener((_, decreasion) => OnDamaged(decreasion));
-        _damageReceiver.DepletedEvent.AddListener(_ => BreakBarricade());
+        _damageReceiver.DepletedEvent.AddListener(_ => OnHealthDepleted());
         Close();
     }
 
@@ -59,6 +60,15 @@ public class ExitGate : MonoBehaviour
         {
             _explosionShacker.PlayShake();
         }
+    }
+
+
+
+    private void OnHealthDepleted()
+    {
+        if (_barricadePlaced == null) return;
+        SoundUtils.PlayScene3DSFX(_barricadePlaced.GetComponent<Barricade>().BreakSD, transform.position);
+        BreakBarricade();
     }
 
 

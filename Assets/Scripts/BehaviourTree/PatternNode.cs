@@ -160,6 +160,7 @@ public class CombatApproachPattern : PatternNode
                 }),
                 new ActionNode(() => _isAttacking = true, NodeState.Success), // 플래그 ON
 
+                new ActionNode(() => _bb.soundBehavior.PlayGrunt()),
                 new MeleeAttackPattern(), // 실제 주먹 휘두르는 동안
 
                 new ActionNode(() => _isAttacking = false, NodeState.Success), // 공격 끝나자마자 플래그 OFF
@@ -489,7 +490,7 @@ public class CoopPattern : PatternNode
             new OverrideBehaveSpot(() => _bb.coopData.spot, () => _bb.coopData.type),
             new SetAnimRootMotion(false),
             new ResetAnimParameters(),
-            new SetSpeed(() => 5.67f),
+            new SetSpeed(() => 2.43f),
             new MoveToSpot(),
             new RotateToSpot(),
             new ActionNode(() => _bb.destSpot.Arrived(_bb.Avatar.GetComponent<PostStudent>())),
@@ -735,10 +736,12 @@ public class WorkPattern : PatternNode
                     float rand = UnityEngine.Random.Range(0f, 1f);
                     if (rand < defenseProb)
                     {
+                        StageController.Instance.HackBlocked();
                         LabLightSystem.Instance.HackDefensed();
                     }
                     else
                     {
+                        StageController.Instance.Hacked();
                         LabLightSystem.Instance.TurnOff();
                     }
                 }
@@ -989,6 +992,7 @@ public class TakeHitPattern : PatternNode
     {
         _patternRoot = new Sequence(new List<BT_Node>
         {
+            new ActionNode(() => _bb.soundBehavior.PlayHurt()),
             new RandomSelector(new List<BT_Node>
             {
                 new PlayOnceAnim("OnHit", "OnHit", 5),
@@ -1075,6 +1079,7 @@ public class TryEscapePattern : PatternNode
                     new StopAndDisableAgentUpdate(),
                     new SetAnimRootMotion(true),
 
+                    new ActionNode(() => _bb.soundBehavior.PlayGrunt()),
                     new ExitAttackPattern(), // 실제 주먹 휘두르는 동안
                     new Delay(() => 0.1f),
                 
@@ -1344,9 +1349,9 @@ public class SetRandomSpeedPattern : PatternNode
                 () => StageController.Instance.GetChaosEffectedWeight(2, 5),
                 () => StageController.Instance.GetChaosEffectedWeight(2, 5),
 
-                () => StageController.Instance.GetChaosEffectedWeight(3, 50),
-                () => StageController.Instance.GetChaosEffectedWeight(3, 50),
-                () => StageController.Instance.GetChaosEffectedWeight(3, 50),
+                () => StageController.Instance.GetChaosEffectedWeight(1, 50),
+                () => StageController.Instance.GetChaosEffectedWeight(1, 50),
+                () => StageController.Instance.GetChaosEffectedWeight(1, 50),
             }
         );
     }

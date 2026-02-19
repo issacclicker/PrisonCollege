@@ -10,6 +10,7 @@ public class MeleeWeapon : WeaponBase
     [SerializeField] private float _attackRadius = 0.7f;  // 판정 두께 (구체 반지름)
     [SerializeField] private LayerMask _hitLayer;      // 대상 레이어 (Enemy, Obstacle 등)
     [SerializeField] private LayerMask _blockLayer;
+    [SerializeField] private SoundData _hitSD;
     private float _originalDamage;
     public bool IsOwnerInAir => _owner != null && _owner.GetComponent<FirstPersonController>().IsGrounded == false;
     public float JumpDamageFactor => IsOwnerInAir ? AttributeSystem.Instance.JumpDamageMod.GetFinalValue() : 1f;
@@ -58,11 +59,13 @@ public class MeleeWeapon : WeaponBase
             if (hit.collider.TryGetComponent(out DamageReceiver receiver))
             {
                 // 2. 유틸리티 함수: 안전한 위치 및 회전값 계산
+                float totalFactor = JumpDamageFactor * AttributeSystem.Instance.MeleeDamageMod.GetFinalValue(1);
                 Vector3 contactPoint = hit.GetContactPoint(origin);
                 Vector3 normal = hit.GetNormal(direction);
-                HitInfo hitInfo = new HitInfo(contactPoint, Quaternion.LookRotation(normal), _owner, _weaponData.hitImpulse * JumpDamageFactor);
-                _weaponData.effect.value = _originalDamage * JumpDamageFactor;
+                HitInfo hitInfo = new HitInfo(contactPoint, Quaternion.LookRotation(normal), _owner, _weaponData.hitImpulse * totalFactor);
+                _weaponData.effect.value = _originalDamage * totalFactor;
                 receiver.TakeEffect(_weaponData.effect, hitInfo);
+                SoundUtils.PlayScene2DSFX(_hitSD);
             }
         }
     }

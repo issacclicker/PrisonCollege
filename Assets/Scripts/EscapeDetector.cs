@@ -8,9 +8,10 @@ public class EscapeDetector : MonoBehaviour
     [SerializeField] private GameObject _offLamp;
     [SerializeField] private GameObject _onLamp;
     [SerializeField] private float _interval = 0.2f; // ±ôºýÀÌ´Â °£°Ý
+    [SerializeField] private SoundData _warningSD;
     private bool _isAlarming = false;
-    private AudioSource _audioSource;
     private DG.Tweening.Sequence _blinkSequence;
+    private SoundEmitter _emitter;
 
 
 
@@ -18,7 +19,6 @@ public class EscapeDetector : MonoBehaviour
     {
         _offLamp.SetActive(true);
         _onLamp.SetActive(false);
-        _audioSource = GetComponent<AudioSource>();
     }
 
 
@@ -36,8 +36,8 @@ public class EscapeDetector : MonoBehaviour
         if (_isAlarming == true) return;
 
         _isAlarming = true;
-        _audioSource.time = 0.2f;
-        _audioSource.Play();
+        _emitter = SoundUtils.PlayOwnedScene3DSFX(_warningSD, transform.position, false, 1, true, true);
+        //_audioSource.Play();
 
         _blinkSequence?.Kill();
 
@@ -67,7 +67,8 @@ public class EscapeDetector : MonoBehaviour
         if (_isAlarming == false) return;
 
         _isAlarming = false;
-        _audioSource.Stop();
+        _emitter?.StopAndReturn();
+        _emitter = null;
 
         _blinkSequence?.Kill();
         _offLamp.SetActive(true);

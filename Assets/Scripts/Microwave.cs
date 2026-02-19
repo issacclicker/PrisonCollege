@@ -8,6 +8,8 @@ public class Microwave : MonoBehaviour
     [SerializeField] [Range(0f, 1f)] private float _fireInvokeThereshold;
     [SerializeField] private Transform _foodSocket;
     [SerializeField] private Light _cookingLight;
+    [SerializeField] private SoundData _humSD;
+    [SerializeField] private SoundData _explosionSD;
     private ExplosionShacker _explosionShacker;
     private Click _interaction;
     private Duration _operateDuration;
@@ -17,6 +19,7 @@ public class Microwave : MonoBehaviour
     private FoodInfo _currentFoodInside = null;
 
     public bool IsOperating => _isOperating;
+    private SoundEmitter _emitter;
 
 
 
@@ -69,6 +72,7 @@ public class Microwave : MonoBehaviour
     {
         if (_currentFoodInside == null) return;
         _isOperating = true;
+        _emitter = SoundUtils.PlayOwnedScene3DSFX(_humSD, transform.position, false, 1, true);
         _operateDuration.Initialize(true);
         _cookingLight.enabled = true;
     }
@@ -93,6 +97,8 @@ public class Microwave : MonoBehaviour
         _currentFoodInside?.gameObj.SetActive(false);
         _currentFoodInside = null;
         _interaction.InteractState = false;
+        _emitter?.StopAndReturn();
+        _emitter = null;
     }
 
 
@@ -102,6 +108,7 @@ public class Microwave : MonoBehaviour
         _explosionParticle.gameObject.SetActive(true);
         _explosionParticle.Play();
         _explosionShacker.PlayShake();
+        SoundUtils.PlayScene3DSFX(_explosionSD, transform.position);
         _fire.Ignite();
         Quit();
     }

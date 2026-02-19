@@ -372,7 +372,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4261294330749616754}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
@@ -478,6 +478,7 @@ MonoBehaviour:
   _offLamp: {fileID: 2972501670003978938}
   _onLamp: {fileID: 1501909696272073839}
   _interval: 0.1
+  _warningSD: {fileID: 11400000, guid: 97ef3dc46e451094b8157bb7854137d2, type: 2}
 --- !u!1 &5439515336531455879
 GameObject:
   m_ObjectHideFlags: 0

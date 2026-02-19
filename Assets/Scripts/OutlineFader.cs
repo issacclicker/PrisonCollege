@@ -24,7 +24,10 @@ public class OutlineFader : MonoBehaviour
             StageController.Instance.StageStartEvent.AddListener(StopFade);
 
         // 루프 시작
-        StartInfiniteFade();
+        if (StageController.Instance.IsPreparing)
+            StartInfiniteFade();
+        else
+            _outline.enabled = false;
     }
 
     private void StartInfiniteFade()

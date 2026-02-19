@@ -11,6 +11,8 @@ public class GunWeapon2 : RangedWeapon
     [SerializeField] private GameObject _bulletHolePrefab;
     [SerializeField] private GameObject _trailPrefab;
     [SerializeField] private float _recoilShakeStrength;
+    [SerializeField] private SoundData _gunshotSD;
+    [SerializeField] private SoundData _shotHitSD;
 
     public override string TypeName => "BBÅº ÃÑ";
 
@@ -39,7 +41,8 @@ public class GunWeapon2 : RangedWeapon
 
     private void PlayShotSound()
     {
-        _audioSource.PlayOneShot(_audioSource.clip, _audioSource.volume);
+        //_audioSource.PlayOneShot(_audioSource.clip, _audioSource.volume);
+        SoundUtils.PlayScene2DSFX(_gunshotSD);
     }
 
 
@@ -71,6 +74,7 @@ public class GunWeapon2 : RangedWeapon
                     _weaponData.hitImpulse
                 );
                 receiver.TakeEffect(_weaponData.effect, hitInfo);
+                SoundUtils.PlayScene3DSFX(_shotHitSD, hitInfo.hitPoint);
             }
         }
     }

@@ -67,8 +67,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uD63C\uB780 +10"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 106a5b830abaaee4e9ca2aed9723f8b7, type: 2}
-  m_sharedMaterial: {fileID: 3512200576059445375, guid: 106a5b830abaaee4e9ca2aed9723f8b7, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 29743bbba89f1bc4089114277ae6944b, type: 2}
+  m_sharedMaterial: {fileID: 3512200576059445375, guid: 29743bbba89f1bc4089114277ae6944b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -203,8 +203,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\uBB34\uACE0\uD55C \uB300\uD559\uC6D0\uC0DD \uD3ED\uD589!!"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 00fec740f35c6424a80b04759476dd17, type: 2}
-  m_sharedMaterial: {fileID: 3196442768583695492, guid: 00fec740f35c6424a80b04759476dd17, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 29743bbba89f1bc4089114277ae6944b, type: 2}
+  m_sharedMaterial: {fileID: 3512200576059445375, guid: 29743bbba89f1bc4089114277ae6944b, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -334,7 +334,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 0, b: 0, a: 0.8627451}
+  m_Color: {r: 0.26833344, g: 1, b: 0, a: 0.8627451}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -375,5 +375,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5181ca58248538a4c868446b3deb5335, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ChaosWarning
+  _panelImg: {fileID: 7109687583101226244}
   _statIncreaseTmp: {fileID: 2261682367748106808}
   _descriptionTmp: {fileID: 7402737739825201660}

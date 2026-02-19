@@ -9,7 +9,7 @@ public abstract class RangedWeapon : WeaponBase
     [SerializeField] protected GameObject _projectilePrefab;
     [SerializeField] protected Transform _spawnPoint;
     protected Stat _magazine;
-    private WeaponController _controller;
+    protected WeaponController _controller;
 
     public override string TypeName => "¿ø°Å¸®";
     public override bool CanAttack => base.CanAttack && !_magazine.IsDepleted;

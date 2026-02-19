@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff04bbcb858d1ff4aa0023e7cc2b3e1d, type: 3}
+  m_Name: 20_ThrowStrong
+  m_EditorClassIdentifier: Assembly-CSharp::ThrowStrong
+  id: 20
+  name: "\uD22C\uCC99 \uAC15\uD654"
+  icon: {fileID: 21300000, guid: cc3f91a7f6c76e5469c5becdcd6fec40, type: 3}
+  price: 60
+  effect: 
+  description: 
+  rarity: 0
+  throwVelocityPercent: 1
+  throwDamagePercent: 1

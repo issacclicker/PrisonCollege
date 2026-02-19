@@ -7,6 +7,7 @@ using UnityEngine.AI;
 using UnityEngine.Events;
 using static Global;
 using static Utils;
+using static SoundUtils;
 
 public class PostStudent : MonoBehaviour
 {
@@ -51,12 +52,15 @@ public class PostStudent : MonoBehaviour
     private AnimAttacher[] _animAttachers;
     private PlateAttacher _plateAttacher;
     private SingAttacher _singAttacher;
+    private SoundBehavior _soundBehavior;
 
     [SerializeField] private OverlapAttacker _bodyOverlapAttacker;
     [SerializeField] private OverlapAttacker _tackleOverlapAttacker;
 
     [HideInInspector] public UnityEvent<PostStudent, HitInfo> DieEvent = new();
     [HideInInspector] public UnityEvent<PostStudent> EscapeEvent = new();
+    [Header("Audios")]
+    [SerializeField] private SoundData _bodyHitSD;
 
     public bool IsWorking => 
         Blackboard != null && Blackboard.destBehavior == BehaviorType.Work
@@ -82,6 +86,7 @@ public class PostStudent : MonoBehaviour
 
     private void Awake()
     {
+        _soundBehavior = GetComponent<SoundBehavior>();
         _characterRagdoll = GetComponent<CharacterRagdoll>();
         _damageReceiver = GetComponent<DamageReceiver>();
         _boostReceiver = GetComponent<BoostReceiver>();
@@ -126,6 +131,7 @@ public class PostStudent : MonoBehaviour
         _moveSpeedModifier = AttributeSystem.Instance.StudMoveSpeedMod;
         _anim.SetFloat("MoveSpeedScale", _moveSpeedModifier.GetFinalValue());
         _characterCollider.enabled = false;
+        Invoke(nameof(PlaySleepingSFX), UnityEngine.Random.Range(0.5f, 2f));
         _anim.SetBool("Laying", true);
     }
 
@@ -133,7 +139,16 @@ public class PostStudent : MonoBehaviour
 
     private void Wakeup()
     {
+        CancelInvoke(nameof(PlaySleepingSFX));
+        _soundBehavior.StopSleeping();
         _anim.SetBool("Laying", false);
+    }
+
+
+
+    private void PlaySleepingSFX()
+    {
+        _soundBehavior.PlaySleeping();
     }
 
 
@@ -569,7 +584,8 @@ public class PostStudent : MonoBehaviour
             new PrintDebug("jopBehavior"),
             jopBehavior
         });
-        return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new BoostReactivePattern(new CoopReactivePattern(new EscapeGiveUpReactivePattern(jobSeq))))));
+        //return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new BoostReactivePattern(new CoopReactivePattern(new EscapeGiveUpReactivePattern(jobSeq))))));
+        return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new BoostReactivePattern(new CoopReactivePattern(jobSeq)))));
         //return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new CoopReactivePatttern(new EscapeGiveUpReactivePattern(jobSeq)))));
         //return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new CoopReactivePatttern(jobSeq))));
         //return new TakeHitReactivePattern(new AttackReactivePattern(new CoopReactivePatttern(jopBehavior)));
@@ -673,6 +689,7 @@ public class PostStudent : MonoBehaviour
     {
         _blackboard.isDamaged = true;
         _blackboard.isStunned = true;
+        //PlayScene3DSFX(_bodyHitSD, hitInfo.hitPoint);
     }
 
 
@@ -704,7 +721,11 @@ public class PostStudent : MonoBehaviour
         GameObject playerObject = _blackboard.Player.gameObject;
         if (_blackboard.targetObject == playerObject && hitInfo.attacker == playerObject)
         {
-            StageController.Instance.Earn((int)AttributeSystem.Instance.MutinyMoneyMod.GetFinalValue(0));
+            int money = (int)AttributeSystem.Instance.MutinyMoneyMod.GetFinalValue(0);
+            if (money > 0)
+            {
+                StageController.Instance.Earn(money);
+            }
         }
 
         _root = null;
