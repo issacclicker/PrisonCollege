@@ -6002,6 +6002,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actionName: "\uCC3D\uBB38 \uB9C9\uAE30"
+  _activeSD: {fileID: 11400000, guid: d54bb3e8746079745bc8e87f5d11d189, type: 2}
   ProgressStartEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -26650,6 +26651,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actionName: "\uCC3D\uBB38 \uB9C9\uAE30"
+  _activeSD: {fileID: 11400000, guid: d54bb3e8746079745bc8e87f5d11d189, type: 2}
   ProgressStartEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -39949,6 +39951,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageRecharger
   _weaponCtrl: {fileID: 2081273349}
+  _rechargeSD: {fileID: 11400000, guid: 592ba2f893731a64eb7fc13b4c034717, type: 2}
 --- !u!114 &111660465
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -47242,6 +47245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageRecharger
   _weaponCtrl: {fileID: 2081273349}
+  _rechargeSD: {fileID: 11400000, guid: 592ba2f893731a64eb7fc13b4c034717, type: 2}
 --- !u!114 &177324034
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -56401,6 +56405,7 @@ MonoBehaviour:
   _hackingVideo: {fileID: 1525613678}
   _gamingVideo: {fileID: 1824443460}
   _renderer: {fileID: 603972209}
+  _typingSD: {fileID: 11400000, guid: 4b0d86143c8f5fa40b950f90231670ab, type: 2}
 --- !u!1 &286546479
 GameObject:
   m_ObjectHideFlags: 0
@@ -56919,6 +56924,7 @@ MonoBehaviour:
   _hackingVideo: {fileID: 706945482}
   _gamingVideo: {fileID: 353375449}
   _renderer: {fileID: 1294630614}
+  _typingSD: {fileID: 11400000, guid: 4b0d86143c8f5fa40b950f90231670ab, type: 2}
 --- !u!1 &291660502
 GameObject:
   m_ObjectHideFlags: 0
@@ -58755,6 +58761,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actionName: "\uCC3D\uBB38 \uB9C9\uAE30"
+  _activeSD: {fileID: 11400000, guid: d54bb3e8746079745bc8e87f5d11d189, type: 2}
   ProgressStartEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -73044,6 +73051,7 @@ MonoBehaviour:
   _hackingVideo: {fileID: 1264499241}
   _gamingVideo: {fileID: 899112381}
   _renderer: {fileID: 1786897972}
+  _typingSD: {fileID: 11400000, guid: 4b0d86143c8f5fa40b950f90231670ab, type: 2}
 --- !u!114 &439390226
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -152237,6 +152245,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actionName: "\uCC3D\uBB38 \uB9C9\uAE30"
+  _activeSD: {fileID: 11400000, guid: d54bb3e8746079745bc8e87f5d11d189, type: 2}
   ProgressStartEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -158885,6 +158894,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageRecharger
   _weaponCtrl: {fileID: 2081273349}
+  _rechargeSD: {fileID: 11400000, guid: 592ba2f893731a64eb7fc13b4c034717, type: 2}
 --- !u!114 &845573715
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172944,6 +172954,7 @@ MonoBehaviour:
   _hackingVideo: {fileID: 937213703}
   _gamingVideo: {fileID: 1365098947}
   _renderer: {fileID: 597032296}
+  _typingSD: {fileID: 11400000, guid: 4b0d86143c8f5fa40b950f90231670ab, type: 2}
 --- !u!1 &946081498
 GameObject:
   m_ObjectHideFlags: 0
@@ -221207,6 +221218,7 @@ MonoBehaviour:
   _hackingVideo: {fileID: 1395715766}
   _gamingVideo: {fileID: 878215916}
   _renderer: {fileID: 1936904580}
+  _typingSD: {fileID: 11400000, guid: 4b0d86143c8f5fa40b950f90231670ab, type: 2}
 --- !u!1001 &1163927952
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -227963,6 +227975,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClickAndWait
   _actionName: "\uBB38 \uB9C9\uAE30"
+  _activeSD: {fileID: 11400000, guid: d54bb3e8746079745bc8e87f5d11d189, type: 2}
   ProgressStartEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -279656,6 +279669,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClickAndWait
   _actionName: "\uBB38 \uB9C9\uAE30"
+  _activeSD: {fileID: 11400000, guid: d54bb3e8746079745bc8e87f5d11d189, type: 2}
   ProgressStartEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -294162,6 +294176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClickAndWait
   _actionName: "\uBB38 \uB9C9\uAE30"
+  _activeSD: {fileID: 11400000, guid: d54bb3e8746079745bc8e87f5d11d189, type: 2}
   ProgressStartEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -310933,6 +310948,7 @@ MonoBehaviour:
   _hackingVideo: {fileID: 668734856}
   _gamingVideo: {fileID: 1558794793}
   _renderer: {fileID: 438227103}
+  _typingSD: {fileID: 11400000, guid: 4b0d86143c8f5fa40b950f90231670ab, type: 2}
 --- !u!4 &1592046937
 Transform:
   m_ObjectHideFlags: 0
@@ -311163,6 +311179,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageRecharger
   _weaponCtrl: {fileID: 2081273349}
+  _rechargeSD: {fileID: 11400000, guid: 592ba2f893731a64eb7fc13b4c034717, type: 2}
 --- !u!114 &1594385451
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -332692,6 +332709,7 @@ MonoBehaviour:
   _hackingVideo: {fileID: 1027435415}
   _gamingVideo: {fileID: 781008016}
   _renderer: {fileID: 511482194}
+  _typingSD: {fileID: 11400000, guid: 4b0d86143c8f5fa40b950f90231670ab, type: 2}
 --- !u!1 &1744957889
 GameObject:
   m_ObjectHideFlags: 0
@@ -332836,6 +332854,7 @@ MonoBehaviour:
   _hackingVideo: {fileID: 970760797}
   _gamingVideo: {fileID: 1540724011}
   _renderer: {fileID: 1420629242}
+  _typingSD: {fileID: 11400000, guid: 4b0d86143c8f5fa40b950f90231670ab, type: 2}
 --- !u!1001 &1750438226
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -361383,6 +361402,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ClickAndWait
   _actionName: "\uC804\uC6D0 \uD65C\uC131"
+  _activeSD: {fileID: 11400000, guid: b052537a8fb9d8f40b457c3055554c39, type: 2}
   ProgressStartEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -368497,6 +368517,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageRecharger
   _weaponCtrl: {fileID: 2081273349}
+  _rechargeSD: {fileID: 11400000, guid: 592ba2f893731a64eb7fc13b4c034717, type: 2}
 --- !u!114 &1877319961
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -368748,6 +368769,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BoostRecharger
   _weaponCtrl: {fileID: 2081273349}
+  _rechargeSD: {fileID: 11400000, guid: 1baa2a1cacbab4f4e91e0c5b2bc386d4, type: 2}
 --- !u!114 &1877793318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -374641,6 +374663,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DamageRecharger
   _weaponCtrl: {fileID: 2081273349}
+  _rechargeSD: {fileID: 11400000, guid: 592ba2f893731a64eb7fc13b4c034717, type: 2}
 --- !u!114 &1890930505
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -396785,6 +396808,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actionName: "\uCC3D\uBB38 \uB9C9\uAE30"
+  _activeSD: {fileID: 11400000, guid: d54bb3e8746079745bc8e87f5d11d189, type: 2}
   ProgressStartEvent:
     m_PersistentCalls:
       m_Calls: []

@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -20,13 +21,26 @@ public class SoundManager : PersistentSingleton<SoundManager>
 
 
 
-    public void Update()
+    private void Start()
     {
-        float currentTimeScale = Time.timeScale;
-        if (Mathf.Approximately(currentTimeScale, 0) != IsPaused)
+        StartCoroutine(CheckTimeScaleRoutine());
+    }
+
+
+
+    IEnumerator CheckTimeScaleRoutine()
+    {
+        while (true)
         {
-            _isPaused = !IsPaused;
-            SetPause(_isPaused);
+            float currentTimeScale = Time.timeScale;
+            bool shouldPause = Mathf.Approximately(currentTimeScale, 0);
+
+            if (shouldPause != IsPaused)
+            {
+                _isPaused = shouldPause;
+                SetPause(_isPaused);
+            }
+            yield return null;
         }
     }
 

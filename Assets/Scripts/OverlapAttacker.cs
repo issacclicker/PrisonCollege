@@ -80,7 +80,14 @@ public class OverlapAttacker : MonoBehaviour
                 // 3. 효과 적용
                 //_explosionShacker.PlayShake();
                 myReceiver.TakeEffect(_damageData, hitInfoToMe);
-                SoundUtils.PlayScene3DSFX(_hitSD, hitInfoToOther.hitPoint);
+                if (other.gameObject.IsInLayerMask(Global.PLAYER_LAYER_NAME))
+                {
+                    SoundUtils.PlayScene2DSFX(_hitSD);
+                }
+                else
+                {
+                    SoundUtils.PlayScene3DSFX(_hitSD, hitInfoToOther.hitPoint);
+                }
             }
         }
     }

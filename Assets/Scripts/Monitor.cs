@@ -9,8 +9,10 @@ public class Monitor : MonoBehaviour
     [SerializeField] private VideoPlayer _hackingVideo;
     [SerializeField] private VideoPlayer _gamingVideo;
     [SerializeField] private MeshRenderer _renderer;
+    [SerializeField] private SoundData _typingSD;
     private VideoPlayer _currentVideo;
     private Dictionary<DisplayState, VideoPlayer> _stateVideoDic = new();
+    private SoundEmitter _emitter;
 
 
 
@@ -55,6 +57,7 @@ public class Monitor : MonoBehaviour
     public void PauseDisplay()
     {
         _currentVideo?.Pause();
+        _emitter.GetComponent<AudioSource>().Pause();
     }
 
 
@@ -62,6 +65,7 @@ public class Monitor : MonoBehaviour
     public void ResumeDisplay()
     {
         _currentVideo?.Play();
+        _emitter.GetComponent<AudioSource>().UnPause();
     }
 
 
@@ -76,11 +80,14 @@ public class Monitor : MonoBehaviour
         {
             _renderer.material.color = Color.black;
             _renderer.material.DisableKeyword("_EMISSION");
+            _emitter?.StopAndReturn();
+            _emitter = null;
         }
         else
         {
             _renderer.material.color = Color.white;
             _renderer.material.EnableKeyword("_EMISSION");
+            _emitter = SoundUtils.PlayOwnedScene3DSFX(_typingSD, transform.position, true, 1, true);
         }
     }
 }

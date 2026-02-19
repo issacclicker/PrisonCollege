@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class ClickAndWait : MonoBehaviour, IPlayerInteractable
 {
     [SerializeField] private string _actionName = "상호작용";
+    [SerializeField] private SoundData _activeSD;
 
     private Progress _progress;
     private bool _isInteractable = true;
@@ -19,6 +20,7 @@ public class ClickAndWait : MonoBehaviour, IPlayerInteractable
     public UnityEvent ProgressCompleteEvent = new UnityEvent();
 
     private AttributeModifier _attributeModifier;
+    private SoundEmitter _emitter;
 
 
 
@@ -36,6 +38,7 @@ public class ClickAndWait : MonoBehaviour, IPlayerInteractable
         {
             _attributeModifier = AttributeSystem.Instance.HackRepairSpeedMod;
         }
+        StageController.Instance.Player.DieEvent.AddListener(_ => StopAndReturnSoundEmitter());
     }
 
 
@@ -73,6 +76,14 @@ public class ClickAndWait : MonoBehaviour, IPlayerInteractable
     {
         _isInteracting = true;
         ProgressStartEvent?.Invoke();
+        _emitter = SoundUtils.PlayOwnedScene2DSFX(_activeSD, false, 1, true);
+    }
+
+
+    private void StopAndReturnSoundEmitter()
+    {
+        _emitter?.StopAndReturn();
+        _emitter = null;
     }
 
     public void OnInteractCancel()
@@ -80,5 +91,19 @@ public class ClickAndWait : MonoBehaviour, IPlayerInteractable
         _isInteracting = false;
         _progress.Initialize(true);
         ProgressCancelEvent?.Invoke();
+        StopAndReturnSoundEmitter();
+    }
+
+
+
+    private void OnDisable()
+    {
+        StopAndReturnSoundEmitter();
+    }
+
+
+    private void OnDestroy()
+    {
+        StopAndReturnSoundEmitter();
     }
 }
