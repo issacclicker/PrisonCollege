@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: 20_ThrowStrong
   m_EditorClassIdentifier: Assembly-CSharp::ThrowStrong
   id: 20
-  name: 
+  name: "\uD22C\uCC99 \uAC15\uD654"
   icon: {fileID: 21300000, guid: cc3f91a7f6c76e5469c5becdcd6fec40, type: 3}
   price: 60
   effect: 
