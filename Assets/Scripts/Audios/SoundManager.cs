@@ -40,7 +40,7 @@ public class SoundManager : PersistentSingleton<SoundManager>
                 _isPaused = shouldPause;
                 SetPause(_isPaused);
             }
-            yield return null;
+            yield return new WaitForSecondsRealtime(0f);
         }
     }
 
