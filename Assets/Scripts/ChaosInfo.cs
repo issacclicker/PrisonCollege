@@ -1,10 +1,78 @@
 using UnityEngine;
 
-public abstract class ChaosInfo
+
+
+public abstract class Info
+{
+    public abstract string Description { get; }
+    public abstract string StatText { get; }
+    public abstract Color PanelColor { get; }
+
+
+
+    public Info()
+    {
+
+    }
+}
+
+
+public class HackBlockInfo : Info
+{
+    public override string Description => "시스템 해킹 차단 성공!!";
+    public override string StatText => $"전등 OFF 무효화";
+    public override Color PanelColor => new Color(0, 255/255f, 180/255f, 220/255f);
+
+
+
+    public HackBlockInfo()
+    {
+
+    }
+}
+
+
+
+public class HackInfo : Info
+{
+    public override string Description => "시스템 해킹 발생!!";
+    public override string StatText => $"전등 OFF";
+    public override Color PanelColor => new Color(255/255f, 100/255f, 0, 220 / 255f);
+
+
+
+    public HackInfo()
+    {
+
+    }
+}
+
+
+
+
+public class MoneyInfo : Info
+{
+    protected int _money;
+    public override string Description => "프로젝트 완성!!";
+    public override string StatText => $"돈 +{_money.ToString("N0")}";
+    public override Color PanelColor => new Color(50 / 255f, 255 / 255f, 0, 220 / 255f);
+
+
+
+    public MoneyInfo(int money)
+    {
+        _money = money;
+    }
+}
+
+
+
+public abstract class ChaosInfo : Info
 {
     protected float _chaos;
-    public abstract string Description { get; }
-    public string StatText => $"혼란 +{_chaos.ToString("F0")}";
+    //public abstract string Description { get; }
+    public override string StatText => $"혼란 +{_chaos.ToString("F0")}";
+    public override Color PanelColor => new Color(255 / 255f, 0, 0, 220 / 255f);
 
     public ChaosInfo(float chaos)
     {

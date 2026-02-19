@@ -323,7 +323,22 @@ public class StageController : SceneSingleton<StageController>
     {
         _projectStat.Initialize(true);
         _money += _progectReward;
-        SoundUtils.PlayUISFX(_moneyGainSD);
+        _chaosUi.SpawnWarningPanel(new MoneyInfo(_progectReward));
+        //SoundUtils.PlayUISFX(_moneyGainSD);
+    }
+
+
+
+    public void HackBlocked()
+    {
+        _chaosUi.SpawnWarningPanel(new HackBlockInfo());
+    }
+
+
+
+    public void Hacked()
+    {
+        _chaosUi.SpawnWarningPanel(new HackInfo());
     }
 
 

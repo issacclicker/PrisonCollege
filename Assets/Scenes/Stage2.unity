@@ -105002,9 +105002,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ChaosUI
   _waringParent: {fileID: 35883231}
   _waringPrefab: {fileID: 5228861189700509259, guid: 99254ec74d131474490b1dd95cb11aac, type: 3}
-  _spawnPosition: {x: 0, y: -100, z: 0}
-  _velocity: 30
+  _spawnPosition: {x: 0, y: -150, z: 0}
+  _velocity: 80
   _duration: 3
+  _chaosSD: {fileID: 11400000, guid: 9b16135d16b089c439a5d1e0da526b6e, type: 2}
+  _hackSD: {fileID: 11400000, guid: 0a924974e6fa11446967e159af14f6cf, type: 2}
+  _hackBlockSD: {fileID: 11400000, guid: bbaae5c9429fa26488dc80fd11fea4cd, type: 2}
+  _moneySD: {fileID: 11400000, guid: 8cacb609a99f9b44e93e201b311c0898, type: 2}
 --- !u!114 &646407196
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -736,10 +736,12 @@ public class WorkPattern : PatternNode
                     float rand = UnityEngine.Random.Range(0f, 1f);
                     if (rand < defenseProb)
                     {
+                        StageController.Instance.HackBlocked();
                         LabLightSystem.Instance.HackDefensed();
                     }
                     else
                     {
+                        StageController.Instance.Hacked();
                         LabLightSystem.Instance.TurnOff();
                     }
                 }
