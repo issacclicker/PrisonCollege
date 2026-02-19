@@ -57,6 +57,7 @@ public class FighterSpawner : MonoBehaviour
     [SerializeField] private SoundData _matchStartSD;
     [SerializeField] private SoundData _matchEndSD;
     [SerializeField] private SoundData _crowdSD;
+    [SerializeField] private SoundData _crowdApplauseSD;
     private bool _isFighting = false;
     private bool _isWinnerDetermined = false;
     private int _bettedMoney = 0;
@@ -157,7 +158,7 @@ public class FighterSpawner : MonoBehaviour
         _groundCollider.enabled = true;
         choosedFighter.isBetted = true;
         SoundUtils.PlayScene2DSFX(_matchStartSD);
-        _crowdEmitter = SoundUtils.PlayOwnedScene3DSFX(_crowdSD, _focusPoint.position, false, 1, false, true);
+        _crowdEmitter = SoundUtils.PlayOwnedScene3DSFX(_crowdSD, _focusPoint.position, false, 1, false);
         StartEvent?.Invoke();
     }
 
@@ -216,6 +217,7 @@ public class FighterSpawner : MonoBehaviour
 
         _focusCamera.ZoomInToTarget();
         SoundUtils.PlayScene2DSFX(_matchEndSD);
+        SoundUtils.PlayScene3DSFX(_crowdApplauseSD, _focusPoint.position);
         EndEvent?.Invoke();
         Invoke(nameof(DetermineWinner), 1f);
     }

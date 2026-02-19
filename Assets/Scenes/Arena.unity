@@ -7047,6 +7047,7 @@ MonoBehaviour:
   _matchStartSD: {fileID: 11400000, guid: def4c3fa11035ee47928af2bfba9082f, type: 2}
   _matchEndSD: {fileID: 11400000, guid: 2c88e734a409ee04096dd0a11d644ed3, type: 2}
   _crowdSD: {fileID: 11400000, guid: 6c5dca0bc2ee377409380dc78a9b4fbc, type: 2}
+  _crowdApplauseSD: {fileID: 11400000, guid: 863a304d1f40ab14ebbb85f727195849, type: 2}
   StartEvent:
     m_PersistentCalls:
       m_Calls:
