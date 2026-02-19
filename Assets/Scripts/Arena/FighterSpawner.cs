@@ -53,9 +53,15 @@ public class FighterSpawner : MonoBehaviour
     [SerializeField] private GameObject _helmetPrefab;
     [SerializeField] private Material _redMat;
     [SerializeField] private Material _blueMat;
+    [Header("Sound Datas")]
+    [SerializeField] private SoundData _matchStartSD;
+    [SerializeField] private SoundData _matchEndSD;
+    [SerializeField] private SoundData _crowdSD;
     private bool _isFighting = false;
     private bool _isWinnerDetermined = false;
     private int _bettedMoney = 0;
+
+    private SoundEmitter _crowdEmitter;
 
     public UnityEvent StartEvent = new();
     public UnityEvent EndEvent = new();
@@ -92,6 +98,11 @@ public class FighterSpawner : MonoBehaviour
 
     private void Update()
     {
+        if (_crowdEmitter != null && _crowdEmitter.gameObject.activeSelf)
+        {
+            _crowdEmitter.transform.position = _focusPoint.position;
+        }
+
         if (_fighter1.isDead && _fighter2.isDead) return;
         Vector3 _focusPosition = Vector3.up; // 기본 높이 보정
 
@@ -145,6 +156,8 @@ public class FighterSpawner : MonoBehaviour
         _lightMover.OnFightStarted();
         _groundCollider.enabled = true;
         choosedFighter.isBetted = true;
+        SoundUtils.PlayScene2DSFX(_matchStartSD);
+        _crowdEmitter = SoundUtils.PlayOwnedScene3DSFX(_crowdSD, _focusPoint.position, false, 1, false, true);
         StartEvent?.Invoke();
     }
 
@@ -202,6 +215,7 @@ public class FighterSpawner : MonoBehaviour
         targetGroup.blocksRaycasts = false;
 
         _focusCamera.ZoomInToTarget();
+        SoundUtils.PlayScene2DSFX(_matchEndSD);
         EndEvent?.Invoke();
         Invoke(nameof(DetermineWinner), 1f);
     }
@@ -416,6 +430,20 @@ public class FighterSpawner : MonoBehaviour
     public enum WinSide
     {
         None, Left, Right
+    }
+
+
+
+    private void OnDisable()
+    {
+        _crowdEmitter?.StopAndReturn();
+    }
+
+
+
+    private void OnDestroy()
+    {
+        _crowdEmitter?.StopAndReturn();
     }
 }
 

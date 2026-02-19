@@ -1129,6 +1129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
   _emitterPrefab: {fileID: 1991647734150120844, guid: 7f7b9a924b5795b48bc0cc939a43b86b, type: 3}
+  _longDistancemitterPrefab: {fileID: 0}
   _poolSize: 20
 --- !u!4 &333504989
 Transform:
@@ -7042,6 +7043,9 @@ MonoBehaviour:
   _helmetPrefab: {fileID: 1981937831077423691, guid: 87100224fbf6dc347b8b689addf5c729, type: 3}
   _redMat: {fileID: 2100000, guid: c24be60fe825193459111da1cf084e9b, type: 2}
   _blueMat: {fileID: 2100000, guid: 9459c490b517ff04fa3495493b507618, type: 2}
+  _matchStartSD: {fileID: 11400000, guid: def4c3fa11035ee47928af2bfba9082f, type: 2}
+  _matchEndSD: {fileID: 11400000, guid: 2c88e734a409ee04096dd0a11d644ed3, type: 2}
+  _crowdSD: {fileID: 11400000, guid: 6c5dca0bc2ee377409380dc78a9b4fbc, type: 2}
   StartEvent:
     m_PersistentCalls:
       m_Calls:
