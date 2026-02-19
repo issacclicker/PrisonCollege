@@ -6,7 +6,7 @@ using UnityEngine;
 public class SoundData : ScriptableObject
 {
     [SerializeField] private SoundInfo[] soundInfos; // 랜덤으로 재생될 클립들
-    [Range(0f, 2f)] [SerializeField] private float baseVolume = 1f; // 이 사운드 세트의 기본 볼륨
+    [Range(0f, 5f)] [SerializeField] private float baseVolume = 1f; // 이 사운드 세트의 기본 볼륨
 
     // 랜덤하게 클립 하나를 가져오는 도우미 함수
     public AudioClip GetRandomClip(out float volume)

@@ -6,6 +6,7 @@ using UnityEngine.UIElements;
 public class SoundManager : PersistentSingleton<SoundManager>
 {
     [SerializeField] private GameObject _emitterPrefab;
+    [SerializeField] private GameObject _longDistancemitterPrefab;
     [SerializeField] private int _poolSize = 20;
     private Queue<SoundEmitter> _pool = new Queue<SoundEmitter>();
     private bool _isPaused;
@@ -54,9 +55,9 @@ public class SoundManager : PersistentSingleton<SoundManager>
 
 
 
-    private void CreateNewEmitter()
+    private void CreateNewEmitter(bool isLongDistance = false)
     {
-        GameObject obj = Instantiate(_emitterPrefab, transform);
+        GameObject obj = Instantiate(isLongDistance ? _longDistancemitterPrefab : _emitterPrefab, transform);
         SoundEmitter emitter = obj.GetComponent<SoundEmitter>();
         emitter.Initialize(this);
         obj.SetActive(false);
@@ -65,7 +66,7 @@ public class SoundManager : PersistentSingleton<SoundManager>
 
 
 
-    public SoundEmitter PlaySFX(AudioClip clip, Vector3 position, float volume = 1.0f, bool is3D = true, bool persist = false, bool isRandomPitch = true, bool isLoop = false)
+    public SoundEmitter PlaySFX(AudioClip clip, Vector3 position, float volume = 1.0f, bool is3D = true, bool persist = false, bool isRandomPitch = true, bool isLoop = false, bool isLongDistance = false)
     {
         if (clip == null) return null;
         if (_pool.Count == 0) CreateNewEmitter();
@@ -110,23 +111,23 @@ public class SoundManager : PersistentSingleton<SoundManager>
 
 public static class SoundUtils
 {
-    public static void PlayScene3DSFX(AudioClip clip, Vector3 position, float volumeMultiplier = 1f, bool isLoop = false)
+    public static void PlayScene3DSFX(AudioClip clip, Vector3 position, float volumeMultiplier = 1f, bool isLoop = false, bool isLongDistance = false)
     {
-        SoundManager.Instance.PlaySFX(clip, position, volumeMultiplier, true, false, true, isLoop);
+        SoundManager.Instance.PlaySFX(clip, position, volumeMultiplier, true, false, true, isLoop, isLongDistance);
     }
 
 
 
-    public static void PlayScene3DSFX(SoundData soundData, Vector3 position, float volumeMultiplier = 1f, bool isLoop = false)
+    public static void PlayScene3DSFX(SoundData soundData, Vector3 position, float volumeMultiplier = 1f, bool isLoop = false, bool isLongDistance = false)
     {
-        SoundManager.Instance.PlaySFX(soundData.GetRandomClip(out float volume), position, volume * volumeMultiplier, true, false, true, isLoop);
+        SoundManager.Instance.PlaySFX(soundData.GetRandomClip(out float volume), position, volume * volumeMultiplier, true, false, true, isLoop, isLongDistance);
     }
 
 
 
-    public static SoundEmitter PlayOwnedScene3DSFX(SoundData soundData, Vector3 position, bool isRandomPitch, float volumeMultiplier = 1f, bool isLoop = false)
+    public static SoundEmitter PlayOwnedScene3DSFX(SoundData soundData, Vector3 position, bool isRandomPitch, float volumeMultiplier = 1f, bool isLoop = false, bool isLongDistance = false)
     {
-        return SoundManager.Instance.PlaySFX(soundData.GetRandomClip(out float volume), position, volume * volumeMultiplier, true, false, isRandomPitch, isLoop);
+        return SoundManager.Instance.PlaySFX(soundData.GetRandomClip(out float volume), position, volume * volumeMultiplier, true, false, isRandomPitch, isLoop, isLongDistance);
     }
 
 

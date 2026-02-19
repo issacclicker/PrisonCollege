@@ -38,13 +38,13 @@ public class SprinklerController : MonoBehaviour
     public void TurnOff()
     {
         PlayEmissionTween(0f, _fadeDuration);
-        _fireAlarmEmitter.StopAndReturn();
+        _fireAlarmEmitter?.StopAndReturn();
         foreach (SoundEmitter sprinklerEmitter in _sprinklerEmitters)
         {
             if (sprinklerEmitter == null) continue;
             sprinklerEmitter.StopAndReturn();
         }
-        _sprinklerEmitters.Clear();
+        _sprinklerEmitters?.Clear();
     }
 
     public void TurnOffImmediate()

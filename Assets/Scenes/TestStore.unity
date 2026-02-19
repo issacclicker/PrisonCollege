@@ -9586,6 +9586,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
   _emitterPrefab: {fileID: 1991647734150120844, guid: 7f7b9a924b5795b48bc0cc939a43b86b, type: 3}
+  _longDistancemitterPrefab: {fileID: 1991647734150120844, guid: 8437e455beaf8b34e9cdb82e420d70b0, type: 3}
   _poolSize: 20
 --- !u!4 &460283017
 Transform:

@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 547f331dd14f9c4458ddf1bddbf9956b, type: 3}
-  m_Name: PlayerWalk
+  m_Name: Explosion
   m_EditorClassIdentifier: Assembly-CSharp::SoundData
   soundInfos:
-  - clip: {fileID: 8300000, guid: 6c527ff4a7ad48a4a8658ed6a6f75a1b, type: 3}
+  - clip: {fileID: 8300000, guid: b63f6ce6c5f9d814c87853b788ee9365, type: 3}
     volumeMultiplier: 2
-  - clip: {fileID: 8300000, guid: 8544d45bd07e7ca4abb110746402c0fe, type: 3}
+  - clip: {fileID: 8300000, guid: 4940d44c5cf662e4380c9c3cb9429ad8, type: 3}
     volumeMultiplier: 2
   baseVolume: 2

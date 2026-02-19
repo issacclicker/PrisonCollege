@@ -490,7 +490,7 @@ public class CoopPattern : PatternNode
             new OverrideBehaveSpot(() => _bb.coopData.spot, () => _bb.coopData.type),
             new SetAnimRootMotion(false),
             new ResetAnimParameters(),
-            new SetSpeed(() => 5.67f),
+            new SetSpeed(() => 2.34f),
             new MoveToSpot(),
             new RotateToSpot(),
             new ActionNode(() => _bb.destSpot.Arrived(_bb.Avatar.GetComponent<PostStudent>())),

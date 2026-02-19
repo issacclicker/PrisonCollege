@@ -48745,6 +48745,7 @@ MonoBehaviour:
   _foodSocket: {fileID: 1243643942}
   _cookingLight: {fileID: 20486047}
   _humSD: {fileID: 11400000, guid: 660fc94a8992a414ba418d9f09486cea, type: 2}
+  _explosionSD: {fileID: 11400000, guid: 2cf228362673ea342a2cea61199f895d, type: 2}
 --- !u!114 &222006278
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48758,6 +48759,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Fire
   _fireParticle: {fileID: 1625063192}
+  _fireSD: {fileID: 11400000, guid: f51239c100f4481478d05c2f09187131, type: 2}
 --- !u!64 &222006279
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -54797,7 +54799,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 255621485}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
@@ -305820,6 +305822,7 @@ MonoBehaviour:
   _foodSocket: {fileID: 1062472787}
   _cookingLight: {fileID: 773830567}
   _humSD: {fileID: 11400000, guid: 660fc94a8992a414ba418d9f09486cea, type: 2}
+  _explosionSD: {fileID: 11400000, guid: 2cf228362673ea342a2cea61199f895d, type: 2}
 --- !u!114 &1588544099
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -305833,6 +305836,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Fire
   _fireParticle: {fileID: 255621486}
+  _fireSD: {fileID: 11400000, guid: f51239c100f4481478d05c2f09187131, type: 2}
 --- !u!64 &1588544100
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -317426,7 +317430,7 @@ AudioSource:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1625063191}
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}

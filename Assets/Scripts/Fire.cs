@@ -3,8 +3,10 @@ using UnityEngine;
 public class Fire : MonoBehaviour
 {
     [SerializeField] private ParticleSystem _fireParticle;
+    [SerializeField] private SoundData _fireSD;
     private Stat _burnDuration;
     private bool _isBurning = false;
+    private SoundEmitter _emitter;
 
 
 
@@ -43,6 +45,7 @@ public class Fire : MonoBehaviour
             return;
         }
         _isBurning = true;
+        _emitter = SoundUtils.PlayOwnedScene3DSFX(_fireSD, transform.position, true, 1, true);
         _burnDuration.Initialize(true);
         _fireParticle.gameObject.SetActive(true);
     }
@@ -52,6 +55,8 @@ public class Fire : MonoBehaviour
     public void Extinguish()
     {
         _isBurning = false;
+        _emitter?.StopAndReturn();
+        _emitter = null;
         _burnDuration.Initialize(true);
         _fireParticle.gameObject.SetActive(false);
     }
