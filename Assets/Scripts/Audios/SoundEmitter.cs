@@ -51,8 +51,15 @@ public class SoundEmitter : MonoBehaviour
 
         _audioSource.spatialBlend = is3D ? 1.0f : 0.0f;
 
-        if (persistBetweenScenes) transform.SetParent(_pool.transform);
-        else transform.SetParent(null);
+        if (persistBetweenScenes)
+        {
+            transform.SetParent(_pool.transform);
+        }
+        else
+        {
+            transform.SetParent(null);
+            UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(gameObject, UnityEngine.SceneManagement.SceneManager.GetActiveScene());
+        }
 
         _audioSource.Play();
         if (SoundManager.Instance.IsPaused)
