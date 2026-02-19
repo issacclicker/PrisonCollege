@@ -34,7 +34,7 @@ public class SoundManager : PersistentSingleton<SoundManager>
         while (true)
         {
             float currentTimeScale = Time.timeScale;
-            bool shouldPause = Mathf.Approximately(currentTimeScale, 0);
+            bool shouldPause = currentTimeScale <= 0.1f;
 
             if (shouldPause != IsPaused)
             {

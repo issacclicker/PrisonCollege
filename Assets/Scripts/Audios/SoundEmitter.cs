@@ -55,6 +55,10 @@ public class SoundEmitter : MonoBehaviour
         else transform.SetParent(null);
 
         _audioSource.Play();
+        if (SoundManager.Instance.IsPaused)
+        {
+            _audioSource.Pause();
+        }
         if (!isLoop)
         {
             StartCoroutine(ReturnAfterFinish(clip.length));
@@ -76,14 +80,12 @@ public class SoundEmitter : MonoBehaviour
     public void StopAndReturn()
     {
         if (_isAppQuitting) return;
-        if (SoundManager.Instance != null)
-            SoundManager.Instance.OnPauseChanged -= HandlePauseChanged;
+        //if (SoundManager.Instance != null)
+        //    SoundManager.Instance.OnPauseChanged -= HandlePauseChanged;
         StopAllCoroutines(); // 진행 중인 ReturnAfterFinish 코루틴 중단
         _audioSource.Stop();
         _audioSource.loop = false;
         _audioSource.clip = null;
-
-        // 다시 풀로 복귀 (매니저가 관리하는 자식 위치로)
         transform.SetParent(_pool.transform);
         _pool.ReturnToPool(this);
     }
