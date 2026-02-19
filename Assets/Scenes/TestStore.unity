@@ -32683,6 +32683,7 @@ MonoBehaviour:
   _itemInfoPanel: {fileID: 1022843486}
   _moneyTmp: {fileID: 174960669}
   _waveExplanation: {fileID: 969994432}
+  _purchaseSD: {fileID: 11400000, guid: 2f645b7a447e5fb48a04aa20286cfdca, type: 2}
 --- !u!1 &1884123162
 GameObject:
   m_ObjectHideFlags: 0

@@ -61,6 +61,8 @@ public class StageController : SceneSingleton<StageController>
     [SerializeField] private StageOver _stageOver;
     [SerializeField] private ChaosUI _chaosUi;
     [SerializeField] private bool _isTestMode = true;
+    [Header("Sound Datas")]
+    [SerializeField] private SoundData _moneyGainSD;
 
     private EquipInfo[] _equipInfos;
     private int _money = 0;
@@ -321,6 +323,7 @@ public class StageController : SceneSingleton<StageController>
     {
         _projectStat.Initialize(true);
         _money += _progectReward;
+        SoundUtils.PlayUISFX(_moneyGainSD);
     }
 
 

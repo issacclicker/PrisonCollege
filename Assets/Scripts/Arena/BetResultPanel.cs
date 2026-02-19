@@ -7,7 +7,9 @@ public class BetResultPanel : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _titleTmp;
     [SerializeField] private TextMeshProUGUI _mainMoneyTmp;
     [SerializeField] private TextMeshProUGUI _bonusMoneyTmp;
+    [SerializeField] private SoundData _moneyIncreaseSD;
     private int _currentDisplayMoney = 0;
+    private SoundEmitter _emitter;
     
     
     
@@ -47,12 +49,32 @@ public class BetResultPanel : MonoBehaviour
             .OnStart(() =>
             {
                 _bonusMoneyTmp.text = string.Empty;
+                _emitter = SoundUtils.PlayOwnedScene3DSFX(_moneyIncreaseSD, Camera.main.transform.position, false, 1, true, true);
             })
             .OnUpdate(() =>
             {
                 // 숫자가 변할 때마다 텍스트 갱신 (세 자리 쉼표 포함)
                 _mainMoneyTmp.text = _currentDisplayMoney.ToString("N0");
             })
+            .OnComplete(() =>
+            {
+                _emitter?.StopAndReturn();
+                _emitter = null;
+            })
             .SetEase(Ease.OutExpo); // 뒤로 갈수록 천천히 멈추는 효과
+    }
+
+
+
+    private void OnDisable()
+    {
+        _emitter?.StopAndReturn();
+    }
+
+
+
+    private void OnDestroy()
+    {
+        _emitter?.StopAndReturn();
     }
 }

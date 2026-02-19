@@ -155,6 +155,13 @@ public static class SoundUtils
 
     public static void PlayUISFX(AudioClip clip, float volumeMultiplier = 1f, bool isLoop = false)
     {
-        SoundManager.Instance.PlaySFX(clip, Vector3.zero, volumeMultiplier, false, true, false, isLoop);
+        SoundManager.Instance.PlaySFX(clip, Vector3.zero, volumeMultiplier, false, false, false, isLoop);
+    }
+
+
+
+    public static void PlayUISFX(SoundData soundData, float volumeMultiplier = 1f, bool isLoop = false)
+    {
+        SoundManager.Instance.PlaySFX(soundData.GetRandomClip(out float volume), Vector3.zero, volume * volumeMultiplier, false, false, false, isLoop);
     }
 }

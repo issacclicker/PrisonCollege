@@ -104969,6 +104969,7 @@ MonoBehaviour:
   _stageOver: {fileID: 1398401389}
   _chaosUi: {fileID: 646407195}
   _isTestMode: 0
+  _moneyGainSD: {fileID: 11400000, guid: 8cacb609a99f9b44e93e201b311c0898, type: 2}
   StageStartEvent:
     m_PersistentCalls:
       m_Calls: []
