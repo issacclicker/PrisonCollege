@@ -50,10 +50,9 @@ public class HackInfo : Info
 
 
 
-public class MoneyInfo : Info
+public abstract class MoneyInfo : Info
 {
     protected int _money;
-    public override string Description => "프로젝트 완성!!";
     public override string StatText => $"돈 +{_money.ToString("N0")}";
     public override Color PanelColor => new Color(50 / 255f, 255 / 255f, 0, 220 / 255f);
 
@@ -62,6 +61,28 @@ public class MoneyInfo : Info
     public MoneyInfo(int money)
     {
         _money = money;
+    }
+}
+
+
+
+public class ProjectMoneyInfo : MoneyInfo
+{
+    public override string Description => "프로젝트 완성!!";
+
+    public ProjectMoneyInfo(int money) : base(money)
+    {
+    }
+}
+
+
+
+public class MutinyMoneyInfo : MoneyInfo
+{
+    public override string Description => "하극상 배상안 체결!!";
+
+    public MutinyMoneyInfo(int money) : base(money)
+    {
     }
 }
 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
@@ -261,6 +262,7 @@ public class StageController : SceneSingleton<StageController>
     public void Earn(int money)
     {
         _money += money;
+        _chaosUi.SpawnWarningPanel(new MutinyMoneyInfo(money));
     }
 
 
@@ -323,7 +325,7 @@ public class StageController : SceneSingleton<StageController>
     {
         _projectStat.Initialize(true);
         _money += _progectReward;
-        _chaosUi.SpawnWarningPanel(new MoneyInfo(_progectReward));
+        _chaosUi.SpawnWarningPanel(new ProjectMoneyInfo(_progectReward));
         //SoundUtils.PlayUISFX(_moneyGainSD);
     }
 

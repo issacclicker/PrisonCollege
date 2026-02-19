@@ -721,7 +721,11 @@ public class PostStudent : MonoBehaviour
         GameObject playerObject = _blackboard.Player.gameObject;
         if (_blackboard.targetObject == playerObject && hitInfo.attacker == playerObject)
         {
-            StageController.Instance.Earn((int)AttributeSystem.Instance.MutinyMoneyMod.GetFinalValue(0));
+            int money = (int)AttributeSystem.Instance.MutinyMoneyMod.GetFinalValue(0);
+            if (money > 0)
+            {
+                StageController.Instance.Earn(money);
+            }
         }
 
         _root = null;
