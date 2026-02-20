@@ -344,7 +344,7 @@ public class FirstPersonController : MonoBehaviour
             }
         }
 
-        Movement();
+        //Movement();
 
         #endregion
 
@@ -388,12 +388,13 @@ public class FirstPersonController : MonoBehaviour
             HeadBob();
         }
 
-        RotateCamera();
+        //RotateCamera();
     }
 
     private void LateUpdate()
     {
         if (Time.timeScale == 0) return;
+        RotateCamera();
     }
 
 
@@ -432,6 +433,7 @@ public class FirstPersonController : MonoBehaviour
     {
         if (Time.timeScale == 0) return;
         #region Movement
+        Movement();
         #endregion
     }
 
