@@ -4,6 +4,7 @@ using UnityEngine;
 public class FuseBox : MonoBehaviour
 {
     [SerializeField] private Light _redLight;
+    [SerializeField] private Transform _particleParent;
     private ClickAndWait _interaction;
     private Tween _blinkTween;
 
@@ -39,6 +40,7 @@ public class FuseBox : MonoBehaviour
         _blinkTween?.Kill();
         _redLight.intensity = 0f;
         _redLight.enabled = false;
+        _particleParent.gameObject.SetActive(false);
     }
 
 
@@ -48,6 +50,7 @@ public class FuseBox : MonoBehaviour
         _interaction.SetInteractable(true);
         _blinkTween?.Kill();
         _redLight.enabled = true;
+        _particleParent.gameObject.SetActive(true);
         _redLight.intensity = 0f;
         _blinkTween = _redLight.DOIntensity(1, 0.5f)
             .SetLoops(-1, LoopType.Yoyo) // 무한 반복(-1), 왔다 갔다(Yoyo)
