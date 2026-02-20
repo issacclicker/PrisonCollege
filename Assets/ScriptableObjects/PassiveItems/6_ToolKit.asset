@@ -13,10 +13,12 @@ MonoBehaviour:
   m_Name: 6_ToolKit
   m_EditorClassIdentifier: Assembly-CSharp::BarricadeFaster
   id: 0
-  name: "\uACE0\uAE09 \uC218\uB9AC \uD0A4\uD2B8"
+  name: "\uACE0\uAE09 \uACF5\uAD6C \uD0A4\uD2B8"
   icon: {fileID: 21300000, guid: 0c5aec87b99287547af812a9c00a264d, type: 3}
   price: 60
-  effect: 
-  description: 
+  effect: "\uD0C8\uCD9C\uAD6C \uAC15\uD654, \uD574\uD0B9 \uBCF5\uAD6C \uC18D\uB3C4
+    200% \uC99D\uAC00"
+  description: "\uACF5\uD559\uB3C4\uB77C\uBA74 \uD0D0\uB0BC\uB9CC\uD55C \uACF5\uAD6C
+    \uD0A4\uD2B8 \uC785\uB2C8\uB2E4."
   rarity: 0
   repairSpeedPercent: 2

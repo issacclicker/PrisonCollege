@@ -16,7 +16,10 @@ MonoBehaviour:
   name: "\uD0C8\uBAA8\uBE54"
   icon: {fileID: 21300000, guid: 224df99b442fa204896d3611cef3d304, type: 3}
   price: 640
-  effect: 
-  description: 
+  effect: "\uC804\uB4F1\uC774 \uCF1C\uC838 \uC788\uB294 \uACBD\uC6B0, \uBCBD \uB108\uBA38\uC758
+    \uB300\uD559\uC6D0\uC0DD\uC758 \uC704\uCE58\uAC00 \uD45C\uC2DC\uB428"
+  description: "\uBBFC\uBA38\uB9AC, \uB300\uBA38\uB9AC, \uB9E8\uB4E4\uB9E8\uB4E4
+    \uBE61\uBE61\uC774"
   rarity: 0
   isBald: 1
+  isOutline: 1

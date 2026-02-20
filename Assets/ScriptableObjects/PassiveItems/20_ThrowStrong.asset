@@ -13,11 +13,14 @@ MonoBehaviour:
   m_Name: 20_ThrowStrong
   m_EditorClassIdentifier: Assembly-CSharp::ThrowStrong
   id: 20
-  name: "\uD22C\uCC99 \uAC15\uD654"
-  icon: {fileID: 21300000, guid: cc3f91a7f6c76e5469c5becdcd6fec40, type: 3}
+  name: "\uB0A1\uC740 \uAE00\uB7EC\uBE0C"
+  icon: {fileID: 21300000, guid: e04cb2c8193c0634e995dd5dc059b71b, type: 3}
   price: 60
-  effect: 
-  description: 
+  effect: "\uD22C\uCC99\uBB34\uAE30 \uC18D\uB3C4 100% \uC99D\uAC00\r\n\uD22C\uCC99\uBB34\uAE30
+    \uACF5\uACA9\uB825 50% \uC99D\uAC00"
+  description: "\uC720\uBA85\uD55C \uD22C\uC218\uAC00 \uC4F0\uB358 \uAE00\uB7EC\uBE0C\uC785\uB2C8\uB2E4.
+    \uD22C\uC218\uC758 \uD798\uC774 \uAD50\uC218\uB2D8\uAED8 \uC804\uD574\uC9C0\uB294
+    \uAC83 \uAC19\uC2B5\uB2C8\uB2E4."
   rarity: 0
   throwVelocityPercent: 1
-  throwDamagePercent: 1
+  throwDamagePercent: 0.5

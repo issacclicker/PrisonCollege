@@ -16,8 +16,11 @@ MonoBehaviour:
   name: "\uC77C\uCCB4\uD615 \uC758\uC790"
   icon: {fileID: 21300000, guid: fdee2d118936d8541b715ea01c60579e, type: 3}
   price: 60
-  effect: 
-  description: 
+  effect: "\uD0C8\uCD9C \uD655\uB960 50% \uAC10\uC18C\r\n\uB300\uD559\uC6D0\uC0DD
+    \uACF5\uACA9\uB825 20% \uAC10\uC18C"
+  description: "\uD559\uC0DD\uB4E4\uC5D0\uAC8C \uAC70\uBD81\uBAA9\uACFC \uD5C8\uB9AC\uB514\uC2A4\uD06C\uB97C
+    \uC120\uBB3C\uD558\uAE30 \uC88B\uC740 \uC77C\uCCB4\uD615 \uC758\uC790 \uCC45\uC0C1
+    \uC138\uD2B8\uC785\uB2C8\uB2E4."
   rarity: 0
   turtleNeckDistance: 0.15
   escapeChancePercent: -0.5
