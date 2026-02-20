@@ -143,6 +143,13 @@ public class SoundEmitter : MonoBehaviour
 
 
 
+    public void SetVolumeRate(float rate)
+    {
+        _audioSource.volume = _originalVolume * rate;
+    }
+
+
+
     private IEnumerator Co_FadeVolumeMultiplier(float volumeMultiplier, float duration)
     {
         float startVolume = _audioSource.volume;

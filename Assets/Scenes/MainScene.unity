@@ -18724,8 +18724,9 @@ MonoBehaviour:
     maxClearDifficulty: 0
     isLocked: 1
     sprite: {fileID: 21300000, guid: ec1532176827f7d4c88b509d61b69818, type: 3}
+  audioSetting: {fileID: 0}
   _mainScreen: MainScene
-  _stagePrepare: StagePrepare
+  _stagePrepare: Prepare
   _stagePrefix: Stage
   _store: Store
   _arena: Arena

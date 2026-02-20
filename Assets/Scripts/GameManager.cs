@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.Rendering;
 using UnityEngine.SceneManagement;
 using static SoundUtils;
 
@@ -89,13 +90,16 @@ public class GameManager : PersistentSingleton<GameManager>
         }
         else if (scene.name.StartsWith(_stagePrefix))
         {
-            _bgmEmitter.FadeVolumeMultiplier(0.4f, 3f);
+            if (_bgmEmitter)
+                _bgmEmitter.FadeVolumeMultiplier(0.4f, 1f);
+            else
+                ChangeBGM(_wavePD);
         }
         else if (scene.name.Equals(_store))
         {
             if (scene.name.StartsWith(_stagePrefix))
             {
-                _bgmEmitter.FadeVolumeMultiplier(1f, 3f);
+                _bgmEmitter.FadeVolumeMultiplier(1f, 1f);
             }
             else
             {
@@ -145,6 +149,10 @@ public class GameManager : PersistentSingleton<GameManager>
             {
                 // 다음 곡 즉시 재생
                 _bgmEmitter = PlayBGM(currentPlaylist, 1f, false);
+                if (SceneManager.GetActiveScene().name.StartsWith(_stagePrefix))
+                {
+                    _bgmEmitter.SetVolumeRate(0.4f);
+                }
 
                 if (_bgmEmitter == null) yield break;
 
