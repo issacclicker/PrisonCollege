@@ -58,8 +58,8 @@ public class PlayerFootstep : MonoBehaviour
 
     private void PlayFootstep(bool isSprint)
     {
-        SoundEmitter emitter = SoundUtils.PlayOwnedScene2DSFX(isSprint ? _sprintSD : _walkSD, true);
-        _activeFootsteps.Add(emitter);
+        SoundUtils.PlayScene2DSFX(isSprint ? _sprintSD : _walkSD, 1, false);
+        //_activeFootsteps.Add(emitter);
     }
 
 
@@ -91,6 +91,12 @@ public class PlayerFootstep : MonoBehaviour
 
 
     private void OnDisable()
+    {
+        OnPlayerDeath();
+    }
+
+
+    private void OnDestroy()
     {
         OnPlayerDeath();
     }

@@ -344,6 +344,8 @@ public class FirstPersonController : MonoBehaviour
             }
         }
 
+        Movement();
+
         #endregion
 
         #region Jump
@@ -385,11 +387,19 @@ public class FirstPersonController : MonoBehaviour
         {
             HeadBob();
         }
+
+        RotateCamera();
     }
 
     private void LateUpdate()
     {
         if (Time.timeScale == 0) return;
+    }
+
+
+
+    private void RotateCamera()
+    {
         if (cameraCanMove)
         {
             yaw = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * mouseSensitivity;
@@ -415,13 +425,20 @@ public class FirstPersonController : MonoBehaviour
                 camFollow.currentPitch = pitch;
             }
         }
+
     }
 
     void FixedUpdate()
     {
         if (Time.timeScale == 0) return;
         #region Movement
+        #endregion
+    }
 
+
+
+    private void Movement()
+    {
         if (playerCanMove)
         {
             // 1. 입력 방향 계산
@@ -464,7 +481,7 @@ public class FirstPersonController : MonoBehaviour
             Vector3 moveDir = transform.TransformDirection(inputDir);
 
             // 최종 이동 벡터 (속도 * 시간)
-            Vector3 movement = moveDir * currentSpeed * Time.fixedDeltaTime * moveSpeedMod.GetFinalValue(1);
+            Vector3 movement = moveDir * currentSpeed * Time.deltaTime * moveSpeedMod.GetFinalValue(1);
 
             float floodFillRatio = FireSuppressionSystem.Instance != null ? FireSuppressionSystem.Instance.FloodFillRatio : 0f;
             float speedRatio = Mathf.Lerp(1, 0.3f, floodFillRatio);
@@ -473,7 +490,6 @@ public class FirstPersonController : MonoBehaviour
             // 3. MovePosition으로 이동
             rb.MovePosition(rb.position + movement);
         }
-        #endregion
     }
 
 

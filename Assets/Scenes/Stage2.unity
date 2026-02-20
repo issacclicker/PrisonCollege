@@ -144265,7 +144265,7 @@ MonoBehaviour:
   enableHeadBob: 1
   joint: {fileID: 496788721}
   bobSpeed: 10
-  bobAmount: {x: 0, y: 0.03, z: 0.03}
+  bobAmount: {x: 0, y: 0.03, z: 0.05}
 --- !u!114 &727526855
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -425805,6 +425805,8 @@ MonoBehaviour:
   _recoilShakeRotAmount: 5
   _explosionShakePosAmount: 0.8
   _explosionShakeRotAmount: 4
+  _meleeShakePosAmount: 0.001
+  _meleeShakeRotAmount: 0.03
   _weaponCameraShakeAmount: 0.4
 --- !u!4 &1887914352
 Transform:
