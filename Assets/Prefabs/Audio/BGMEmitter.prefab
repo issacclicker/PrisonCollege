@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8356614316071814439}
   - component: {fileID: 4032790294356489560}
   m_Layer: 0
-  m_Name: SoundEmitter
+  m_Name: BGMEmitter
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,8 +45,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dbac8d73d3b54043a80f6c02b104e76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundEmitter
-  _sfxGroup: {fileID: -3785024673050725980, guid: 84c320fdc62d83d4a972d7d2e21bd6bf, type: 2}
-  _bgmGroup: {fileID: 4426826948439177105, guid: 84c320fdc62d83d4a972d7d2e21bd6bf, type: 2}
   ReturnEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -59,7 +57,7 @@ AudioSource:
   m_GameObject: {fileID: 1991647734150120844}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: -3785024673050725980, guid: 84c320fdc62d83d4a972d7d2e21bd6bf, type: 2}
+  OutputAudioMixerGroup: {fileID: 4426826948439177105, guid: 84c320fdc62d83d4a972d7d2e21bd6bf, type: 2}
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 1

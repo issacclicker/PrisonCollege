@@ -23,4 +23,4 @@ MonoBehaviour:
     volumeMultiplier: 1
   - clip: {fileID: 8300000, guid: a644efcde3a12614dbd8973422057504, type: 3}
     volumeMultiplier: 1
-  baseVolume: 2
+  baseVolume: 0.2

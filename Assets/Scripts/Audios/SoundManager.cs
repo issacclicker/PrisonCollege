@@ -7,6 +7,7 @@ public class SoundManager : PersistentSingleton<SoundManager>
 {
     [SerializeField] private GameObject _emitterPrefab;
     [SerializeField] private GameObject _longDistancemitterPrefab;
+    [SerializeField] private GameObject _bgmEitterPrefab;
     [SerializeField] private int _poolSize = 20;
     private Queue<SoundEmitter> _pool = new Queue<SoundEmitter>();
     private bool _isPaused;
@@ -55,9 +56,9 @@ public class SoundManager : PersistentSingleton<SoundManager>
 
 
 
-    private void CreateNewEmitter(bool isLongDistance = false)
+    private void CreateNewEmitter(bool isLongDistance = false, bool isBGM = false)
     {
-        GameObject obj = Instantiate(isLongDistance ? _longDistancemitterPrefab : _emitterPrefab, transform);
+        GameObject obj = Instantiate(_emitterPrefab, transform);
         SoundEmitter emitter = obj.GetComponent<SoundEmitter>();
         emitter.Initialize(this);
         obj.SetActive(false);
@@ -75,8 +76,22 @@ public class SoundManager : PersistentSingleton<SoundManager>
         emitter.gameObject.SetActive(true);
 
         float pitch = isRandomPitch ? Random.Range(0.9f, 1.1f) : 1f;
-        emitter.Play(clip, pitch, volume, position, is3D, persist, isLoop);
+        emitter.Play(clip, pitch, volume, position, is3D, persist, isLoop, false, isLongDistance);
         return emitter; 
+    }
+
+
+
+    public SoundEmitter PlayBGM(AudioClip clip, float volume = 1.0f, bool persist = false, bool isLoop = false, bool isRealTime = false)
+    {
+        if (clip == null) return null;
+        if (_pool.Count == 0) CreateNewEmitter();
+
+        SoundEmitter emitter = _pool.Dequeue();
+        emitter.gameObject.SetActive(true);
+
+        emitter.Play(clip, 1, volume, Vector3.zero, false, persist, isLoop, isRealTime, false, true);
+        return emitter;
     }
 
 
@@ -163,5 +178,14 @@ public static class SoundUtils
     public static void PlayUISFX(SoundData soundData, float volumeMultiplier = 1f, bool isLoop = false)
     {
         SoundManager.Instance.PlaySFX(soundData.GetRandomClip(out float volume), Vector3.zero, volume * volumeMultiplier, false, false, false, isLoop);
+    }
+
+
+
+    public static SoundEmitter PlayBGM(BGMPlaylistData bGMPlaylistData, float volumeMultiplier = 1f, bool isShuffle = false)
+    {
+        if (isShuffle)
+            bGMPlaylistData.ResetShuffle();
+        return SoundManager.Instance.PlayBGM(bGMPlaylistData.GetNextShuffleClip(out float volume, out string title), volume * volumeMultiplier, true, false, true);
     }
 }

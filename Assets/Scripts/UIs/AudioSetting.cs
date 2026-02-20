@@ -66,7 +66,14 @@ public class AudioSetting : MonoBehaviour
 
     private void SetVolume(string paramName, float sliderValue)
     {
-        float volume = Mathf.Log10(Mathf.Max(0.0001f, sliderValue)) * 20;
-        mainMixer.SetFloat(paramName, volume);
+        //float volume = Mathf.Log10(Mathf.Max(0.0001f, sliderValue)) * 20;
+        //mainMixer.SetFloat(paramName, volume);
+
+        float boost = 3f;
+
+        float volume = (Mathf.Log10(Mathf.Max(0.0001f, sliderValue)) * 20) + boost;
+
+        // 최종 값이 믹서 허용치(+20)를 넘지 않게 클램프 (안전장치)
+        mainMixer.SetFloat(paramName, Mathf.Clamp(volume, -80f, 20f));
     }
 }

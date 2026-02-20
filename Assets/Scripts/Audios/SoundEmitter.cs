@@ -1,12 +1,19 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Events;
+using UnityEngine.Audio;
 
 public class SoundEmitter : MonoBehaviour
 {
+    [SerializeField] private AudioMixerGroup _sfxGroup;
+    [SerializeField] private AudioMixerGroup _bgmGroup;
     private AudioSource _audioSource;
     private SoundManager _pool;
     private static bool _isAppQuitting = false;
+    public UnityEvent ReturnEvent = new();
+    private Coroutine _fadeCoroutine;
+    private float _originalVolume;
+    private bool _realTime;
 
     private void Awake()
     {
@@ -34,13 +41,15 @@ public class SoundEmitter : MonoBehaviour
 
     private void HandlePauseChanged(bool isPaused)
     {
+        if (_realTime || _audioSource == null) return;
         if (isPaused) _audioSource.Pause();
         else _audioSource.UnPause();
     }
 
 
-    public void Play(AudioClip clip, float pitch, float volume, Vector3 position, bool is3D, bool persistBetweenScenes, bool isLoop)
+    public void Play(AudioClip clip, float pitch, float volume, Vector3 position, bool is3D, bool persistBetweenScenes, bool isLoop, bool realTime = false, bool isLongDist = false, bool isBGM = false)
     {
+        _realTime = realTime;
         transform.position = position;
         _audioSource.clip = clip;
         _audioSource.pitch = pitch;
@@ -48,8 +57,29 @@ public class SoundEmitter : MonoBehaviour
 
         // 여기서 개별 볼륨을 설정합니다 (0.0 ~ 1.0)
         _audioSource.volume = volume;
+        _originalVolume = volume;
 
         _audioSource.spatialBlend = is3D ? 1.0f : 0.0f;
+
+        if (isLongDist)
+        {
+            _audioSource.minDistance = 2;
+            _audioSource.maxDistance = 40;
+        }
+        else
+        {
+            _audioSource.minDistance = 1;
+            _audioSource.maxDistance = 20;
+        }
+
+        if (isBGM)
+        {
+            _audioSource.outputAudioMixerGroup = _bgmGroup;
+        }
+        else
+        {
+            _audioSource.outputAudioMixerGroup = _sfxGroup;
+        }
 
         if (persistBetweenScenes)
         {
@@ -62,7 +92,7 @@ public class SoundEmitter : MonoBehaviour
         }
 
         _audioSource.Play();
-        if (SoundManager.Instance.IsPaused)
+        if (SoundManager.Instance.IsPaused && !_realTime)
         {
             _audioSource.Pause();
         }
@@ -86,14 +116,52 @@ public class SoundEmitter : MonoBehaviour
 
     public void StopAndReturn()
     {
-        if (_isAppQuitting) return;
+        if (_isAppQuitting || this == null || gameObject == null) return;
         //if (SoundManager.Instance != null)
         //    SoundManager.Instance.OnPauseChanged -= HandlePauseChanged;
-        StopAllCoroutines(); // 진행 중인 ReturnAfterFinish 코루틴 중단
+        if (gameObject.activeInHierarchy)
+        {
+            StopAllCoroutines();
+        }
+        //StopAllCoroutines(); // 진행 중인 ReturnAfterFinish 코루틴 중단
         _audioSource.Stop();
         _audioSource.loop = false;
         _audioSource.clip = null;
         transform.SetParent(_pool.transform);
         _pool.ReturnToPool(this);
+        ReturnEvent?.Invoke();
+        ReturnEvent.RemoveAllListeners();
+    }
+
+
+
+    public void FadeVolumeMultiplier(float volumeMultiplier, float duration)
+    {
+        if (_fadeCoroutine != null) StopCoroutine(_fadeCoroutine);
+        _fadeCoroutine = StartCoroutine(Co_FadeVolumeMultiplier(volumeMultiplier, duration));
+    }
+
+
+
+    private IEnumerator Co_FadeVolumeMultiplier(float volumeMultiplier, float duration)
+    {
+        float startVolume = _audioSource.volume;
+        float targetVolume = _originalVolume * volumeMultiplier;
+        float timer = 0f;
+
+        while (timer < duration)
+        {
+            timer += Time.unscaledDeltaTime;
+            _audioSource.volume = Mathf.Lerp(startVolume, targetVolume, timer / duration);
+            yield return null;
+        }
+
+        _audioSource.volume = targetVolume;
+        _fadeCoroutine = null;
+
+        if (targetVolume <= 0.001f)
+        {
+            StopAndReturn();
+        }
     }
 }

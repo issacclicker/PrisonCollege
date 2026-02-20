@@ -1,6 +1,9 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
+using static SoundUtils;
 
 public class GameManager : PersistentSingleton<GameManager>
 {
@@ -13,8 +16,13 @@ public class GameManager : PersistentSingleton<GameManager>
     [SerializeField] private string _stagePrefix;
     [SerializeField] private string _store;
     [SerializeField] private string _arena = "Arena";
+    [SerializeField] private string _testStart = "TestStore";
     private StageInfo _currentStage;
     [SerializeField] private DifficultyLevel _currentDifficulty;
+    [Header("Scene Datas")]
+    [SerializeField] private BGMPlaylistData _mainPD;
+    [SerializeField] private BGMPlaylistData _wavePD;
+    [SerializeField] private BGMPlaylistData _arenaPD;
     public bool hasToStageSelect = false;
 
 
@@ -22,6 +30,10 @@ public class GameManager : PersistentSingleton<GameManager>
     public StageInfo[] StageEntries => _stageEntries;
     public string StageTitle => $"{_currentStage.number}. {_currentStage.name}";
     public DifficultyLevel Difficulty => _currentDifficulty;
+    private SoundEmitter _bgmEmitter;
+    private Coroutine _bgmChangeCoroutine;
+    private string _previousSceneName;
+    private string _currentSceneName;
 
 
 
@@ -61,7 +73,98 @@ public class GameManager : PersistentSingleton<GameManager>
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        _previousSceneName = _currentSceneName;
+        _currentSceneName = scene.name;
         ResetGlobalControlStats();
+        if (scene.name.Equals(_mainScreen))
+        {
+            ChangeBGM(_mainPD);
+        }
+        else if (scene.name.Equals(_stagePrepare))
+        {
+            ChangeBGM(_wavePD);
+        }
+        else if (scene.name.StartsWith(_stagePrefix))
+        {
+            _bgmEmitter.FadeVolumeMultiplier(0.4f, 3f);
+        }
+        else if (scene.name.Equals(_store))
+        {
+            if (scene.name.StartsWith(_stagePrefix))
+            {
+                _bgmEmitter.FadeVolumeMultiplier(1f, 3f);
+            }
+            else
+            {
+                ChangeBGM(_wavePD);
+            }
+        }
+        else if (scene.name.Equals(_arena))
+        {
+            ChangeBGM(_arenaPD);
+        }
+        else if (scene.name.Equals(_testStart))
+        {
+            ChangeBGM(_wavePD);
+        }
+        else
+        {
+            ChangeBGM(null);
+        }
+    }
+
+
+
+    public void ChangeBGM(BGMPlaylistData nextPlaylist, float fadeDuration = 1f)
+    {
+        if (_bgmChangeCoroutine != null) StopCoroutine(_bgmChangeCoroutine);
+        _bgmChangeCoroutine = StartCoroutine(Co_ChangeBGM(nextPlaylist, fadeDuration));
+    }
+
+    private IEnumerator Co_ChangeBGM(BGMPlaylistData nextPlaylist, float fadeDuration)
+    {
+        // 1. 기존 곡 페이드아웃 및 대기
+        if (_bgmEmitter != null)
+        {
+            _bgmEmitter.FadeVolumeMultiplier(0f, fadeDuration);
+            _bgmEmitter = null;
+            yield return new WaitForSecondsRealtime(fadeDuration);
+        }
+
+        // 2. 새로운 플레이리스트 설정
+        BGMPlaylistData currentPlaylist = nextPlaylist;
+        if (currentPlaylist != null)
+        {
+            currentPlaylist.ResetShuffle();
+
+            // 3. 무한 루프: 플레이리스트가 있는 동안 계속 다음 곡 재생
+            while (currentPlaylist != null)
+            {
+                // 다음 곡 즉시 재생
+                _bgmEmitter = PlayBGM(currentPlaylist, 1f, false);
+
+                if (_bgmEmitter == null) yield break;
+
+                // 해당 에미터의 오디오 소스 가져오기
+                AudioSource source = _bgmEmitter.GetComponent<AudioSource>();
+
+                // [핵심] 현재 재생 중인 곡이 끝날 때까지 대기
+                // 소리가 멈췄거나(끝남), 에미터가 풀로 돌아가서 비활성화될 때까지 기다림
+                yield return new WaitUntil(() => source == null || !source.isPlaying);
+
+                // 곡 사이 0.5초 정도 짧은 공백 (너무 바로 나오면 어색하니까)
+                yield return new WaitForSecondsRealtime(0.5f);
+            }
+        }
+
+        _bgmChangeCoroutine = null;
+    }
+
+
+
+    private void PlayNextBGM()
+    {
+
     }
 
 
