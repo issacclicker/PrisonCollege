@@ -10,6 +10,7 @@ public class GameManager : PersistentSingleton<GameManager>
     [Header("Dev Only")]
     [SerializeField] private int _stageNumber;
     [SerializeField] private StageInfo[] _stageEntries;
+    [SerializeField] private AudioSetting audioSetting;
     [Header("Scene Names")]
     [SerializeField] private string _mainScreen;
     [SerializeField] private string _stagePrepare;
@@ -42,11 +43,13 @@ public class GameManager : PersistentSingleton<GameManager>
         base.Awake();
         if (_stageEntries == null)
         {
+            //ApplyVolumes();
             _currentStage = new StageInfo();
             _currentStage.number = StageController.Instance.StageNumber;
         }
         if (_stageNumber > 0)
         {
+            audioSetting.ApplyVolumes();
             _currentStage = _stageEntries[_stageNumber - 1];
             InventorySystem.Instance.ResetInventory(false);
             WaveSystem.Instance.ResetWave();
