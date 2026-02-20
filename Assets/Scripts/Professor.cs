@@ -7,6 +7,7 @@ using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.Events;
 using static CartoonFX.CFXR_Effect;
+using static SoundUtils;
 
 public class Professor : MonoBehaviour, IAttackable
 {
@@ -18,6 +19,7 @@ public class Professor : MonoBehaviour, IAttackable
     [SerializeField] private bool _isSwapWheelnvert = false; // true면 방향이 반대가 됨
     [SerializeField] private float _sprintStaminaDrain = 20f;
     [SerializeField] private float _staminaRegenRate = 5f;
+    [SerializeField] private float _jumpStamina = 5f;
     [SerializeField] private PlayerCamera _playerCamera;
     [SerializeField] private Transform _taskEndTransform;
 
@@ -33,8 +35,11 @@ public class Professor : MonoBehaviour, IAttackable
     private DamageReceiver _damageReceiver;
     private Collider _collider;
     private StatRecovery _statRecovery;
+    private AttributeModifier _staminaCostMod;
 
     public UnityEvent<string> DieEvent = new();
+    public UnityEvent StaminaRunoutEvent = new();
+    public float JumpStamina => _jumpStamina;
 
     private void Awake()
     {
@@ -52,6 +57,7 @@ public class Professor : MonoBehaviour, IAttackable
         _stamina.Initialize();
         _collider = GetComponent<Collider>();
         _statRecovery = GetComponent<StatRecovery>();
+        _staminaCostMod = AttributeSystem.Instance.StaminaCostMod;
     }
 
 
@@ -73,10 +79,22 @@ public class Professor : MonoBehaviour, IAttackable
         // {
         //     attackAnimator.PlayMeleeSwing(Attack);
         // }
+        if (Time.timeScale == 0) return;
         if (_health.IsDepleted) return;
+        CheckFallDown();
         HandleSprintStamina();
         HandleWeaponAttack();
         HandleWeaponSwap();
+    }
+
+
+
+    private void CheckFallDown()
+    {
+        if (transform.position.y < -50)
+        {
+            transform.position = _taskEndTransform.position;
+        }
     }
 
 
@@ -186,8 +204,9 @@ public class Professor : MonoBehaviour, IAttackable
         if (Input.GetMouseButtonDown(0))
         {
             float currentWeaponStaminaCost = _weaponController.CurrentWeapon.StaminaCost;
-            if (_stamina.Current < currentWeaponStaminaCost)
+            if (_stamina.Current < currentWeaponStaminaCost * _staminaCostMod.GetFinalValue(1))
             {
+                StaminaRunout();
                 Debug.Log("스테미나가 부족합니다!");
                 return;
             }
@@ -197,6 +216,12 @@ public class Professor : MonoBehaviour, IAttackable
                 _playerInteraction.CancelActiveInteraction();
             }
         }
+    }
+
+
+    public void StaminaRunout()
+    {
+        StaminaRunoutEvent?.Invoke();
     }
 
 

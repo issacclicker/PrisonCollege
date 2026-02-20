@@ -130,6 +130,7 @@ MonoBehaviour:
   _minImpactThreshold: 0
   _lifeTime: 10
   _destroyOnHit: 1
+  _hitSD: {fileID: 11400000, guid: 404fa590557022e4686e389369606b24, type: 2}
 --- !u!54 &4966045875628020304
 Rigidbody:
   m_ObjectHideFlags: 0

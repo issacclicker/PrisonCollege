@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -198,6 +199,16 @@ public class WaitUntilCondition : BT_Node
 
 public class MoveToSpot : BT_Node
 {
+    private AttributeModifier _speedModifier;
+
+
+
+    public MoveToSpot()
+    {
+        _speedModifier = AttributeSystem.Instance.StudMoveSpeedMod;
+    }
+
+
     public override NodeState Evaluate()
     {
         //Debug.Log(_bb.destSpot);
@@ -210,8 +221,7 @@ public class MoveToSpot : BT_Node
             _bb.Anim.SetFloat("MoveSpeed", 0);
             return NodeState.Success;
         }
-
-        float currentSpeed = _bb.Agent.velocity.magnitude;
+        float currentSpeed = _bb.Agent.speed / _speedModifier.GetFinalValue();
         _bb.Anim.SetFloat("MoveSpeed", currentSpeed);
         return NodeState.Running; // 아직 가는 중
     }
@@ -221,6 +231,18 @@ public class MoveToSpot : BT_Node
 
 public class MoveToTarget : BT_Node
 {
+    private AttributeModifier _speedModifier;
+
+
+
+    public MoveToTarget()
+    {
+        _speedModifier = AttributeSystem.Instance.StudMoveSpeedMod;
+    }
+
+
+
+
     public override NodeState Evaluate()
     {
         _bb.Agent.SetSampleDestination(_bb.targetDamageable.Position, 2);
@@ -233,7 +255,7 @@ public class MoveToTarget : BT_Node
             return NodeState.Success;
         }
 
-        float currentSpeed = _bb.Agent.velocity.magnitude;
+        float currentSpeed = _bb.Agent.speed / _speedModifier.GetFinalValue();
         _bb.Anim.SetFloat("MoveSpeed", currentSpeed);
         return NodeState.Running; // 아직 가는 중
     }
@@ -243,6 +265,18 @@ public class MoveToTarget : BT_Node
 
 public class MoveToPlayer : BT_Node
 {
+    private AttributeModifier _speedModifier;
+
+
+
+    public MoveToPlayer()
+    {
+        _speedModifier = AttributeSystem.Instance.StudMoveSpeedMod;
+    }
+
+
+
+
     public override NodeState Evaluate()
     {
         _bb.Agent.SetSampleDestination(_bb.Player.transform.position, 2);
@@ -255,7 +289,7 @@ public class MoveToPlayer : BT_Node
             return NodeState.Success;
         }
 
-        float currentSpeed = _bb.Agent.velocity.magnitude;
+        float currentSpeed = _bb.Agent.speed / _speedModifier.GetFinalValue();
         _bb.Anim.SetFloat("MoveSpeed", currentSpeed);
         return NodeState.Running; // 아직 가는 중
     }
@@ -359,6 +393,43 @@ public class RotateToPlayer : BT_Node
 
 
 
+public class RotateToPoint : BT_Node
+{
+    private const float ROTATION_SPEED = 10f; // 회전 속도
+    private const float FINISH_ANGLE = 5.0f;  // 이 각도 이내로 들어오면 완료
+    private Transform lookPoint;
+
+
+
+    public RotateToPoint(Transform lookPoint)
+    {
+        this.lookPoint = lookPoint;
+    }
+
+    public override NodeState Evaluate()
+    {
+        if (lookPoint == null) return NodeState.Failure;
+
+        Vector3 targetDir = lookPoint.position - _bb.Avatar.transform.position;
+        targetDir.y = 0;
+
+        if (targetDir.sqrMagnitude > 0.001f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(targetDir);
+            _bb.Avatar.transform.rotation = Quaternion.Slerp(
+                _bb.Avatar.transform.rotation,
+                targetRotation,
+                Time.deltaTime * 10f // 회전 속도
+            );
+        }
+
+        // ParallelNode 안에서 계속 돌아야 하므로 항상 Running 반환
+        return NodeState.Running;
+    }
+}
+
+
+
 // 중간에 Interrupt 발생시, Timer 초기화 로직 필요
 public class Delay : BT_Node
 {
@@ -433,10 +504,12 @@ public class Delay : BT_Node
 public class SetSpeed : BT_Node
 {
     private Func<float> _getSpeedFunc;
+    private AttributeModifier _speedModifier;
 
     public SetSpeed(Func<float> getSpeedFunc)
     {
         _getSpeedFunc = getSpeedFunc;
+        _speedModifier = AttributeSystem.Instance.StudMoveSpeedMod;
     }
 
     public override NodeState Evaluate()
@@ -444,7 +517,7 @@ public class SetSpeed : BT_Node
         if (_getSpeedFunc == null) return NodeState.Failure;
 
         float speed = _getSpeedFunc();
-        _bb.Agent.speed = speed;
+        _bb.Agent.speed = speed * _speedModifier.GetFinalValue(1);
         return NodeState.Success;
     }
 }
@@ -914,7 +987,9 @@ public class OverrideAttackTarget : BT_Node
                 _currentTargetDR = dr;
 
                 // 타겟이 파괴(사망)되면 실행될 로직 등록
-                dr.DepletedEvent.AddListener(_ => OnTargetDepleted());
+                dr.DepletedEvent.AddListener(_ => DOVirtual.DelayedCall(0.2f, () => OnTargetDepleted()));
+
+                //dr.DepletedEvent.AddListener(_ => OnTargetDepleted());
             }
             else
             {
@@ -1393,6 +1468,10 @@ public class EnableAgentUpdate : BT_Node
     {
         _bb.Agent.updatePosition = true;
         _bb.Agent.updateRotation = true;
+        if (!_bb.Agent.isOnNavMesh)
+        {
+            _bb.Agent.Warp(Utils.SampleNavMesh(_bb.Avatar.position, 500f));
+        }
         _bb.Agent.isStopped = false;
         return NodeState.Success;
     }

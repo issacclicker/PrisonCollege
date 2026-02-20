@@ -104,6 +104,7 @@ Material:
     m_Ints: []
     m_Floats:
     - <noninit>: 0
+    - _AddPrecomputedVelocity: 0
     - _AlphaClip: 0
     - _AlphaToMask: 0
     - _Blend: 0
@@ -135,6 +136,7 @@ Material:
     - _Surface: 0
     - _UVSec: 0
     - _WorkflowMode: 1
+    - _XRMotionVectorsPass: 1
     - _ZWrite: 1
     m_Colors:
     - <noninit>: {r: 0, g: 9.959054e-35, b: 0, a: 9.958981e-35}

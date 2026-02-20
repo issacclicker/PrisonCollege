@@ -83,7 +83,7 @@ public class GunWeapon : WeaponBase
                     HitInfo hitInfo = new HitInfo(
                         contactPoint,
                         Quaternion.LookRotation(safeNormal),
-                        this.gameObject,
+                        _owner,
                         _weaponData.hitImpulse
                     );
                     receiver.TakeEffect(_weaponData.effect, hitInfo);
@@ -157,7 +157,7 @@ public class GunWeapon : WeaponBase
     }
 
     [Header("Audio")]
-    [SerializeField] private AudioSource _audioSource;
+    //[SerializeField] private AudioSource _audioSource;
     [SerializeField] private AudioClip _shotSound;
     [Range(0f, 1f)][SerializeField] private float _volume = 0.7f;
     [SerializeField] private float _pitchRandomness = 0.1f; // 소리의 변주 (매번 똑같으면 귀가 피로함)

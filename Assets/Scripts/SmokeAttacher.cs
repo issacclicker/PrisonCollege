@@ -26,7 +26,7 @@ public class SmokeAttacher : AnimAttacher
 
     public override void HideAll()
     {
-        _smokeFire.Extinguish();
+        _smokeFire?.Extinguish();
         _cigarettePack.SetActive(false);
         _lighter.SetActive(false);
         _cigarette.SetActive(false);

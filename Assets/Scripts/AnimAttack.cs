@@ -2,14 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static UnityEngine.UI.GridLayoutGroup;
+using static SoundUtils;
 
 public class AnimAttack : MonoBehaviour
 {
-    [SerializeField] private DamageData _damageData;
+    [SerializeField] public DamageData _damageData;
     [SerializeField] private float _hitImpulse = 100;
     [SerializeField] private float _attackRadius = 1.5f;   // 구체의 반지름
     [SerializeField] private float _attackDistance = 2.0f; // 캐릭터 정면으로 뻗어나갈 거리
     [SerializeField] private LayerMask targetLayer;
+    [SerializeField] private SoundData _bodyHitSD;
+    [SerializeField] private SoundData _woodHitSD;
+    [SerializeField] private SoundData _metalHitSD;
+
+
+
+    private void Start()
+    {
+        _damageData = Utils.DeepCopyByJson(_damageData);
+        _damageData.value =  AttributeSystem.Instance.StudDamageMod.GetFinalValue(_damageData.value);
+    }
 
 
 
@@ -42,6 +54,28 @@ public class AnimAttack : MonoBehaviour
 
                 // 효과 적용 (다형성 실행)
                 receiver.TakeEffect(_damageData, hitInfo);
+
+                GameObject hitObject = hit.collider.gameObject;
+                if (hitObject.IsInLayerMask(Global.STUDENT_LAYER_NAME))
+                {
+                    PlayScene3DSFX(_bodyHitSD, hitInfo.hitPoint);
+                }
+                else if (hitObject.IsInLayerMask(Global.PLAYER_LAYER_NAME))
+                {
+                    PlayScene2DSFX(_bodyHitSD);
+                }
+                else if (hitObject.IsInLayerMask("Exit"))
+                {
+                    ExitGate exitGate = hitObject.GetComponent<ExitGate>();
+                    if (exitGate && exitGate.IsUpgraded)
+                    {
+                        PlayScene3DSFX(_metalHitSD, hitInfo.hitPoint);
+                    }
+                    else
+                    {
+                        PlayScene3DSFX(_woodHitSD, hitInfo.hitPoint);
+                    }
+                }
             }
         }
     }

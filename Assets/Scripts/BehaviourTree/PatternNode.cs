@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ public class DefenseAttackPattern : PatternNode
             new PlayOnceAnim("Dodge", "Dodge"), 
             new PlayOnceAnim("Guard", "Guard"),
             new DoSuccess() 
-        }, new List<System.Func<int>> { () => 30, () => 40, () => 30 });
+        }, new List<System.Func<float>> { () => 30, () => 40, () => 30 });
     }
 
     public override NodeState Evaluate()
@@ -110,7 +111,15 @@ public class CombatApproachPattern : PatternNode
                     new SetAnimRootMotion(true),
                     new WaitUntilCondition(() => !_bb.isDamaged),
                     //new Delay(() => UnityEngine.Random.Range(0f, 1f)),
-                    new DelayRange(0, 1),
+                    //new DelayRange(0, 1),
+                    new Delay(() =>
+                    {
+                        if (_bb.targetObject == _bb.Player)
+                        {
+                            return UnityEngine.Random.Range(0f, 0.5f);
+                        }
+                        return UnityEngine.Random.Range(0f, 1f);
+                    }),
                     new ActionNode(() => _bb.isStunned = false, NodeState.Success),
                 })
             ),
@@ -119,10 +128,10 @@ public class CombatApproachPattern : PatternNode
                 new Sequence(new List<BT_Node>
                 {
                     new SetAnimRootMotion(false),
-                    new SetSpeed(() => 6.75f),
+                    new SetSpeed(() => 5.67f),
                     new ParallelNode(new List<BT_Node>
                     {
-                        new LerpLayerWeight(COMBAT_LAYER_INDEX, 0f, 10f),
+                        new LerpLayerWeight(COMBAT_LAYER_INDEX, 0f, 5f),
                         new MoveToTarget(),
                         //new RotateToTarget()
                     }),
@@ -136,13 +145,22 @@ public class CombatApproachPattern : PatternNode
                 // --- [공격 단계] ---
                 //new ActionNode(() => _bb.Anim.SetLayerWeight(COMBAT_LAYER_INDEX, 1), NodeState.Success),
                 new SetAnimRootMotion(true),
-                new LerpLayerWeight(STRIKE_LAYER_INDEX, 0f, 10f),
-                new LerpLayerWeight(COMBAT_LAYER_INDEX, 1f, 10f),
+                new LerpLayerWeight(STRIKE_LAYER_INDEX, 0f, 5f),
+                new LerpLayerWeight(COMBAT_LAYER_INDEX, 1f, 5f),
                 new StopNode(),
                 //new Delay(() => UnityEngine.Random.Range(1f, 2f)),
-                new DelayRange(1, 2),
+                //new DelayRange(1, 2f),
+                new Delay(() =>
+                {
+                    if (_bb.targetObject == _bb.Player)
+                    {
+                        return UnityEngine.Random.Range(0f, 0.2f);
+                    }
+                    return UnityEngine.Random.Range(1f, 2f);
+                }),
                 new ActionNode(() => _isAttacking = true, NodeState.Success), // 플래그 ON
 
+                new ActionNode(() => _bb.soundBehavior.PlayGrunt()),
                 new MeleeAttackPattern(), // 실제 주먹 휘두르는 동안
 
                 new ActionNode(() => _isAttacking = false, NodeState.Success), // 공격 끝나자마자 플래그 OFF
@@ -151,7 +169,15 @@ public class CombatApproachPattern : PatternNode
                 // 이제 _isAttacking이 false이므로, 
                 // 딜레이 도중 플레이어가 멀어지면 상위 Selector가 1번(추격)으로 즉시 갈아탑니다.
                 //new Delay(() => UnityEngine.Random.Range(0f, 1f)),
-                new DelayRange(0, 0.5f),
+                //new DelayRange(0, 0.1f),
+                new Delay(() =>
+                {
+                    if (_bb.targetObject == _bb.Player)
+                    {
+                        return UnityEngine.Random.Range(0f, 0.1f);
+                    }
+                    return UnityEngine.Random.Range(0f, 1f);
+                }),
                 new SetAnimRootMotion(false),
             })
         });
@@ -266,7 +292,7 @@ public class RandomSpotSelectPattern : PatternNode
                     new PlayOnceAnim("Kick3", "Kick3", COMBAT_LAYER_INDEX),
                     new PlayOnceAnim("Kick3", "Kick3", COMBAT_LAYER_INDEX)
                 },
-                new List<System.Func<int>> {
+                new List<System.Func<float>> {
                     () => 50, // 잽은 자주
                     () => 10, // 훅은 보통
                     () => 10  // 어퍼컷은 가끔
@@ -431,8 +457,8 @@ public class RushThroughPattern : PatternNode
             new StopAndDisableAgentUpdate(),
             new SetAnimRootMotion(true),
             new SetAnimBool("Rush", true),
-            new Delay(() => 1.1f),
-            //new DelayRange(3, 5),
+            //new Delay(() => 1.1f),
+            new DelayRange(3, 5),
             //new SetAnimRootMotion(true),
             new ActionNode(() => {
                 var attacker = _bb.Avatar.GetComponent<PostStudent>().GetOverlapAttacker(OverlapAttackType.BodySlam);
@@ -464,6 +490,7 @@ public class CoopPattern : PatternNode
             new OverrideBehaveSpot(() => _bb.coopData.spot, () => _bb.coopData.type),
             new SetAnimRootMotion(false),
             new ResetAnimParameters(),
+            new SetSpeed(() => 2.43f),
             new MoveToSpot(),
             new RotateToSpot(),
             new ActionNode(() => _bb.destSpot.Arrived(_bb.Avatar.GetComponent<PostStudent>())),
@@ -652,7 +679,7 @@ public class WorkPattern : PatternNode
         // 3. 확률 선택기 구성 (가중치 부여)
         RandomSelector chanceActionSelector = new RandomSelector(
             new List<BT_Node> { angrySeq, clapSeq, frustrateSeq },
-            new List<System.Func<int>> {
+            new List<System.Func<float>> {
                 () => 10, // 욕(분노) 10%
                 () => 10, // 박수 10%
                 () => 10, // 좌절 10%
@@ -704,7 +731,20 @@ public class WorkPattern : PatternNode
             {
                 (_bb.destSpot as MonitorSpot)?.ResumeMonitor();
                 if (_bb.destBehavior == BehaviorType.Hack)
-                    LabLightSystem.Instance.TurnOff();
+                {
+                    float defenseProb = AttributeSystem.Instance.HackBlockChanceMod.GetFinalValue(0);
+                    float rand = UnityEngine.Random.Range(0f, 1f);
+                    if (rand < defenseProb)
+                    {
+                        StageController.Instance.HackBlocked();
+                        LabLightSystem.Instance.HackDefensed();
+                    }
+                    else
+                    {
+                        StageController.Instance.Hacked();
+                        LabLightSystem.Instance.TurnOff();
+                    }
+                }
             }),
             //new Delay(() => 4f),
             new DelayRange(4, 5),
@@ -859,6 +899,7 @@ public class EscapeGiveUpReactivePattern : PatternNode
         {
             new ConditionDecorator(() =>
                 _bb.destBehavior == BehaviorType.Escape
+                && _bb.isEscaping == false
                 && GetDistance() <= 5
                 && _isTriedGiveUp == false // 1. 여기서 걸러줌
                 && _bb.Anim.GetLayerWeight(STRIKE_LAYER_INDEX) >= 0.99f
@@ -867,7 +908,7 @@ public class EscapeGiveUpReactivePattern : PatternNode
                 new Sequence(new List<BT_Node>
                 {
                     new ResetAnimParameters(),
-                    new LerpLayerWeight(STRIKE_LAYER_INDEX, 0, 10),
+                    new LerpLayerWeight(STRIKE_LAYER_INDEX, 0, 5),
                     new ClearDestBehavior(),
                     new ClearDestSpot(),
                     new ActionNode(() => _isTriedGiveUp = true, NodeState.Success)
@@ -951,6 +992,7 @@ public class TakeHitPattern : PatternNode
     {
         _patternRoot = new Sequence(new List<BT_Node>
         {
+            new ActionNode(() => _bb.soundBehavior.PlayHurt()),
             new RandomSelector(new List<BT_Node>
             {
                 new PlayOnceAnim("OnHit", "OnHit", 5),
@@ -1009,9 +1051,10 @@ public class TryEscapePattern : PatternNode
                        {
                            ExitSpot exitGate = _bb.destSpot as ExitSpot;
                            exitGate.OpenGate();
+                           DOVirtual.DelayedCall(0.8f, () => _bb.Avatar.GetComponent<PostStudent>().OnEscaped());
                        }, NodeState.Success),
                        new EscapeTypeSelectPattern(),
-                       new ActionNode(() => _bb.EscapeSuccessEvent?.Invoke()),
+                       //new ActionNode(() => _bb.EscapeSuccessEvent?.Invoke()),
                        new ActionNode(null, NodeState.Running),
                        new ActionNode(() => _bb.isEscaping = false),
                    })
@@ -1030,12 +1073,13 @@ public class TryEscapePattern : PatternNode
                 {
                     new RotateToSpot(), 
                     // --- [공격 단계] ---
-                    new LerpLayerWeight(COMBAT_LAYER_INDEX, 0, 10),
-                    new LerpLayerWeight(STRIKE_LAYER_INDEX, 1, 10),
+                    new LerpLayerWeight(COMBAT_LAYER_INDEX, 0, 5),
+                    new LerpLayerWeight(STRIKE_LAYER_INDEX, 1, 5),
                     //new ActionNode(() => _bb.Anim.SetLayerWeight(STRIKE_LAYER_INDEX, 1), NodeState.Success),
                     new StopAndDisableAgentUpdate(),
                     new SetAnimRootMotion(true),
 
+                    new ActionNode(() => _bb.soundBehavior.PlayGrunt()),
                     new ExitAttackPattern(), // 실제 주먹 휘두르는 동안
                     new Delay(() => 0.1f),
                 
@@ -1084,7 +1128,7 @@ public class ExitAttackPattern : PatternNode
                     new PlayOnceAnim("Punch3_z", "Punch3_z", STRIKE_LAYER_INDEX),
                     new PlayOnceAnim("Kick1_z", "Kick1_z", STRIKE_LAYER_INDEX),
                 },
-                new List<System.Func<int>> {
+                new List<System.Func<float>> {
                     () => 10,
                     //() => 0,
                     () => 10,
@@ -1161,7 +1205,7 @@ public class TacklePattern : PatternNode
             new ConditionDecorator(() => GetDistance() > SLIDE_RANGE && !_isTackled,
                 new Sequence(new List<BT_Node> {
                     new SetAnimRootMotion(false),
-                    new SetSpeed(() => 6.75f),
+                    new SetSpeed(() => 5.67f),
                     new ParallelNode(new List<BT_Node>
                     {
                         new MoveToPlayer(),
@@ -1215,26 +1259,99 @@ public class TacklePattern : PatternNode
 
 
 
+//public class SetRandomSpeedPattern : PatternNode
+//{
+//    public SetRandomSpeedPattern()
+//    {
+//        _patternRoot = new RandomSelector(
+//            new List<BT_Node> {
+//                new SetSpeed(() => PostStudent._walkSpeed),
+//                new SetSpeed(() => PostStudent._jogSpeed),
+//                new SetSpeed(() => PostStudent._slowRunSpeed),
+//                new SetSpeed(() => PostStudent._mediumRunSpeed),
+//                new SetSpeed(() => PostStudent._fastRunSpeed),
+//                new SetSpeed(() => PostStudent._sprintSpeed),
+//            },
+//            //new List<System.Func<int>> {
+//            //    () => 40, // Walk 확률 40%
+//            //    () => 25, // Jog 확률 25%
+//            //    () => 15, // SlowRun 15%
+//            //    () => 10, // MedRun 10%
+//            //    () => 7,  // FastRun 7%
+//            //    () => 3   // Sprint 3%
+//            //}
+//            new List<System.Func<int>> {
+//                () => 1, // Walk 확률 40%
+//                () => 0, // Jog 확률 25%
+//                () => 0, // SlowRun 15%
+//                () => 0, // MedRun 10%
+//                () => 0,  // FastRun 7%
+//                () => 0   // Sprint 3%
+//            }
+//        );
+//    }
+//}
+
+
+
 public class SetRandomSpeedPattern : PatternNode
 {
     public SetRandomSpeedPattern()
     {
         _patternRoot = new RandomSelector(
             new List<BT_Node> {
-                new SetSpeed(() => PostStudent._walkSpeed),
-                new SetSpeed(() => PostStudent._jogSpeed),
-                new SetSpeed(() => PostStudent._slowRunSpeed),
-                new SetSpeed(() => PostStudent._mediumRunSpeed),
-                new SetSpeed(() => PostStudent._fastRunSpeed),
-                new SetSpeed(() => PostStudent._sprintSpeed),
+                //12개
+                new SetSpeed(() => 0.69f),
+                new SetSpeed(() => 0.70f),
+                new SetSpeed(() => 0.71f),
+                new SetSpeed(() => 0.83f),
+                new SetSpeed(() => 0.90f),
+                new SetSpeed(() => 0.98f),
+                new SetSpeed(() => 0.99f),
+                new SetSpeed(() => 1.05f),
+                new SetSpeed(() => 1.09f),
+                new SetSpeed(() => 1.11f),
+                new SetSpeed(() => 1.45f),
+                new SetSpeed(() => 1.53f),
+
+                //6개
+                new SetSpeed(() => 2.34f),
+                new SetSpeed(() => 2.42f),
+                new SetSpeed(() => 2.43f),
+                new SetSpeed(() => 3.49f),
+                new SetSpeed(() => 4.11f),
+                new SetSpeed(() => 4.17f),
+
+                //3개
+                new SetSpeed(() => 5.27f),
+                new SetSpeed(() => 5.67f),
+                new SetSpeed(() => 6.00f),
             },
-            new List<System.Func<int>> {
-                () => 40, // Walk 확률 40%
-                () => 25, // Jog 확률 25%
-                () => 15, // SlowRun 15%
-                () => 10, // MedRun 10%
-                () => 7,  // FastRun 7%
-                () => 3   // Sprint 3%
+            new List<System.Func<float>>
+            {
+                () => 3,
+                () => 3,
+                () => 3,
+                () => 3,
+                () => 3,
+                () => 3,
+                () => 3,
+                () => 3,
+                () => 3,
+                () => 3,
+                () => 3,
+                () => 3,
+
+                () => StageController.Instance.GetChaosEffectedWeight(2, 5),
+                () => StageController.Instance.GetChaosEffectedWeight(2, 5),
+                () => StageController.Instance.GetChaosEffectedWeight(2, 5),
+                () => StageController.Instance.GetChaosEffectedWeight(2, 5),
+                () => StageController.Instance.GetChaosEffectedWeight(2, 5),
+                () => StageController.Instance.GetChaosEffectedWeight(2, 5),
+
+                () => StageController.Instance.GetChaosEffectedWeight(1, 50),
+                () => StageController.Instance.GetChaosEffectedWeight(1, 50),
+                () => StageController.Instance.GetChaosEffectedWeight(1, 50),
             }
         );
     }

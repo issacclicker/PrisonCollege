@@ -15,6 +15,7 @@ public class ThrowAnimator : WeaponAnimator
     //[SerializeField] private float _flipSpeed = 20f; // ���Ʒ� ȸ�� �ӵ� (�������� ����)
     //[Range(0f, 1f)] public float _spreadAmount = 0.02f; // ź���� ����
     //[Range(0f, 1f)] public float _torqueRandomness = 0.5f; // ȸ�� �ұ�Ģ��
+    [SerializeField] private SoundData _throwSD;
     private float _attackDuration;
 
     private Vector3 _initialScale;
@@ -83,6 +84,7 @@ public class ThrowAnimator : WeaponAnimator
         // 3. 발사 (모델 비활성화 및 실행)
         attackAnimSeq.AppendCallback(() => {
             _throwableModel.gameObject.SetActive(false);
+            SoundUtils.PlayScene2DSFX(_throwSD);
             attackExecution.Invoke(); // 여기서 Amount가 줄어들 것임
         });
 

@@ -35,6 +35,7 @@ public class Blackboard
         this.BehaviorWeightSet = weightSet;
         this.StageSpots = spots;
         this.currentState = AIState.Idle;
+        soundBehavior = owner.GetComponent<SoundBehavior>();
     }
 
 
@@ -58,6 +59,8 @@ public class Blackboard
     public bool isForceBehavior;
 
     public CoopData coopData;
+
+    public SoundBehavior soundBehavior;
 
     public bool IsSeating()
     {

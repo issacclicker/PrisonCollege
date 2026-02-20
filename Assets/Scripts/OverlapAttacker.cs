@@ -16,6 +16,7 @@ public class OverlapAttacker : MonoBehaviour
     [Header("Layer Filters")]
     [SerializeField] private LayerMask _victimOnlyLayer; // 얘네는 맞기만 함 (예: Enemy)
     [SerializeField] private LayerMask _bothDamageLayer; // 닿으면 양쪽 다 데미지 (예: Trap, Destructible)
+    [SerializeField] private SoundData _hitSD;
 
 
     private void Awake()
@@ -59,6 +60,7 @@ public class OverlapAttacker : MonoBehaviour
         {
             otherReceiver.TakeEffect(_damageData, hitInfoToOther);
             _hitTargets.Add(rootTarget);
+            SoundUtils.PlayScene3DSFX(_hitSD, hitInfoToOther.hitPoint);
         }
 
         if (isBothDamage)
@@ -78,6 +80,14 @@ public class OverlapAttacker : MonoBehaviour
                 // 3. 효과 적용
                 //_explosionShacker.PlayShake();
                 myReceiver.TakeEffect(_damageData, hitInfoToMe);
+                if (other.gameObject.IsInLayerMask(Global.PLAYER_LAYER_NAME))
+                {
+                    SoundUtils.PlayScene2DSFX(_hitSD);
+                }
+                else
+                {
+                    SoundUtils.PlayScene3DSFX(_hitSD, hitInfoToOther.hitPoint);
+                }
             }
         }
     }

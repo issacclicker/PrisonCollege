@@ -19,7 +19,9 @@ public class SingAttacher : AnimAttacher
     private AudioSource _audioSource;
     private SongEntry _targetGoodSong;
 
-    public bool IsBad => _audioSource.clip != null && _audioSource.isPlaying && _audioSource.clip == _badSong.clip;
+    //public bool IsBad => _audioSource.clip != null && _audioSource.isPlaying && _audioSource.clip == _badSong.clip;
+    public bool IsBad => _microphone.activeSelf && _isBadSongPlaying;
+    private bool _isBadSongPlaying = false;
 
 
 
@@ -33,7 +35,11 @@ public class SingAttacher : AnimAttacher
 
     public override void HideAll()
     {
+        _isBadSongPlaying = false;
+        GetComponent<SoundBehavior>().StopSing();
         _microphone.SetActive(false);
+        if (_audioSource == null)
+            _audioSource = GetComponent<AudioSource>();
         _audioSource.Stop();
         _audioSource.clip = null;
     }
@@ -46,10 +52,20 @@ public class SingAttacher : AnimAttacher
         _microphone.SetActive(true);
 
         float randValue = UnityEngine.Random.Range(0f, 1f);
-        _audioSource.clip = randValue < _badSongProbabiliy ? _badSong.clip : _targetGoodSong.clip;
-        _audioSource.time = randValue < _badSongProbabiliy ? _badSong.startTime : _targetGoodSong.startTime;
-        _audioSource.volume = randValue < _badSongProbabiliy ? _badSong.volumeRate : _targetGoodSong.volumeRate;
-        _audioSource.Play();
+        if (randValue < _badSongProbabiliy)
+        {
+            _isBadSongPlaying = true;
+            GetComponent<SoundBehavior>().PlayBadSong();
+        }
+        else
+        {
+            _isBadSongPlaying = false;
+            GetComponent<SoundBehavior>().PlayGoodSong();
+        }
+        //_audioSource.clip = randValue < _badSongProbabiliy ? _badSong.clip : _targetGoodSong.clip;
+        //_audioSource.time = randValue < _badSongProbabiliy ? _badSong.startTime : _targetGoodSong.startTime;
+        //_audioSource.volume = randValue < _badSongProbabiliy ? _badSong.volumeRate : _targetGoodSong.volumeRate;
+        //_audioSource.Play();
     }
 }
 

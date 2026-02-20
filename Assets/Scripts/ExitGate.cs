@@ -9,7 +9,9 @@ public class ExitGate : MonoBehaviour
 {
     [SerializeField] private Transform _barricadeParent;
     [SerializeField] private GameObject _barricadePrefab;
+    [SerializeField] private GameObject _reinforcedBarricadePrefab;
     [SerializeField] private bool _isbarricadeEnabled;
+    private GameObject _targetBarricadePrefab;
 
     protected DamageReceiver _damageReceiver;
     protected ClickAndWait _interaction;
@@ -17,6 +19,7 @@ public class ExitGate : MonoBehaviour
     protected StatRecovery _statRecovery;
     protected ExplosionShacker _explosionShacker;
     private Health _health;
+    public bool IsUpgraded => AttributeSystem.Instance.IsMetalBarricade;
 
     public bool IsBarricadePlaced => _barricadePlaced != null;
     public virtual ExitGateType GateType => ExitGateType.None;
@@ -34,7 +37,7 @@ public class ExitGate : MonoBehaviour
 
         _interaction.ProgressCompleteEvent.AddListener(PlaceBarricade);
         _damageReceiver.StatDownEvent.AddListener((_, decreasion) => OnDamaged(decreasion));
-        _damageReceiver.DepletedEvent.AddListener(_ => BreakBarricade());
+        _damageReceiver.DepletedEvent.AddListener(_ => OnHealthDepleted());
         Close();
     }
 
@@ -42,6 +45,7 @@ public class ExitGate : MonoBehaviour
 
     private void Start()
     {
+        _targetBarricadePrefab = AttributeSystem.Instance.IsMetalBarricade ? _reinforcedBarricadePrefab : _barricadePrefab;
         if (_isbarricadeEnabled)
             PlaceBarricade();
         else
@@ -60,10 +64,19 @@ public class ExitGate : MonoBehaviour
 
 
 
+    private void OnHealthDepleted()
+    {
+        if (_barricadePlaced == null) return;
+        SoundUtils.PlayScene3DSFX(_barricadePlaced.GetComponent<Barricade>().BreakSD, transform.position);
+        BreakBarricade();
+    }
+
+
+
     protected virtual void PlaceBarricade()
     {
         _interaction.SetInteractable(false);
-        _barricadePlaced = Instantiate(_barricadePrefab, _barricadeParent);
+        _barricadePlaced = Instantiate(_targetBarricadePrefab, _barricadeParent);
         _damageReceiver.SetStatFull();
         _statRecovery.CanRecover = true;
     }

@@ -134,17 +134,32 @@ public class FirstPersonController : MonoBehaviour
     // Internal Variables
     private Vector3 jointOriginalPos;
     private float timer = 0;
+    private Stamina stamina;
+    private Professor professor;
+    private float jumpStamina;
+    private AttributeModifier staminaCostMod;
 
     #endregion
 
     public bool IsWalking => isWalking;
     public bool IsSprinting => isSprinting;
 
+    private AttributeModifier moveSpeedMod;
+    public bool IsGrounded => isGrounded;
+
+
+
     private void Awake()
     {
+        ApplyControlSettings();
+        staminaCostMod = AttributeSystem.Instance.StaminaCostMod;
+        professor = GetComponent<Professor>();
+        jumpStamina = professor.JumpStamina;
+        stamina = GetComponent<Stamina>();
         rb = GetComponent<Rigidbody>();
-
+        moveSpeedMod = AttributeSystem.Instance.ProfMoveSpeedMod;
         crosshairObject = GetComponentInChildren<Image>();
+        GameManager.Instance.ControlSettingChangeEvent.AddListener(ApplyControlSettings);
 
         // Set internal variables
         playerCamera.fieldOfView = fov;
@@ -160,6 +175,7 @@ public class FirstPersonController : MonoBehaviour
 
     void Start()
     {
+        jumpStamina *= AttributeSystem.Instance.JumpStaminaMod.GetFinalValue(1) * staminaCostMod.GetFinalValue(1);
         if (lockCursor)
         {
             Cursor.lockState = CursorLockMode.Locked;
@@ -212,6 +228,7 @@ public class FirstPersonController : MonoBehaviour
 
     private void Update()
     {
+        if (Time.timeScale == 0) return;
         #region Camera
 
         // (Camera Code omitted for brevity, logic remains same)
@@ -249,14 +266,14 @@ public class FirstPersonController : MonoBehaviour
             }
 
             // Lerps camera.fieldOfView to allow for a smooth transistion
-            if (isZoomed)
-            {
-                playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, zoomFOV, zoomStepTime * Time.deltaTime);
-            }
-            else if (!isZoomed && !isSprinting)
-            {
-                playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, fov, zoomStepTime * Time.deltaTime);
-            }
+            //if (isZoomed)
+            //{
+            //    playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, zoomFOV, zoomStepTime * Time.deltaTime);
+            //}
+            //else if (!isZoomed && !isSprinting)
+            //{
+            //    playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, fov, zoomStepTime * Time.deltaTime);
+            //}
         }
         #endregion
         #endregion
@@ -281,8 +298,9 @@ public class FirstPersonController : MonoBehaviour
                 {
                     sprintRemaining -= 1 * Time.deltaTime;
                     //if (sprintRemaining <= 0)
-                    if (GetComponent<Stamina>().IsDepleted)
+                    if (stamina.IsDepleted)
                     {
+                        professor.StaminaRunout();
                         isSprinting = false;
                         isSprintCooldown = true;
                         // [ADD] 스태미너가 다 달면 토글 상태도 해제
@@ -294,6 +312,7 @@ public class FirstPersonController : MonoBehaviour
             {
                 // Regain sprint while not sprinting
                 sprintRemaining = Mathf.Clamp(sprintRemaining += 1 * Time.deltaTime, 0, sprintDuration);
+                playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, fov, sprintFOVStepTime * Time.deltaTime);
                 //sprintRemaining = GetComponent<Stamina>().Current;
             }
 
@@ -324,6 +343,8 @@ public class FirstPersonController : MonoBehaviour
                 sprintBar.fillAmount = sprintRemainingPercent;
             }
         }
+
+        Movement();
 
         #endregion
 
@@ -366,9 +387,18 @@ public class FirstPersonController : MonoBehaviour
         {
             HeadBob();
         }
+
+        RotateCamera();
     }
 
     private void LateUpdate()
+    {
+        if (Time.timeScale == 0) return;
+    }
+
+
+
+    private void RotateCamera()
     {
         if (cameraCanMove)
         {
@@ -395,12 +425,20 @@ public class FirstPersonController : MonoBehaviour
                 camFollow.currentPitch = pitch;
             }
         }
+
     }
 
     void FixedUpdate()
     {
+        if (Time.timeScale == 0) return;
         #region Movement
+        #endregion
+    }
 
+
+
+    private void Movement()
+    {
         if (playerCanMove)
         {
             // 1. 입력 방향 계산
@@ -427,7 +465,7 @@ public class FirstPersonController : MonoBehaviour
 
             // 스프린트 조건 체크
             // (Vertical > 0f 조건은 위에서 이미 체크했지만, 안전을 위해 유지)
-            if (enableSprint && sprintInput && !GetComponent<Stamina>().IsDepleted && !isSprintCooldown && Input.GetAxisRaw("Vertical") > 0f)
+            if (enableSprint && sprintInput && !stamina.IsDepleted && !isSprintCooldown && Input.GetAxisRaw("Vertical") > 0f)
             {
                 currentSpeed = sprintSpeed;
                 isSprinting = true;
@@ -443,7 +481,7 @@ public class FirstPersonController : MonoBehaviour
             Vector3 moveDir = transform.TransformDirection(inputDir);
 
             // 최종 이동 벡터 (속도 * 시간)
-            Vector3 movement = moveDir * currentSpeed * Time.fixedDeltaTime;
+            Vector3 movement = moveDir * currentSpeed * Time.deltaTime * moveSpeedMod.GetFinalValue(1);
 
             float floodFillRatio = FireSuppressionSystem.Instance != null ? FireSuppressionSystem.Instance.FloodFillRatio : 0f;
             float speedRatio = Mathf.Lerp(1, 0.3f, floodFillRatio);
@@ -452,7 +490,17 @@ public class FirstPersonController : MonoBehaviour
             // 3. MovePosition으로 이동
             rb.MovePosition(rb.position + movement);
         }
-        #endregion
+    }
+
+
+
+    private void ApplyControlSettings()
+    {
+        mouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity", 3.0f);
+        fov = PlayerPrefs.GetFloat("FOV", 80f);
+        sprintFOV = fov + 15f;
+        playerCamera.fieldOfView = fov;
+        holdToSprint = PlayerPrefs.GetInt("SprintMode", 0) == 1;
     }
 
     public void StopSprinting()
@@ -488,10 +536,15 @@ public class FirstPersonController : MonoBehaviour
     private void Jump()
     {
         // Adds force to the player rigidbody to jump
-        if (isGrounded)
+        if (isGrounded && stamina.Current >= jumpStamina)
         {
             rb.AddForce(0f, jumpPower * rb.mass, 0f, ForceMode.Impulse);
+            stamina.Decrease(jumpStamina);
             isGrounded = false;
+        }
+        else if (stamina.Current < jumpStamina)
+        {
+            professor.StaminaRunout();
         }
 
         // When crouched and using toggle system, will uncrouch for a jump

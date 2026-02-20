@@ -38,8 +38,16 @@ public class WeaponAnimator : MonoBehaviour
 
     void LateUpdate()
     {
-        _isWalking = _weaponController.FirstPersonController.IsWalking;
-        _isSprinting = _weaponController.FirstPersonController.IsSprinting;
+        if (_weaponController.FirstPersonController == null)
+        {
+            _isWalking = false;
+            _isSprinting = false;
+        }
+        else
+        {
+            _isWalking = _weaponController.FirstPersonController.IsWalking;
+            _isSprinting = _weaponController.FirstPersonController.IsSprinting;
+        }
         if (_isPlayAttackAnim) return;
         UpdateBobbing();
         UpdateMouseSway();
@@ -73,8 +81,14 @@ public class WeaponAnimator : MonoBehaviour
 
     private void UpdateMouseSway()
     {
-        float mouseX = -Input.GetAxis("Mouse X") * _swayAmount;
-        float mouseY = -Input.GetAxis("Mouse Y") * _swayAmount;
+        float mouseX = 0;
+        float mouseY = 0;
+        if (_weaponController.FirstPersonController != null)
+        {
+            mouseX = -Input.GetAxis("Mouse X") * _swayAmount;
+            mouseY = -Input.GetAxis("Mouse Y") * _swayAmount;
+
+        }
 
         Vector3 targetPos = _originPos + _currentBobOffset + new Vector3(mouseX, mouseY, 0);
         
@@ -126,6 +140,7 @@ public class WeaponAnimator : MonoBehaviour
         if (_isPlayAttackAnim) return; // 중복 실행 방지
         _isPlayAttackAnim = true;
 
+        attackDuration /= AttributeSystem.Instance.MeleeAttackSpeedMod.GetFinalValue(1);
         DOTweenSeq attackAnimSeq = DOTween.Sequence();
         AddAttackFrames(attackAnimSeq, attackExecution, attackDuration);
         float defaultDuration = attackAnimSeq.Duration(); // 현재 시퀀스의 기본 시간 합계 (1.0f)

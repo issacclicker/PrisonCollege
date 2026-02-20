@@ -164,3 +164,4 @@ MonoBehaviour:
   _minImpactThreshold: 0.1
   _lifeTime: 10
   _destroyOnHit: 0
+  _hitSD: {fileID: 11400000, guid: b385c7a712ce2f049983381f19739184, type: 2}

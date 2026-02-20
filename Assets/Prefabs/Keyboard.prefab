@@ -189,6 +189,7 @@ MonoBehaviour:
   _minImpactThreshold: 0.1
   _lifeTime: 10
   _destroyOnHit: 1
+  _hitSD: {fileID: 11400000, guid: b385c7a712ce2f049983381f19739184, type: 2}
   _fragmentPrefab: {fileID: 3694392237098712285, guid: 711281e6f5218ef479e03e57a5a1117a, type: 3}
   _fragmentWeaponData: {fileID: 11400000, guid: b780415c17d45f64e99b88f4cf0430a1, type: 2}
   _fragmentCount: 20

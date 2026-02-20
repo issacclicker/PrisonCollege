@@ -8,14 +8,16 @@ public class StudentSpawner : MonoBehaviour
 
 
 
-    public List<PostStudent> SpawnStudents()
+    public List<PostStudent> SpawnStudents(BehaviorWeightSet behaviorWeightSet)
     {
         int index = 0;
         List<PostStudent> studentList = new();
         foreach (var entry in spawnEntries)
         {
-            PostStudent student = Instantiate(entry.studentPrefab, entry.spawnTransform.position, entry.spawnTransform.rotation).GetComponent<PostStudent>();
+            Quaternion randomYRotation = Quaternion.Euler(0, Random.Range(0, 360f), 0);
+            PostStudent student = Instantiate(entry.studentPrefab, entry.spawnTransform.position, randomYRotation).GetComponent<PostStudent>();
             student.name = "Student" + ++index;
+            student.BehaviorWeightSet = behaviorWeightSet;
             student.SeatSpot = entry.seatSpot;
             studentList.Add(student);
         }

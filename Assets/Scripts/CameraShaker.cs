@@ -10,6 +10,8 @@ public class CameraShaker : SceneSingleton<CameraShaker>
     [SerializeField] private float _recoilShakeRotAmount = 1;
     [SerializeField] private float _explosionShakePosAmount = 1;
     [SerializeField] private float _explosionShakeRotAmount = 1;
+    [SerializeField] private float _meleeShakePosAmount = 1;
+    [SerializeField] private float _meleeShakeRotAmount = 1;
     [SerializeField] private float _weaponCameraShakeAmount = 1;
 
 
@@ -29,10 +31,10 @@ public class CameraShaker : SceneSingleton<CameraShaker>
     {
         _mainCamera.transform.DOComplete();
         _weaponCamera.transform.DOComplete();
-        _mainCamera.transform.DOShakePosition(0.1f, amount * _recoilShakePosAmount, 40, 90).SetRelative(true);
-        _mainCamera.transform.DOShakeRotation(0.1f, amount * _recoilShakeRotAmount, 40, 90);
-        _weaponCamera.transform.DOShakePosition(0.1f, amount * _recoilShakePosAmount * 0.05f, 40, 90).SetRelative(true);
-        _weaponCamera.transform.DOShakeRotation(0.1f, amount * _recoilShakeRotAmount * 0.05f, 40, 90);
+        _mainCamera.transform.DOShakePosition(0.1f, amount * _recoilShakePosAmount, 80, 90).SetRelative(true);
+        _mainCamera.transform.DOShakeRotation(0.1f, amount * _recoilShakeRotAmount, 80, 90);
+        _weaponCamera.transform.DOShakePosition(0.1f, amount * _recoilShakePosAmount * 0.05f, 80, 90).SetRelative(true);
+        _weaponCamera.transform.DOShakeRotation(0.1f, amount * _recoilShakeRotAmount * 0.05f, 80, 90);
     }
 
 
@@ -44,5 +46,17 @@ public class CameraShaker : SceneSingleton<CameraShaker>
         _mainCamera.transform.DOShakeRotation(0.3f, amount * _explosionShakeRotAmount, 50, 90);
         _weaponCamera.transform.DOShakePosition(0.3f, amount * _explosionShakePosAmount * _weaponCameraShakeAmount, 40, 90).SetRelative(true);
         _weaponCamera.transform.DOShakeRotation(0.3f, amount * _explosionShakeRotAmount * _weaponCameraShakeAmount, 40, 90);
+    }
+
+
+
+    public void DoMeleeShake(float amount)
+    {
+        _mainCamera.transform.DOComplete();
+        _weaponCamera.transform.DOComplete();
+        //_mainCamera.transform.DOShakePosition(0.1f, amount * _meleeShakePosAmount, 80, 90).SetRelative(true);
+        _mainCamera.transform.DOShakeRotation(0.15f, amount * _meleeShakeRotAmount, 80, 90);
+        //_weaponCamera.transform.DOShakePosition(0.1f, amount * _meleeShakePosAmount * _weaponCameraShakeAmount, 60, 90).SetRelative(true);
+        _weaponCamera.transform.DOShakeRotation(0.15f, amount * _meleeShakeRotAmount * _weaponCameraShakeAmount, 60, 90);
     }
 }

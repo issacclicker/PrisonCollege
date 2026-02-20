@@ -1,21 +1,18 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEditor.Experimental.GraphView;
-using UnityEditor.PackageManager;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.Animations;
 using UnityEngine.Events;
-using UnityEngine.Experimental.GlobalIllumination;
 using static Global;
-using static UnityEditor.Experimental.GraphView.GraphView;
+using static Utils;
+using static SoundUtils;
 
 public class PostStudent : MonoBehaviour
 {
     private static float _idleSpeed = 0;
-    public static float _walkSpeed = 1.44f;
+    public static float _walkSpeed = 2.34f;
     public static float _jogSpeed = 2.43f;
     public static float _slowRunSpeed = 3.49f;
     public static float _mediumRunSpeed = 4.17f;
@@ -29,8 +26,6 @@ public class PostStudent : MonoBehaviour
     private BT_Node _root;
     private Blackboard _blackboard;
     private CapsuleCollider _characterCollider;
-
-    [SerializeField] private string _name;
     [Header("설정")]
     //[SerializeField] private float _changeInterval = 2.0f; // 2초 간격
     //[SerializeField] private Transform _targetDestination; // 이동 목표 지점
@@ -41,7 +36,8 @@ public class PostStudent : MonoBehaviour
     //[SerializeField] private SpotGroup _prowlSpots;
 
     //[SerializeField] private Professor _player;
-    [SerializeField] private BehaviorWeightSet _behaviorWeightSet;
+    public string Name { get; set; }
+    public BehaviorWeightSet BehaviorWeightSet { get; set; }
     //[SerializeField] private StageSpots _stageSpots;
 
     //private bool _isDamaged = false;
@@ -51,18 +47,20 @@ public class PostStudent : MonoBehaviour
     private StageSpots _stageSpots;
 
     public Blackboard Blackboard => _blackboard;
-    public string Name => _name;
 
     private CharacterRagdoll _characterRagdoll;
     private AnimAttacher[] _animAttachers;
     private PlateAttacher _plateAttacher;
     private SingAttacher _singAttacher;
+    private SoundBehavior _soundBehavior;
 
     [SerializeField] private OverlapAttacker _bodyOverlapAttacker;
     [SerializeField] private OverlapAttacker _tackleOverlapAttacker;
 
     [HideInInspector] public UnityEvent<PostStudent, HitInfo> DieEvent = new();
     [HideInInspector] public UnityEvent<PostStudent> EscapeEvent = new();
+    [Header("Audios")]
+    [SerializeField] private SoundData _bodyHitSD;
 
     public bool IsWorking => 
         Blackboard != null && Blackboard.destBehavior == BehaviorType.Work
@@ -71,10 +69,10 @@ public class PostStudent : MonoBehaviour
     public bool IsDoingHazardBehavior => (
         Blackboard.destBehavior.IsHazard()
         || (Blackboard.destBehavior == BehaviorType.UseMicrowave && _plateAttacher.CurrentFood != null && _plateAttacher.CurrentFood.isCauseFire)
-        || Blackboard.targetObject != null
+        || Blackboard.targetDamageable != null
         || (Blackboard.destBehavior == BehaviorType.Sing && _singAttacher.IsBad));
 
-    public bool IsCausingChaos => _damageReceiver.CanEffect && Blackboard.targetDamageable != null || (Blackboard.destBehavior == BehaviorType.Sing && _singAttacher.IsBad);
+    public bool IsCausingChaos => _damageReceiver != null && Blackboard != null && _singAttacher != null && _damageReceiver.CanEffect && (Blackboard.targetDamageable != null || (Blackboard.destBehavior == BehaviorType.Sing && _singAttacher.IsBad));
     public bool IsComputerBehavior =>
         Blackboard.destBehavior == BehaviorType.Work
         || Blackboard.destBehavior == BehaviorType.Game
@@ -83,10 +81,12 @@ public class PostStudent : MonoBehaviour
 
     public MonitorSpot SeatSpot {  get; set; }
     //public BehaviorWeightSet BehaviorWeightSet { get; set; }
+    private AttributeModifier _moveSpeedModifier;
 
 
     private void Awake()
     {
+        _soundBehavior = GetComponent<SoundBehavior>();
         _characterRagdoll = GetComponent<CharacterRagdoll>();
         _damageReceiver = GetComponent<DamageReceiver>();
         _boostReceiver = GetComponent<BoostReceiver>();
@@ -111,6 +111,8 @@ public class PostStudent : MonoBehaviour
         _player.DieEvent.AddListener(_ => UnFocusProfessorAttack());
 
         _stageSpots = StageController.Instance.StageSpots;
+
+        StageController.Instance.StageStartEvent.AddListener(Wakeup);
     }
 
 
@@ -118,16 +120,46 @@ public class PostStudent : MonoBehaviour
 
     private void Start()
     {
+        BehaviorWeightSet = DeepCopyByJson(BehaviorWeightSet);
+        BehaviorWeightSet.ModifyChance(BehaviorType.Escape, AttributeSystem.Instance.StudEscapeChanceMod.GetFinalValue());
         HideAllAnimAttachments();
         StopAllOverlapAttackers();
         _characterRagdoll.UnTriggerRagdoll();
         _speedSelector = ConstructSpeedSelector();
-        _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots, _player.gameObject);
+        _boostReceiver.CanEffectChecker = () => _root != null && _blackboard != null && _blackboard.targetObject == null;
+        _damageReceiver.CanEffectChecker = () => _blackboard != null && _blackboard.isEscaping == false;
+        _moveSpeedModifier = AttributeSystem.Instance.StudMoveSpeedMod;
+        _anim.SetFloat("MoveSpeedScale", _moveSpeedModifier.GetFinalValue());
+        _characterCollider.enabled = false;
+        Invoke(nameof(PlaySleepingSFX), UnityEngine.Random.Range(0.5f, 2f));
+        _anim.SetBool("Laying", true);
+    }
+
+
+
+    private void Wakeup()
+    {
+        CancelInvoke(nameof(PlaySleepingSFX));
+        _soundBehavior.StopSleeping();
+        _anim.SetBool("Laying", false);
+    }
+
+
+
+    private void PlaySleepingSFX()
+    {
+        _soundBehavior.PlaySleeping();
+    }
+
+
+
+    private void StartBehavior()
+    {
+        _characterCollider.enabled = true;
+        _blackboard = new Blackboard(gameObject, BehaviorWeightSet, _stageSpots, _player.gameObject);
         _blackboard.EscapeSuccessEvent.AddListener(OnEscaped);
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
-        _boostReceiver.CanEffectChecker = () => _root != null && _blackboard != null && _blackboard.targetObject == null;
-        _damageReceiver.CanEffectChecker = () => _blackboard != null && _blackboard.isEscaping == false;
     }
 
 
@@ -149,8 +181,22 @@ public class PostStudent : MonoBehaviour
 
 
 
+    //void OnAnimatorMove()
+    //{
+    //    // 1. 현재 프레임에서 애니메이션이 이동해야 할 거리(Delta)를 가져옴
+    //    // 2. 여기에 사용자가 원하는 % (multiplier)를 곱함
+    //    Vector3 desiredVelocity = (_anim.deltaPosition / Time.deltaTime);// * movementMultiplier;
+
+    //    // 3. 에이전트에게 "이 속도로 움직여라"라고 직접 명령
+    //    // 이렇게 하면 애니메이션 재생 속도에 맞춰 에이전트가 움직이므로 싱크가 절대 깨지지 않음
+    //    _agent.velocity = desiredVelocity;
+    //}
+
+
+
     private void OnWorkTriggered()
     {
+        if (_blackboard.isEscaping) return;
         Debug.Log("OnWorkTriggered");
         _blackboard.isForceBehavior = false;
         _blackboard.hasToWork = true;
@@ -160,6 +206,7 @@ public class PostStudent : MonoBehaviour
 
     private void OnFrenzyTriggered()
     {
+        if (_blackboard.isEscaping) return;
         Debug.Log("OnFrenzyTriggered");
         _blackboard.hasToFrenzy = true;
     }
@@ -200,7 +247,7 @@ public class PostStudent : MonoBehaviour
                 new SetSpeed(() => _fastRunSpeed),
                 new SetSpeed(() => _sprintSpeed),
             },
-            new List<System.Func<int>> { 
+            new List<System.Func<float>> { 
                 () => 40, // Walk 확률 40%
                 () => 25, // Jog 확률 25%
                 () => 15, // SlowRun 15%
@@ -275,14 +322,16 @@ public class PostStudent : MonoBehaviour
         {
             //new SetRandomBehaveSpot(_prowlSpots),
             new ActionNode(() => Debug.Log("prowlSequence")),
-            _speedSelector,
+            new SetRandomSpeedPattern(),
+            //_speedSelector,
             new MoveToSpot()
             //new PlayLoopAnim("LookAround", 5)
         });
         Sequence restSequence = new Sequence(new List<BT_Node>
         {
             //new SetRandomBehaveSpot(_restSpots),
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new PlayOnceAnim("LookAround", "LookAround")
             //new PlayLoopAnim("LookAround", 5)
@@ -290,7 +339,8 @@ public class PostStudent : MonoBehaviour
         Sequence smokeSequence = new Sequence(new List<BT_Node>
         {
             //new SetRandomBehaveSpot(_restSpots),
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new PlayOnceAnim("Smoke", "Smoke"),
             //new Delay(() => 2f),
@@ -306,7 +356,8 @@ public class PostStudent : MonoBehaviour
         Sequence microwaveSequence = new Sequence(new List<BT_Node>
         {
             //new SetRandomBehaveSpot(_microwaveSpots),
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new SetAnimBool("Carrying", true),
             new MoveToSpot(),
             new SetAnimBool("Carrying", false),
@@ -382,7 +433,8 @@ public class PostStudent : MonoBehaviour
 
         Sequence danceSequence = new Sequence(new List<BT_Node>
         {
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new SetAnimBool("Dancing", true),
             //new Delay(() => 5f),
@@ -391,7 +443,8 @@ public class PostStudent : MonoBehaviour
 
         Sequence worshipSequence = new Sequence(new List<BT_Node>
         {
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new RotateToSpot(),
             new SetAnimBool("Praying", true),
@@ -401,7 +454,8 @@ public class PostStudent : MonoBehaviour
 
         Sequence sportsSequence = new Sequence(new List<BT_Node>
         {
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new SetAnimBool("Burpeeing", true),
             //new Delay(() => 5f),
@@ -410,7 +464,8 @@ public class PostStudent : MonoBehaviour
 
         Sequence sleepSequence = new Sequence(new List<BT_Node>
         {
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new SetAnimBool("Sleeping", true),
             //new Delay(() => 5f),
@@ -419,7 +474,8 @@ public class PostStudent : MonoBehaviour
 
         Sequence sitFloorSequence = new Sequence(new List<BT_Node>
         {
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new SetAnimBool("SittingFloor", true),
             //new Delay(() => 5f),
@@ -428,7 +484,8 @@ public class PostStudent : MonoBehaviour
 
         Sequence sitChairSequence = new Sequence(new List<BT_Node>
         {
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new RotateToSpot(),
             new SetAnimBool("SittingChair", true),
@@ -438,7 +495,8 @@ public class PostStudent : MonoBehaviour
 
         Sequence singSequence = new Sequence(new List<BT_Node>
         {
-            _speedSelector,
+            //_speedSelector,
+            new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new StopAndDisableAgentUpdate(),
             new SetAnimRootMotion(true),
@@ -484,6 +542,8 @@ public class PostStudent : MonoBehaviour
                 {
                     new ActionNode(HideAllAnimAttachments),
                     new ActionNode(StopAllOverlapAttackers),
+                    new EnableAgentUpdate(),
+                    new ResetAnimParameters(),
                     new ClearDestSpot(),
                     new TacklePattern(),
                     //new ClearDestBehavior(),
@@ -524,7 +584,8 @@ public class PostStudent : MonoBehaviour
             new PrintDebug("jopBehavior"),
             jopBehavior
         });
-        return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new BoostReactivePattern(new CoopReactivePattern(new EscapeGiveUpReactivePattern(jobSeq))))));
+        //return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new BoostReactivePattern(new CoopReactivePattern(new EscapeGiveUpReactivePattern(jobSeq))))));
+        return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new BoostReactivePattern(new CoopReactivePattern(jobSeq)))));
         //return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new CoopReactivePatttern(new EscapeGiveUpReactivePattern(jobSeq)))));
         //return new TakeHitReactivePattern(new AttackReactivePattern(new SwimOverridePattern(new CoopReactivePatttern(jobSeq))));
         //return new TakeHitReactivePattern(new AttackReactivePattern(new CoopReactivePatttern(jopBehavior)));
@@ -628,6 +689,7 @@ public class PostStudent : MonoBehaviour
     {
         _blackboard.isDamaged = true;
         _blackboard.isStunned = true;
+        //PlayScene3DSFX(_bodyHitSD, hitInfo.hitPoint);
     }
 
 
@@ -642,10 +704,12 @@ public class PostStudent : MonoBehaviour
 
 
 
-    private void OnEscaped()
+    public void OnEscaped()
     {
         EscapeEvent?.Invoke(this);
+        _blackboard.destSpot?.Release(this);
         gameObject.SetActive(false);
+        _root = null;
     }
 
 
@@ -654,12 +718,25 @@ public class PostStudent : MonoBehaviour
     {
         DieEvent?.Invoke(this, hitInfo);
 
+        GameObject playerObject = _blackboard.Player.gameObject;
+        if (_blackboard.targetObject == playerObject && hitInfo.attacker == playerObject)
+        {
+            int money = (int)AttributeSystem.Instance.MutinyMoneyMod.GetFinalValue(0);
+            if (money > 0)
+            {
+                StageController.Instance.Earn(money);
+            }
+        }
+
         _root = null;
         _agent.speed = 0;
         _agent.enabled = false;
         _anim.enabled = false;
         _characterCollider.enabled = false;
         _blackboard.destSpot?.Release(this);
+        _blackboard.destBehavior = BehaviorType.None;
+        _blackboard.targetDamageable = null;
+        _blackboard.targetObject = null;
         StopAllCoroutines();
         StopAllOverlapAttackers();
         HideAllAnimAttachments();
@@ -674,6 +751,14 @@ public class PostStudent : MonoBehaviour
 
     private void OnStandUpStart()
     {
+        //bool originAgentEnabled = _agent.enabled;
+        //bool originAgentUpdatePos = _agent.updatePosition;
+        //_agent.enabled = true;
+        //_agent.updatePosition = true;
+        //_agent.Warp(SampleNavMesh(transform.position, 100f));
+        //_agent.enabled = originAgentEnabled;
+        //_agent.updatePosition = originAgentUpdatePos;
+
         _damageReceiver.SetStatFull();
     }
 
@@ -684,7 +769,8 @@ public class PostStudent : MonoBehaviour
         _agent.updatePosition = true;    // 에이전트가 트랜스폼을 움직이도록 허용
         _agent.updateRotation = true;    // 회전도 허용
         _anim.applyRootMotion = false;
-        _blackboard = new Blackboard(gameObject, _behaviorWeightSet, _stageSpots, _player.gameObject);
+        _anim.SetFloat("MoveSpeedScale", _moveSpeedModifier.GetFinalValue());
+        _blackboard = new Blackboard(gameObject, BehaviorWeightSet, _stageSpots, _player.gameObject);
         _root = ConstructBehaviorTree();
         _root.SetBlackboard(_blackboard);
         OnWorkTriggered();
