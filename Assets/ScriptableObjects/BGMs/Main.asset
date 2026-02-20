@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 547f331dd14f9c4458ddf1bddbf9956b, type: 3}
-  m_Name: Sprinkler
-  m_EditorClassIdentifier: Assembly-CSharp::SoundData
-  soundInfos:
-  - clip: {fileID: 8300000, guid: d4b6273c9af53544d9103596d7d95f7c, type: 3}
+  m_Script: {fileID: 11500000, guid: 72841a2f0347b8840a397c2a6ac8073c, type: 3}
+  m_Name: Main
+  m_EditorClassIdentifier: Assembly-CSharp::BGMPlaylistData
+  bgmList:
+  - bgmTitle: 
+    clip: {fileID: 8300000, guid: 5c79d6680d2363944995b2d85b4a085d, type: 3}
     volumeMultiplier: 1
-  baseVolume: 0.6
+  baseVolume: 0.3

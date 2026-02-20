@@ -9420,6 +9420,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 450454280}
   m_CullTransparentMesh: 1
+--- !u!1 &454650054
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 454650056}
+  - component: {fileID: 454650055}
+  m_Layer: 0
+  m_Name: AudioSettings
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!114 &454650055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 454650054}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e39e627ef520d2a4eb8c59f7fe37fa13, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AudioSetting
+  mainMixer: {fileID: 24100000, guid: 84c320fdc62d83d4a972d7d2e21bd6bf, type: 2}
+  masterSlider: {fileID: 0}
+  bgmSlider: {fileID: 0}
+  sfxSlider: {fileID: 0}
+  masterVolumeTmp: {fileID: 0}
+  bgmVolumeTmp: {fileID: 0}
+  sfxVolumeTmp: {fileID: 0}
+--- !u!4 &454650056
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 454650054}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &455951069
 GameObject:
   m_ObjectHideFlags: 0
@@ -9587,6 +9638,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
   _emitterPrefab: {fileID: 1991647734150120844, guid: 7f7b9a924b5795b48bc0cc939a43b86b, type: 3}
   _longDistancemitterPrefab: {fileID: 1991647734150120844, guid: 8437e455beaf8b34e9cdb82e420d70b0, type: 3}
+  _bgmEitterPrefab: {fileID: 1991647734150120844, guid: 472884a7b28a6ae4c94b1d203886dcde, type: 3}
   _poolSize: 20
 --- !u!4 &460283017
 Transform:
@@ -28476,12 +28528,17 @@ MonoBehaviour:
     maxClearDifficulty: 0
     isLocked: 1
     sprite: {fileID: 21300000, guid: ec1532176827f7d4c88b509d61b69818, type: 3}
+  audioSetting: {fileID: 454650055}
   _mainScreen: MainScene
   _stagePrepare: StagePrepare
   _stagePrefix: Stage
   _store: Store
   _arena: Arena
+  _testStart: TestStore
   _currentDifficulty: 1
+  _mainPD: {fileID: 11400000, guid: c46f0cfce4dfb1e4eb05ba4886d453e3, type: 2}
+  _wavePD: {fileID: 11400000, guid: 873b05f4114654140b5f0da353cf8861, type: 2}
+  _arenaPD: {fileID: 11400000, guid: 68c87bba33a945e4094c5f9dbc4d892c, type: 2}
   hasToStageSelect: 0
   ControlSettingChangeEvent:
     m_PersistentCalls:
@@ -37689,3 +37746,4 @@ SceneRoots:
   - {fileID: 656744284}
   - {fileID: 1116179034}
   - {fileID: 460283017}
+  - {fileID: 454650056}

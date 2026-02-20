@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 547f331dd14f9c4458ddf1bddbf9956b, type: 3}
-  m_Name: MaleSong
-  m_EditorClassIdentifier: Assembly-CSharp::SoundData
-  soundInfos:
-  - clip: {fileID: 8300000, guid: 8a7867349b5ef014780cdcebb0cdbf24, type: 3}
+  m_Script: {fileID: 11500000, guid: 72841a2f0347b8840a397c2a6ac8073c, type: 3}
+  m_Name: Arena
+  m_EditorClassIdentifier: Assembly-CSharp::BGMPlaylistData
+  bgmList:
+  - bgmTitle: 
+    clip: {fileID: 8300000, guid: 4f82122e4c5d2ef49843af35baa25c07, type: 3}
     volumeMultiplier: 1
-  baseVolume: 0.75
+  baseVolume: 0.2
