@@ -162924,7 +162924,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MicrowaveSpot
   _behaviorTypes: 4
   _occupant: {fileID: 0}
-  _microwave: {fileID: 0}
+  _microwave: {fileID: 2052442296}
 --- !u!114 &1467138022
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208572,6 +208572,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2771972128428102778, guid: f302a139ac529414f9d13fb0497314ae, type: 3}
   m_PrefabInstance: {fileID: 2052442294}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2052442296 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4722635264271890558, guid: f302a139ac529414f9d13fb0497314ae, type: 3}
+  m_PrefabInstance: {fileID: 2052442294}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a80dbd38e37bb074780d769aa537c193, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Microwave
 --- !u!1 &2053316690
 GameObject:
   m_ObjectHideFlags: 0

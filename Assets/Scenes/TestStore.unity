@@ -28511,27 +28511,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56e616fcfd259f6478f0bef84550042b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  _stageNumber: 1
+  _stageNumber: 3
   _stageEntries:
   - number: 1
     name: "\uAE30\uCD08 \uAC10\uAE08\uD559"
     maxClearDifficulty: 0
     isLocked: 0
-    sprite: {fileID: 21300000, guid: ec1532176827f7d4c88b509d61b69818, type: 3}
+    sprite: {fileID: 21300000, guid: 531097cec8dbe9a42b52c27694ef007d, type: 3}
   - number: 2
     name: "\uAD6C\uAE08\uAD00\uB9AC \uC2E4\uC2B5"
     maxClearDifficulty: 0
     isLocked: 0
-    sprite: {fileID: 21300000, guid: ec1532176827f7d4c88b509d61b69818, type: 3}
+    sprite: {fileID: 21300000, guid: b5c430d60e4330740b28298082ddc1c0, type: 3}
   - number: 3
     name: "\uBCD1\uB82C\uAC10\uC625\uC2DC\uC2A4\uD15C"
     maxClearDifficulty: 0
     isLocked: 1
-    sprite: {fileID: 21300000, guid: ec1532176827f7d4c88b509d61b69818, type: 3}
+    sprite: {fileID: 21300000, guid: 4680ccb0a6bd7b94ebb03ae2829f248f, type: 3}
   audioSetting: {fileID: 454650055}
   _mainScreen: MainScene
   _stagePrepare: StagePrepare
-  _stagePrefix: Stage
+  _stagePrefix: SStage
   _store: Store
   _arena: Arena
   _testStart: TestStore
