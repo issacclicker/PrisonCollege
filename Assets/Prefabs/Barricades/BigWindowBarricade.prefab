@@ -145,6 +145,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 1874258638132283157}
     m_Modifications:
     - target: {fileID: 4971584640518265690, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4971584640518265690, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
       propertyPath: m_CastShadows
       value: 2
       objectReference: {fileID: 0}
@@ -281,6 +285,10 @@ PrefabInstance:
     - target: {fileID: 6917073365472557711, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
       propertyPath: m_Name
       value: Barricade (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6917073365472557711, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

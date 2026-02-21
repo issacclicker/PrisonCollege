@@ -67883,8 +67883,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 871022109}
   - {fileID: 1614837126}
+  - {fileID: 871022109}
   - {fileID: 1405865747}
   - {fileID: 852140610}
   m_Father: {fileID: 0}
@@ -70249,12 +70249,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2728080195004720406, guid: 199662c8a35467145b25e800f72f00c8, type: 3}
       propertyPath: m_Name
-      value: WindowExit (4)
+      value: WindowExit4
       objectReference: {fileID: 0}
     - target: {fileID: 4456528650963101642, guid: 199662c8a35467145b25e800f72f00c8, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1414908554}
+    - target: {fileID: 4456528650963101642, guid: 199662c8a35467145b25e800f72f00c8, type: 3}
+      propertyPath: m_VersionIndex
+      value: 4419
+      objectReference: {fileID: 0}
     - target: {fileID: 5817497954068276667, guid: 199662c8a35467145b25e800f72f00c8, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -70858,12 +70862,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2728080195004720406, guid: 199662c8a35467145b25e800f72f00c8, type: 3}
       propertyPath: m_Name
-      value: WindowExit
+      value: WindowExit2
       objectReference: {fileID: 0}
     - target: {fileID: 4456528650963101642, guid: 199662c8a35467145b25e800f72f00c8, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1553515958}
+    - target: {fileID: 4456528650963101642, guid: 199662c8a35467145b25e800f72f00c8, type: 3}
+      propertyPath: m_VersionIndex
+      value: 4419
+      objectReference: {fileID: 0}
     - target: {fileID: 8133102852163926937, guid: 199662c8a35467145b25e800f72f00c8, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.2
@@ -126119,12 +126127,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2728080195004720406, guid: 199662c8a35467145b25e800f72f00c8, type: 3}
       propertyPath: m_Name
-      value: WindowExit (3)
+      value: WindowExit3
       objectReference: {fileID: 0}
     - target: {fileID: 4456528650963101642, guid: 199662c8a35467145b25e800f72f00c8, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1508584525}
+    - target: {fileID: 4456528650963101642, guid: 199662c8a35467145b25e800f72f00c8, type: 3}
+      propertyPath: m_VersionIndex
+      value: 4419
+      objectReference: {fileID: 0}
     - target: {fileID: 5817497954068276667, guid: 199662c8a35467145b25e800f72f00c8, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -169063,7 +169075,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _behaviorTypes: 32778
   _occupant: {fileID: 0}
-  _exitGate: {fileID: 1614837127}
+  _exitGate: {fileID: 871022110}
 --- !u!1 &1534735421
 GameObject:
   m_ObjectHideFlags: 0
@@ -173252,12 +173264,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2728080195004720406, guid: 199662c8a35467145b25e800f72f00c8, type: 3}
       propertyPath: m_Name
-      value: WindowExit (1)
+      value: WindowExit1
       objectReference: {fileID: 0}
     - target: {fileID: 4456528650963101642, guid: 199662c8a35467145b25e800f72f00c8, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 988059304}
+    - target: {fileID: 4456528650963101642, guid: 199662c8a35467145b25e800f72f00c8, type: 3}
+      propertyPath: m_VersionIndex
+      value: 4419
+      objectReference: {fileID: 0}
     - target: {fileID: 8133102852163926937, guid: 199662c8a35467145b25e800f72f00c8, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.2
@@ -184020,7 +184036,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _behaviorTypes: 32778
   _occupant: {fileID: 0}
-  _exitGate: {fileID: 871022110}
+  _exitGate: {fileID: 1614837127}
 --- !u!1 &1750305579
 GameObject:
   m_ObjectHideFlags: 0

@@ -56,7 +56,7 @@ Transform:
   m_GameObject: {fileID: 854397979052607323}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.075, y: 0, z: 0}
+  m_LocalPosition: {x: 0.7, y: 0, z: 0}
   m_LocalScale: {x: 1.0000002, y: 1, z: 1.0000002}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -418,8 +418,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _barricadeParent: {fileID: 1570246062929502616}
-  _barricadePrefab: {fileID: 1037202061777322091, guid: 1dcde7462d7106449a89c1abb82f4d6d, type: 3}
-  _reinforcedBarricadePrefab: {fileID: 1037202061777322091, guid: 680f5175259165f4eb2720a4f9d8d7f0, type: 3}
+  _barricadePrefab: {fileID: 1037202061777322091, guid: 5aa34c330da4fd44394bdabaa860b3df, type: 3}
+  _reinforcedBarricadePrefab: {fileID: 1037202061777322091, guid: 1dcde7462d7106449a89c1abb82f4d6d, type: 3}
   _isbarricadeEnabled: 1
   _windowPanelPrefab: {fileID: 454933394021031062, guid: ab21d600c42507149a8328957064cd31, type: 3}
   _spawnPoint: {fileID: 1971550958360915932}
