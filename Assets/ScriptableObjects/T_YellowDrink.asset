@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: T_YellowDrink
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   animLength: 1
-  staminaCost: 1
+  staminaCost: 0
   hitImpulse: 10
   dodgeProb: 0
   effect: {fileID: 11400000, guid: c10d8f6b2b9378446b1252a24c947cd4, type: 2}

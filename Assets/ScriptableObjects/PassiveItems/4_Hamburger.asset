@@ -16,8 +16,9 @@ MonoBehaviour:
   name: "\uACE0\uC9C0\uBC29 \uD584\uBC84\uAC70"
   icon: {fileID: 21300000, guid: 1e8d0aec2cc0040478630e0dce73b0f9, type: 3}
   price: 500
-  effect: 
-  description: 
+  effect: "\uB300\uD559\uC6D0\uC0DD \uC774\uB3D9 \uC18D\uB3C4 20% \uAC10\uC18C"
+  description: "\uBE44\uB9CC\uC740 \uAC10\uAE08\uD558\uAE30 \uC88B\uC740 \uC870\uAC74
+    \uC911 \uD558\uB098\uC785\uB2C8\uB2E4."
   rarity: 0
   studMoveSpeedPercent: -0.2
   studStomachScale: 0.5
