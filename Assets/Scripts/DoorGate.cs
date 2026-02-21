@@ -11,10 +11,19 @@ public class DoorGate : ExitGate
     [SerializeField] private float _closeAngle = 0f;    // 닫힐 때의 각도 (보통 0)
     [SerializeField] private float _duration = 1.0f;    // 회전 시간
     [SerializeField] private float _closeDelay = 0.5f;
+    private Vector3 _originalRotation;
 
     private Tween doorTween;
 
     public override ExitGateType GateType => ExitGateType.Door;
+
+
+
+    protected override void Awake()
+    {
+        base.Awake();
+        _originalRotation = _doorPanel.transform.localRotation.eulerAngles;
+    }
 
     private void RotateDoor(bool open)
     {
@@ -25,9 +34,9 @@ public class DoorGate : ExitGate
         _isOpened = open;
 
         float targetAngle = _isOpened ? _openAngle : _closeAngle;
-
-        // DOLocalRotate는 현재 각도에서 목표 각도까지 최단 경로로 계산합니다.
-        doorTween = _doorPanel.transform.DOLocalRotate(new Vector3(0, targetAngle, 0), _duration)
+        Vector3 targetRotation = _originalRotation;
+        targetRotation.y = targetAngle;
+        doorTween = _doorPanel.transform.DOLocalRotate(targetRotation, _duration)
             .SetEase(Ease.OutQuad); // 열릴 때는 OutQuad가 더 자연스럽습니다.
     }
 
