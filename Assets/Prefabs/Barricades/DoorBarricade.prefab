@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5247609736126061602}
+  - component: {fileID: -8075071566965354465}
   m_Layer: 0
   m_Name: DoorBarricade
   m_TagString: Untagged
@@ -25,13 +26,26 @@ Transform:
   m_GameObject: {fileID: 2722315219725000136}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2.849, y: 1.314, z: 4.744}
-  m_LocalScale: {x: 1.0376, y: 1, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4017394429492883952}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &-8075071566965354465
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2722315219725000136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccaab0f4e448a124da3caa04124c9bbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Barricade
+  _breakSD: {fileID: 11400000, guid: d857660391595d0418cf513bfc3f3ad0, type: 2}
 --- !u!1001 &7166660554158805445
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -75,6 +89,10 @@ PrefabInstance:
     - target: {fileID: 4443176187275287954, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
       propertyPath: m_LocalPosition.z
       value: 52.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4971584640518265690, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
+      propertyPath: m_CastShadows
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 6103979756141600821, guid: 27cc7955386447840bade3fe60cdda26, type: 3}
       propertyPath: m_LocalScale.x

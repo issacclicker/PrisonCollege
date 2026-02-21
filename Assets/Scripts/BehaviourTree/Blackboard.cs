@@ -36,8 +36,8 @@ public class Blackboard
         this.StageSpots = spots;
         this.currentState = AIState.Idle;
         soundBehavior = owner.GetComponent<SoundBehavior>();
+        mySeatSpot = owner.GetComponent<PostStudent>()?.SeatSpot;
     }
-
 
 
     public Vector3 destPosition;

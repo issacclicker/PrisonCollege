@@ -1468,12 +1468,54 @@ public class EnableAgentUpdate : BT_Node
     {
         _bb.Agent.updatePosition = true;
         _bb.Agent.updateRotation = true;
-        if (!_bb.Agent.isOnNavMesh)
-        {
-            _bb.Agent.Warp(Utils.SampleNavMesh(_bb.Avatar.position, 500f));
-        }
+        WarpToValidPathRecursive();
+        //if (!_bb.Agent.isOnNavMesh)
+        //{
+        //    _bb.Agent.Warp(Utils.SampleNavMesh(_bb.Avatar.position, 500f));
+        //}
         _bb.Agent.isStopped = false;
         return NodeState.Success;
+    }
+
+
+    public void WarpToValidPathRecursive()
+    {
+        if (_bb.Agent.isOnNavMesh) return;
+
+        Vector3 targetPos = _bb.mySeatSpot.transform.position;
+        float searchRadius = 2.0f;
+        float step = 4.0f;         // 반경 확장 간격을 조금 더 넓게 잡음
+        int maxAttempts = 5;       // 딱 5번만 시도
+        int currentAttempt = 0;
+
+        NavMeshHit hit;
+        NavMeshPath path = new NavMeshPath();
+
+        while (currentAttempt < maxAttempts)
+        {
+            currentAttempt++;
+
+            // 1. 해당 반경 내에서 NavMesh 지점 탐색
+            if (NavMesh.SamplePosition(_bb.Agent.transform.position, out hit, searchRadius, NavMesh.AllAreas))
+            {
+                if (NavMesh.CalculatePath(hit.position, targetPos, NavMesh.AllAreas, path))
+                {
+                    // [베스트] 목적지까지 완벽하게 연결된 경우 바로 워프
+                    if (path.status == NavMeshPathStatus.PathComplete)
+                    {
+                        _bb.Agent.Warp(hit.position);
+                        Debug.Log($"[성공] {currentAttempt}번째 시도(반경 {searchRadius}m)에서 완벽한 경로 발견.");
+                        return;
+                    }
+                }
+            }
+
+            searchRadius += step;
+        }
+
+
+        _bb.Agent.Warp(Utils.SampleNavMesh(targetPos, 5f));
+        Debug.LogWarning($"[차선] 5회 시도 내 완벽한 경로 없음. 가장 가까운 유효 메쉬 지점으로 워프.");
     }
 }
 

@@ -58,7 +58,7 @@ public class WindowGate : ExitGate
         // 1. 창문 생성 (Up 위치)
         _currentWindowInstance = Instantiate(_windowPanelPrefab, _spawnPoint);
         Vector3 targetScale = _boxCollider.size;
-        targetScale.z *= 0.1f;
+        targetScale.x *= 0.1f;
         _currentWindowInstance.transform.localScale = targetScale;
 
         // 2. DOTween으로 목표 위치(Down)까지 내리기
