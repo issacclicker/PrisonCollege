@@ -8116,7 +8116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _barricadeParent: {fileID: 1539761092}
-  _barricadePrefab: {fileID: 1037202061777322091, guid: 5aa34c330da4fd44394bdabaa860b3df, type: 3}
+  _barricadePrefab: {fileID: 1037202061777322091, guid: 680f5175259165f4eb2720a4f9d8d7f0, type: 3}
   _reinforcedBarricadePrefab: {fileID: 1037202061777322091, guid: 1dcde7462d7106449a89c1abb82f4d6d, type: 3}
   _isbarricadeEnabled: 1
   _windowPanelPrefab: {fileID: 454933394021031062, guid: ab21d600c42507149a8328957064cd31, type: 3}
@@ -8636,7 +8636,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _barricadeParent: {fileID: 605496276}
-  _barricadePrefab: {fileID: 1037202061777322091, guid: 5aa34c330da4fd44394bdabaa860b3df, type: 3}
+  _barricadePrefab: {fileID: 1037202061777322091, guid: 680f5175259165f4eb2720a4f9d8d7f0, type: 3}
   _reinforcedBarricadePrefab: {fileID: 1037202061777322091, guid: 1dcde7462d7106449a89c1abb82f4d6d, type: 3}
   _isbarricadeEnabled: 1
   _windowPanelPrefab: {fileID: 454933394021031062, guid: ab21d600c42507149a8328957064cd31, type: 3}
@@ -109833,7 +109833,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _barricadeParent: {fileID: 665654016}
-  _barricadePrefab: {fileID: 1037202061777322091, guid: 5aa34c330da4fd44394bdabaa860b3df, type: 3}
+  _barricadePrefab: {fileID: 1037202061777322091, guid: 680f5175259165f4eb2720a4f9d8d7f0, type: 3}
   _reinforcedBarricadePrefab: {fileID: 1037202061777322091, guid: 1dcde7462d7106449a89c1abb82f4d6d, type: 3}
   _isbarricadeEnabled: 1
   _windowPanelPrefab: {fileID: 454933394021031062, guid: ab21d600c42507149a8328957064cd31, type: 3}
@@ -448291,7 +448291,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _barricadeParent: {fileID: 1092639572}
-  _barricadePrefab: {fileID: 1037202061777322091, guid: 5aa34c330da4fd44394bdabaa860b3df, type: 3}
+  _barricadePrefab: {fileID: 1037202061777322091, guid: 680f5175259165f4eb2720a4f9d8d7f0, type: 3}
   _reinforcedBarricadePrefab: {fileID: 1037202061777322091, guid: 1dcde7462d7106449a89c1abb82f4d6d, type: 3}
   _isbarricadeEnabled: 1
   _windowPanelPrefab: {fileID: 454933394021031062, guid: ab21d600c42507149a8328957064cd31, type: 3}
