@@ -33,7 +33,8 @@ public class LabLightSystem : SceneSingleton<LabLightSystem>
         if (!IsLightsOn) return;
         Debug.Log("LightOff");
         _toggleableLightGroup.SetActive(false);
-        RenderSettings.ambientLight = Color.black;
+        //RenderSettings.ambientLight = Color.black;
+        RenderSettings.ambientLight = new Color(50/255f, 50/255f, 50/255f);
         _reflectionGroup.SetActive(false);
         LightsOffEvent?.Invoke();
     }

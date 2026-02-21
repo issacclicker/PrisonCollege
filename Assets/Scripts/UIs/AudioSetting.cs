@@ -85,7 +85,7 @@ public class AudioSetting : MonoBehaviour
         float bgmVol = PlayerPrefs.GetFloat("BGM", 0.5f);
         float sfxVol = PlayerPrefs.GetFloat("SFX", 0.5f);
 
-        float boost = 5f;
+        float boost = 10f;
 
         float masterValue = (Mathf.Log10(Mathf.Max(0.0001f, masterVol)) * 20) + boost;
         float bgmValue = (Mathf.Log10(Mathf.Max(0.0001f, bgmVol)) * 20) + boost;
