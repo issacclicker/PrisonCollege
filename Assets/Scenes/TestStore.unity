@@ -26939,10 +26939,10 @@ MonoBehaviour:
   _daySkybox: {fileID: 2100000, guid: 85cf0b004bc4a654b9e501efcce47902, type: 2}
   _nightSkybox: {fileID: 2100000, guid: 2039a0ad0a9d05549928b70362f54902, type: 2}
   waveEntries:
-  - behaviorWeightSet: {fileID: 11400000, guid: 1591aace07a5be841b34c0f1bf14467d, type: 2}
+  - behaviorWeightSet: {fileID: 11400000, guid: b1de2042e8f600c46970862dd54d2639, type: 2}
     dayState: 0
     explanation: 
-    enforceProb: 0.5
+    enforceProb: 0.2
     isEndWithArena: 1
   - behaviorWeightSet: {fileID: 11400000, guid: ce046bb6febef6142b878691527993c1, type: 2}
     dayState: 1
@@ -28511,27 +28511,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56e616fcfd259f6478f0bef84550042b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  _stageNumber: 2
+  _stageNumber: 3
   _stageEntries:
   - number: 1
     name: "\uAE30\uCD08 \uAC10\uAE08\uD559"
     maxClearDifficulty: 0
     isLocked: 0
-    sprite: {fileID: 21300000, guid: ec1532176827f7d4c88b509d61b69818, type: 3}
+    sprite: {fileID: 21300000, guid: 531097cec8dbe9a42b52c27694ef007d, type: 3}
   - number: 2
     name: "\uAD6C\uAE08\uAD00\uB9AC \uC2E4\uC2B5"
     maxClearDifficulty: 0
     isLocked: 0
-    sprite: {fileID: 21300000, guid: ec1532176827f7d4c88b509d61b69818, type: 3}
+    sprite: {fileID: 21300000, guid: b5c430d60e4330740b28298082ddc1c0, type: 3}
   - number: 3
     name: "\uBCD1\uB82C\uAC10\uC625\uC2DC\uC2A4\uD15C"
     maxClearDifficulty: 0
     isLocked: 1
-    sprite: {fileID: 21300000, guid: ec1532176827f7d4c88b509d61b69818, type: 3}
+    sprite: {fileID: 21300000, guid: 4680ccb0a6bd7b94ebb03ae2829f248f, type: 3}
   audioSetting: {fileID: 454650055}
   _mainScreen: MainScene
   _stagePrepare: StagePrepare
-  _stagePrefix: Stage
+  _stagePrefix: SStage
   _store: Store
   _arena: Arena
   _testStart: TestStore

@@ -32,6 +32,7 @@ public class WaveSystem : PersistentSingleton<WaveSystem>
     private float _chaosFactor = 0;
     private float _projectFactor = 0;
 
+    public DayState CurrentDayState => _currentDayState;
     public int CurrentWave => _currentWave;
     public BehaviorWeightSet BehaviorWeightSet => waveEntries[_currentWave - 1].behaviorWeightSet;
     public float ChaosFactor => _chaosFactor;

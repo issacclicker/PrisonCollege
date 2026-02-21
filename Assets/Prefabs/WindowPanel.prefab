@@ -13,8 +13,8 @@ GameObject:
   - component: {fileID: 4517932170352695203}
   - component: {fileID: 7339410148808792346}
   - component: {fileID: 1364556220626675315}
-  - component: {fileID: 3966381926171659663}
-  m_Layer: 16
+  - component: {fileID: -5579820247112039312}
+  m_Layer: 0
   m_Name: WindowPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -157,7 +157,7 @@ MonoBehaviour:
     - {x: 0.57735026, y: 0.57735026, z: -0.57735026}
     - {x: 0.57735026, y: 0.57735026, z: 0.57735026}
     - {x: 0.57735026, y: -0.57735026, z: 0.57735026}
---- !u!114 &3966381926171659663
+--- !u!114 &-5579820247112039312
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

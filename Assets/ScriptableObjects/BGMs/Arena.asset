@@ -16,4 +16,4 @@ MonoBehaviour:
   - bgmTitle: 
     clip: {fileID: 8300000, guid: 4f82122e4c5d2ef49843af35baa25c07, type: 3}
     volumeMultiplier: 1
-  baseVolume: 0.2
+  baseVolume: 0.3

@@ -52,7 +52,7 @@ public class FuseBox : MonoBehaviour
         _redLight.enabled = true;
         _particleParent.gameObject.SetActive(true);
         _redLight.intensity = 0f;
-        _blinkTween = _redLight.DOIntensity(1, 0.5f)
+        _blinkTween = _redLight.DOIntensity(8, 0.5f)
             .SetLoops(-1, LoopType.Yoyo) // 무한 반복(-1), 왔다 갔다(Yoyo)
             .SetEase(Ease.InOutSine);    // 부드럽게 깜빡임 (취향껏 변경 가능)
     }

@@ -62,6 +62,9 @@ public class StageController : SceneSingleton<StageController>
     [SerializeField] private StageOver _stageOver;
     [SerializeField] private ChaosUI _chaosUi;
     [SerializeField] private bool _isTestMode = true;
+    [Header("Directional Lights")]
+    [SerializeField] private GameObject _sunLightObject;
+    [SerializeField] private GameObject _moonLightObject;
     [Header("Sound Datas")]
     [SerializeField] private SoundData _moneyGainSD;
 
@@ -125,6 +128,9 @@ public class StageController : SceneSingleton<StageController>
     {
         StartPrepare();
         WaveSystem.Instance.ApplySkybox();
+        bool isDay = WaveSystem.Instance.CurrentDayState == WaveSystem.DayState.Day;
+        _sunLightObject.SetActive(isDay);
+        _moonLightObject.SetActive(!isDay);
         if (GameManager.Instance.Difficulty == DifficultyLevel.Hard)
         {
             _chaosStat.Increase(100);

@@ -45,6 +45,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5dbac8d73d3b54043a80f6c02b104e76, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundEmitter
+  _sfxGroup: {fileID: 0}
+  _bgmGroup: {fileID: 0}
+  ReturnEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!82 &4032790294356489560
 AudioSource:
   m_ObjectHideFlags: 0
@@ -117,7 +122,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0.055555556
+      value: 0.027777778
       inSlope: 0
       outSlope: 0
       tangentMode: 0
