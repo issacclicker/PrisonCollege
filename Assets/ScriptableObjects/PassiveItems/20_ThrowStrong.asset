@@ -15,9 +15,12 @@ MonoBehaviour:
   id: 20
   name: "\uAE00\uB7EC\uBE0C"
   icon: {fileID: 21300000, guid: 96d3b0f37bea63f4592e16403c3d3283, type: 3}
-  price: 60
-  effect: 
-  description: 
+  price: 400
+  effect: "<color=green>\uD22C\uCC99\uBB34\uAE30 \uD22C\uCC99\uB825 +100%\r\n\uD22C\uCC99
+    \uBB34\uAE30 \uACF5\uACA9\uB825 +50%"
+  description: "\uC720\uBA85\uD55C \uD22C\uC218\uAC00 \uC4F0\uB358 \uAE00\uB7EC\uBE0C\uC785\uB2C8\uB2E4.
+    \uD22C\uC218\uC758 \uD798\uC774 \uAD50\uC218\uB2D8\uAED8 \uC804\uD574\uC9C0\uB294
+    \uAC83 \uAC19\uC2B5\uB2C8\uB2E4."
   rarity: 0
   throwVelocityPercent: 1
-  throwDamagePercent: 1
+  throwDamagePercent: 0.5

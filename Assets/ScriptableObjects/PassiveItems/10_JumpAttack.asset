@@ -15,9 +15,12 @@ MonoBehaviour:
   id: 0
   name: "\uC6B4\uB3D9\uC5ED\uD559 \uAC1C\uB860"
   icon: {fileID: 21300000, guid: ae830ddda6a26a2448891256346dbef6, type: 3}
-  price: 400
-  effect: 
-  description: 
+  price: 200
+  effect: "<color=green>\uC810\uD504 \uC911 \uADFC\uC811 \uACF5\uACA9\uB825 +150%\n\uC810\uD504
+    \uC2A4\uD14C\uBBF8\uB098 \uC18C\uBAA8 \uC5C6\uC74C"
+  description: "\uCC45\uC0C1\uC5D0 \uC549\uAE30\uB9CC \uD588\uB358 \uAD50\uC218\uB2D8\uC774
+    \uC6B4\uB3D9\uC758 \uAE30\uCD08\uB97C \uC774\uD574\uD588\uC2B5\uB2C8\uB2E4. \uC911\uB825\uC740
+    \uCD5C\uACE0\uC758 \uC5D0\uB108\uC9C0\uC785\uB2C8\uB2E4."
   rarity: 0
   jumpDamageScale: 1.5
   isZeroJumpStamina: 1
