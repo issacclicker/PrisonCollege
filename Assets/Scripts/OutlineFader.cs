@@ -37,6 +37,7 @@ public class OutlineFader : MonoBehaviour
 
         // 외곽선 초기 상태를 투명으로 설정
         _outline.OutlineColor = _transparentColor;
+        _outline.OutlineWidth = 20;
 
         _fadeSequence = DOTween.Sequence()
             .Append(DOTween.To(() => _outline.OutlineColor, x => {

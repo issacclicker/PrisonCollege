@@ -28511,7 +28511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56e616fcfd259f6478f0bef84550042b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  _stageNumber: 1
+  _stageNumber: 3
   _stageEntries:
   - number: 1
     name: "\uAE30\uCD08 \uAC10\uAE08\uD559"
