@@ -1004,7 +1004,6 @@ public class TakeHitPattern : PatternNode
             new RandomSelector(new List<BT_Node>
             {
                 new PlayOnceAnim("OnHit", "OnHit", 5),
-                new PlayOnceAnim("OnHit2", "OnHit2", 5),
                 new PlayOnceAnim("OnHit3", "OnHit3", 5),
             }),
             new ActionNode(() => _bb.isDamaged = false, NodeState.Success),
