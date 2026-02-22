@@ -4,11 +4,13 @@ using UnityEngine;
 public class CoopSpot2 : SingleStudentSpot
 {
     [SerializeField] private CoopPartSpot _opponentSpot;
+    [SerializeField] private SoundData _talkingSD;
     private ParticipantInfo _participantInfo1;
     private ParticipantInfo _participantInfo2;
     private BehaviorType _coopType;
     private bool _isExecuting;
     private float _remainedExecuteTime;
+    private SoundEmitter _talkingEmitter;
 
     public override bool IsUsable => base.IsUsable && _opponentSpot.IsUsable;
 
@@ -92,6 +94,8 @@ public class CoopSpot2 : SingleStudentSpot
         }
         else if (_coopType == BehaviorType.Talk)
         {
+            Vector3 talkingPos = (transform.position + _opponentSpot.transform.position) / 2f + Vector3.up * 1.5f;
+            _talkingEmitter = SoundUtils.PlayOwnedScene3DSFX(_talkingSD, talkingPos, true, 1, true);
             _participantInfo1.actor.GetComponent<PostStudent>().Blackboard.ExecuteTalk2();
             _participantInfo2.actor.GetComponent<PostStudent>().Blackboard.ExecuteTalk2();
         }
@@ -138,6 +142,7 @@ public class CoopSpot2 : SingleStudentSpot
     private void BreakUpCoop()
     {
         if (_coopType == BehaviorType.None) return;
+        _talkingEmitter?.StopAndReturn();
         _coopType = BehaviorType.None;
         _isExecuting = false;
         _participantInfo1?.actor.GetComponent<PostStudent>().Blackboard.SecadeCoop2();
@@ -146,5 +151,16 @@ public class CoopSpot2 : SingleStudentSpot
         _coopType = BehaviorType.None;
         _participantInfo1 = null;
         _participantInfo2 = null;
+    }
+
+
+    private void OnDisable()
+    {
+        _talkingEmitter?.StopAndReturn();
+    }
+
+    private void OnDestroy()
+    {
+        _talkingEmitter?.StopAndReturn();
     }
 }

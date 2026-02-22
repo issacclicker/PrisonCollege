@@ -58234,6 +58234,7 @@ MonoBehaviour:
   _behaviorTypes: 1056
   _occupant: {fileID: 0}
   _opponentSpot: {fileID: 1283675435}
+  _talkingSD: {fileID: 11400000, guid: c6f2cffed06b8e349b4e6d689ecf0ad3, type: 2}
 --- !u!114 &221791137
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -188690,6 +188691,7 @@ MonoBehaviour:
   _behaviorTypes: 1056
   _occupant: {fileID: 0}
   _opponentSpot: {fileID: 188014741}
+  _talkingSD: {fileID: 11400000, guid: c6f2cffed06b8e349b4e6d689ecf0ad3, type: 2}
 --- !u!114 &1147102939
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -293685,6 +293687,7 @@ MonoBehaviour:
   _behaviorTypes: 1056
   _occupant: {fileID: 0}
   _opponentSpot: {fileID: 516946945}
+  _talkingSD: {fileID: 11400000, guid: c6f2cffed06b8e349b4e6d689ecf0ad3, type: 2}
 --- !u!114 &1565051921
 MonoBehaviour:
   m_ObjectHideFlags: 0
