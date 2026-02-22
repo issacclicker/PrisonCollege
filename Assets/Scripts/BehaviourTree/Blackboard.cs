@@ -31,6 +31,7 @@ public class Blackboard
         this.Avatar = owner.transform;
         this.Player = player;
         this.coopData = new();
+        this.coopData2 = new();
 
         this.BehaviorWeightSet = weightSet;
         this.StageSpots = spots;
@@ -59,6 +60,7 @@ public class Blackboard
     public bool isForceBehavior;
 
     public CoopData coopData;
+    public CoopData2 coopData2;
 
     public SoundBehavior soundBehavior;
 
@@ -76,7 +78,7 @@ public class Blackboard
     //    //&& destBehavior != BehaviorType.Fight;
 
 
-    public bool CanCoop => coopData.spot == null && destBehavior.GetSafety() == BehaviorSafety.Safe && targetObject == null && !isForceBehavior && isEscaping == false;
+    public bool CanCoop => coopData2.spot == null && destBehavior.GetSafety() == BehaviorSafety.Safe && targetObject == null && !isForceBehavior && !isEscaping && !hasToWork && Avatar.GetComponent<PostStudent>().Root != null;
 
 
 
@@ -131,6 +133,39 @@ public class Blackboard
     {
         coopData.spot = null;
     }
+
+
+
+    public void InviteCoop2(SingleStudentSpot spot, BehaviorType type)
+    {
+        coopData2.spot = spot;
+        coopData2.type = type;
+    }
+
+    public void ExecuteFight2(GameObject targetObject = null)
+    {
+        coopData2.targetObject = targetObject;
+        coopData2.isExecuting = true;
+    }
+
+    public void ExecuteTalk2()
+    {
+        coopData2.targetAnimName = "Talking";
+        coopData2.isExecuting = true;
+    }
+
+    public void SecadeCoop2()
+    {
+        if (coopData2.spot != null && coopData2.spot == destSpot)
+        {
+            destSpot.Release(Avatar.GetComponent<PostStudent>());
+        }
+        coopData2.spot = null;
+        coopData2.type = BehaviorType.None;
+        coopData2.isExecuting = false;
+        coopData2.targetObject = null;
+        coopData2.targetAnimName = null;
+    }
 }
 
 
@@ -142,6 +177,17 @@ public struct CoopData
     public bool isLeader;              // "Leader" 또는 "Follower"
     public int slotIndex;            // 배정된 자리 번호 (0, 1, 2...)
     public bool isExecuting;         // 실행 중인지 여부
+    public GameObject targetObject;
+    public string targetAnimName;
+}
+
+
+
+public struct CoopData2
+{
+    public SingleStudentSpot spot; // 협동 지점
+    public BehaviorType type;
+    public bool isExecuting;
     public GameObject targetObject;
     public string targetAnimName;
 }

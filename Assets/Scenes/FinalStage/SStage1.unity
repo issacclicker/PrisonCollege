@@ -7895,7 +7895,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 134408594}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Floors
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10273,6 +10273,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 891641117856956869, guid: 1b269f1b1d471304ba2924ae6154f499, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1351415112723906200, guid: 1b269f1b1d471304ba2924ae6154f499, type: 3}
       propertyPath: m_Name
       value: DoorExit
@@ -10281,12 +10285,24 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 13
       objectReference: {fileID: 0}
+    - target: {fileID: 1351415112723906200, guid: 1b269f1b1d471304ba2924ae6154f499, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1880134458415911298, guid: 1b269f1b1d471304ba2924ae6154f499, type: 3}
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1880134458415911298, guid: 1b269f1b1d471304ba2924ae6154f499, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1933862362121481764, guid: 1b269f1b1d471304ba2924ae6154f499, type: 3}
       propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1933862362121481764, guid: 1b269f1b1d471304ba2924ae6154f499, type: 3}
+      propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4948423501773535490, guid: 1b269f1b1d471304ba2924ae6154f499, type: 3}
@@ -10333,16 +10349,32 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5377883778598785090, guid: 1b269f1b1d471304ba2924ae6154f499, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6550610952567221011, guid: 1b269f1b1d471304ba2924ae6154f499, type: 3}
       propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6550610952567221011, guid: 1b269f1b1d471304ba2924ae6154f499, type: 3}
+      propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6890688984635222144, guid: 1b269f1b1d471304ba2924ae6154f499, type: 3}
       propertyPath: m_Layer
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6890688984635222144, guid: 1b269f1b1d471304ba2924ae6154f499, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6969453843674675943, guid: 1b269f1b1d471304ba2924ae6154f499, type: 3}
       propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6969453843674675943, guid: 1b269f1b1d471304ba2924ae6154f499, type: 3}
+      propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -129522,7 +129554,7 @@ GameObject:
   - component: {fileID: 1249796924}
   - component: {fileID: 1249796923}
   - component: {fileID: 1249796929}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -161524,7 +161556,7 @@ GameObject:
   - component: {fileID: 1435369317}
   - component: {fileID: 1435369316}
   - component: {fileID: 1435369322}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: Floor_sub
   m_TagString: Untagged
   m_Icon: {fileID: 0}
