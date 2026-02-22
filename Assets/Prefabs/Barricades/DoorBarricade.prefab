@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5247609736126061602}
+  - component: {fileID: 1468992709553032824}
   m_Layer: 0
   m_Name: DoorBarricade
   m_TagString: Untagged
@@ -34,6 +35,19 @@ Transform:
   - {fileID: 6623399906790896009}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1468992709553032824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2722315219725000136}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccaab0f4e448a124da3caa04124c9bbc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Barricade
+  _breakSD: {fileID: 11400000, guid: d857660391595d0418cf513bfc3f3ad0, type: 2}
 --- !u!1001 &6656797858326189666
 PrefabInstance:
   m_ObjectHideFlags: 0
