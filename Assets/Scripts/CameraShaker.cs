@@ -63,8 +63,8 @@ public class CameraShaker : SceneSingleton<CameraShaker>
         //_mainCamera.transform.parent.DOKill(true);
         //_weaponCamera.transform.DOKill(true);
         //_mainCamera.transform.DOShakePosition(0.1f, amount * _meleeShakePosAmount, 80, 90).SetRelative(true);
-        _mainCamera.transform.parent.DOShakeRotation(0.15f, amount * _meleeShakeRotAmount, 80, 90).SetRelative(true).SetUpdate(UpdateType.Late);
+        _mainCamera.transform.parent.DOShakeRotation(0.15f, amount * _meleeShakeRotAmount / 4, 80, 90).SetRelative(true).SetUpdate(UpdateType.Late);
         //_weaponCamera.transform.DOShakePosition(0.1f, amount * _meleeShakePosAmount * _weaponCameraShakeAmount, 60, 90).SetRelative(true);
-        _weaponCamera.transform.DOShakeRotation(0.15f, amount * _meleeShakeRotAmount * _weaponCameraShakeAmount, 60, 90).SetRelative(true).SetUpdate(UpdateType.Late);
+        _weaponCamera.transform.DOShakeRotation(0.15f, amount * _meleeShakeRotAmount * _weaponCameraShakeAmount / 4, 60, 90).SetRelative(true).SetUpdate(UpdateType.Late);
     }
 }

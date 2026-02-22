@@ -500,7 +500,7 @@ public class FirstPersonController : MonoBehaviour
     {
         mouseSensitivity = PlayerPrefs.GetFloat("MouseSensitivity", 3.0f);
         fov = PlayerPrefs.GetFloat("FOV", 80f);
-        sprintFOV = fov + 15f;
+        sprintFOV = fov + 10f;
         playerCamera.fieldOfView = fov;
         holdToSprint = PlayerPrefs.GetInt("SprintMode", 0) == 1;
     }

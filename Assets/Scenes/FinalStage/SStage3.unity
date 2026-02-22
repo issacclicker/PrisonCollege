@@ -126601,6 +126601,38 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1405889160}
   m_CullTransparentMesh: 1
+--- !u!1 &1407884812
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1407884813}
+  m_Layer: 0
+  m_Name: ShakePivot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1407884813
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1407884812}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 2130155697}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1411230552
 GameObject:
   m_ObjectHideFlags: 0
@@ -182885,7 +182917,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.06666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: c58673d33e0175f42a16bec553bcc6fa, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 8abb306f6ee1be34aa5a0c004442b460, type: 2}
   m_BuildHeightMesh: 0
 --- !u!1 &1713213158
 GameObject:
@@ -213710,7 +213742,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1407884813}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2130933734
 GameObject:
@@ -214778,7 +214810,6 @@ SceneRoots:
   - {fileID: 1044550454}
   - {fileID: 1466446115}
   - {fileID: 1272975392}
-  - {fileID: 2130155697}
   - {fileID: 371194771}
   - {fileID: 653745270}
   - {fileID: 148134080}
@@ -214797,3 +214828,4 @@ SceneRoots:
   - {fileID: 784979960}
   - {fileID: 1917423286}
   - {fileID: 1454568087}
+  - {fileID: 1407884813}
