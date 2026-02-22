@@ -46,10 +46,20 @@ public class ExitGate : MonoBehaviour
     private void Start()
     {
         _targetBarricadePrefab = AttributeSystem.Instance.IsMetalBarricade ? _reinforcedBarricadePrefab : _barricadePrefab;
-        if (_isbarricadeEnabled)
-            PlaceBarricade();
-        else
+        if (!_isbarricadeEnabled)
             BreakBarricade();
+        else
+        {
+            float randValue = UnityEngine.Random.value;
+            if (randValue < 0.5f)
+            {
+                BreakBarricade();
+            }
+            else
+            {
+                PlaceBarricade();
+            }
+        }
     }
 
 
