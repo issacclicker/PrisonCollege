@@ -525,7 +525,13 @@ public class CoopPattern : PatternNode
 
                 new Sequence(new List<BT_Node>
                 {
-                    new SetAnimBool("Talking", true),
+                    new RandomSelector(new List<BT_Node>
+                    {
+                        new SetAnimBool("Talking1", true),
+                        new SetAnimBool("Talking2", true),
+                        new SetAnimBool("Talking3", true),
+                        new SetAnimBool("Talking4", true),
+                    }),
                     new ActionNode(null, NodeState.Running),
                 })
             })
@@ -998,8 +1004,8 @@ public class TakeHitPattern : PatternNode
             new RandomSelector(new List<BT_Node>
             {
                 new PlayOnceAnim("OnHit", "OnHit", 5),
-                //new PlayOnceAnim("OnHit2", "OnHit2", 5),
-                //new PlayOnceAnim("OnHit3", "OnHit3", 5),
+                new PlayOnceAnim("OnHit2", "OnHit2", 5),
+                new PlayOnceAnim("OnHit3", "OnHit3", 5),
             }),
             new ActionNode(() => _bb.isDamaged = false, NodeState.Success),
         });
