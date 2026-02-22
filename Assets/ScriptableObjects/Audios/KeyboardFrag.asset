@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 547f331dd14f9c4458ddf1bddbf9956b, type: 3}
-  m_Name: BatHit
+  m_Name: KeyboardFrag
   m_EditorClassIdentifier: Assembly-CSharp::SoundData
   soundInfos:
-  - clip: {fileID: 8300000, guid: a0b2b56a47e431e4a827d077ffcefa20, type: 3}
+  - clip: {fileID: 8300000, guid: 59118934f8ed7cc42ad2778a48a42ec2, type: 3}
     volumeMultiplier: 1
-  baseVolume: 0.7
+  baseVolume: 0.4

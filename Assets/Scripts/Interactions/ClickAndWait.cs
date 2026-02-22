@@ -7,6 +7,7 @@ public class ClickAndWait : MonoBehaviour, IPlayerInteractable
 {
     [SerializeField] private string _actionName = "상호작용";
     [SerializeField] private SoundData _activeSD;
+    [SerializeField] private SoundData _completeSD;
 
     private Progress _progress;
     private bool _isInteractable = true;
@@ -28,7 +29,7 @@ public class ClickAndWait : MonoBehaviour, IPlayerInteractable
     {
         _progress = GetComponent<Progress>();
         _progress.Initialize(true);
-        _progress.MaxReachEvent.AddListener(() => ProgressCompleteEvent?.Invoke());
+        _progress.MaxReachEvent.AddListener(() => { SoundUtils.PlayScene2DSFX(_completeSD); ProgressCompleteEvent?.Invoke(); });
 
         if (gameObject.GetComponent<ExitGate>() != null)
         {

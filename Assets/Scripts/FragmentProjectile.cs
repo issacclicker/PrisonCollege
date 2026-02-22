@@ -9,6 +9,7 @@ public class FragmentProjectile : Projectile
     [SerializeField] private float _spreadForce = 2f; // 파편이 사방으로 퍼지는 추가 힘
     [SerializeField] private ParticleSystem _fregmentParticle;
     [SerializeField] private Stat _fragmentDistanceStat;
+    [SerializeField] private SoundData _fragmentSD;
     private Vector3 _lastPosition;
 
 
@@ -80,7 +81,7 @@ public class FragmentProjectile : Projectile
         // 3. 발사체 본체 삭제 및 카메라 셰이크 (선택)
         // Camera.main.transform.DOComplete();
         // Camera.main.transform.DOShakePosition(0.25f, 1.5f);
-
+        SoundUtils.PlayScene3DSFX(_fragmentSD, transform.position);
         Destroy(gameObject);
     }
 

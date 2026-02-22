@@ -8026,6 +8026,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ClickAndWait
   _actionName: "\uCC3D\uBB38 \uB9C9\uAE30"
   _activeSD: {fileID: 11400000, guid: d54bb3e8746079745bc8e87f5d11d189, type: 2}
+  _completeSD: {fileID: 11400000, guid: b201f673a91aa0147a7d48e1bf767e0c, type: 2}
   ProgressStartEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -8613,6 +8614,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ClickAndWait
   _actionName: "\uCC3D\uBB38 \uB9C9\uAE30"
   _activeSD: {fileID: 11400000, guid: d54bb3e8746079745bc8e87f5d11d189, type: 2}
+  _completeSD: {fileID: 11400000, guid: b201f673a91aa0147a7d48e1bf767e0c, type: 2}
   ProgressStartEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -110953,6 +110955,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ClickAndWait
   _actionName: "\uCC3D\uBB38 \uB9C9\uAE30"
   _activeSD: {fileID: 11400000, guid: d54bb3e8746079745bc8e87f5d11d189, type: 2}
+  _completeSD: {fileID: 11400000, guid: b201f673a91aa0147a7d48e1bf767e0c, type: 2}
   ProgressStartEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -204050,6 +204053,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ClickAndWait
   _actionName: "\uBB38 \uB9C9\uAE30"
   _activeSD: {fileID: 0}
+  _completeSD: {fileID: 0}
   ProgressStartEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -268775,6 +268779,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ClickAndWait
   _actionName: "\uBB38 \uB9C9\uAE30"
   _activeSD: {fileID: 0}
+  _completeSD: {fileID: 0}
   ProgressStartEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -294217,6 +294222,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ClickAndWait
   _actionName: "\uBB38 \uB9C9\uAE30"
   _activeSD: {fileID: 0}
+  _completeSD: {fileID: 0}
   ProgressStartEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -452432,6 +452438,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ClickAndWait
   _actionName: "\uCC3D\uBB38 \uB9C9\uAE30"
   _activeSD: {fileID: 11400000, guid: d54bb3e8746079745bc8e87f5d11d189, type: 2}
+  _completeSD: {fileID: 11400000, guid: b201f673a91aa0147a7d48e1bf767e0c, type: 2}
   ProgressStartEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -502401,6 +502408,10 @@ PrefabInstance:
       propertyPath: _activeSD
       value: 
       objectReference: {fileID: 11400000, guid: b052537a8fb9d8f40b457c3055554c39, type: 2}
+    - target: {fileID: 9006283077561267347, guid: cf45156cad4ce4447a32381cc460aad7, type: 3}
+      propertyPath: _completeSD
+      value: 
+      objectReference: {fileID: 11400000, guid: 3845b8db6cd5d0346b44192284d97b36, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
@@ -507452,6 +507463,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ClickAndWait
   _actionName: "\uBB38 \uB9C9\uAE30"
   _activeSD: {fileID: 11400000, guid: d54bb3e8746079745bc8e87f5d11d189, type: 2}
+  _completeSD: {fileID: 11400000, guid: b201f673a91aa0147a7d48e1bf767e0c, type: 2}
   ProgressStartEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -515313,6 +515325,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ClickAndWait
   _actionName: "\uBB38 \uB9C9\uAE30"
   _activeSD: {fileID: 11400000, guid: d54bb3e8746079745bc8e87f5d11d189, type: 2}
+  _completeSD: {fileID: 11400000, guid: b201f673a91aa0147a7d48e1bf767e0c, type: 2}
   ProgressStartEvent:
     m_PersistentCalls:
       m_Calls: []
