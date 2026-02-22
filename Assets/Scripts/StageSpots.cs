@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static Utils;
 
 public class StageSpots : MonoBehaviour
 {
@@ -13,8 +14,31 @@ public class StageSpots : MonoBehaviour
 
     private void Awake()
     {
-        _allBehaveSpots = _spotParent.GetComponentsInChildren<BehaveSpot>().ToList();
+        //_allBehaveSpots = _spotParent.GetComponentsInChildren<BehaveSpot>().ToList();
+        _allBehaveSpots = GetBehaviorSpots();
         InitializeBehaveSpotsMap();
+    }
+
+
+
+    private List<BehaveSpot> GetBehaviorSpots()
+    {
+        List<BehaveSpot> behaviorSpots = new();
+        foreach (Transform child in transform)
+        {
+            BehaveSpot[] childBehaviorSpots = child.GetComponentsInChildren<BehaveSpot>();
+            if (child.name.Equals("Normals") || child.name.Equals("Coops"))
+            {
+                int randomCount = childBehaviorSpots.Length / 3;
+                BehaveSpot[] randomSpots = childBehaviorSpots.GetRandomElements(randomCount);
+                behaviorSpots.AddRange(randomSpots.ToList());
+            }
+            else
+            {
+                behaviorSpots.AddRange(childBehaviorSpots.ToList());
+            }
+        }
+        return behaviorSpots;
     }
 
 
