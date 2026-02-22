@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1874258638132283157}
-  - component: {fileID: -579969033226845469}
+  - component: {fileID: 4586278858650354819}
   m_Layer: 0
   m_Name: BigWindowBarricade
   m_TagString: Untagged
@@ -38,7 +38,7 @@ Transform:
   - {fileID: 1283499687906180702}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!114 &-579969033226845469
+--- !u!114 &4586278858650354819
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

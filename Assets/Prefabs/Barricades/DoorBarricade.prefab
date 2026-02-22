@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5247609736126061602}
-  - component: {fileID: 7760488516027961109}
+  - component: {fileID: 1468992709553032824}
   m_Layer: 0
   m_Name: DoorBarricade
   m_TagString: Untagged
@@ -35,7 +35,7 @@ Transform:
   - {fileID: 6623399906790896009}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &7760488516027961109
+--- !u!114 &1468992709553032824
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
