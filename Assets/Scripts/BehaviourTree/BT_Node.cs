@@ -1249,9 +1249,11 @@ public class SetSpecificBehavior : BT_Node
     public override NodeState Evaluate()
     {
         // 1. 예외 조건: 현재 이미 그 행동을 하고 있거나, 이전 행동과 같다면 실패 처리 (무한 루프 방지)
+        //if (_targetType == BehaviorType.None ||
+        //    _targetType == _bb.destBehavior ||
+        //    _targetType == _bb.prevBehavior)
         if (_targetType == BehaviorType.None ||
-            _targetType == _bb.destBehavior ||
-            _targetType == _bb.prevBehavior)
+            _targetType == _bb.destBehavior)
         {
             return NodeState.Failure;
         }

@@ -547,7 +547,7 @@ public class CoopReactivePattern : PatternNode
     {
         _patternRoot = new ReactiveSelector(new List<BT_Node>
         {
-            new ConditionDecorator(() => _bb.coopData2.spot != null, new CoopPattern()),
+            new ConditionDecorator(() => _bb.coopData2.spot != null && !_bb.isForceBehavior, new CoopPattern()),
             new Sequence(new List<BT_Node> { new ActionNode(() => _bb.SecadeCoop2()), normalRoutine}),
         });
     }
@@ -696,7 +696,14 @@ public class WorkPattern : PatternNode
 
         _patternRoot = new Sequence(new List<BT_Node>
         {
-            new SetRandomSpeedPattern(),
+            new Selector(new List<BT_Node>
+            {
+                // 강제 모드면 아무것도 안 하고 바로 Success (이미 결정된 행동 유지)
+                new ConditionDecorator(() => _bb.isForceBehavior,
+                    new SetSpeed(() => 5.27f)),
+                new SetRandomSpeedPattern(),
+            }),
+            //new SetRandomSpeedPattern(),
             new MoveToSpot(),
             new RotateToSpot(),
             new SetAnimBool("Sitting", true),
