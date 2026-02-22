@@ -12399,7 +12399,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 349002a57e48f62439f268876d8d7c39, type: 2}
   - {fileID: 11400000, guid: f142abbb6aee09c40b9b1cce2b2d7f9a, type: 2}
   _equipLimit: 4
-  _money: 3200
+  _money: 0
   _equipedItemList: []
 --- !u!4 &656744284
 Transform:

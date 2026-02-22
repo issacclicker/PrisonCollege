@@ -790,6 +790,7 @@ public class BoostReactivePattern : PatternNode
             new ConditionDecorator(() => _bb.hasToWork && !_bb.isForceBehavior && _bb.isEscaping == false,
                 new Sequence(new List<BT_Node>
                 {
+                    //new ActionNode(() => _bb.SecadeCoop2()),
                     new PrintDebug("hasToWork"),
                     new SetSpecificBehavior(BehaviorType.Work),
                     new ActionNode(() =>
@@ -802,6 +803,7 @@ public class BoostReactivePattern : PatternNode
             new ConditionDecorator(() => _bb.hasToFrenzy && _bb.isEscaping == false,
                 new Sequence(new List<BT_Node>
                 {
+                    new ActionNode(() => _bb.SecadeCoop2()),
                     new PrintDebug("hasToFrenzy"),
                     new ResetAnimParameters(),
                     new SetAttackTarget(() =>_bb.Player),
