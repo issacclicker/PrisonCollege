@@ -69,11 +69,11 @@ public class AnimAttack : MonoBehaviour
                     ExitGate exitGate = hitObject.GetComponent<ExitGate>();
                     if (exitGate && exitGate.IsUpgraded)
                     {
-                        PlayScene3DSFX(_metalHitSD, hitInfo.hitPoint);
+                        PlayScene3DSFX(_metalHitSD, hitInfo.hitPoint, isLongDistance: true);
                     }
                     else
                     {
-                        PlayScene3DSFX(_woodHitSD, hitInfo.hitPoint);
+                        PlayScene3DSFX(_woodHitSD, hitInfo.hitPoint, isLongDistance: true);
                     }
                 }
             }

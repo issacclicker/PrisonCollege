@@ -49,17 +49,19 @@ public class ExitGate : MonoBehaviour
         if (!_isbarricadeEnabled)
             BreakBarricade();
         else
-        {
-            float randValue = UnityEngine.Random.value;
-            if (randValue < 0.5f)
-            {
-                BreakBarricade();
-            }
-            else
-            {
-                PlaceBarricade();
-            }
-        }
+            PlaceBarricade();
+        //else
+        //{
+        //    float randValue = UnityEngine.Random.value;
+        //    if (randValue < 0.5f)
+        //    {
+        //        BreakBarricade();
+        //    }
+        //    else
+        //    {
+        //        PlaceBarricade();
+        //    }
+        //}
     }
 
 
@@ -77,7 +79,7 @@ public class ExitGate : MonoBehaviour
     private void OnHealthDepleted()
     {
         if (_barricadePlaced == null) return;
-        SoundUtils.PlayScene3DSFX(_barricadePlaced.GetComponent<Barricade>().BreakSD, transform.position);
+        SoundUtils.PlayScene3DSFX(_barricadePlaced.GetComponent<Barricade>().BreakSD, transform.position, isLongDistance: true);
         BreakBarricade();
     }
 

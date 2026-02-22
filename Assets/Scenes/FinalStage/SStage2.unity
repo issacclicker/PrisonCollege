@@ -78135,7 +78135,7 @@ ReflectionProbe:
   serializedVersion: 2
   m_Type: 0
   m_Mode: 1
-  m_RefreshMode: 0
+  m_RefreshMode: 2
   m_TimeSlicingMode: 1
   m_Resolution: 128
   m_UpdateFrequency: 0
@@ -78200,7 +78200,7 @@ ReflectionProbe:
   serializedVersion: 2
   m_Type: 0
   m_Mode: 1
-  m_RefreshMode: 0
+  m_RefreshMode: 2
   m_TimeSlicingMode: 1
   m_Resolution: 128
   m_UpdateFrequency: 0
@@ -146843,7 +146843,7 @@ ReflectionProbe:
   serializedVersion: 2
   m_Type: 0
   m_Mode: 1
-  m_RefreshMode: 0
+  m_RefreshMode: 2
   m_TimeSlicingMode: 1
   m_Resolution: 128
   m_UpdateFrequency: 0
@@ -190909,7 +190909,7 @@ ReflectionProbe:
   serializedVersion: 2
   m_Type: 0
   m_Mode: 1
-  m_RefreshMode: 0
+  m_RefreshMode: 2
   m_TimeSlicingMode: 1
   m_Resolution: 128
   m_UpdateFrequency: 0
@@ -253737,6 +253737,7 @@ MonoBehaviour:
   _stageOver: {fileID: 1805358665}
   _chaosUi: {fileID: 1369830898}
   _isTestMode: 0
+  _reflectionGroup: {fileID: 1248371713}
   _sunLightObject: {fileID: 363244072}
   _moonLightObject: {fileID: 1946815416}
   _moneyGainSD: {fileID: 11400000, guid: 8cacb609a99f9b44e93e201b311c0898, type: 2}
@@ -266415,7 +266416,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Outline
   outlineMode: 3
   outlineColor: {r: 1, g: 0, b: 1, a: 1}
-  outlineWidth: 10
+  outlineWidth: 0
   precomputeOutline: 1
   bakeKeys:
   - {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
@@ -269804,7 +269805,7 @@ ReflectionProbe:
   serializedVersion: 2
   m_Type: 0
   m_Mode: 1
-  m_RefreshMode: 0
+  m_RefreshMode: 2
   m_TimeSlicingMode: 1
   m_Resolution: 128
   m_UpdateFrequency: 0
@@ -297445,7 +297446,7 @@ ReflectionProbe:
   serializedVersion: 2
   m_Type: 0
   m_Mode: 1
-  m_RefreshMode: 0
+  m_RefreshMode: 2
   m_TimeSlicingMode: 1
   m_Resolution: 128
   m_UpdateFrequency: 0
@@ -396542,7 +396543,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Outline
   outlineMode: 3
   outlineColor: {r: 0, g: 1, b: 0, a: 1}
-  outlineWidth: 10
+  outlineWidth: 0
   precomputeOutline: 1
   bakeKeys:
   - {fileID: -9213316799374941882, guid: e982c3f355c5ba44faa657f36fdab15e, type: 3}
@@ -471604,7 +471605,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Outline
   outlineMode: 3
   outlineColor: {r: 0, g: 0.8117647, b: 1, a: 1}
-  outlineWidth: 10
+  outlineWidth: 0
   precomputeOutline: 1
   bakeKeys:
   - {fileID: -6657180443270484345, guid: ce512230dfec84b42a1dc63b7abc534f, type: 3}
@@ -507628,7 +507629,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Outline
   outlineMode: 3
   outlineColor: {r: 1, g: 0, b: 0, a: 1}
-  outlineWidth: 10
+  outlineWidth: 0
   precomputeOutline: 1
   bakeKeys:
   - {fileID: -5809432892312472863, guid: 8bd7a2bed13da054cb37525e2cfb2fe0, type: 3}
@@ -515489,7 +515490,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Outline
   outlineMode: 3
   outlineColor: {r: 1, g: 0, b: 0, a: 1}
-  outlineWidth: 10
+  outlineWidth: 0
   precomputeOutline: 1
   bakeKeys:
   - {fileID: -5809432892312472863, guid: 8bd7a2bed13da054cb37525e2cfb2fe0, type: 3}

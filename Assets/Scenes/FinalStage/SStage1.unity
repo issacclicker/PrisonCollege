@@ -56490,6 +56490,7 @@ MonoBehaviour:
   _stageOver: {fileID: 1389776055}
   _chaosUi: {fileID: 573454137}
   _isTestMode: 0
+  _reflectionGroup: {fileID: 1754547633}
   _sunLightObject: {fileID: 499361286}
   _moonLightObject: {fileID: 499361285}
   _moneyGainSD: {fileID: 11400000, guid: 8cacb609a99f9b44e93e201b311c0898, type: 2}
@@ -79067,7 +79068,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Outline
   outlineMode: 3
   outlineColor: {r: 0, g: 1, b: 0, a: 1}
-  outlineWidth: 10
+  outlineWidth: 0
   precomputeOutline: 1
   bakeKeys:
   - {fileID: -9213316799374941882, guid: e982c3f355c5ba44faa657f36fdab15e, type: 3}
@@ -186618,7 +186619,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Outline
   outlineMode: 3
   outlineColor: {r: 1, g: 0, b: 1, a: 1}
-  outlineWidth: 10
+  outlineWidth: 0
   precomputeOutline: 1
   bakeKeys:
   - {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}

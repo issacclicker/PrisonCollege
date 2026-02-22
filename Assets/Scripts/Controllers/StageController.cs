@@ -62,6 +62,7 @@ public class StageController : SceneSingleton<StageController>
     [SerializeField] private StageOver _stageOver;
     [SerializeField] private ChaosUI _chaosUi;
     [SerializeField] private bool _isTestMode = true;
+    [SerializeField] private Transform _reflectionGroup;
     [Header("Directional Lights")]
     [SerializeField] private GameObject _sunLightObject;
     [SerializeField] private GameObject _moonLightObject;
@@ -86,6 +87,8 @@ public class StageController : SceneSingleton<StageController>
     public bool IsPreparing => _isPreparing;
     public UnityEvent StageStartEvent = new();
 
+    private ReflectionProbe[] _reflectionProbes;
+
 
 
     protected override void Awake()
@@ -96,6 +99,8 @@ public class StageController : SceneSingleton<StageController>
         _chaosStat.Initialize(true);
         _escapeStat.Initialize(true);
         _projectStat.Initialize(true);
+
+        _reflectionProbes = _reflectionGroup.GetComponentsInChildren<ReflectionProbe>();
 
         _timerStat.DepletedEvent.AddListener(() => GameOver(true));
         _prepareTimeStat.DepletedEvent.AddListener(InitStage);
@@ -127,6 +132,7 @@ public class StageController : SceneSingleton<StageController>
     private void Start()
     {
         StartPrepare();
+        RenderReflectionProbes();
         WaveSystem.Instance.ApplySkybox();
         bool isDay = WaveSystem.Instance.CurrentDayState == WaveSystem.DayState.Day;
         _sunLightObject.SetActive(isDay);
@@ -176,6 +182,16 @@ public class StageController : SceneSingleton<StageController>
 
 
 
+    private void RenderReflectionProbes()
+    {
+        foreach (var reflection in _reflectionProbes)
+        {
+            reflection.RenderProbe();
+        }
+    }
+
+
+
     private void StartPrepare()
     {
         _isPreparing = true;
@@ -191,6 +207,7 @@ public class StageController : SceneSingleton<StageController>
         _preparePanelGroup.alpha = 0;
         _topPanelGroup.alpha = 1f;
         StageStartEvent?.Invoke();
+        RenderReflectionProbes();
     }
 
 

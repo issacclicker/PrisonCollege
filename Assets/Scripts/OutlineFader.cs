@@ -16,7 +16,8 @@ public class OutlineFader : MonoBehaviour
         _outline = GetComponent<Outline>();
 
         // 원본 색상과 투명한 색상 설정
-        _originColor = _outline.OutlineColor;
+        //_originColor = _outline.OutlineColor;
+        _originColor = new Color(_outline.OutlineColor.r, _outline.OutlineColor.g, _outline.OutlineColor.b, 0.5f);
         _transparentColor = new Color(_originColor.r, _originColor.g, _originColor.b, 0.1f);
 
         // 스테이지 시작 시 페이드 중지 이벤트 연결
@@ -24,6 +25,11 @@ public class OutlineFader : MonoBehaviour
             StageController.Instance.StageStartEvent.AddListener(StopFade);
 
         // 루프 시작
+    }
+
+
+    private void Start()
+    {
         if (StageController.Instance.IsPreparing)
             StartInfiniteFade();
         else
