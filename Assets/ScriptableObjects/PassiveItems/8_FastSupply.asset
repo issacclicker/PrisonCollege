@@ -15,7 +15,7 @@ MonoBehaviour:
   id: 0
   name: "\uAE09\uC18D \uBCF4\uAE09 \uCC45\uC7A5"
   icon: {fileID: 21300000, guid: f253ad2775ed18345b07e9ea648fdb00, type: 3}
-  price: 70
+  price: 100
   effect: "\uCC45\uC7A5 \uBCF4\uCDA9 \uC18D\uB3C4 200% \uC99D\uAC00"
   description: "\uC6D0\uD65C\uD55C \uAC10\uAE08 \uAD00\uB9AC\uB97C \uC704\uD574 \uBE60\uB978
     \uBCF4\uAE09\uC740 \uD544\uC218\uC785\uB2C8\uB2E4."

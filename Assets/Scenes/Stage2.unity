@@ -116097,7 +116097,7 @@ MonoBehaviour:
   _increasePerStud: 2
   _innocentKillPenalty: 10
   _studEscapedPenalty: 30
-  _gunShotPenalty: 20
+  _gunShotPenalty: 10
   _normalFoodRemovedPenalty: 20
   _studTaskProgress: 5
   _profTaskProgress: 20
@@ -446832,7 +446832,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2832918e06c9a04488e97af97613ad69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
-  _maxStat: 20
+  _maxStat: 5
   _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
@@ -446896,7 +446896,7 @@ MonoBehaviour:
   BulletFillEvent:
     m_PersistentCalls:
       m_Calls: []
-  _throwVelocity: 20
+  _throwVelocity: 10
   _flipVelocity: 100
   _torqueRandomness: 0.2
 --- !u!1 &2008509543
