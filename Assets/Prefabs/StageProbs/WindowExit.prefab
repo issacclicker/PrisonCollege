@@ -499,6 +499,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ClickAndWait
   _actionName: "\uCC3D\uBB38 \uB9C9\uAE30"
   _activeSD: {fileID: 11400000, guid: d54bb3e8746079745bc8e87f5d11d189, type: 2}
+  _completeSD: {fileID: 11400000, guid: b201f673a91aa0147a7d48e1bf767e0c, type: 2}
   ProgressStartEvent:
     m_PersistentCalls:
       m_Calls: []

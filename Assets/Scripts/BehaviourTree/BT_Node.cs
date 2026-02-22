@@ -987,7 +987,7 @@ public class OverrideAttackTarget : BT_Node
                 _currentTargetDR = dr;
 
                 // 타겟이 파괴(사망)되면 실행될 로직 등록
-                dr.DepletedEvent.AddListener(_ => DOVirtual.DelayedCall(0.2f, () => OnTargetDepleted()));
+                dr.DepletedEvent.AddListener(_ => DOVirtual.DelayedCall(0.2f, () => OnTargetDepleted(), false));
 
                 //dr.DepletedEvent.AddListener(_ => OnTargetDepleted());
             }
@@ -1347,11 +1347,11 @@ public class FindDestSpot : BT_Node
 
 public class OverrideBehaveSpot : BT_Node
 {
-    private Func<CoopSpot> _getSpotFunc;
+    private Func<SingleStudentSpot> _getSpotFunc;
     private Func<BehaviorType> _getTypeFunc;
     private float _sampleRange = 2.0f;
 
-    public OverrideBehaveSpot(Func<CoopSpot> getSpotFunc, Func<BehaviorType> getTypeFunc)
+    public OverrideBehaveSpot(Func<SingleStudentSpot> getSpotFunc, Func<BehaviorType> getTypeFunc)
     {
         _getSpotFunc = getSpotFunc;
         _getTypeFunc = getTypeFunc;

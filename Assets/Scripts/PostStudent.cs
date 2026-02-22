@@ -82,6 +82,7 @@ public class PostStudent : MonoBehaviour
     public MonitorSpot SeatSpot {  get; set; }
     //public BehaviorWeightSet BehaviorWeightSet { get; set; }
     private AttributeModifier _moveSpeedModifier;
+    public BT_Node Root => _root;
 
 
     private void Awake()
@@ -506,6 +507,22 @@ public class PostStudent : MonoBehaviour
             new DelayRange(18, 20),
         });
 
+        Sequence coopSequence = new Sequence(new List<BT_Node>
+        {
+            new ConditionNode(() => (_blackboard.destSpot as CoopSpot2).InviteParticipant(this, _blackboard.destBehavior, StageController.Instance.GetChaosEffectedDelay(UnityEngine.Random.Range(8, 10)))),
+            new ClearDestSpot(),
+
+
+
+            //new SetRandomSpeedPattern(),
+            //new MoveToSpot(),
+            //new StopAndDisableAgentUpdate(),
+            //new SetAnimRootMotion(true),
+            //new SetAnimBool("Singing", true),
+            //new ActionNode(() => _singAttacher.SingASong()),
+            //new DelayRange(18, 20),
+        });
+
         var behaviorNodes = new Dictionary<BehaviorType, BT_Node>
         {
             { BehaviorType.LookAround, restSequence },
@@ -526,6 +543,8 @@ public class PostStudent : MonoBehaviour
             { BehaviorType.SitFloor, sitFloorSequence },
 
             { BehaviorType.Sing, singSequence },
+            { BehaviorType.Talk, coopSequence },
+            { BehaviorType.Fight, coopSequence },
         };
 
         Selector jopBehavior = new Selector(new List<BT_Node>

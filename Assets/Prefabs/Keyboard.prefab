@@ -196,6 +196,7 @@ MonoBehaviour:
   _spreadForce: 10
   _fregmentParticle: {fileID: 1726623966065515649, guid: 5046b4882e972d242a5877e5564957d3, type: 3}
   _fragmentDistanceStat: {fileID: 3248756631819066077}
+  _fragmentSD: {fileID: 11400000, guid: 9e52d0a065e83c246a8f36f245cbb949, type: 2}
 --- !u!114 &3248756631819066077
 MonoBehaviour:
   m_ObjectHideFlags: 0

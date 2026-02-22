@@ -567,7 +567,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Outline
   outlineMode: 3
   outlineColor: {r: 0, g: 0.8117647, b: 1, a: 1}
-  outlineWidth: 10
+  outlineWidth: 0
   precomputeOutline: 1
   bakeKeys:
   - {fileID: -6657180443270484345, guid: ce512230dfec84b42a1dc63b7abc534f, type: 3}

@@ -487,7 +487,9 @@ public class CoopPattern : PatternNode
                 student?.StopAllOverlapAttackers();
             }),
             new EnableAgentUpdate(),
-            new OverrideBehaveSpot(() => _bb.coopData.spot, () => _bb.coopData.type),
+            new LerpLayerWeight(COMBAT_LAYER_INDEX, 0, 10),
+            new LerpLayerWeight(STRIKE_LAYER_INDEX, 0, 10),
+            new OverrideBehaveSpot(() => _bb.coopData2.spot, () => _bb.coopData2.type),
             new SetAnimRootMotion(false),
             new ResetAnimParameters(),
             new SetSpeed(() => 2.43f),
@@ -498,7 +500,7 @@ public class CoopPattern : PatternNode
             //new PlayWaitAnimation(),
 
             // 3. 실행 신호가 올 때까지 대기 (Phase가 Ready가 될 때까지)
-            new WaitUntilCondition(() => _bb.coopData.isExecuting),
+            new WaitUntilCondition(() => _bb.coopData2.isExecuting),
 
             // 4. 실제 협동 애니메이션 실행
             //new SetAnimRootMotion(true),
@@ -513,17 +515,23 @@ public class CoopPattern : PatternNode
 
             new Selector(new List<BT_Node>
             {
-                new ConditionDecorator(() => _bb.coopData.targetObject,
+                new ConditionDecorator(() => _bb.coopData2.targetObject,
                     new Sequence(new List<BT_Node>
                     {
-                        new OverrideAttackTarget(() => _bb.coopData.targetObject),
+                        new OverrideAttackTarget(() => _bb.coopData2.targetObject),
                         new ActionNode(null, NodeState.Running),
                     })
                 ),
 
                 new Sequence(new List<BT_Node>
                 {
-                    new SetAnimBool("Talking", true),
+                    new RandomSelector(new List<BT_Node>
+                    {
+                        new SetAnimBool("Talking1", true),
+                        new SetAnimBool("Talking2", true),
+                        new SetAnimBool("Talking3", true),
+                        new SetAnimBool("Talking4", true),
+                    }),
                     new ActionNode(null, NodeState.Running),
                 })
             })
@@ -539,8 +547,8 @@ public class CoopReactivePattern : PatternNode
     {
         _patternRoot = new ReactiveSelector(new List<BT_Node>
         {
-            new ConditionDecorator(() => _bb.coopData.spot != null, new CoopPattern()),
-            normalRoutine
+            new ConditionDecorator(() => _bb.coopData2.spot != null, new CoopPattern()),
+            new Sequence(new List<BT_Node> { new ActionNode(() => _bb.SecadeCoop2()), normalRoutine}),
         });
     }
 }
@@ -996,8 +1004,7 @@ public class TakeHitPattern : PatternNode
             new RandomSelector(new List<BT_Node>
             {
                 new PlayOnceAnim("OnHit", "OnHit", 5),
-                //new PlayOnceAnim("OnHit2", "OnHit2", 5),
-                //new PlayOnceAnim("OnHit3", "OnHit3", 5),
+                new PlayOnceAnim("OnHit3", "OnHit3", 5),
             }),
             new ActionNode(() => _bb.isDamaged = false, NodeState.Success),
         });
@@ -1051,7 +1058,7 @@ public class TryEscapePattern : PatternNode
                        {
                            ExitSpot exitGate = _bb.destSpot as ExitSpot;
                            exitGate.OpenGate();
-                           DOVirtual.DelayedCall(0.8f, () => _bb.Avatar.GetComponent<PostStudent>().OnEscaped());
+                           DOVirtual.DelayedCall(0.8f, () => _bb.Avatar.GetComponent<PostStudent>().OnEscaped(), false);
                        }, NodeState.Success),
                        new EscapeTypeSelectPattern(),
                        //new ActionNode(() => _bb.EscapeSuccessEvent?.Invoke()),
