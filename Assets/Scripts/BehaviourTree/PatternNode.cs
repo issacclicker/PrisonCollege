@@ -1058,7 +1058,7 @@ public class TryEscapePattern : PatternNode
                        {
                            ExitSpot exitGate = _bb.destSpot as ExitSpot;
                            exitGate.OpenGate();
-                           DOVirtual.DelayedCall(0.8f, () => _bb.Avatar.GetComponent<PostStudent>().OnEscaped());
+                           DOVirtual.DelayedCall(0.8f, () => _bb.Avatar.GetComponent<PostStudent>().OnEscaped(), false);
                        }, NodeState.Success),
                        new EscapeTypeSelectPattern(),
                        //new ActionNode(() => _bb.EscapeSuccessEvent?.Invoke()),

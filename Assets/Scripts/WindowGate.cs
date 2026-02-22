@@ -45,7 +45,7 @@ public class WindowGate : ExitGate
             // 창문이 깨진 후 _closeDelay 뒤에 자동으로 다시 닫힘
             CancelInvoke(nameof(Close));
             Invoke(nameof(Close), _closeDelay);
-        });
+        }, false);
     }
 
     public override void Close()

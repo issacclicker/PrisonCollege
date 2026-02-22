@@ -273,7 +273,7 @@ public class CharacterRagdoll : MonoBehaviour
         _anim.Play(targetStandUpStateName, 0, 0);
         var stateInfo = _anim.GetCurrentAnimatorStateInfo(0);
         float animLength = stateInfo.length / stateInfo.speed;
-        _standUpTween = DOVirtual.DelayedCall(animLength, StandUpCompleted).SetTarget(this);
+        _standUpTween = DOVirtual.DelayedCall(animLength, StandUpCompleted, false).SetTarget(this);
     }
 
 

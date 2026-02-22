@@ -987,7 +987,7 @@ public class OverrideAttackTarget : BT_Node
                 _currentTargetDR = dr;
 
                 // 타겟이 파괴(사망)되면 실행될 로직 등록
-                dr.DepletedEvent.AddListener(_ => DOVirtual.DelayedCall(0.2f, () => OnTargetDepleted()));
+                dr.DepletedEvent.AddListener(_ => DOVirtual.DelayedCall(0.2f, () => OnTargetDepleted(), false));
 
                 //dr.DepletedEvent.AddListener(_ => OnTargetDepleted());
             }

@@ -122,7 +122,7 @@ public class RagdollStandup : MonoBehaviour
 
             // 7. �ִϸ��̼� ���̸�ŭ ��� �� �Ϸ� �̺�Ʈ ����
             float animLength = _anim.GetCurrentAnimatorStateInfo(0).length;
-            DOVirtual.DelayedCall(animLength, OnStandUpComplete).SetTarget(this);
+            DOVirtual.DelayedCall(animLength, OnStandUpComplete, false).SetTarget(this);
         });
     }
 
