@@ -8644,8 +8644,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 22
+  m_fontSizeBase: 22
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -26939,25 +26939,25 @@ MonoBehaviour:
   _daySkybox: {fileID: 2100000, guid: 85cf0b004bc4a654b9e501efcce47902, type: 2}
   _nightSkybox: {fileID: 2100000, guid: 2039a0ad0a9d05549928b70362f54902, type: 2}
   waveEntries:
-  - behaviorWeightSet: {fileID: 11400000, guid: 1591aace07a5be841b34c0f1bf14467d, type: 2}
+  - behaviorWeightSet: {fileID: 11400000, guid: ccf79099bde93eb42a751e44117eb679, type: 2}
     dayState: 0
     explanation: 
-    enforceProb: 0.2
+    enforceProb: 0
     isEndWithArena: 1
-  - behaviorWeightSet: {fileID: 11400000, guid: ce046bb6febef6142b878691527993c1, type: 2}
+  - behaviorWeightSet: {fileID: 11400000, guid: 9a7de4eb8fceffa44b8383ed4262ec47, type: 2}
     dayState: 1
     explanation: 
-    enforceProb: 0
+    enforceProb: 0.3
+    isEndWithArena: 1
+  - behaviorWeightSet: {fileID: 11400000, guid: 538418dc2a369384680d6385edb085e9, type: 2}
+    dayState: 0
+    explanation: 
+    enforceProb: 0.4
     isEndWithArena: 0
-  - behaviorWeightSet: {fileID: 11400000, guid: 1591aace07a5be841b34c0f1bf14467d, type: 2}
-    dayState: 0
-    explanation: 
-    enforceProb: 0
-    isEndWithArena: 1
-  - behaviorWeightSet: {fileID: 11400000, guid: ce046bb6febef6142b878691527993c1, type: 2}
+  - behaviorWeightSet: {fileID: 11400000, guid: 80f41c3f484944a429072d9ffd80dc8c, type: 2}
     dayState: 1
     explanation: 
-    enforceProb: 0
+    enforceProb: 0.6
     isEndWithArena: 0
   _nightChaosFactor: 1.5
   _nightProjectFactor: 2

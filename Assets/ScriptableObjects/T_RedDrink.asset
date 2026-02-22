@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: T_RedDrink
   m_EditorClassIdentifier: Assembly-CSharp::WeaponData
   animLength: 1
-  staminaCost: 1
+  staminaCost: 0
   hitImpulse: 10
   dodgeProb: 0
   effect: {fileID: 11400000, guid: feb01f761e0d32f4a8c96c50b9ed34dc, type: 2}
