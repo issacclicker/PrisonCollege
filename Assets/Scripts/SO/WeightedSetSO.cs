@@ -10,6 +10,17 @@ public abstract class WeightedSetSO<T, TEntry> : ScriptableObject
 
     public List<TEntry> WeightedElements => _weightedElements;
 
+    protected abstract TEntry CloneEntry(TEntry entry);
+
+    public void InitializeCopy(List<TEntry> sourceElements)
+    {
+        _weightedElements = new List<TEntry>();
+        foreach (var element in sourceElements)
+        {
+            _weightedElements.Add(CloneEntry(element));
+        }
+    }
+
     public T GetRandomValue()
     {
         if (_weightedElements == null || _weightedElements.Count == 0)

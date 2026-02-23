@@ -372,7 +372,8 @@ public class StageController : SceneSingleton<StageController>
     {
         int minutes = Mathf.FloorToInt(_timerStat.Current / 60f);
         int seconds = Mathf.FloorToInt(_timerStat.Current % 60f);
-        _timerTmp.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        //_timerTmp.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        _timerTmp.text = _timerStat.Current.ToString("F0");
         if (_timerStat.Current < 11)
         {
             _timerTmp.text = $"<color=red>{_timerTmp.text}</color>";

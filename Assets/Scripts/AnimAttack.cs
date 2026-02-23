@@ -19,7 +19,7 @@ public class AnimAttack : MonoBehaviour
 
     private void Start()
     {
-        _damageData = Utils.DeepCopyByJson(_damageData);
+        _damageData = Instantiate(_damageData);
         _damageData.value =  AttributeSystem.Instance.StudDamageMod.GetFinalValue(_damageData.value);
     }
 

@@ -58,7 +58,7 @@ public class FragmentProjectile : Projectile
             GameObject fragment = Instantiate(_fragmentPrefab, transform.position, transform.rotation);
             Projectile projectile = fragment.GetComponent<Projectile>();
             projectile.Owner = Owner;
-            projectile.WeaponData = _fragmentWeaponData;
+            projectile.WeaponData = DeepCopyWeaponData(_fragmentWeaponData);
 
             Rigidbody fragRb = fragment.GetComponent<Rigidbody>();
             if (fragRb != null)
@@ -83,6 +83,15 @@ public class FragmentProjectile : Projectile
         // Camera.main.transform.DOShakePosition(0.25f, 1.5f);
         SoundUtils.PlayScene3DSFX(_fragmentSD, transform.position);
         Destroy(gameObject);
+    }
+
+
+    protected WeaponData DeepCopyWeaponData(WeaponData weaponData)
+    {
+        DamageData newDamageData = Instantiate(weaponData.effect) as DamageData;
+        WeaponData newWeaponData = Instantiate(weaponData);
+        newWeaponData.effect = newDamageData;
+        return newWeaponData;
     }
 
 

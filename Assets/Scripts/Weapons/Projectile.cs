@@ -25,7 +25,10 @@ public class Projectile : MonoBehaviour
 
     protected virtual void Start()
     {
-        WeaponData = Utils.DeepCopyByJson(WeaponData);
+        //WeaponData = Utils.DeepCopyByJson(WeaponData);
+        float damageFactor = IsStage ? AttributeSystem.Instance.ThrowDamageMod.GetFinalValue(1) : 1f;
+        WeaponData.effect.value *= damageFactor;
+        WeaponData.hitImpulse *= damageFactor;
         Destroy(gameObject, _lifeTime);
     }
 
@@ -60,11 +63,8 @@ public class Projectile : MonoBehaviour
             ContactPoint contact = collision.contacts[0];
             Vector3 hitPoint = contact.point;
             Vector3 hitNormal = contact.normal;
+            HitInfo hitInfo = new HitInfo(hitPoint, Quaternion.LookRotation(hitNormal), Owner, WeaponData.hitImpulse);
 
-            float damageFactor = IsStage ? AttributeSystem.Instance.ThrowDamageMod.GetFinalValue(1) : 1f;
-            HitInfo hitInfo = new HitInfo(hitPoint, Quaternion.LookRotation(hitNormal), Owner, WeaponData.hitImpulse * damageFactor);
-
-            WeaponData.effect.value *= damageFactor;
             receiver.TakeEffect(WeaponData.effect, hitInfo);
             SoundUtils.PlayScene3DSFX(_hitSD, hitInfo.hitPoint);
 

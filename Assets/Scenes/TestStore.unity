@@ -26939,25 +26939,25 @@ MonoBehaviour:
   _daySkybox: {fileID: 2100000, guid: 85cf0b004bc4a654b9e501efcce47902, type: 2}
   _nightSkybox: {fileID: 2100000, guid: 2039a0ad0a9d05549928b70362f54902, type: 2}
   waveEntries:
-  - behaviorWeightSet: {fileID: 11400000, guid: ccf79099bde93eb42a751e44117eb679, type: 2}
+  - behaviorWeightSet: {fileID: 11400000, guid: 9837560df67a56a46ae7906ffafb20a1, type: 2}
     dayState: 0
     explanation: 
-    enforceProb: 0
-    isEndWithArena: 1
-  - behaviorWeightSet: {fileID: 11400000, guid: 9a7de4eb8fceffa44b8383ed4262ec47, type: 2}
-    dayState: 1
-    explanation: 
-    enforceProb: 0.3
-    isEndWithArena: 1
-  - behaviorWeightSet: {fileID: 11400000, guid: 538418dc2a369384680d6385edb085e9, type: 2}
-    dayState: 0
-    explanation: 
-    enforceProb: 0.4
+    enforceProb: 1
     isEndWithArena: 0
-  - behaviorWeightSet: {fileID: 11400000, guid: 80f41c3f484944a429072d9ffd80dc8c, type: 2}
-    dayState: 1
+  - behaviorWeightSet: {fileID: 11400000, guid: f6d34312ffb02c7428b79212315cb02b, type: 2}
+    dayState: 0
     explanation: 
-    enforceProb: 0.6
+    enforceProb: 1
+    isEndWithArena: 1
+  - behaviorWeightSet: {fileID: 11400000, guid: 934718cbb17fb854f8f9c98887cdf7cc, type: 2}
+    dayState: 0
+    explanation: 
+    enforceProb: 0.2
+    isEndWithArena: 0
+  - behaviorWeightSet: {fileID: 11400000, guid: 7d3c1036d191d334bb755491ce462151, type: 2}
+    dayState: 0
+    explanation: 
+    enforceProb: 0.5
     isEndWithArena: 0
   _nightChaosFactor: 1.5
   _nightProjectFactor: 2
@@ -28511,7 +28511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56e616fcfd259f6478f0bef84550042b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  _stageNumber: 2
+  _stageNumber: 1
   _stageEntries:
   - number: 1
     name: "\uAE30\uCD08 \uAC10\uAE08\uD559"
@@ -28535,7 +28535,7 @@ MonoBehaviour:
   _store: Store
   _arena: Arena
   _testStart: TestStore
-  _currentDifficulty: 2
+  _currentDifficulty: 1
   _mainPD: {fileID: 11400000, guid: c46f0cfce4dfb1e4eb05ba4886d453e3, type: 2}
   _wavePD: {fileID: 11400000, guid: 873b05f4114654140b5f0da353cf8861, type: 2}
   _arenaPD: {fileID: 11400000, guid: 68c87bba33a945e4094c5f9dbc4d892c, type: 2}

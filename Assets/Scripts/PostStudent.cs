@@ -121,7 +121,7 @@ public class PostStudent : MonoBehaviour
 
     private void Start()
     {
-        BehaviorWeightSet = DeepCopyByJson(BehaviorWeightSet);
+        BehaviorWeightSet = BehaviorWeightSet.CreateDeepCopy();
         BehaviorWeightSet.ModifyChance(BehaviorType.Escape, AttributeSystem.Instance.StudEscapeChanceMod.GetFinalValue());
         HideAllAnimAttachments();
         StopAllOverlapAttackers();

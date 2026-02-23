@@ -53,7 +53,7 @@ public class ExitGate : MonoBehaviour
         else
         {
             float randValue = UnityEngine.Random.value;
-            if (randValue < 0.5f)
+            if (randValue < 0.25f)
             {
                 BreakBarricade();
             }
