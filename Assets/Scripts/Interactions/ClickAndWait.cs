@@ -75,6 +75,7 @@ public class ClickAndWait : MonoBehaviour, IPlayerInteractable
 
     public void OnInteractStart()
     {
+        if (_isInteracting) return;
         _isInteracting = true;
         ProgressStartEvent?.Invoke();
         _emitter = SoundUtils.PlayOwnedScene2DSFX(_activeSD, false, 1, true);
