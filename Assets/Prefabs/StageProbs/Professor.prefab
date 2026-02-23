@@ -21671,7 +21671,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _maxDistance: 100
-  _spreadIntensity: 0
+  _spreadIntensity: 0.04
   _projectilePrefab: {fileID: 2177159760227541223, guid: 3bdd353baf34a4b4ba7717b9f2b1b91e, type: 3}
   _spawnPoint: {fileID: 2427073248269798698}
   BulletDepleteEvent:
@@ -47589,7 +47589,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   _maxDistance: 100
-  _spreadIntensity: 0
+  _spreadIntensity: 0.04
   _projectilePrefab: {fileID: 8518995926266449858, guid: 0099486fb8a523249abc123fb7232cb8, type: 3}
   _spawnPoint: {fileID: 5110677853539182435}
   BulletDepleteEvent:

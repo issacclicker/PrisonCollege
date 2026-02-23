@@ -113,9 +113,28 @@ public class SoundManager : PersistentSingleton<SoundManager>
     public SoundEmitter PlayBGM(AudioClip clip, float volume = 1.0f, bool persist = false, bool isLoop = false, bool isRealTime = false)
     {
         if (clip == null) return null;
-        if (_pool.Count == 0) CreateNewEmitter();
+        //if (_pool.Count == 0) CreateNewEmitter();
+        SoundEmitter emitter = null;
 
-        SoundEmitter emitter = _pool.Dequeue();
+        // 1. 유효한 에미터가 나올 때까지 반복
+        while (emitter == null)
+        {
+            if (_pool.Count == 0)
+            {
+                CreateNewEmitter(); // 형님 말대로 여기서 큐를 채움
+            }
+
+            emitter = _pool.Dequeue();
+
+            // 꺼낸 놈이 Destroy된 상태라면 null로 만들어서 다시 루프 돌게 함
+            if (emitter == null || emitter.gameObject == null)
+            {
+                emitter = null;
+                continue;
+            }
+        }
+
+        //SoundEmitter emitter = _pool.Dequeue();
         emitter.gameObject.SetActive(true);
 
         emitter.Play(clip, 1, volume, Vector3.zero, false, persist, isLoop, isRealTime, false, true);

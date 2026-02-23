@@ -21,5 +21,5 @@ MonoBehaviour:
   description: "\uAD50\uC218\uB2D8\uC758 \uADFC\uC721\uC774 \uD3ED\uBC1C\uC801\uC73C\uB85C
     \uC131\uC7A5\uD588\uC2B5\uB2C8\uB2E4."
   rarity: 0
-  meleeSpeedPercent: 0.2
+  meleeSpeedPercent: 0.5
   meleeDamagePercent: 0.5

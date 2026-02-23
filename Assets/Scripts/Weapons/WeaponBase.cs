@@ -56,7 +56,7 @@ public class WeaponBase : MonoBehaviour
 
     protected WeaponData DeepCopyWeaponData(WeaponData weaponData)
     {
-        DamageData newDamageData = Instantiate(weaponData.effect) as DamageData;
+        EffectData newDamageData = Instantiate(weaponData.effect);
         WeaponData newWeaponData = Instantiate(weaponData);
         newWeaponData.effect = newDamageData;
         return newWeaponData;

@@ -23,6 +23,6 @@ MonoBehaviour:
     \uC774\uC6A9\uD574 \uACF5\uACA9\uD558\uB294 \uBC95\uC744 \uBC30\uC6B4 \uAC83
     \uAC19\uC2B5\uB2C8\uB2E4."
   rarity: 0
-  studMoveSpeedPercent: -0.4
-  studDamagePercent: 0.5
+  studMoveSpeedPercent: -0.2
+  studDamagePercent: 0.3
   isTiedShackle: 1
