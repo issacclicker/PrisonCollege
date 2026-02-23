@@ -12399,7 +12399,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 349002a57e48f62439f268876d8d7c39, type: 2}
   - {fileID: 11400000, guid: f142abbb6aee09c40b9b1cce2b2d7f9a, type: 2}
   _equipLimit: 4
-  _money: 1000
+  _money: 0
   _equipedItemList: []
 --- !u!4 &656744284
 Transform:
@@ -26942,12 +26942,12 @@ MonoBehaviour:
   - behaviorWeightSet: {fileID: 11400000, guid: 9837560df67a56a46ae7906ffafb20a1, type: 2}
     dayState: 0
     explanation: 
-    enforceProb: 1
+    enforceProb: 0
     isEndWithArena: 0
   - behaviorWeightSet: {fileID: 11400000, guid: f6d34312ffb02c7428b79212315cb02b, type: 2}
     dayState: 0
     explanation: 
-    enforceProb: 1
+    enforceProb: 0
     isEndWithArena: 1
   - behaviorWeightSet: {fileID: 11400000, guid: 934718cbb17fb854f8f9c98887cdf7cc, type: 2}
     dayState: 0
@@ -28511,7 +28511,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56e616fcfd259f6478f0bef84550042b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  _stageNumber: 1
+  _stageNumber: 2
   _stageEntries:
   - number: 1
     name: "\uAE30\uCD08 \uAC10\uAE08\uD559"
