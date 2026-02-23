@@ -28530,7 +28530,7 @@ MonoBehaviour:
     sprite: {fileID: 21300000, guid: 4680ccb0a6bd7b94ebb03ae2829f248f, type: 3}
   audioSetting: {fileID: 454650055}
   _mainScreen: MainScene
-  _stagePrepare: StagePrepare
+  _stagePrepare: Prepare
   _stagePrefix: SStage
   _store: Store
   _arena: Arena
