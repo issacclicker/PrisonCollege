@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-using static Cinemachine.DocumentationSortingAttribute;
 
 public class StageSlot : MonoBehaviour, IPointerClickHandler
 {
