@@ -137,6 +137,16 @@ public class SoundEmitter : MonoBehaviour
 
     public void FadeVolumeMultiplier(float volumeMultiplier, float duration)
     {
+        if (!gameObject.activeInHierarchy)
+        {
+            // 그냥 즉시 목표 볼륨 적용하고 끝냄
+            float targetVolume = _audioSource.volume * volumeMultiplier;
+            _audioSource.volume = targetVolume;
+
+            if (targetVolume <= 0.001f) StopAndReturn();
+            return;
+        }
+
         if (_fadeCoroutine != null) StopCoroutine(_fadeCoroutine);
         _fadeCoroutine = StartCoroutine(Co_FadeVolumeMultiplier(volumeMultiplier, duration));
     }
