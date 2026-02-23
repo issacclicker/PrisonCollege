@@ -116,6 +116,7 @@ public class CombatApproachPattern : PatternNode
                     {
                         if (_bb.targetObject == _bb.Player)
                         {
+                            return 0;
                             return UnityEngine.Random.Range(0f, 0.5f);
                         }
                         return UnityEngine.Random.Range(0f, 1f);
@@ -154,6 +155,7 @@ public class CombatApproachPattern : PatternNode
                 {
                     if (_bb.targetObject == _bb.Player)
                     {
+                        return 0;
                         return UnityEngine.Random.Range(0f, 0.2f);
                     }
                     return UnityEngine.Random.Range(1f, 2f);
@@ -174,6 +176,7 @@ public class CombatApproachPattern : PatternNode
                 {
                     if (_bb.targetObject == _bb.Player)
                     {
+                        return 0;
                         return UnityEngine.Random.Range(0f, 0.1f);
                     }
                     return UnityEngine.Random.Range(0f, 1f);
