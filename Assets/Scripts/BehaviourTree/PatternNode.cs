@@ -727,19 +727,17 @@ public class WorkPattern : PatternNode
                         return;
                 }
             }),
-            //new Delay(() => 4),
             new DelayRange(4, 5),
-            new ActionNode(() =>
-            {
-                (_bb.destSpot as MonitorSpot)?.PauseMonitor();
-            }),
-            chanceActionSelector,
-            new ActionNode(() =>
-            {
-                (_bb.destSpot as MonitorSpot)?.ResumeMonitor();
-            }),
-            //new Delay(() => 3f),
-            new DelayRange(3, 4),
+            //new ActionNode(() =>
+            //{
+            //    (_bb.destSpot as MonitorSpot)?.PauseMonitor();
+            //}),
+            //chanceActionSelector,
+            //new ActionNode(() =>
+            //{
+            //    (_bb.destSpot as MonitorSpot)?.ResumeMonitor();
+            //}),
+            //new DelayRange(3, 4),
             new ActionNode(() =>
             {
                 (_bb.destSpot as MonitorSpot)?.PauseMonitor();
@@ -764,7 +762,6 @@ public class WorkPattern : PatternNode
                     }
                 }
             }),
-            //new Delay(() => 4f),
             new DelayRange(4, 5),
             new SetAnimBool("Sitting", false),
             new SetAnimBool("Typing", false),
