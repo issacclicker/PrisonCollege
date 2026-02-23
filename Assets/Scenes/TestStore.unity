@@ -26943,7 +26943,7 @@ MonoBehaviour:
     dayState: 0
     explanation: 
     enforceProb: 0
-    isEndWithArena: 1
+    isEndWithArena: 0
   - behaviorWeightSet: {fileID: 11400000, guid: f6d34312ffb02c7428b79212315cb02b, type: 2}
     dayState: 0
     explanation: 

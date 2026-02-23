@@ -211589,7 +211589,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2832918e06c9a04488e97af97613ad69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
-  _maxStat: 5
+  _maxStat: 90
   _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
