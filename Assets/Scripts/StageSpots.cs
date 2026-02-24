@@ -97,4 +97,21 @@ public class StageSpots : MonoBehaviour
         int randomIndex = Random.Range(0, availableSpots.Count);
         return availableSpots[randomIndex];
     }
+
+
+
+    public BehaveSpot GetRandomSpotByType(BehaviorType type)
+    {
+        //if (student.IsComputerBehavior) return student.SeatSpot;
+        List<BehaveSpot> spots = GetSpotsByType(type);
+        List<BehaveSpot> availableSpots = spots.FindAll(s => s.IsUsable);
+
+        if (availableSpots.Count == 0)
+        {
+            Debug.LogWarning($"{type} 타입의 사용 가능한 스팟이 없습니다.");
+            return null;
+        }
+        int randomIndex = Random.Range(0, availableSpots.Count);
+        return availableSpots[randomIndex];
+    }
 }

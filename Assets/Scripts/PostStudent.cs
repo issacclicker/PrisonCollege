@@ -54,8 +54,8 @@ public class PostStudent : MonoBehaviour
     private SingAttacher _singAttacher;
     private SoundBehavior _soundBehavior;
 
-    [SerializeField] private OverlapAttacker _bodyOverlapAttacker;
-    [SerializeField] private OverlapAttacker _tackleOverlapAttacker;
+    [SerializeField] protected OverlapAttacker _bodyOverlapAttacker;
+    [SerializeField] protected OverlapAttacker _tackleOverlapAttacker;
 
     [HideInInspector] public UnityEvent<PostStudent, HitInfo> DieEvent = new();
     [HideInInspector] public UnityEvent<PostStudent> EscapeEvent = new();
@@ -85,7 +85,7 @@ public class PostStudent : MonoBehaviour
     public BT_Node Root => _root;
 
 
-    private void Awake()
+    protected virtual void Awake()
     {
         _soundBehavior = GetComponent<SoundBehavior>();
         _characterRagdoll = GetComponent<CharacterRagdoll>();
@@ -121,8 +121,8 @@ public class PostStudent : MonoBehaviour
 
     private void Start()
     {
-        BehaviorWeightSet = BehaviorWeightSet.CreateDeepCopy();
-        BehaviorWeightSet.ModifyChance(BehaviorType.Escape, AttributeSystem.Instance.StudEscapeChanceMod.GetFinalValue());
+        BehaviorWeightSet = BehaviorWeightSet?.CreateDeepCopy();
+        BehaviorWeightSet?.ModifyChance(BehaviorType.Escape, AttributeSystem.Instance.StudEscapeChanceMod.GetFinalValue());
         HideAllAnimAttachments();
         StopAllOverlapAttackers();
         _characterRagdoll.UnTriggerRagdoll();
@@ -154,7 +154,7 @@ public class PostStudent : MonoBehaviour
 
 
 
-    private void StartBehavior()
+    public void StartBehavior()
     {
         _characterCollider.enabled = true;
         _blackboard = new Blackboard(gameObject, BehaviorWeightSet, _stageSpots, _player.gameObject);
@@ -313,7 +313,7 @@ public class PostStudent : MonoBehaviour
     //    return workSequence;
     //}
 
-    private BT_Node ConstructBehaviorTree()
+    protected virtual BT_Node ConstructBehaviorTree()
     {
         // 동작 설계: 
         // 1. 랜덤 지점으로 이동

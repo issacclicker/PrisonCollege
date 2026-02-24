@@ -34,7 +34,7 @@ public class WaveSystem : PersistentSingleton<WaveSystem>
 
     public DayState CurrentDayState => _currentDayState;
     public int CurrentWave => _currentWave;
-    public BehaviorWeightSet BehaviorWeightSet => waveEntries[_currentWave - 1].behaviorWeightSet;
+    public BehaviorWeightSet BehaviorWeightSet => waveEntries != null ? waveEntries[_currentWave - 1].behaviorWeightSet : null;
     public float ChaosFactor => _chaosFactor;
     public float ProjectFactor => _projectFactor;
     public bool IsLastWave => _currentWave >= waveEntries.Length;
@@ -61,6 +61,8 @@ public class WaveSystem : PersistentSingleton<WaveSystem>
     {
         get
         {
+            if (waveEntries == null)
+                return false;
             float randValue = UnityEngine.Random.value;
             return randValue < waveEntries[_currentWave - 1].enforceProb;
         }

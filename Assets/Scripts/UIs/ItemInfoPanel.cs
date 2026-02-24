@@ -41,6 +41,7 @@ public class ItemInfoPanel : MonoBehaviour
 
     public void HidePanel()
     {
+        if (_canvasGroup == null) return;
         _canvasGroup.alpha = 0;
     }
 }

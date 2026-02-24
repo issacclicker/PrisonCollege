@@ -147,7 +147,7 @@ public class StageController : SceneSingleton<StageController>
         _waveTmp.text = $"¿þÀÌºê {WaveSystem.Instance.CurrentWave}";
         InventorySystem.Instance.FillEquipSlots(_equipSlotList);
 
-        _studentList = _studentSpawner.SpawnStudents(WaveSystem.Instance.BehaviorWeightSet);
+        //_studentList = _studentSpawner.SpawnStudents(WaveSystem.Instance.BehaviorWeightSet);
 
         foreach (var student in _studentList)
         {

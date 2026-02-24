@@ -57,7 +57,8 @@ public class Fire : MonoBehaviour
         _isBurning = false;
         _emitter?.StopAndReturn();
         _emitter = null;
-        _burnDuration.Initialize(true);
+        if (_burnDuration != null)
+            _burnDuration.Initialize(true);
         _fireParticle.gameObject.SetActive(false);
     }
 }

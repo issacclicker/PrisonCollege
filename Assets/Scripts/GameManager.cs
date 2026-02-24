@@ -189,6 +189,10 @@ public class GameManager : PersistentSingleton<GameManager>
 
     private void LoadStageProgress()
     {
+        if (_stageEntries == null)
+        {
+            return;
+        }
         int lastClearedStageNum = PlayerPrefs.GetInt("MaxClearStage", 0);
         int[] stageDifficulties = new int[_stageEntries.Length];
         for (int i = 0; i < stageDifficulties.Length; i++)

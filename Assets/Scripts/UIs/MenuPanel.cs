@@ -119,6 +119,7 @@ public class MenuPanel : MonoBehaviour, IEscapeControllable
         Cursor.visible = _originCursorVisible;
         Cursor.lockState = _originCursorVisible ? CursorLockMode.None : CursorLockMode.Locked;
         Time.timeScale = _originTimeScale;
+        if (_canvasGroup == null) return;
         _canvasGroup.alpha = 0;
         _canvasGroup.interactable = false;
         _canvasGroup.blocksRaycasts = false;
