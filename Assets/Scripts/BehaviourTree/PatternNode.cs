@@ -772,6 +772,101 @@ public class WorkPattern : PatternNode
 
 
 
+public class WorkPatternNG : PatternNode
+{
+    public WorkPatternNG()
+    {
+        Sequence angrySeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Angry", "Angry", 1) });
+        Sequence clapSeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Clap", "Clap", 1) });
+        Sequence frustrateSeq = new Sequence(new List<BT_Node> { new PlayOnceAnim("Frustrated", "Frustrated", 1) });
+        Sequence justTyping = new Sequence(new List<BT_Node> { new Delay(() => 2f) });
+
+        // 3. 확률 선택기 구성 (가중치 부여)
+        RandomSelector chanceActionSelector = new RandomSelector(
+            new List<BT_Node> { angrySeq, clapSeq, frustrateSeq },
+            new List<System.Func<float>> {
+                () => 10, // 욕(분노) 10%
+                () => 10, // 박수 10%
+                () => 10, // 좌절 10%
+            }
+        );
+
+        _patternRoot = new Sequence(new List<BT_Node>
+        {
+            new Selector(new List<BT_Node>
+            {
+                new SetSpeed(() => 0.69f),
+            }),
+            //new SetRandomSpeedPattern(),
+            new MoveToSpot(),
+            new RotateToSpot(),
+            new SetAnimBool("Sitting", true),
+            new SetAnimBool("Typing", true),
+            new ActionNode(() =>
+            {
+                MonitorSpot monitorSpot = _bb.destSpot as MonitorSpot;
+                switch (_bb.destBehavior)
+                {
+                    case BehaviorType.Work:
+                        monitorSpot?.TurnOnMonitor(DisplayState.Working);
+                        return;
+                    case BehaviorType.Hack:
+                        monitorSpot?.TurnOnMonitor(DisplayState.Hacking);
+                        return;
+                    case BehaviorType.Game:
+                        monitorSpot?.TurnOnMonitor(DisplayState.Gaming);
+                        return;
+                }
+            }),
+
+            new DelayRange(4, 5),
+
+            new ActionNode(() =>
+            {
+                (_bb.destSpot as MonitorSpot)?.PauseMonitor();
+            }),
+            chanceActionSelector,
+            new ActionNode(() =>
+            {
+                (_bb.destSpot as MonitorSpot)?.ResumeMonitor();
+            }),
+
+            new DelayRange(4, 5),
+
+            new ActionNode(() =>
+            {
+                (_bb.destSpot as MonitorSpot)?.PauseMonitor();
+            }),
+            chanceActionSelector,
+            new ActionNode(() =>
+            {
+                (_bb.destSpot as MonitorSpot)?.ResumeMonitor();
+            }),
+
+            new DelayRange(4, 5),
+
+            new ActionNode(() =>
+            {
+                (_bb.destSpot as MonitorSpot)?.PauseMonitor();
+            }),
+            chanceActionSelector,
+            new ActionNode(() =>
+            {
+                (_bb.destSpot as MonitorSpot)?.ResumeMonitor();
+            }),
+
+            new DelayRange(4, 5),
+
+
+            new SetAnimBool("Sitting", false),
+            new SetAnimBool("Typing", false),
+            new ActionNode(() => _bb.isForceBehavior = false),
+        });
+    }
+}
+
+
+
 public class JopSelectSeqPattern : PatternNode
 {
     public JopSelectSeqPattern(BT_Node afterRoutine)

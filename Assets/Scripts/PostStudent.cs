@@ -132,8 +132,8 @@ public class PostStudent : MonoBehaviour
         _moveSpeedModifier = AttributeSystem.Instance.StudMoveSpeedMod;
         _anim.SetFloat("MoveSpeedScale", _moveSpeedModifier.GetFinalValue());
         _characterCollider.enabled = false;
-        Invoke(nameof(PlaySleepingSFX), UnityEngine.Random.Range(0.5f, 2f));
-        _anim.SetBool("Laying", true);
+        //Invoke(nameof(PlaySleepingSFX), UnityEngine.Random.Range(0.5f, 2f));
+        //_anim.SetBool("Laying", true);
     }
 
 

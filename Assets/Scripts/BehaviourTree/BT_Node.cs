@@ -1317,7 +1317,7 @@ public class FindDestSpot : BT_Node
         _bb.destSpot?.Release(_student);
         _bb.destSpot = null;
 
-        BehaveSpot spot = _student != null ? _bb.StageSpots.GetRandomSpotByType(targetType, _student) : _bb.StageSpots.GetRandomSpotByType(targetType);
+        BehaveSpot spot = _bb.StageSpots.GetRandomSpotByType(targetType, _student);
 
         Debug.Log($"[{spot}]");
         if (spot != null && spot.IsUsable)
@@ -1325,8 +1325,8 @@ public class FindDestSpot : BT_Node
             Vector3 rawPosition = spot.transform.position;
             if (NavMesh.SamplePosition(rawPosition, out NavMeshHit hit, _sampleRange, NavMesh.AllAreas))
             {
-                //if (_student == null)
-                //    return NodeState.Failure;
+                if (_student == null)
+                    return NodeState.Failure;
                 //_bb.destSpot?.Release(student);
                 _bb.destSpot = spot;
                 _bb.destPosition = hit.position;

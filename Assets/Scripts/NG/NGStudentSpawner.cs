@@ -1,11 +1,19 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class NGStudentSpawner : MonoBehaviour
 {
-    [SerializeField] private StageSpots _stageSpots;
+    //[SerializeField] private StageSpots _stageSpots;
     [SerializeField] private GameObject _studentPrefab;
     [SerializeField] private Transform _spawnPoint;
+    [SerializeField] private MonitorSpot _seatSpot;
+
+    [SerializeField] private GameObject _studentPrefab2;
+    [SerializeField] private Transform _spawnPoint2;
+    [SerializeField] private MonitorSpot _seatSpot2;
+
+    [SerializeField] private DamageData _damageData;
 
 
 
@@ -13,7 +21,17 @@ public class NGStudentSpawner : MonoBehaviour
     {
         StudentNG student = SpawnAndModifyToStudentNG(_studentPrefab, _spawnPoint.position, _spawnPoint.rotation);
         //student.Stage = _stageSpots;
+        student.SeatSpot = _seatSpot;
+
         student.StartBehavior();
+        DOVirtual.DelayedCall(3f, () => AttackStudent(student));
+    }
+
+
+
+    private void AttackStudent(StudentNG student)
+    {
+        student.TakeDamage(_damageData);
     }
 
 

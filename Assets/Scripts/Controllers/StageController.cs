@@ -363,7 +363,7 @@ public class StageController : SceneSingleton<StageController>
 
     public void Hacked()
     {
-        _chaosUi.SpawnWarningPanel(new HackInfo());
+        //_chaosUi.SpawnWarningPanel(new HackInfo());
     }
 
 
