@@ -1,6 +1,4 @@
-using System.Data;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public abstract class ItemSlot : MonoBehaviour
 {

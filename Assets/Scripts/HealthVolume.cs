@@ -1,4 +1,3 @@
-using UnityEditor.Build;
 using UnityEngine;
 using UnityEngine.Rendering; // 추가
 using UnityEngine.Rendering.Universal; // URP 전용 네임스페이스

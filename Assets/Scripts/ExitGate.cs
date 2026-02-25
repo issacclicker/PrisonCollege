@@ -1,9 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.ShaderKeywordFilter;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class ExitGate : MonoBehaviour
 {

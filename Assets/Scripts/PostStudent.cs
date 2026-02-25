@@ -1,13 +1,9 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.Events;
 using static Global;
-using static Utils;
-using static SoundUtils;
 
 public class PostStudent : MonoBehaviour
 {

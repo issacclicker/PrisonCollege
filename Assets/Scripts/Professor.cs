@@ -1,12 +1,5 @@
-﻿using DG.Tweening;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using UnityEditor.PackageManager;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
-using static CartoonFX.CFXR_Effect;
-using static SoundUtils;
 
 public class Professor : MonoBehaviour, IAttackable
 {

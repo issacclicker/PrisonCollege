@@ -1,5 +1,4 @@
 using System;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "NewSoundData", menuName = "Sound/SoundData")]
