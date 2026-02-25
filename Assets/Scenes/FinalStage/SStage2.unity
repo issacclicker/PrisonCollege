@@ -141852,7 +141852,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TaskCameraRotator
   sensitivity: 3
-  xLimit: 30
+  xLimit: 20
   yLimit: 60
 --- !u!114 &2130155694
 MonoBehaviour:

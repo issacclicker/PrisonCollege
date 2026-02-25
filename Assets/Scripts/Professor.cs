@@ -105,6 +105,7 @@ public class Professor : MonoBehaviour, IAttackable
         _controller.enabled = true;
         _weaponController.Show();
         _playerCamera.DisablePhysics();
+        transform.localScale = Vector3.one;
     }
 
 
@@ -150,6 +151,7 @@ public class Professor : MonoBehaviour, IAttackable
         _weaponController.Show();
         _playerCamera.DisableTaskMode();
         _controller.enabled = true;
+        transform.localScale = Vector3.one;
     }
 
 
