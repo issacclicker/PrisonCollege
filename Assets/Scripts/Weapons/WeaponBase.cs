@@ -51,6 +51,16 @@ public class WeaponBase : MonoBehaviour
 
 
     protected virtual void ExecuteAttack() { }
+
+
+
+    protected WeaponData DeepCopyWeaponData(WeaponData weaponData)
+    {
+        EffectData newDamageData = Instantiate(weaponData.effect);
+        WeaponData newWeaponData = Instantiate(weaponData);
+        newWeaponData.effect = newDamageData;
+        return newWeaponData;
+    }
 }
 
 

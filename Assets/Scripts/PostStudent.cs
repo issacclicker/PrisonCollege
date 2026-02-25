@@ -121,13 +121,13 @@ public class PostStudent : MonoBehaviour
 
     private void Start()
     {
-        BehaviorWeightSet = DeepCopyByJson(BehaviorWeightSet);
+        BehaviorWeightSet = BehaviorWeightSet.CreateDeepCopy();
         BehaviorWeightSet.ModifyChance(BehaviorType.Escape, AttributeSystem.Instance.StudEscapeChanceMod.GetFinalValue());
         HideAllAnimAttachments();
         StopAllOverlapAttackers();
         _characterRagdoll.UnTriggerRagdoll();
         _speedSelector = ConstructSpeedSelector();
-        _boostReceiver.CanEffectChecker = () => _root != null && _blackboard != null && _blackboard.targetObject == null;
+        _boostReceiver.CanEffectChecker = () => _root != null && _blackboard != null && (_blackboard.targetObject == null && (_blackboard.destBehavior != BehaviorType.Escape ||_anim.GetLayerWeight(STRIKE_LAYER_INDEX) < 0.5f));
         _damageReceiver.CanEffectChecker = () => _blackboard != null && _blackboard.isEscaping == false;
         _moveSpeedModifier = AttributeSystem.Instance.StudMoveSpeedMod;
         _anim.SetFloat("MoveSpeedScale", _moveSpeedModifier.GetFinalValue());

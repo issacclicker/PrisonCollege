@@ -16,10 +16,10 @@ MonoBehaviour:
   name: "\uB2E8\uBC31\uC9C8 \uBCF4\uCDA9\uC81C"
   icon: {fileID: 21300000, guid: f9179d143ee2bec4b930d0c205b0a302, type: 3}
   price: 250
-  effect: "<color=green>\uADFC\uC811\uBB34\uAE30 \uACF5\uACA9\uC18D\uB3C4 +20%\r\n\uADFC\uC811\uBB34\uAE30
-    \uACF5\uACA9\uB825 +50%"
+  effect: "<color=#80FF80>- \uADFC\uC811\uBB34\uAE30 \uACF5\uACA9\uC18D\uB3C4 +20%
+    -\r\n- \uADFC\uC811\uBB34\uAE30 \uACF5\uACA9\uB825 +50% -"
   description: "\uAD50\uC218\uB2D8\uC758 \uADFC\uC721\uC774 \uD3ED\uBC1C\uC801\uC73C\uB85C
     \uC131\uC7A5\uD588\uC2B5\uB2C8\uB2E4."
   rarity: 0
-  meleeSpeedPercent: 0.2
+  meleeSpeedPercent: 0.5
   meleeDamagePercent: 0.5

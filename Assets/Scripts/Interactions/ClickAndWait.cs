@@ -29,7 +29,7 @@ public class ClickAndWait : MonoBehaviour, IPlayerInteractable
     {
         _progress = GetComponent<Progress>();
         _progress.Initialize(true);
-        _progress.MaxReachEvent.AddListener(() => { SoundUtils.PlayScene2DSFX(_completeSD); ProgressCompleteEvent?.Invoke(); });
+        _progress.MaxReachEvent.AddListener(() => { SoundUtils.PlayScene2DSFX(_completeSD); StopAndReturnSoundEmitter(); ProgressCompleteEvent?.Invoke(); });
 
         if (gameObject.GetComponent<ExitGate>() != null)
         {
@@ -75,6 +75,7 @@ public class ClickAndWait : MonoBehaviour, IPlayerInteractable
 
     public void OnInteractStart()
     {
+        if (_isInteracting) return;
         _isInteracting = true;
         ProgressStartEvent?.Invoke();
         _emitter = SoundUtils.PlayOwnedScene2DSFX(_activeSD, false, 1, true);

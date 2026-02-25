@@ -20,7 +20,15 @@ public class MeleeWeapon : WeaponBase
     protected override void Awake()
     {
         base.Awake();
-        _weaponData = Utils.DeepCopyByJson(_weaponData);
+    }
+
+
+    private void Start()
+    {
+        _weaponData = DeepCopyWeaponData(_weaponData);
+        float itemFactor = AttributeSystem.Instance.MeleeDamageMod.GetFinalValue(1);
+        _weaponData.effect.value *= itemFactor;
+        _weaponData.hitImpulse *= itemFactor;
         _originalDamage = _weaponData.effect.value;
     }
 
@@ -59,11 +67,11 @@ public class MeleeWeapon : WeaponBase
             if (hit.collider.TryGetComponent(out DamageReceiver receiver))
             {
                 // 2. 유틸리티 함수: 안전한 위치 및 회전값 계산
-                float totalFactor = JumpDamageFactor * AttributeSystem.Instance.MeleeDamageMod.GetFinalValue(1);
+                //float totalFactor = JumpDamageFactor * AttributeSystem.Instance.MeleeDamageMod.GetFinalValue(1);
                 Vector3 contactPoint = hit.GetContactPoint(origin);
                 Vector3 normal = hit.GetNormal(direction);
-                HitInfo hitInfo = new HitInfo(contactPoint, Quaternion.LookRotation(normal), _owner, _weaponData.hitImpulse * totalFactor);
-                _weaponData.effect.value = _originalDamage * totalFactor;
+                HitInfo hitInfo = new HitInfo(contactPoint, Quaternion.LookRotation(normal), _owner, _weaponData.hitImpulse * JumpDamageFactor);
+                _weaponData.effect.value = _originalDamage * JumpDamageFactor;
                 receiver.TakeEffect(_weaponData.effect, hitInfo);
                 SoundUtils.PlayScene2DSFX(_hitSD);
                 CameraShaker.Instance.DoMeleeShake(_weaponData.effect.value);

@@ -45,7 +45,9 @@ public class BetResultPanel : MonoBehaviour
     {
         DOTween.Kill(this);
         DOTween.To(() => _currentDisplayMoney, x => _currentDisplayMoney = x, targetMoney, duration)
+            .SetTarget(this)
             .SetDelay(delay)
+            .SetLink(gameObject)
             .OnStart(() =>
             {
                 _bonusMoneyTmp.text = string.Empty;
@@ -68,6 +70,7 @@ public class BetResultPanel : MonoBehaviour
 
     private void OnDisable()
     {
+        DOTween.Kill(this);
         _emitter?.StopAndReturn();
     }
 
@@ -75,6 +78,7 @@ public class BetResultPanel : MonoBehaviour
 
     private void OnDestroy()
     {
+        DOTween.Kill(this);
         _emitter?.StopAndReturn();
     }
 }

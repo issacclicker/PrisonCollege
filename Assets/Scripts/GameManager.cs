@@ -220,7 +220,8 @@ public class GameManager : PersistentSingleton<GameManager>
     {
         DifficultyLevel maxDifficulty = (DifficultyLevel)Mathf.Max((int)_currentDifficulty, (int)_currentStage.maxClearDifficulty);
         _currentStage.maxClearDifficulty = maxDifficulty;
-        _stageEntries[_currentStage.number].isLocked = false;
+        if (_currentStage.number < _stageEntries.Length)
+            _stageEntries[_currentStage.number].isLocked = false;
         SaveStageProgress(_currentStage.number, _currentStage.maxClearDifficulty);
     }
 

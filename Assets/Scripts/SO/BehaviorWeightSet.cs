@@ -15,6 +15,25 @@ public class BehaviorWeightSet : WeightedSetSO<BehaviorType, BehaviorChance>
             behaviorChance.MultiplyChance(multiply);
         }
     }
+
+
+    protected override BehaviorChance CloneEntry(BehaviorChance entry)
+    {
+        // 필드값을 그대로 복사한 새 객체 생성 (생성자 활용)
+        return new BehaviorChance(entry.Value, entry.Chance);
+    }
+
+
+    public BehaviorWeightSet CreateDeepCopy()
+    {
+        // 1. ScriptableObject 껍데기 복사
+        BehaviorWeightSet clone = Instantiate(this);
+
+        // 2. 내부 리스트 및 원소들 깊은 복사 진행
+        clone.InitializeCopy(this.WeightedElements);
+
+        return clone;
+    }
 }
 
 
@@ -26,6 +45,12 @@ public class BehaviorChance : IWeightedEntry<BehaviorType>
     public BehaviorType Value => _behaviorType;
     [SerializeField] private float _chance;
     public float Chance => _chance;
+
+    public BehaviorChance(BehaviorType type, float chance)
+    {
+        _behaviorType = type;
+        _chance = chance;
+    }
 
     public void MultiplyChance(float multiplier) => _chance *= multiplier;
 }

@@ -216,7 +216,7 @@ public class MoveToSpot : BT_Node
         //Debug.Log($"목적지: {_bb.destSpot.name}, 남은 거리: {_bb.Agent.remainingDistance}");
 
         // 목적지에 거의 도착했는지 확인
-        if (!_bb.Agent.pathPending && _bb.Agent.remainingDistance <= _bb.Agent.stoppingDistance)
+        if (!_bb.Agent.pathPending && _bb.Agent.remainingDistance <= 0.1f)
         {
             _bb.Anim.SetFloat("MoveSpeed", 0);
             return NodeState.Success;

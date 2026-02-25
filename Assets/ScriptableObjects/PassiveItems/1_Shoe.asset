@@ -16,9 +16,9 @@ MonoBehaviour:
   name: "\uC2A4\uB2C8\uCEE4\uC988"
   icon: {fileID: 21300000, guid: 48b9b8d18edefb14aa8cde33c2c6f7ca, type: 3}
   price: 280
-  effect: "<color=green>\uAD50\uC218 \uC774\uB3D9\uC18D\uB3C4 +40%</color>"
+  effect: "<color=#80FF80>- \uAD50\uC218 \uC774\uB3D9\uC18D\uB3C4 +40% -</color>"
   description: "\uC61B\uB0A0 \uB0A9\uCE58\uBC94\uB4E4\uC774 \uBAB0\uB798 \uB0A9\uCE58\uD574\uAC00\uAE30
     \uC704\uD574, \uC2A4\uB2C8\uCEE4\uC988\uB97C \uB9CE\uC774 \uC2E0\uC5C8\uB2E4\uACE0
     \uD569\uB2C8\uB2E4."
   rarity: 0
-  profMoveSpeedPercent: 0.4
+  profMoveSpeedPercent: 0.2

@@ -88,6 +88,8 @@ public class StageController : SceneSingleton<StageController>
     public UnityEvent StageStartEvent = new();
 
     private ReflectionProbe[] _reflectionProbes;
+    private const float CHAOS_RECREASE_DELAY = 3;
+    private float _remainedChaosDecreaseTime = 0;
 
 
 
@@ -177,6 +179,14 @@ public class StageController : SceneSingleton<StageController>
             _prepareTimerTmp.text = _prepareTimeStat.Current.ToString("F0");
         }
         float chaosChanged = IncreaseChaos();
+        if (chaosChanged > 0)
+        {
+            _remainedChaosDecreaseTime = CHAOS_RECREASE_DELAY;
+        }
+        if (_remainedChaosDecreaseTime > 0)
+        {
+            _remainedChaosDecreaseTime -= Time.deltaTime;
+        }
         UpdateUIs(chaosChanged);
     }
 
@@ -326,6 +336,7 @@ public class StageController : SceneSingleton<StageController>
     {
         float chaosIncrease = _studEscapedPenalty * WaveSystem.Instance.ChaosFactor;
         _chaosStat.Increase(chaosIncrease);
+        _remainedChaosDecreaseTime = CHAOS_RECREASE_DELAY;
         PopupChaosWarning(new EscapedChaos(chaosIncrease));
         _escapeStat.Increase(1);
     }
@@ -338,6 +349,7 @@ public class StageController : SceneSingleton<StageController>
         {
             float chaosIncrease = _innocentKillPenalty * WaveSystem.Instance.ChaosFactor;
             _chaosStat.Increase(chaosIncrease);
+            _remainedChaosDecreaseTime = CHAOS_RECREASE_DELAY;
             PopupChaosWarning(new InnocentKillChaos(chaosIncrease));
         }
     }
@@ -372,7 +384,8 @@ public class StageController : SceneSingleton<StageController>
     {
         int minutes = Mathf.FloorToInt(_timerStat.Current / 60f);
         int seconds = Mathf.FloorToInt(_timerStat.Current % 60f);
-        _timerTmp.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        //_timerTmp.text = string.Format("{0:00}:{1:00}", minutes, seconds);
+        _timerTmp.text = _timerStat.Current.ToString("F0");
         if (_timerStat.Current < 11)
         {
             _timerTmp.text = $"<color=red>{_timerTmp.text}</color>";
@@ -421,9 +434,10 @@ public class StageController : SceneSingleton<StageController>
         if (chaosCauseCount > 0)
         {
             chaosChanged = chaosCauseCount * _increasePerStud * WaveSystem.Instance.ChaosFactor;
+            _remainedChaosDecreaseTime = CHAOS_RECREASE_DELAY;
             _chaosStat.Increase(chaosChanged * Time.deltaTime);
         }
-        else if (!_chaosStat.IsDepleted)
+        else if (!_chaosStat.IsDepleted && _remainedChaosDecreaseTime <= 0)
         {
             if (GameManager.Instance.Difficulty != DifficultyLevel.Hard || _chaosStat.Current > 100)
             {
@@ -474,6 +488,7 @@ public class StageController : SceneSingleton<StageController>
     public void GunShoot()
     {
         float chaosIncrease = _gunShotPenalty * WaveSystem.Instance.ChaosFactor;
+        _remainedChaosDecreaseTime = CHAOS_RECREASE_DELAY;
         _chaosStat.Increase(chaosIncrease);
     }
 
@@ -483,6 +498,7 @@ public class StageController : SceneSingleton<StageController>
     {
         float chaosIncrease = _normalFoodRemovedPenalty * WaveSystem.Instance.ChaosFactor;
         _chaosStat.Increase(chaosIncrease);
+        _remainedChaosDecreaseTime = CHAOS_RECREASE_DELAY;
         PopupChaosWarning(new NormalFoodRemovedChaos(chaosIncrease));
     }
 

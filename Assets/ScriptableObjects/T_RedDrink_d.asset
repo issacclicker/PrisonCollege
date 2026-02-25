@@ -15,5 +15,5 @@ MonoBehaviour:
   value: 0
   effectVisualPrefab: {fileID: 0}
   potency:
-    workProbability: 0.6
-    frenzyProbability: 0.3
+    workProbability: 0.5
+    frenzyProbability: 0.4

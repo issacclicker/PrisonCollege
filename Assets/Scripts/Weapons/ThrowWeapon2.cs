@@ -28,7 +28,7 @@ public class ThrowWeapon2 : RangedWeapon
         GameObject projectileSpawned = Instantiate(_projectilePrefab, _spawnPoint.position, projectileRot);
         projectileSpawned.transform.localScale = _spawnPoint.localScale;
         Projectile projectile = projectileSpawned.GetComponent<Projectile>();
-        projectile.WeaponData = _weaponData;
+        projectile.WeaponData = DeepCopyWeaponData(_weaponData);
         projectile.Owner = _owner;
         projectile.IsStage = _controller._isStage;
         projectile.ResetForce();

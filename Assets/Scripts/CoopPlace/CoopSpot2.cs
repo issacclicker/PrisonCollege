@@ -118,7 +118,7 @@ public class CoopSpot2 : SingleStudentSpot
     public bool InviteParticipant(PostStudent requester, BehaviorType behaviorType, float executeTime)
     {
         int layerMask = 1 << LayerMask.NameToLayer(Global.STUDENT_LAYER_NAME);
-        Collider[] potentialPartners = Physics.OverlapSphere(transform.position, 20, layerMask);
+        Collider[] potentialPartners = Physics.OverlapSphere(transform.position, 50, layerMask);
 
         foreach (var col in potentialPartners)
         {
