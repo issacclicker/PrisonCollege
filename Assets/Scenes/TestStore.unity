@@ -26939,7 +26939,7 @@ MonoBehaviour:
   _daySkybox: {fileID: 2100000, guid: 85cf0b004bc4a654b9e501efcce47902, type: 2}
   _nightSkybox: {fileID: 2100000, guid: 2039a0ad0a9d05549928b70362f54902, type: 2}
   waveEntries:
-  - behaviorWeightSet: {fileID: 11400000, guid: 9837560df67a56a46ae7906ffafb20a1, type: 2}
+  - behaviorWeightSet: {fileID: 11400000, guid: f6d34312ffb02c7428b79212315cb02b, type: 2}
     dayState: 0
     explanation: 
     enforceProb: 0
