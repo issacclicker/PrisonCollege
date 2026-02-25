@@ -13,7 +13,7 @@ public class WaveSystem : PersistentSingleton<WaveSystem>
     {
         public BehaviorWeightSet behaviorWeightSet;
         public DayState dayState;
-        public string explanation;
+        [TextArea] public string explanation;
         [Range(0, 1)] public float enforceProb;
         public bool isEndWithArena;
     }
@@ -43,15 +43,15 @@ public class WaveSystem : PersistentSingleton<WaveSystem>
     { 
         get 
         {
-            string explanation;
-            if (_currentDayState == DayState.Night)
-            {
-                explanation = $"Ω√∞£: π„ <size=80%>(»•∂ı +{((_chaosFactor - 1) * 100).ToString("F0")}%, ¿œ»ø¿≤ +{((_projectFactor - 1) * 100).ToString("F0")}%)</size>\r\n";
-            }
-            else
-            {
-                explanation = $"Ω√∞£: ≥∑\r\n";
-            }
+            string explanation = string.Empty;
+            //if (_currentDayState == DayState.Night)
+            //{
+            //    explanation = $"Ω√∞£: π„ <size=80%>(»•∂ı +{((_chaosFactor - 1) * 100).ToString("F0")}%, ¿œ»ø¿≤ +{((_projectFactor - 1) * 100).ToString("F0")}%)</size>\r\n";
+            //}
+            //else
+            //{
+            //    explanation = $"Ω√∞£: ≥∑\r\n";
+            //}
             explanation += waveEntries[_currentWave - 1].explanation;
             return explanation;
         } 
