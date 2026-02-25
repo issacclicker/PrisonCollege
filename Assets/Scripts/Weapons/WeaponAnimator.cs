@@ -115,6 +115,7 @@ public class WeaponAnimator : MonoBehaviour
     // 무기 꺼내기 애니메이션
     public void Draw(float duration)
     {
+        transform.DOKill(true);
         gameObject.SetActive(true);
         // 아래에서 위로 올라오는 연출
         transform.localPosition = _originPos + new Vector3(0, -0.5f, 0);
@@ -124,6 +125,7 @@ public class WeaponAnimator : MonoBehaviour
     // 무기 넣기 애니메이션
     public void Holster(float duration, System.Action onComplete)
     {
+        transform.DOKill(true);
         transform.DOLocalMove(_originPos + new Vector3(0, -0.5f, 0), duration)
             .SetEase(Ease.InQuad)
             .OnComplete(() => 
