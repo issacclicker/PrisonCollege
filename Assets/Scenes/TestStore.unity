@@ -28524,9 +28524,9 @@ MonoBehaviour:
     isLocked: 0
     sprite: {fileID: 21300000, guid: b5c430d60e4330740b28298082ddc1c0, type: 3}
   - number: 3
-    name: "\uBCD1\uB82C\uAC10\uC625\uC2DC\uC2A4\uD15C"
+    name: "\uD1B5\uC81C\uACF5\uD559 \uC751\uC6A9"
     maxClearDifficulty: 0
-    isLocked: 1
+    isLocked: 0
     sprite: {fileID: 21300000, guid: 4680ccb0a6bd7b94ebb03ae2829f248f, type: 3}
   audioSetting: {fileID: 454650055}
   _mainScreen: MainScene

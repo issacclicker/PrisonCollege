@@ -18719,13 +18719,13 @@ MonoBehaviour:
   - number: 2
     name: "\uAD6C\uAE08\uAD00\uB9AC \uC2E4\uC2B5"
     maxClearDifficulty: 0
-    isLocked: 0
-    sprite: {fileID: 21300000, guid: 3d5f9a4ae2542d0469d04052fd8d0f5d, type: 3}
-  - number: 3
-    name: "\uBCD1\uB82C\uAC10\uC625\uC2DC\uC2A4\uD15C"
-    maxClearDifficulty: 0
     isLocked: 1
     sprite: {fileID: 21300000, guid: 7fd875761c22a0a43adec8577570b57e, type: 3}
+  - number: 3
+    name: "\uD1B5\uC81C\uACF5\uD559 \uC751\uC6A9"
+    maxClearDifficulty: 0
+    isLocked: 0
+    sprite: {fileID: 21300000, guid: 3d5f9a4ae2542d0469d04052fd8d0f5d, type: 3}
   audioSetting: {fileID: 0}
   _mainScreen: MainScene
   _stagePrepare: Prepare
