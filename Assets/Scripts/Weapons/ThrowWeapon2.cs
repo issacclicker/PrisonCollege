@@ -7,6 +7,7 @@ public class ThrowWeapon2 : RangedWeapon
     [SerializeField] private float _throwVelocity;
     [SerializeField] private float _flipVelocity;
     [SerializeField] private float _torqueRandomness;
+    [SerializeField] private bool _enableCorrection = true;
     private ThrowAnimator _throwAnimator;
 
     public override string TypeName => "ÅõÃ´";
@@ -63,7 +64,8 @@ public class ThrowWeapon2 : RangedWeapon
         {
             float throwDistance = Vector3.Distance(_spawnPoint.position, hit.point);
             //targetPoint = hit.point + -ray.direction * Mathf.InverseLerp(1f, 5f, throwDistance);
-            targetPoint = hit.point + -ray.direction * throwDistance * 0.15f;
+            float throwCorrection = _enableCorrection ? throwDistance * 0.15f : 0f;
+            targetPoint = hit.point + -ray.direction * throwCorrection;
             //if (Vector3.Distance(_spawnPoint.position, hit.point) > 3f)
             //{
             //    targetPoint = hit.point + -ray.direction * 1f;

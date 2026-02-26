@@ -12,6 +12,7 @@ public class KillFeedbackController : SceneSingleton<KillFeedbackController>
     [Header("Screen Tint Settings")]
     public Image overlayImage; // 화면 전체를 덮는 투명한 UI Image (빨간색 등)
     public Color killColor = new Color(1, 0, 0, 0.3f); // 죽였을 때 번쩍일 색상
+    public SoundData killSD;
 
     public void PlayKillFeedback()
     {
@@ -21,7 +22,7 @@ public class KillFeedbackController : SceneSingleton<KillFeedbackController>
 
         // 2. 슬로우 모션 (Hit Stop) 실행
         //StartCoroutine(HitStopRoutine());
-
+        SoundUtils.PlayScene2DSFX(killSD, 1f);
         // 3. 화면 색상 연출 (GTA 스타일)
         if (overlayImage != null)
         {

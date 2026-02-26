@@ -125271,9 +125271,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KIllFeedbackController
   hitStopScale: 0.2
-  duration: 0.1
+  duration: 0.2
   overlayImage: {fileID: 617906113}
   killColor: {r: 0.5882353, g: 1, b: 0, a: 0.019607844}
+  killSD: {fileID: 11400000, guid: b385c7a712ce2f049983381f19739184, type: 2}
 --- !u!4 &1838614128
 Transform:
   m_ObjectHideFlags: 0
