@@ -345,6 +345,10 @@ public class StageController : SceneSingleton<StageController>
 
     private void OnStudentDied(PostStudent student, HitInfo hitInfo)
     {
+        if (hitInfo.attacker == Player.gameObject)
+        {
+            KillFeedbackController.Instance.PlayKillFeedback();
+        }
         if (student.IsDoingHazardBehavior == false && hitInfo.attacker == Player.gameObject)
         {
             float chaosIncrease = _innocentKillPenalty * WaveSystem.Instance.ChaosFactor;
