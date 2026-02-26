@@ -2884,6 +2884,8 @@ GameObject:
   - component: {fileID: 6822650240003608599}
   - component: {fileID: 1137215893520947749}
   - component: {fileID: 6870320122066653844}
+  - component: {fileID: 4410987255141456558}
+  - component: {fileID: -6248020331713429093}
   m_Layer: 0
   m_Name: Bookshelf
   m_TagString: Untagged
@@ -3059,6 +3061,38 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.3247603, y: 2, z: 0.4823141}
   m_Center: {x: 0.0000009536743, y: 0, z: -0.0000009536743}
+--- !u!114 &4410987255141456558
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6175112575631026211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 3
+  outlineColor: {r: 0, g: 1, b: 0, a: 1}
+  outlineWidth: 0
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &-6248020331713429093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6175112575631026211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9fd7c81874702c644ba2d79c3bd8920c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::OutlineFader
+  _fadeDuration: 0.4
+  _holdDuration: 0.1
 --- !u!1 &6229288175251201071
 GameObject:
   m_ObjectHideFlags: 0
