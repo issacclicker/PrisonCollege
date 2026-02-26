@@ -32,6 +32,7 @@ public class GameManager : PersistentSingleton<GameManager>
     public StageInfo[] StageEntries => _stageEntries;
     public string StageTitle => $"{_currentStage.number}. {_currentStage.name}";
     public DifficultyLevel Difficulty => _currentDifficulty;
+    public int CurrentStageNum => _currentStage.number;
     private SoundEmitter _bgmEmitter;
     private Coroutine _bgmChangeCoroutine;
     private string _previousSceneName;

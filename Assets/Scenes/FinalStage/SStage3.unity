@@ -218779,7 +218779,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FireSuppressionSystem
   _sprinklerCtrl: {fileID: 1050162598}
   _lowerPosY: -1.6
-  _holdDuration: 5
+  _holdDuration: 6
   _floodTransform: {fileID: 1297256890}
   FireExtinguishEvent:
     m_PersistentCalls:

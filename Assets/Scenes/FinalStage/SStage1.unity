@@ -30420,7 +30420,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2832918e06c9a04488e97af97613ad69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
-  _maxStat: 4
+  _maxStat: 2
   _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
@@ -86721,7 +86721,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FireSuppressionSystem
   _sprinklerCtrl: {fileID: 2080428743}
   _lowerPosY: -1.6
-  _holdDuration: 5
+  _holdDuration: 6
   _floodTransform: {fileID: 929060208}
   FireExtinguishEvent:
     m_PersistentCalls:

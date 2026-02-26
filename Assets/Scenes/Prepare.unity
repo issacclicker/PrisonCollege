@@ -20729,7 +20729,7 @@ MonoBehaviour:
   m_text: "<size=150%>* \uBA54\uC778 \uBAA9\uD45C *</size>\n<size=125%>  - \uD0C8\uCD9C
     \uC800\uC9C0</size>\n\uD0C8\uCD9C\uAD6C\uB97C \uBD09\uC1C4\uD558\uACE0 \uD0C8\uCD9C
     \uC2DC\uB3C4\uB97C \uD558\uB294 \uB300\uD559\uC6D0\uC0DD\uC744 \uB54C\uB824\uC11C
-    \uC800\uC9C0\uD558\uC2ED\uC2DC\uC624. \uC6E8\uC774\uBE0C \uB0B4\uC5D0 4\uBA85\uC758
+    \uC800\uC9C0\uD558\uC2ED\uC2DC\uC624. \uC6E8\uC774\uBE0C \uB0B4\uC5D0 {n}\uBA85\uC758
     \uB300\uD559\uC6D0\uC0DD\uC774 \uD0C8\uCD9C\uD558\uBA74 \uAC10\uAE08 \uC2E4\uD328\uC785\uB2C8\uB2E4.
     \uCD1D 4\uBC88\uC758 \uC6E8\uC774\uBE0C \uB3D9\uC548 \uAC10\uAE08\uC744 \uC720\uC9C0\uD558\uC2ED\uC2DC\uC624.\n<size=50%>\n</size><size=150%>*
     \uC11C\uBE0C \uBAA9\uD45C *</size>\n<size=125%>  - \uD504\uB85C\uC81D\uD2B8 \uC9C4\uD589</size>\n\uD504\uB85C\uC81D\uD2B8\uB97C
@@ -21929,6 +21929,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1866823405}
   - component: {fileID: 1866823406}
+  - component: {fileID: 1866823407}
   m_Layer: 5
   m_Name: Rest
   m_TagString: Untagged
@@ -22000,6 +22001,19 @@ MonoBehaviour:
   _moneyTmp: {fileID: 1275017594}
   _waveExplanation: {fileID: 2104571683}
   _purchaseSD: {fileID: 0}
+--- !u!114 &1866823407
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1866823404}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08b68b88ddb14d4459842924339a098e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::StageToDoList
+  _mainTargetTmp: {fileID: 1766504136}
 --- !u!1 &1892351815
 GameObject:
   m_ObjectHideFlags: 0

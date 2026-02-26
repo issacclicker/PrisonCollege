@@ -173,7 +173,7 @@ public class SlotPackage : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (SceneManager.GetActiveScene().name.Equals("Prepare") && Input.GetKeyDown(KeyCode.Escape))
         {
             GameManager.Instance.ShowStageSelect();
         }
