@@ -80,6 +80,8 @@ public class FighterSpawner : MonoBehaviour
 
     private void Start()
     {
+        int studentLayer = LayerMask.NameToLayer(Global.STUDENT_LAYER_NAME);
+        Physics.IgnoreLayerCollision(studentLayer, studentLayer, false);
         _groundCollider.enabled = false;
         _betResultPanel.gameObject.SetActive(false);
         _leftBetPanel.SetActive(false);

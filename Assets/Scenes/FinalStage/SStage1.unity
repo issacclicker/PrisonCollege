@@ -631,7 +631,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7652783248613399332, guid: eac496dabf87c6e4098dd8cfa5f37ccc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.434
+      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 7652783248613399332, guid: eac496dabf87c6e4098dd8cfa5f37ccc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -4085,7 +4085,7 @@ Transform:
   m_GameObject: {fileID: 66656222}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -4.186, y: 0, z: 9.423}
+  m_LocalPosition: {x: -4.186, y: 0, z: 9.539}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5335,7 +5335,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "WASD,F : \uC77C\uC5B4\uC11C\uAE30  |  RMB : \uB458\uB7EC\uBCF4\uAE30"
+  m_text: "WASD,F : \uC77C\uC5B4\uC11C\uAE30"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 29743bbba89f1bc4089114277ae6944b, type: 2}
   m_sharedMaterial: {fileID: 3512200576059445375, guid: 29743bbba89f1bc4089114277ae6944b, type: 2}
@@ -11232,7 +11232,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7652783248613399332, guid: eac496dabf87c6e4098dd8cfa5f37ccc, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 1.43
+      value: 1.547
       objectReference: {fileID: 0}
     - target: {fileID: 7652783248613399332, guid: eac496dabf87c6e4098dd8cfa5f37ccc, type: 3}
       propertyPath: m_LocalPosition.y
@@ -30531,12 +30531,12 @@ MonoBehaviour:
   _projectStat: {fileID: 573454139}
   _defaultReduction: 1
   _increasePerStud: 2
-  _innocentKillPenalty: 10
+  _innocentKillPenalty: 20
   _studEscapedPenalty: 30
   _gunShotPenalty: 20
   _normalFoodRemovedPenalty: 20
   _studTaskProgress: 5
-  _profTaskProgress: 20
+  _profTaskProgress: 17.5
   _progectReward: 50
   _minDelayFactor: 0.1
   _delayFuncFactor: 0.5
@@ -57160,7 +57160,7 @@ Transform:
   m_GameObject: {fileID: 1097688239}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 2.66, y: 0, z: 9.525}
+  m_LocalPosition: {x: 2.66, y: 0, z: 9.675}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -61210,7 +61210,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7652783248613399332, guid: eac496dabf87c6e4098dd8cfa5f37ccc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.382
+      value: -1.294
       objectReference: {fileID: 0}
     - target: {fileID: 7652783248613399332, guid: eac496dabf87c6e4098dd8cfa5f37ccc, type: 3}
       propertyPath: m_LocalRotation.w
@@ -82407,7 +82407,7 @@ Transform:
   m_GameObject: {fileID: 1572382425}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 2.655, y: 0, z: 4.334}
+  m_LocalPosition: {x: 2.655, y: 0, z: 4.411}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -94446,7 +94446,7 @@ MonoBehaviour:
   hitStopScale: 0.2
   duration: 0.2
   overlayImage: {fileID: 617906113}
-  killColor: {r: 0.5882353, g: 1, b: 0, a: 0.019607844}
+  killColor: {r: 1, g: 1, b: 1, a: 0.03137255}
   killSD: {fileID: 11400000, guid: b385c7a712ce2f049983381f19739184, type: 2}
 --- !u!4 &1838614128
 Transform:
@@ -100410,7 +100410,7 @@ Transform:
   m_GameObject: {fileID: 1918466165}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -4.195, y: 0, z: 4.428}
+  m_LocalPosition: {x: -4.195, y: 0, z: 4.484}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -104390,7 +104390,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7652783248613399332, guid: eac496dabf87c6e4098dd8cfa5f37ccc, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.452
+      value: -1.318
       objectReference: {fileID: 0}
     - target: {fileID: 7652783248613399332, guid: eac496dabf87c6e4098dd8cfa5f37ccc, type: 3}
       propertyPath: m_LocalRotation.w

@@ -344,7 +344,7 @@ public class FirstPersonController : MonoBehaviour
             }
         }
 
-        //Movement();
+        Movement();
 
         #endregion
 
@@ -388,37 +388,41 @@ public class FirstPersonController : MonoBehaviour
             HeadBob();
         }
 
-        //RotateCamera();
+        RotateCamera();
     }
 
     private void LateUpdate()
     {
         if (Time.timeScale == 0) return;
-        RotateCamera();
+        //RotateCamera();
     }
 
+    public void SetOriginYaw()
+    {
+        currentYaw = 180f;
+    }
 
-
+    private float currentYaw = 180f;
     private void RotateCamera()
     {
         if (cameraCanMove)
         {
-            yaw = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * mouseSensitivity;
+            // 1. transform에서 읽지 말고, 별도 변수(currentYaw)에 마우스 입력을 더함
+            // 2. 저사양 대응을 위해 Time.unscaledDeltaTime을 곱해주는 것이 좋습니다 (프레임 독립성)
+            float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity;
+            currentYaw += mouseX;
 
-            if (!invertCamera)
-            {
-                pitch -= mouseSensitivity * Input.GetAxis("Mouse Y");
-            }
-            else
-            {
-                // Inverted Y
-                pitch += mouseSensitivity * Input.GetAxis("Mouse Y");
-            }
+            // Pitch(상하) 계산 부분
+            float mouseY = Input.GetAxis("Mouse Y") * mouseSensitivity;
+            if (!invertCamera) pitch -= mouseY;
+            else pitch += mouseY;
 
-            // Clamp pitch between lookAngle
             pitch = Mathf.Clamp(pitch, -maxLookAngle, maxLookAngle);
 
-            transform.localEulerAngles = new Vector3(0, yaw, 0);
+            // 3. 계산된 결과값을 한 번에 적용
+            // Quaternion.Euler를 사용하는 것이 EulerAngles에 직접 벡터를 넣는 것보다 연산이 정확합니다.
+            //transform.localEulerAngles = new Vector3(0, currentYaw, 0);
+            transform.localRotation = Quaternion.Euler(0, currentYaw, 0);
 
             CameraFollow camFollow = playerCamera.GetComponent<CameraFollow>();
             if (camFollow != null)
@@ -426,15 +430,44 @@ public class FirstPersonController : MonoBehaviour
                 camFollow.currentPitch = pitch;
             }
         }
-
     }
+
+    //private void RotateCamera()
+    //{
+    //    if (cameraCanMove)
+    //    {
+    //        yaw = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * mouseSensitivity;
+
+    //        if (!invertCamera)
+    //        {
+    //            pitch -= mouseSensitivity * Input.GetAxis("Mouse Y");
+    //        }
+    //        else
+    //        {
+    //            // Inverted Y
+    //            pitch += mouseSensitivity * Input.GetAxis("Mouse Y");
+    //        }
+
+    //        // Clamp pitch between lookAngle
+    //        pitch = Mathf.Clamp(pitch, -maxLookAngle, maxLookAngle);
+
+    //        transform.localEulerAngles = new Vector3(0, yaw, 0);
+
+    //        CameraFollow camFollow = playerCamera.GetComponent<CameraFollow>();
+    //        if (camFollow != null)
+    //        {
+    //            camFollow.currentPitch = pitch;
+    //        }
+    //    }
+
+    //}
 
     void FixedUpdate()
     {
         if (Time.timeScale == 0) return;
         #region Movement
-        Movement();
-        #endregion
+        //Movement();
+        #endregion 
     }
 
 

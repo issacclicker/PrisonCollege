@@ -150,6 +150,7 @@ public class Professor : MonoBehaviour, IAttackable
         _rigidbody.isKinematic = false;
         _weaponController.Show();
         _playerCamera.DisableTaskMode();
+        _controller.SetOriginYaw();
         _controller.enabled = true;
         transform.localScale = Vector3.one;
     }

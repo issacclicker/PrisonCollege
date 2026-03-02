@@ -453,7 +453,7 @@ public class RushThroughPattern : PatternNode
             new SetAnimRootMotion(true),
             new SetAnimBool("Rush", true),
             //new Delay(() => 1.1f),
-            new DelayRange(3, 5),
+            new DelayRange(4, 6),
             //new SetAnimRootMotion(true),
             new ActionNode(() => {
                 var attacker = _bb.Avatar.GetComponent<PostStudent>().GetOverlapAttacker(OverlapAttackType.BodySlam);
@@ -738,6 +738,26 @@ public class WorkPattern : PatternNode
             new ActionNode(() =>
             {
                 (_bb.destSpot as MonitorSpot)?.ResumeMonitor();
+                //if (_bb.destBehavior == BehaviorType.Hack)
+                //{
+                //    float defenseProb = AttributeSystem.Instance.HackBlockChanceMod.GetFinalValue(0);
+                //    float rand = UnityEngine.Random.Range(0f, 1f);
+                //    if (rand < defenseProb)
+                //    {
+                //        StageController.Instance.HackBlocked();
+                //        LabLightSystem.Instance.HackDefensed();
+                //    }
+                //    else
+                //    {
+                //        StageController.Instance.Hacked();
+                //        LabLightSystem.Instance.TurnOff();
+                //    }
+                //}
+            }),
+            new DelayRange(3, 4),
+            new ActionNode(() =>
+            {
+                (_bb.destSpot as MonitorSpot)?.ResumeMonitor();
                 if (_bb.destBehavior == BehaviorType.Hack)
                 {
                     float defenseProb = AttributeSystem.Instance.HackBlockChanceMod.GetFinalValue(0);
@@ -754,7 +774,7 @@ public class WorkPattern : PatternNode
                     }
                 }
             }),
-            new DelayRange(4, 5),
+            new DelayRange(1, 1),
             new SetAnimBool("Sitting", false),
             new SetAnimBool("Typing", false),
             new ActionNode(() => _bb.isForceBehavior = false),

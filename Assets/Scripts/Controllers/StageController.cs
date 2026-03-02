@@ -1,6 +1,4 @@
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -133,6 +131,8 @@ public class StageController : SceneSingleton<StageController>
 
     private void Start()
     {
+        int studentLayer = LayerMask.NameToLayer(Global.STUDENT_LAYER_NAME);
+        Physics.IgnoreLayerCollision(studentLayer, studentLayer, true);
         StartPrepare();
         RenderReflectionProbes();
         WaveSystem.Instance.ApplySkybox();

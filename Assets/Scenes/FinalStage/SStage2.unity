@@ -25106,7 +25106,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "WASD,F : \uC77C\uC5B4\uC11C\uAE30  |  RMB : \uB458\uB7EC\uBCF4\uAE30"
+  m_text: "WASD,F : \uC77C\uC5B4\uC11C\uAE30"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 29743bbba89f1bc4089114277ae6944b, type: 2}
   m_sharedMaterial: {fileID: 3512200576059445375, guid: 29743bbba89f1bc4089114277ae6944b, type: 2}
@@ -32095,7 +32095,7 @@ MonoBehaviour:
   hitStopScale: 0.2
   duration: 0.2
   overlayImage: {fileID: 1213237709}
-  killColor: {r: 0.5882353, g: 1, b: 0, a: 0.019607844}
+  killColor: {r: 1, g: 1, b: 1, a: 0.023529412}
   killSD: {fileID: 11400000, guid: b385c7a712ce2f049983381f19739184, type: 2}
 --- !u!4 &600782481
 Transform:
@@ -35403,12 +35403,12 @@ MonoBehaviour:
   _projectStat: {fileID: 653745265}
   _defaultReduction: 1
   _increasePerStud: 2
-  _innocentKillPenalty: 10
+  _innocentKillPenalty: 20
   _studEscapedPenalty: 30
   _gunShotPenalty: 20
   _normalFoodRemovedPenalty: 20
   _studTaskProgress: 5
-  _profTaskProgress: 20
+  _profTaskProgress: 17.5
   _progectReward: 50
   _minDelayFactor: 0.1
   _delayFuncFactor: 0.5

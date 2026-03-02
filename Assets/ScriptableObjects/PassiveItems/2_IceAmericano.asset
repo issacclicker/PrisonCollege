@@ -17,7 +17,7 @@ MonoBehaviour:
   icon: {fileID: 21300000, guid: f8e9c7082dfc0a748b0d061798cc24f2, type: 3}
   price: 50
   effect: "<color=#80FF80>- \uBD80\uC2A4\uD130\uC758 \uC77C \uD6A8\uACFC \uD655\uB960
-    +20% -"
+    +10% -"
   description: "\uD604\uB300\uC778\uC758 3\uB300 \uD544\uC218 \uC601\uC591\uC18C
     \uC911 \uCE74\uD398\uC778\uC744 \uB2F4\uB2F9\uD569\uB2C8\uB2E4."
   rarity: 0

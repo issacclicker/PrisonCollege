@@ -8,7 +8,7 @@ public class CameraFollow : MonoBehaviour
     [SerializeField] private Transform _target;
     [HideInInspector] public float currentPitch = 0f; // 컨트롤러에서 넘겨줄 상하 각도
 
-    private void FixedUpdate()
+    private void LateUpdate()
     {
         // 플레이어의 위치는 따라가되, 물리적인 떨림을 한 단계 걸러줌
         transform.position = _target.position;

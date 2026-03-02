@@ -2477,8 +2477,8 @@ MonoBehaviour:
     dayState: 0
     explanation: "\uB300\uD559\uC6D0\uC0DD \uCD94\uAC00 \uD589\uB3D9: \uD30C\uC5C5\n\uADF8\uB4E4\uC740
       \uC2A4\uC2A4\uB85C \uC77C\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.\n\uB300\uD559\uC6D0\uC0DD
-      \uBC29\uD638 \uD655\uB960 50%"
-    enforceProb: 0.5
+      \uBC29\uD638 \uD655\uB960 80%"
+    enforceProb: 0.8
     isEndWithArena: 0
   _nightChaosFactor: 1.5
   _nightProjectFactor: 2

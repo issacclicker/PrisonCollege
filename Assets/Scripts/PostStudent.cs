@@ -117,6 +117,7 @@ public class PostStudent : MonoBehaviour
 
     private void Start()
     {
+        _agent.stoppingDistance = 0.1f;
         BehaviorWeightSet = BehaviorWeightSet.CreateDeepCopy();
         BehaviorWeightSet.ModifyChance(BehaviorType.Escape, AttributeSystem.Instance.StudEscapeChanceMod.GetFinalValue());
         HideAllAnimAttachments();

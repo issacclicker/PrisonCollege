@@ -210,12 +210,14 @@ public class MoveToSpot : BT_Node
     public override NodeState Evaluate()
     {
         //Debug.Log(_bb.destSpot);
-        _bb.Agent.SetSampleDestination(_bb.destSpot.transform.position, 1);
+        if (_bb.Agent.destination != _bb.destSpot.transform.position)
+            _bb.Agent.SetSampleDestination(_bb.destSpot.transform.position, 1);
         //Debug.Log($"목적지: {_bb.destSpot.name}, 남은 거리: {_bb.Agent.remainingDistance}");
 
         // 목적지에 거의 도착했는지 확인
-        if (!_bb.Agent.pathPending && _bb.Agent.remainingDistance <= 0.1f)
+        if (!_bb.Agent.pathPending && _bb.Agent.remainingDistance <= _bb.Agent.stoppingDistance)
         {
+            Debug.Log(_bb.Agent.stoppingDistance);
             _bb.Anim.SetFloat("MoveSpeed", 0);
             return NodeState.Success;
         }

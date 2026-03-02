@@ -52,6 +52,7 @@ public class Fighter : MonoBehaviour
 
     private void Start()
     {
+        _agent.obstacleAvoidanceType = ObstacleAvoidanceType.HighQualityObstacleAvoidance;
         foreach (var outline in _outlines)
         {
             outline.OutlineColor = Color.yellow;

@@ -22,7 +22,7 @@ public class KillFeedbackController : SceneSingleton<KillFeedbackController>
 
         // 2. 슬로우 모션 (Hit Stop) 실행
         //StartCoroutine(HitStopRoutine());
-        SoundUtils.PlayScene2DSFX(killSD, 1f);
+        SoundUtils.PlayScene2DSFX(killSD, 0.8f);
         // 3. 화면 색상 연출 (GTA 스타일)
         if (overlayImage != null)
         {

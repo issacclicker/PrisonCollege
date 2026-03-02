@@ -654,7 +654,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2832918e06c9a04488e97af97613ad69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
-  _maxStat: 20
+  _maxStat: 10
   _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
@@ -1147,7 +1147,7 @@ Rigidbody:
   m_ImplicitTensor: 1
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 1
+  m_Interpolate: 0
   m_Constraints: 112
   m_CollisionDetection: 1
 --- !u!114 &7070312738325970898
@@ -21683,6 +21683,7 @@ MonoBehaviour:
   _throwVelocity: 20
   _flipVelocity: 100
   _torqueRandomness: 0.2
+  _enableCorrection: 1
 --- !u!1 &4739118369430024915
 GameObject:
   m_ObjectHideFlags: 0
@@ -26770,7 +26771,7 @@ MonoBehaviour:
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 0
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
@@ -31802,6 +31803,7 @@ MonoBehaviour:
   _throwVelocity: 20
   _flipVelocity: 100
   _torqueRandomness: 0.2
+  _enableCorrection: 1
 --- !u!1 &5234537637432374585
 GameObject:
   m_ObjectHideFlags: 0
@@ -32025,6 +32027,7 @@ MonoBehaviour:
   _throwVelocity: 20
   _flipVelocity: 100
   _torqueRandomness: 0.2
+  _enableCorrection: 1
 --- !u!1 &5444255010444285699
 GameObject:
   m_ObjectHideFlags: 0
@@ -32126,7 +32129,7 @@ MonoBehaviour:
   InfoUpdateEvent:
     m_PersistentCalls:
       m_Calls: []
-  _maxDistance: 5
+  _maxDistance: 100
   _spreadIntensity: 0.01
   _projectilePrefab: {fileID: 6601050947256481345, guid: 32405e2e78276d846b59940eaca12819, type: 3}
   _spawnPoint: {fileID: 3879636325847696879}
@@ -32139,6 +32142,7 @@ MonoBehaviour:
   _throwVelocity: 20
   _flipVelocity: 200
   _torqueRandomness: 0.2
+  _enableCorrection: 0
 --- !u!1 &5617944681267872394
 GameObject:
   m_ObjectHideFlags: 0
@@ -42314,6 +42318,7 @@ MonoBehaviour:
   _throwVelocity: 40
   _flipVelocity: 300
   _torqueRandomness: 0.2
+  _enableCorrection: 1
 --- !u!1 &6912290449388137124
 GameObject:
   m_ObjectHideFlags: 0
@@ -47601,6 +47606,7 @@ MonoBehaviour:
   _throwVelocity: 20
   _flipVelocity: 100
   _torqueRandomness: 0.2
+  _enableCorrection: 1
 --- !u!1 &7244613239096499180
 GameObject:
   m_ObjectHideFlags: 0
