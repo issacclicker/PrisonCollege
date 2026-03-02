@@ -1178,13 +1178,13 @@ MonoBehaviour:
   zoomFOV: 30
   zoomStepTime: 10
   playerCanMove: 1
-  walkSpeed: 2.5
+  walkSpeed: 2.75
   maxVelocityChange: 10
   enableSprint: 1
   unlimitedSprint: 0
   holdToSprint: 0
   sprintKey: 304
-  sprintSpeed: 4.5
+  sprintSpeed: 4.95
   sprintDuration: 5
   sprintCooldown: 1
   sprintFOV: 135
@@ -42203,7 +42203,7 @@ MonoBehaviour:
   - {fileID: 5611890314072095510}
   - {fileID: 6449519920880279402}
   _weapons: []
-  _swapDuration: 0.15
+  _swapDuration: 0.1
 --- !u!1 &6457576667050995779
 GameObject:
   m_ObjectHideFlags: 0

@@ -43,7 +43,7 @@ public class SlotPackage : MonoBehaviour
         //}
         WaveSystem.Instance.NewWaveEntered();
         _itemInfoPanel.HidePanel();
-        _moneyTmp.text = InventorySystem.Instance.Money.ToString("N0");
+        _moneyTmp.text = $"$ {InventorySystem.Instance.Money.ToString("N0")}";
         if (_shopSlotEntry.parent != null)
             InventorySystem.Instance.ConstructShopSlots(_shopSlotEntry);
         if (_passiveSlotEntry.parent != null)

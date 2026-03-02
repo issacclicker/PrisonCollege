@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ebb49a6d408a7b40b5b06bdc2bf4d8a, type: 3}
   m_Name: M_Hammer
   m_EditorClassIdentifier: 
-  animLength: 2.5
+  animLength: 2.25
   staminaCost: 20
-  hitImpulse: 500
+  hitImpulse: 600
   dodgeProb: 0
   effect: {fileID: 11400000, guid: 481ceed07dad93547b745ac35d45c989, type: 2}

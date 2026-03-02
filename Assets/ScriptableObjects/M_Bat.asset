@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ebb49a6d408a7b40b5b06bdc2bf4d8a, type: 3}
   m_Name: M_Bat
   m_EditorClassIdentifier: 
-  animLength: 1.5
+  animLength: 1.25
   staminaCost: 10
-  hitImpulse: 600
+  hitImpulse: 250
   dodgeProb: 0
   effect: {fileID: 11400000, guid: 2c4bea52df78f964aa28401f63eb7a51, type: 2}

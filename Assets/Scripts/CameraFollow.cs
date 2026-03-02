@@ -11,7 +11,7 @@ public class CameraFollow : MonoBehaviour
     private void LateUpdate()
     {
         // 플레이어의 위치는 따라가되, 물리적인 떨림을 한 단계 걸러줌
-        transform.position = _target.position;
-        transform.rotation = Quaternion.Euler(currentPitch, _target.eulerAngles.y, 0);
+        transform.localPosition = _target.position;
+        transform.localRotation = Quaternion.Euler(currentPitch, _target.eulerAngles.y, 0);
     }
 }

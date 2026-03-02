@@ -73,9 +73,10 @@ public class ThrowAnimator : WeaponAnimator
         attackAnimSeq.AppendCallback(() => _throwableModel.gameObject.SetActive(true));
 
         _attackDuration = attackDuration;
-        float recoilTime = attackDuration * 0.2f;
-        float throwActionTime = 0.1f;
-        float returnTime = attackDuration * 0.7f;
+        float recoilTime = attackDuration * 0.25f;
+        float throwActionTime = 0.15f;
+        float returnTime = attackDuration * 0.6f;
+        float earlyFinishTime = returnTime * 0.45f;
 
         // 2. 준비 동작 (뒤로 당기기)
         attackAnimSeq.Append(transform.DOLocalMove(new Vector3(0.1f, -0.1f, -0.2f), recoilTime).SetEase(Ease.OutQuad));
@@ -92,8 +93,12 @@ public class ThrowAnimator : WeaponAnimator
         attackAnimSeq.Append(transform.DOLocalMove(new Vector3(0f, 0f, 0.2f), throwActionTime).SetEase(Ease.OutCubic));
 
         // 5. 기본 자세 복귀 (모델은 아직 비활성화 상태)
-        attackAnimSeq.Append(transform.DOLocalMove(Vector3.zero, returnTime).SetEase(Ease.OutCubic));
-        attackAnimSeq.Join(transform.DOLocalRotate(Vector3.zero, returnTime).SetEase(Ease.OutCubic));
+        attackAnimSeq.Append(transform.DOLocalMove(Vector3.zero, returnTime).SetEase(Ease.OutQuint));
+        attackAnimSeq.Join(transform.DOLocalRotate(Vector3.zero, returnTime).SetEase(Ease.OutQuint));
+
+        attackAnimSeq.InsertCallback(attackAnimSeq.Duration() - (returnTime - earlyFinishTime), () => {
+            attackAnimSeq.Complete(withCallbacks: true);
+        });
     }
 
 
@@ -102,8 +107,8 @@ public class ThrowAnimator : WeaponAnimator
     {
         float duration = 0.5f;
         // 이미 활성화되어 있거나 진행 중인 연출이 있다면 정리 (선택 사항)
-        _throwableModel.DOKill(); 
-    
+        _throwableModel.DOKill();
+
         _throwableModel.gameObject.SetActive(true);
 
         // 연출 초기화
@@ -114,7 +119,35 @@ public class ThrowAnimator : WeaponAnimator
         _throwableModel.DOScale(_initialScale, duration).SetEase(Ease.OutBack);
         _throwableModel.DOLocalMove(_initialPosition, duration).SetEase(Ease.OutCubic);
         _throwableModel.DOLocalRotateQuaternion(_initialRotation, duration).SetEase(Ease.OutCubic);
+
+        float earlyFinishTime = duration * 0.5f;
     }
+
+
+    //public void PlayRefillAnimation()
+    //{
+    //    float duration = 0.5f;
+    //    float earlyFinishTime = duration * 0.8f; // 0.25초 지점
+
+    //    _throwableModel.DOKill();
+    //    _throwableModel.gameObject.SetActive(true);
+
+    //    _throwableModel.localScale = Vector3.zero;
+    //    _throwableModel.localPosition = _initialPosition + new Vector3(0, -0.1f, 0);
+
+    //    // 시퀀스 생성
+    //    DG.Tweening.Sequence refillSeq = DOTween.Sequence().SetTarget(_throwableModel);
+
+    //    // 모든 연출을 동시에 시작 (Join)
+    //    refillSeq.Join(_throwableModel.DOScale(_initialScale, duration).SetEase(Ease.OutBack));
+    //    refillSeq.Join(_throwableModel.DOLocalMove(_initialPosition, duration).SetEase(Ease.OutCubic));
+    //    refillSeq.Join(_throwableModel.DOLocalRotateQuaternion(_initialRotation, duration).SetEase(Ease.OutCubic));
+
+    //    // 조기 종료 이벤트 추가 (시작 후 0.25초 지점에 실행)
+    //    refillSeq.InsertCallback(earlyFinishTime, () => {
+    //        refillSeq.Complete(withCallbacks: true);
+    //    });
+    //}
 
 
 

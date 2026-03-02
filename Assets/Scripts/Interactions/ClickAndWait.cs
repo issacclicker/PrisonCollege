@@ -12,7 +12,7 @@ public class ClickAndWait : MonoBehaviour, IPlayerInteractable
     private Progress _progress;
     private bool _isInteractable = true;
     private bool _isInteracting = false;
-    public string InteractionPrompt => $"[Åä±Û] {_actionName}";
+    public string InteractionPrompt => $"[F] {_actionName}";
     public bool CanInteract => _isInteractable;
     public float UIFillRatio => _progress.Ratio;
 
