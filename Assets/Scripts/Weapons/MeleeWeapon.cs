@@ -74,7 +74,7 @@ public class MeleeWeapon : WeaponBase
                 _weaponData.effect.value = _originalDamage * JumpDamageFactor;
                 receiver.TakeEffect(_weaponData.effect, hitInfo);
                 SoundUtils.PlayScene2DSFX(_hitSD);
-                CameraShaker.Instance.DoMeleeShake(_weaponData.effect.value * 2);
+                CameraShaker.Instance.DoMeleeShake(_weaponData.effect.value * 3);
             }
         }
     }

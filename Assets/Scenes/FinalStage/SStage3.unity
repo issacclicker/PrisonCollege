@@ -7457,7 +7457,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StatRecovery
   _targetStat: {fileID: 45060599}
-  _recoveryDelay: 4
+  _recoveryDelay: 8
   _recoverySpeed: 50
 --- !u!114 &45060604
 MonoBehaviour:
@@ -8045,7 +8045,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StatRecovery
   _targetStat: {fileID: 50813793}
-  _recoveryDelay: 4
+  _recoveryDelay: 8
   _recoverySpeed: 50
 --- !u!114 &50813798
 MonoBehaviour:
@@ -84788,7 +84788,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StatRecovery
   _targetStat: {fileID: 512414733}
-  _recoveryDelay: 4
+  _recoveryDelay: 8
   _recoverySpeed: 50
 --- !u!114 &512414738
 MonoBehaviour:
@@ -195371,8 +195371,8 @@ MonoBehaviour:
   _studEscapedPenalty: 30
   _gunShotPenalty: 20
   _normalFoodRemovedPenalty: 20
-  _studTaskProgress: 7.5
-  _profTaskProgress: 20
+  _studTaskProgress: 6
+  _profTaskProgress: 18
   _progectReward: 50
   _minDelayFactor: 0.1
   _delayFuncFactor: 0.5
@@ -328390,7 +328390,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StatRecovery
   _targetStat: {fileID: 2081861303}
-  _recoveryDelay: 4
+  _recoveryDelay: 8
   _recoverySpeed: 50
 --- !u!114 &2081861308
 MonoBehaviour:
@@ -373681,7 +373681,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StatRecovery
   _targetStat: {fileID: 6006278849571944468}
-  _recoveryDelay: 4
+  _recoveryDelay: 8
   _recoverySpeed: 50
 --- !u!114 &6006278849571944468
 MonoBehaviour:
@@ -381543,7 +381543,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StatRecovery
   _targetStat: {fileID: 6006278850781835047}
-  _recoveryDelay: 4
+  _recoveryDelay: 8
   _recoverySpeed: 50
 --- !u!114 &6006278850781835047
 MonoBehaviour:

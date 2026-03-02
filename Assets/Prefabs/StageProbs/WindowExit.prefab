@@ -440,7 +440,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StatRecovery
   _targetStat: {fileID: 4327456918816573063}
-  _recoveryDelay: 4
+  _recoveryDelay: 8
   _recoverySpeed: 50
 --- !u!114 &282965626016994407
 MonoBehaviour:

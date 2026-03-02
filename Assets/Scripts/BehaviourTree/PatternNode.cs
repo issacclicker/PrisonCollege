@@ -1109,7 +1109,8 @@ public class TryEscapePattern : PatternNode
 
                     new ActionNode(() => _bb.soundBehavior.PlayGrunt()),
                     new ExitAttackPattern(), // 실제 주먹 휘두르는 동안
-                    new Delay(() => 0.25f),
+                    //new Delay(() => 0.25f),
+                    new DelayRange(1.5f, 2f),
                 
                     //new Delay(() => Time.deltaTime),
                     new SetAnimRootMotion(false),

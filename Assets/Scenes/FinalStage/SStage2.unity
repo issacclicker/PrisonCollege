@@ -35407,8 +35407,8 @@ MonoBehaviour:
   _studEscapedPenalty: 30
   _gunShotPenalty: 20
   _normalFoodRemovedPenalty: 20
-  _studTaskProgress: 7.5
-  _profTaskProgress: 20
+  _studTaskProgress: 6
+  _profTaskProgress: 18
   _progectReward: 50
   _minDelayFactor: 0.1
   _delayFuncFactor: 0.5
