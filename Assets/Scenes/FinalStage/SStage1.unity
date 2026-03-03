@@ -30538,7 +30538,7 @@ MonoBehaviour:
   _studTaskProgress: 6
   _profTaskProgress: 18
   _progectReward: 50
-  _minDelayFactor: 0.1
+  _minDelayFactor: 0.25
   _delayFuncFactor: 0.5
   _professorTasks:
   - {fileID: 100151462}

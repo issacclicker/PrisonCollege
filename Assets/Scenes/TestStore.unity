@@ -28845,7 +28845,7 @@ MonoBehaviour:
   _store: Store
   _arena: Arena
   _testStart: TestStore
-  _currentDifficulty: 1
+  _currentDifficulty: 2
   _mainPD: {fileID: 11400000, guid: c46f0cfce4dfb1e4eb05ba4886d453e3, type: 2}
   _wavePD: {fileID: 11400000, guid: 873b05f4114654140b5f0da353cf8861, type: 2}
   _arenaPD: {fileID: 11400000, guid: 68c87bba33a945e4094c5f9dbc4d892c, type: 2}
