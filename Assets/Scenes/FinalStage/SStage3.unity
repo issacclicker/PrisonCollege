@@ -473,7 +473,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2832918e06c9a04488e97af97613ad69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
-  _maxStat: 5
+  _maxStat: 4
   _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
@@ -195198,7 +195198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2832918e06c9a04488e97af97613ad69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
-  _maxStat: 20
+  _maxStat: 25
   _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
@@ -195314,7 +195314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2832918e06c9a04488e97af97613ad69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Stat
-  _maxStat: 90
+  _maxStat: 60
   _currentStat: 0
   IncreaseEvent:
     m_PersistentCalls:
@@ -195371,9 +195371,9 @@ MonoBehaviour:
   _studEscapedPenalty: 30
   _gunShotPenalty: 20
   _normalFoodRemovedPenalty: 20
-  _studTaskProgress: 6
-  _profTaskProgress: 18
-  _progectReward: 50
+  _studTaskProgress: 7.5
+  _profTaskProgress: 20
+  _progectReward: 100
   _minDelayFactor: 0.25
   _delayFuncFactor: 0.5
   _professorTasks:

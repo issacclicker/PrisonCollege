@@ -27243,31 +27243,31 @@ MonoBehaviour:
   _daySkybox: {fileID: 2100000, guid: 85cf0b004bc4a654b9e501efcce47902, type: 2}
   _nightSkybox: {fileID: 2100000, guid: 2039a0ad0a9d05549928b70362f54902, type: 2}
   waveEntries:
-  - behaviorWeightSet: {fileID: 11400000, guid: 9837560df67a56a46ae7906ffafb20a1, type: 2}
+  - behaviorWeightSet: {fileID: 11400000, guid: 5b1e327d7b050184e9898b6c9978262e, type: 2}
     dayState: 0
     explanation: "\uB300\uD559\uC6D0\uC0DD \uCD94\uAC00 \uD589\uB3D9: \uD0C8\uCD9C
-      \uC2DC\uB3C4\n\uD0C8\uCD9C, \uB3CC\uC9C4, \uD0DC\uD074"
+      \uC2DC\uB3C4"
     enforceProb: 0
     isEndWithArena: 0
-  - behaviorWeightSet: {fileID: 11400000, guid: f6d34312ffb02c7428b79212315cb02b, type: 2}
+  - behaviorWeightSet: {fileID: 11400000, guid: 65bf85c7bde6b864c8ab5cfc2327626e, type: 2}
     dayState: 0
     explanation: "\uB300\uD559\uC6D0\uC0DD \uCD94\uAC00 \uD589\uB3D9: \uD63C\uB780
-      \uC720\uBC1C\n\uC2F8\uC6B0\uAE30, \uC800\uC9C8\uB178\uB798"
+      \uC720\uBC1C\n\uC2F8\uC6B0\uAE30"
     enforceProb: 0
     isEndWithArena: 1
-  - behaviorWeightSet: {fileID: 11400000, guid: 934718cbb17fb854f8f9c98887cdf7cc, type: 2}
+  - behaviorWeightSet: {fileID: 11400000, guid: 02ee5d90ffd5d324f8bfa9e2e6dfda47, type: 2}
     dayState: 0
     explanation: "\uB300\uD559\uC6D0\uC0DD \uCD94\uAC00 \uD589\uB3D9: \uAD50\uC218
-      \uBC29\uD574\n\uD574\uD0B9, \uD654\uC7AC(\uC804\uC790\uB80C\uC9C0 \uD3ED\uBC1C,
-      \uD761\uC5F0)\n\uB300\uD559\uC6D0\uC0DD \uBC29\uD638 \uD655\uB960 20%"
+      \uBC29\uD574\n\uD574\uD0B9, \uD761\uC5F0\n\uB300\uD559\uC6D0\uC0DD \uBC29\uD638
+      \uD655\uB960 20%"
     enforceProb: 0.2
     isEndWithArena: 0
-  - behaviorWeightSet: {fileID: 11400000, guid: 7d3c1036d191d334bb755491ce462151, type: 2}
+  - behaviorWeightSet: {fileID: 11400000, guid: 42b217bab8b57224383dc17df6b23e6b, type: 2}
     dayState: 0
     explanation: "\uB300\uD559\uC6D0\uC0DD \uCD94\uAC00 \uD589\uB3D9: \uD30C\uC5C5\n\uADF8\uB4E4\uC740
       \uC2A4\uC2A4\uB85C \uC77C\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.\n\uB300\uD559\uC6D0\uC0DD
-      \uBC29\uD638 \uD655\uB960 80%"
-    enforceProb: 0.8
+      \uBC29\uD638 \uD655\uB960 60%"
+    enforceProb: 0.6
     isEndWithArena: 0
   _nightChaosFactor: 1.5
   _nightProjectFactor: 2
@@ -28821,7 +28821,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56e616fcfd259f6478f0bef84550042b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  _stageNumber: 2
+  _stageNumber: 1
   _stageEntries:
   - number: 1
     name: "\uAE30\uCD08 \uAC10\uAE08\uD559"
@@ -28845,7 +28845,7 @@ MonoBehaviour:
   _store: Store
   _arena: Arena
   _testStart: TestStore
-  _currentDifficulty: 2
+  _currentDifficulty: 1
   _mainPD: {fileID: 11400000, guid: c46f0cfce4dfb1e4eb05ba4886d453e3, type: 2}
   _wavePD: {fileID: 11400000, guid: 873b05f4114654140b5f0da353cf8861, type: 2}
   _arenaPD: {fileID: 11400000, guid: 68c87bba33a945e4094c5f9dbc4d892c, type: 2}

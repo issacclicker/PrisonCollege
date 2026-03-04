@@ -2422,82 +2422,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!1 &274341408
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 274341410}
-  - component: {fileID: 274341409}
-  m_Layer: 0
-  m_Name: WaveSystem
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &274341409
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 274341408}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 776853a7e96a7924ba5524e0c4ab7c1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::WaveSystem
-  _daySkybox: {fileID: 2100000, guid: 85cf0b004bc4a654b9e501efcce47902, type: 2}
-  _nightSkybox: {fileID: 2100000, guid: 2039a0ad0a9d05549928b70362f54902, type: 2}
-  waveEntries:
-  - behaviorWeightSet: {fileID: 11400000, guid: 9837560df67a56a46ae7906ffafb20a1, type: 2}
-    dayState: 0
-    explanation: "\uB300\uD559\uC6D0\uC0DD \uCD94\uAC00 \uD589\uB3D9: \uD0C8\uCD9C
-      \uC2DC\uB3C4\n\uD0C8\uCD9C, \uB3CC\uC9C4, \uD0DC\uD074"
-    enforceProb: 0
-    isEndWithArena: 0
-  - behaviorWeightSet: {fileID: 11400000, guid: f6d34312ffb02c7428b79212315cb02b, type: 2}
-    dayState: 0
-    explanation: "\uB300\uD559\uC6D0\uC0DD \uCD94\uAC00 \uD589\uB3D9: \uD63C\uB780
-      \uC720\uBC1C\n\uC2F8\uC6B0\uAE30, \uC800\uC9C8\uB178\uB798"
-    enforceProb: 0
-    isEndWithArena: 1
-  - behaviorWeightSet: {fileID: 11400000, guid: 934718cbb17fb854f8f9c98887cdf7cc, type: 2}
-    dayState: 0
-    explanation: "\uB300\uD559\uC6D0\uC0DD \uCD94\uAC00 \uD589\uB3D9: \uAD50\uC218
-      \uBC29\uD574\n\uD574\uD0B9, \uD654\uC7AC(\uC804\uC790\uB80C\uC9C0 \uD3ED\uBC1C,
-      \uD761\uC5F0)\n\uB300\uD559\uC6D0\uC0DD \uBC29\uD638 \uD655\uB960 20%"
-    enforceProb: 0.2
-    isEndWithArena: 0
-  - behaviorWeightSet: {fileID: 11400000, guid: 7d3c1036d191d334bb755491ce462151, type: 2}
-    dayState: 0
-    explanation: "\uB300\uD559\uC6D0\uC0DD \uCD94\uAC00 \uD589\uB3D9: \uD30C\uC5C5\n\uADF8\uB4E4\uC740
-      \uC2A4\uC2A4\uB85C \uC77C\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.\n\uB300\uD559\uC6D0\uC0DD
-      \uBC29\uD638 \uD655\uB960 80%"
-    enforceProb: 0.8
-    isEndWithArena: 0
-  _nightChaosFactor: 1.5
-  _nightProjectFactor: 2
-  _currentWave: 0
---- !u!4 &274341410
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 274341408}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &299641182
 GameObject:
   m_ObjectHideFlags: 0
@@ -2634,6 +2558,82 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 299641182}
   m_CullTransparentMesh: 1
+--- !u!1 &302210437
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 302210439}
+  - component: {fileID: 302210438}
+  m_Layer: 0
+  m_Name: WaveSystem
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &302210438
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 302210437}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 776853a7e96a7924ba5524e0c4ab7c1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::WaveSystem
+  _daySkybox: {fileID: 2100000, guid: 85cf0b004bc4a654b9e501efcce47902, type: 2}
+  _nightSkybox: {fileID: 2100000, guid: 2039a0ad0a9d05549928b70362f54902, type: 2}
+  waveEntries:
+  - behaviorWeightSet: {fileID: 11400000, guid: 5b1e327d7b050184e9898b6c9978262e, type: 2}
+    dayState: 0
+    explanation: "\uB300\uD559\uC6D0\uC0DD \uCD94\uAC00 \uD589\uB3D9: \uD0C8\uCD9C
+      \uC2DC\uB3C4"
+    enforceProb: 0
+    isEndWithArena: 0
+  - behaviorWeightSet: {fileID: 11400000, guid: 65bf85c7bde6b864c8ab5cfc2327626e, type: 2}
+    dayState: 0
+    explanation: "\uB300\uD559\uC6D0\uC0DD \uCD94\uAC00 \uD589\uB3D9: \uD63C\uB780
+      \uC720\uBC1C\n\uC2F8\uC6B0\uAE30"
+    enforceProb: 0
+    isEndWithArena: 1
+  - behaviorWeightSet: {fileID: 11400000, guid: 02ee5d90ffd5d324f8bfa9e2e6dfda47, type: 2}
+    dayState: 0
+    explanation: "\uB300\uD559\uC6D0\uC0DD \uCD94\uAC00 \uD589\uB3D9: \uAD50\uC218
+      \uBC29\uD574\n\uD574\uD0B9, \uD761\uC5F0\n\uB300\uD559\uC6D0\uC0DD \uBC29\uD638
+      \uD655\uB960 20%"
+    enforceProb: 0.2
+    isEndWithArena: 0
+  - behaviorWeightSet: {fileID: 11400000, guid: 42b217bab8b57224383dc17df6b23e6b, type: 2}
+    dayState: 0
+    explanation: "\uB300\uD559\uC6D0\uC0DD \uCD94\uAC00 \uD589\uB3D9: \uD30C\uC5C5\n\uADF8\uB4E4\uC740
+      \uC2A4\uC2A4\uB85C \uC77C\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.\n\uB300\uD559\uC6D0\uC0DD
+      \uBC29\uD638 \uD655\uB960 60%"
+    enforceProb: 0.6
+    isEndWithArena: 0
+  _nightChaosFactor: 1.5
+  _nightProjectFactor: 2
+  _currentWave: 0
+--- !u!4 &302210439
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 302210437}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &304126917
 GameObject:
   m_ObjectHideFlags: 0
@@ -21983,4 +21983,4 @@ SceneRoots:
   - {fileID: 156701110}
   - {fileID: 737438557}
   - {fileID: 1279633975}
-  - {fileID: 274341410}
+  - {fileID: 302210439}
